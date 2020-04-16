@@ -1,12 +1,18 @@
 Package: cvCovEst
-Title: What the Package Does (One Line, Title Case)
+Title: Cross-Validated Covariance Matrix Estimation
 Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+Authors@R: c(
+    person(given = "Philippe",
+           family = "Boileau",
+           role = c("aut", "cre", "cph"),
+           email = "philippe_boileau@berkeley.edu",
+           comment = c(ORCID = "0000-0002-4850-2507")),
+    person(given = "Nima",
+           family = "Hejazi",
+           role = "aut",
+           email = "nh@nimahejazi.org",
+           comment = c(ORCID = "0000-0002-7127-2789"))
+    )
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
