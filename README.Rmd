@@ -13,14 +13,17 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Cross-Validated Covariance Estimation
+# R/`cvCovEst`: Cross-Validated Covariance Matrix Estimation
+
+__Authors:__ [Philippe Boileau](https://pboileau.ca) and
+  [Nima Hejazi](https://nimahejazi.org)
 
 ---
 
 # TODO
 
 + [ ] Setup repository `README.Rmd` file
-  - [ ] Draft description (for `DESCRIPTION` file also) 
+  - [X] Draft description (for `DESCRIPTION` file also) 
   - [X] Installation instructions
   - [X] Issues sections
   - [X] Contributions
@@ -29,6 +32,15 @@ knitr::opts_chunk$set(
 + [ ] Create loss functions
 + [ ] Identify estimators we want to consider. Determine if they are already implemented
 
+---
+
+## Description
+
+`cvCovEst` implements an efficient cross-validated approach to covariance matrix
+estimation in high-dimensional settings. This procedure data-adaptively
+identifies the optimal estimator of the covariance matrix from a set of
+candidates. Dignostic tools are also provided.
+  
 ---
 
 ## Installation

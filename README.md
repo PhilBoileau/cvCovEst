@@ -1,14 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Cross-Validated Covariance Estimation
+# R/`cvCovEst`
+
+> Cross-Validated Covariance Matrix Estimation
+
+**Authors:** [Philippe Boileau](https://pboileau.ca) and [Nima
+Hejazi](https://nimahejazi.org)
 
 -----
 
 # TODO
 
   - \[ \] Setup repository `README.Rmd` file
-      - \[ \] Draft description (for `DESCRIPTION` file also)
+      - \[X\] Draft description (for `DESCRIPTION` file also)
       - \[X\] Installation instructions
       - \[X\] Issues sections
       - \[X\] Contributions
@@ -17,6 +22,16 @@
   - \[ \] Create loss functions
   - \[ \] Identify estimators we want to consider. Determine if they are
     already implemented
+
+-----
+
+## Description
+
+`cvCovEst` implements an efficient cross-validated approach to
+covariance matrix estimation in high-dimensional settings. This
+procedure data-adaptively identifies the optimal estimator of the
+covariance matrix from a set of candidates. Dignostic tools are also
+provided.
 
 -----
 

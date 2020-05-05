@@ -13,7 +13,10 @@ Authors@R: c(
            email = "nh@nimahejazi.org",
            comment = c(ORCID = "0000-0002-7127-2789"))
     )
-Description: What the package does (one paragraph).
+Description: cvCovEst implements an efficient cross-validated approach to
+  covariance matrix estimation in high-dimensional settings. This procedure
+  data-adaptively identifies the optimal estimator of the covariance matrix from
+  a set of candidates. Dignostic tools are also provided.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
