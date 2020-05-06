@@ -7,10 +7,10 @@
 cvFrobeniusLoss(
   fold,
   data,
-  estimator_fun,
-  estimator_ctrl,
   resample_cov_fun,
-  resample_ctrl
+  resample_iter,
+  estimator_fun,
+  ...
 )
 }
 \arguments{
@@ -20,14 +20,14 @@ take place.}
 \item{data}{The full \code{data.frame} on which the cross-validated procedure
 is performed.}
 
+\item{resample_iter}{A \code{numeric} indicating the number of repetitions
+to be performed by \code{resample_fun}.}
+
 \item{estimator_fun}{The covariance matrix estimator to be applied to the
 training data.}
 
-\item{estimator_ctrl}{A \code{list} of hyperparameters to be passed to the
+\item{...}{Arguments corresponding to the hyperparameters of the
 covariance matrix estimator, \code{estimator_fun}.}
-
-\item{resample_ctrl}{A \code{list} of hyperparameters to be passed to
-\code{resample_fun}.}
 
 \item{resample_fun}{The function defining the resampling-based procedure used
 to estimate the covariances of entries in the covariance matrix estimator

@@ -26,7 +26,8 @@ Depends:
   matrixStats,
   origami,
   coop,
-  Rdpack
+  Rdpack,
+  dplyr
 Suggests: 
   testthat
 RdMacros: Rdpack

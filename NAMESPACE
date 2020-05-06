@@ -2,6 +2,7 @@
 
 importFrom(Rdpack,reprompt)
 importFrom(coop,covar)
+importFrom(dplyr,sample_frac)
 importFrom(matrixStats,sum2)
 importFrom(origami,training)
 importFrom(origami,validation)
