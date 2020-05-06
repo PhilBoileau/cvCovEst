@@ -24,6 +24,9 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends:
   matrixStats,
-  origami
+  origami,
+  coop,
+  Rdpack
 Suggests: 
   testthat
+RdMacros: Rdpack
