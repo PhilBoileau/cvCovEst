@@ -6,7 +6,7 @@
 #'
 #' @param fold A \code{fold} object over which the estimation procedure will
 #'   take place.
-#' @param data The full \code{data.frame} on which the cross-validated procedure
+#' @param dat The full \code{data.frame} on which the cross-validated procedure
 #'   is performed.
 #' @param estimator_fun The covariance matrix estimator to be applied to the
 #'   training data.
@@ -28,13 +28,14 @@
 #'   given \code{fold}.
 #'
 #' @keywords internal
-cvFrobeniusLoss <- function(fold, data,
+cvFrobeniusLoss <- function(fold, dat,
                             resample_cov_fun, resample_iter,
                             estimator_fun, ...) {
 
   # split the data into training and validation
-  train_data <- origami::training(data)
-  valid_data <- origami::validation(data)
+  # these are purposely split to do inverted v-fold cv
+  train_data <- origami::validation(dat)
+  valid_data <- origami::training(dat)
 
   # fit the covariance matrix estimator on the training set
   est_mat <- estimator_fun(train_data, ...)
