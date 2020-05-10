@@ -33,9 +33,8 @@ cvFrobeniusLoss <- function(fold, dat,
                             estimator_fun, ...) {
 
   # split the data into training and validation
-  # these are purposely split to do inverted v-fold cv
-  train_data <- origami::validation(dat)
-  valid_data <- origami::training(dat)
+  train_data <- origami::training(dat)
+  valid_data <- origami::validation(dat)
 
   # fit the covariance matrix estimator on the training set
   est_mat <- estimator_fun(train_data, ...)

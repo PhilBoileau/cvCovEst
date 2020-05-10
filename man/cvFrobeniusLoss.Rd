@@ -4,20 +4,13 @@
 \alias{cvFrobeniusLoss}
 \title{Cross-Validation Function for Scaled Frobenius Loss}
 \usage{
-cvFrobeniusLoss(
-  fold,
-  data,
-  resample_cov_fun,
-  resample_iter,
-  estimator_fun,
-  ...
-)
+cvFrobeniusLoss(fold, dat, resample_cov_fun, resample_iter, estimator_fun, ...)
 }
 \arguments{
 \item{fold}{A \code{fold} object over which the estimation procedure will
 take place.}
 
-\item{data}{The full \code{data.frame} on which the cross-validated procedure
+\item{dat}{The full \code{data.frame} on which the cross-validated procedure
 is performed.}
 
 \item{resample_iter}{A \code{numeric} indicating the number of repetitions

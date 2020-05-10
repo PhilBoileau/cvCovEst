@@ -4,13 +4,13 @@
 \alias{thresholdingEst}
 \title{Simple Thresholding Estimator of Covariance Matrix}
 \usage{
-thresholdingEst(data, gamma)
+thresholdingEst(dat, gamma)
 }
 \arguments{
-\item{data}{A numeric \code{data.frame} or matrix.}
+\item{dat}{A numeric \code{data.frame} or matrix.}
 
 \item{gamma}{A \code{numeric} larger than or equal to 0 defining the hard
-threshold applied to each element of the \code{data}'s sample covariance
+threshold applied to each element of the \code{dat}'s sample covariance
 matrix.}
 }
 \value{

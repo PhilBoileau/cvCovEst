@@ -4,10 +4,10 @@
 \alias{linearShrinkEst}
 \title{Linear Shrinkage Estimator of Covariance Matrix}
 \usage{
-linearShrinkEst(data, alpha)
+linearShrinkEst(dat, alpha)
 }
 \arguments{
-\item{data}{A numeric \code{data.frame} or matrix.}
+\item{dat}{A numeric \code{data.frame} or matrix.}
 
 \item{alpha}{A \code{numeric} between 0 and 1 defining the convex combination
 of the sample covariance matrix and the identity. \code{alpha = 1} returns
