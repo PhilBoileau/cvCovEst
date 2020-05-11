@@ -21,6 +21,7 @@
 #' @importFrom coop covar
 #' @importFrom dplyr sample_frac
 #' @importFrom matrixStats sum2
+#' @importFrom tidyr as_tibble
 #'
 #' @keywords internal
 sumNaiveCovBootstrap <- function(estimator_fun, train_data, valid_data,
@@ -28,6 +29,14 @@ sumNaiveCovBootstrap <- function(estimator_fun, train_data, valid_data,
 
   # get sequence of bootstrap samples
   idx <- seq_len(num_iter)
+
+  # convert training data and validation data to tibbles
+  train_data <- suppressMessages(
+    tidyr::as_tibble(train_data, .name_repair = "universal")
+    )
+  valid_data <- suppressMessages(
+    tidyr::as_tibble(valid_data, .name_repair = "universal")
+  )
 
   # resample training data num_iter times, estimate covariance matrix on each
   estimates_list <- lapply(

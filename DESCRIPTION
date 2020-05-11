@@ -28,7 +28,8 @@ Imports:
   coop,
   Rdpack,
   dplyr,
-  future
+  future,
+  tidyr
 Suggests: 
   testthat
 RdMacros: Rdpack
