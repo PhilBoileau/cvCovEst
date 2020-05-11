@@ -52,16 +52,19 @@ cvCovEst <- function(
   # define the folds based on cross-validation scheme
   n_obs <- nrow(dat)
   if (cv_scheme == "mc") {
-    folds <- origami::folds_montecarlo(n = n_obs,
-                                       V = v_folds,
-                                       pvalidation = mc_split)
+    folds <- origami::make_folds(dat,
+                                 fold_fun = folds_montecarlo,
+                                 V = v_folds,
+                                 pvalidation = mc_split)
   } else if (cv_scheme == "v_fold") {
-    folds <- origami::folds_vfold(n = n_obs,
-                                  V = v_folds)
+    folds <- origami::make_folds(dat,
+                                 fold_fun = folds_vfold,
+                                 V = v_folds)
   }
 
   # apply the estimators to each fold
   cv_results <- origami::cross_validate(
+    data = dat,
     cv_fun = cvFrobeniusLoss,
     folds = folds,
     estimator_list = estimators,
