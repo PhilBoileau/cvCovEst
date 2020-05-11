@@ -8,8 +8,8 @@
 #'   take place.
 #' @param dat The full \code{data.frame} on which the cross-validated procedure
 #'   is performed.
-#' @param estimator_fun The covariance matrix estimator to be applied to the
-#'   training data.
+#' @param estimator_funs A \code{list} of covariance matrix estimator functions
+#'   to be applied to the training data.
 #' @param resample_fun The function defining the resampling-based procedure used
 #'   to estimate the covariances of entries in the covariance matrix estimator
 #'   and the sample covariance matrix.
@@ -30,33 +30,48 @@
 #' @keywords internal
 cvFrobeniusLoss <- function(fold, dat,
                             resample_cov_fun, resample_iter,
-                            estimator_fun, ...) {
+                            estimator_funs, ...) {
 
   # split the data into training and validation
   train_data <- origami::training(dat)
   valid_data <- origami::validation(dat)
 
-  # fit the covariance matrix estimator on the training set
-  est_mat <- estimator_fun(train_data, ...)
-
   # compute the sample covariance matrix over the validation set
   sample_cov_mat <- coop::covar(valid_data)
 
-  # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
-  cov_sum <- resample_cov_fun(estimator_fun, train_data, valid_data,
-                              resample_iter, ...)
+  est_out <- lapply(
+    estimator_funs,
+    function(est_fun) {
 
-  # get the list of estimator params
-  estimator_hparams <- list(...)
-  if (length(estimator_hparams) == 0)
-    estimator_hparams <- list("hyperparameters" = "NA")
+      # fit the covariance matrix estimator on the training set
+      est_name <- est_fun
+      est_fun <- get(est_fun)
+      est_mat <- est_fun(train_data, ...)
 
-  # return the results from the fold
-  out <- list(
-    estimator = as.character(substitute(estimator_fun)),
-    hyperparameters = paste(names(estimator_hparams), estimator_hparams,
-                            sep = "=", collapse = ", "),
-    loss = scaledFrobeniusLoss(est_mat, sample_cov_mat, cov_sum)
-  )
-  return(out)
+      # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
+      cov_sum <- resample_cov_fun(est_fun, train_data, valid_data,
+                                  resample_iter, ...)
+
+      # get the list of estimator params
+      estimator_hparams <- list(...)
+      if (length(estimator_hparams) == 0)
+        estimator_hparams <- list("hyperparameters" = "NA")
+
+      # return the results # return the results from the fold
+      out <- list(
+        estimator = est_name,
+        hyperparameters = paste(names(estimator_hparams), estimator_hparams,
+                                sep = "=", collapse = ", "),
+        loss = scaledFrobeniusLoss(est_mat, sample_cov_mat, cov_sum),
+        fold = fold_index(fold = fold)
+      )
+    })
+
+  # combine lists into datafra,e
+  keys <- unique(unlist(lapply(est_out, names)))
+  results <- as.data.frame(as.list(
+    setNames(do.call(mapply, c(FUN = c, lapply(est_out, `[`, keys))), keys)
+  ))
+
+  return(results)
 }
