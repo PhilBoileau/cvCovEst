@@ -11,7 +11,7 @@
 #' @param valid_data A \code{data.frame} of the validation data.
 #' @param num_iter A positive integer defining the number of bootstrap samples
 #'   to compute.
-#' @param ... Arguments corresponding to the hyperparameters of the
+#' @param est_args Arguments corresponding to the hyperparameters of the
 #'   covariance matrix estimator, \code{estimator_fun}.
 #'
 #' @return A \code{numeric} representing the sum of all elements in the
@@ -25,7 +25,7 @@
 #'
 #' @keywords internal
 sumNaiveCovBootstrap <- function(estimator_fun, train_data, valid_data,
-                                 num_iter, ...) {
+                                 num_iter, est_args) {
 
   # get sequence of bootstrap samples
   idx <- seq_len(num_iter)
@@ -42,7 +42,7 @@ sumNaiveCovBootstrap <- function(estimator_fun, train_data, valid_data,
   estimates_list <- lapply(
     idx,
     function(x) {
-      estimator_fun(sample_frac(train_data, replace = TRUE), ...)
+      estimator_fun(sample_frac(train_data, replace = TRUE), est_args)
     }
   )
 

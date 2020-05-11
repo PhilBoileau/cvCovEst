@@ -36,11 +36,14 @@
 #' @importFrom origami folds_montecarlo
 #' @importFrom origami folds_vfold
 #' @importFrom origami cross_validate
+#' @importFrom tidyr as_tibble
+#' @importFrom dplyr group_by
+#' @importFrom dplyr summarise
 cvCovEst <- function(
   dat,
-  estimators = list(linearShrinkEst, thresholdingEst),
-  estimator_params = list("linearShrinkEst" = c("alpha" = 0),
-                          "thresholdingEst" = c("gamma" = 0)),
+  estimators = c("linearShrinkEst", "thresholdingEst"),
+  estimator_params = list("linearShrinkEst" = list(alpha = 0),
+                          "thresholdingEst" = list(gamma = 0)),
   cv_scheme = "mc", mc_split = 0.5, v_folds = 10,
   boot_iter = 100,
   center = TRUE, scale = TRUE,
@@ -63,16 +66,38 @@ cvCovEst <- function(
   }
 
   # apply the estimators to each fold
-  cv_results <- origami::cross_validate(
-    data = dat,
+  fold_results <- origami::cross_validate(
+    dat = dat,
     cv_fun = cvFrobeniusLoss,
     folds = folds,
-    estimator_list = estimators,
+    estimator_funs = estimators,
     estimator_params = estimator_params,
     resample_iter = boot_iter,
     use_future = parallel
   )
 
-  # return cv_results (TODO: run best estimate on data and return as well)
-  return(cv_results)
+  # remove error list from cv_results
+  errors <- fold_results$errors
+  fold_results$errors <- NULL
+
+  # fix tpes
+  fold_results$loss <- as.numeric(fold_results$loss)
+  fold_results$fold <- as.numeric(fold_results$fold)
+
+  # turn results to tibble
+  fold_results <- tidyr::as_tibble(fold_results)
+
+  # compute empirical risk
+  cv_results <- fold_results %>%
+    dplyr::group_by(estimator, hyperparameters) %>%
+    dplyr::summarise(empirical_risk = mean(loss))
+
+  # prep output
+  out <- list(
+    risk_df = cv_results,
+    cv_df = fold_results
+  )
+
+  # retun dataframe of cv results
+  return(out)
 }
