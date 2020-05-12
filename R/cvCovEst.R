@@ -36,9 +36,9 @@
 #' @return A \code{list} of results containing the following elements:
 #'   \itemize{
 #'     \item \code{estimate} - A \code{matrix} corresponding to the estimate of
-#'       the optimal covariance matrix estimator. (TODO)
+#'       the optimal covariance matrix estimator.
 #'     \item \code{estimator} - A \code{character} indicating the optimal
-#'       estimator and corresponding hyperparameters, if any. (TODO)
+#'       estimator and corresponding hyperparameters, if any.
 #'     \item \code{results_df} - A \code{tibble} providing the results of
 #'       the cross-validation procedure. (TODO)
 #'     \item \code{origami_output} - A \code{tibble} providing the results of
@@ -52,6 +52,7 @@
 #' @importFrom tidyr as_tibble
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
+#' @importFrom dplyr arrange
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 cvCovEst <- function(
@@ -105,10 +106,22 @@ cvCovEst <- function(
   # compute empirical risk
   cv_results <- fold_results %>%
     dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
-    dplyr::summarise(empirical_risk = mean(.data$loss))
+    dplyr::summarise(empirical_risk = mean(.data$loss)) %>%
+    dplyr::arrange(.data$empirical_risk)
+
+  # compute the best estimator's estimate
+  best_est <- get(cv_results[1, ]$estimator)
+  best_est_hyperparams <- parse(text = cv_results[1, ]$hyperparameters)
+  if (cv_results[1, ]$hyperparameters != "hyperparameters = NA")
+    estimate <- best_est(dat, eval(best_est_hyperparams))
+  else
+    estimate <- best_est(dat)
 
   # prep output
   out <- list(
+    estimate = estimate,
+    estimator = paste0(cv_results[1, ]$estimator, ", ",
+                      cv_results[1, ]$hyperparameters),
     risk_df = cv_results,
     cv_df = fold_results
   )

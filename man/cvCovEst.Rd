@@ -61,9 +61,9 @@ cross-validation loop with \code{\link[future.apply]{future_lapply}}.}
 A \code{list} of results containing the following elements:
 \itemize{
 \item \code{estimate} - A \code{matrix} corresponding to the estimate of
-the optimal covariance matrix estimator. (TODO)
+the optimal covariance matrix estimator.
 \item \code{estimator} - A \code{character} indicating the optimal
-estimator and corresponding hyperparameters, if any. (TODO)
+estimator and corresponding hyperparameters, if any.
 \item \code{results_df} - A \code{tibble} providing the results of
 the cross-validation procedure. (TODO)
 \item \code{origami_output} - A \code{tibble} providing the results of
