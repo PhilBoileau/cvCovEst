@@ -9,24 +9,31 @@
 #' @param dat The full \code{data.frame} on which the cross-validated procedure
 #'   is performed.
 #' @param estimator_funs A \code{list} of covariance matrix estimator functions
-#'   to be applied to the training data.
-#' @param resample_fun The function defining the resampling-based procedure used
-#'   to estimate the covariances of entries in the covariance matrix estimator
-#'   and the sample covariance matrix.
+#'   to be applied to the training data. Functions should be input as
+#'   \code{character}s.
+#' @param resample_fun The \code{function} defining the resampling-based
+#'   procedure used to estimate the covariances of entries in the covariance
+#'   matrix estimator and the sample covariance matrix.
 #' @param resample_iter A \code{numeric} indicating the number of repetitions
 #'   to be performed by \code{resample_fun}.
-#' @param est_args Arguments corresponding to the hyperparameters of the
-#'   covariance matrix estimator, \code{estimator_fun}.
+#' @param estimator_params A named \code{list} of arguments corresponding to the
+#'   hyperparameters of the covariance matrix estimator, \code{estimator_funs}.
+#'   The name of each list element should be the name of an estimator passed to
+#'   \code{estimator_funs}. Each element of the \code{estimator_params} is
+#'   itself a named \code{list}, where the names correspond to an estimators'
+#'   hyperparameter(s). These hyperparameters may be in the form of a single
+#'   \code{numeric} or a \code{numeric} vector.
 #'
 #' @importFrom coop covar
 #' @importFrom origami training
 #' @importFrom origami validation
+#' @importFrom origami fold_index
 #' @importFrom Rdpack reprompt
 #' @importFrom dplyr bind_rows
 #'
-#' @return A \code{list} providing information on the estimator, its
-#'   hyperparameters (if any), and scaled Frobenius loss for the
-#'   given \code{fold}.
+#' @return A \code{tibble} providing information on estimators, their
+#'   hyperparameters (if any), and their scaled Frobenius loss over
+#'   a \code{fold}.
 #'
 #' @keywords internal
 cvFrobeniusLoss <- function(
@@ -77,7 +84,7 @@ cvFrobeniusLoss <- function(
             estimator = est_name,
             hyperparameters = estimator_hparams,
             loss = scaledFrobeniusLoss(est_mat, sample_cov_mat, cov_sum),
-            fold = fold_index(fold = fold)
+            fold = origami::fold_index(fold = fold)
           )
         }
       )

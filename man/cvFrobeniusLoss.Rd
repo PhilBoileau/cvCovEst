@@ -4,7 +4,14 @@
 \alias{cvFrobeniusLoss}
 \title{Cross-Validation Function for Scaled Frobenius Loss}
 \usage{
-cvFrobeniusLoss(fold, dat, resample_cov_fun, resample_iter, estimator_fun, ...)
+cvFrobeniusLoss(
+  fold,
+  dat,
+  resample_cov_fun = sumNaiveCovBootstrap,
+  resample_iter,
+  estimator_funs,
+  estimator_params
+)
 }
 \arguments{
 \item{fold}{A \code{fold} object over which the estimation procedure will
@@ -16,20 +23,26 @@ is performed.}
 \item{resample_iter}{A \code{numeric} indicating the number of repetitions
 to be performed by \code{resample_fun}.}
 
-\item{estimator_fun}{The covariance matrix estimator to be applied to the
-training data.}
+\item{estimator_funs}{A \code{list} of covariance matrix estimator functions
+to be applied to the training data. Functions should be input as
+\code{character}s.}
 
-\item{...}{Arguments corresponding to the hyperparameters of the
-covariance matrix estimator, \code{estimator_fun}.}
+\item{estimator_params}{A named \code{list} of arguments corresponding to the
+hyperparameters of the covariance matrix estimator, \code{estimator_funs}.
+The name of each list element should be the name of an estimator passed to
+\code{estimator_funs}. Each element of the \code{estimator_params} is
+itself a named \code{list}, where the names correspond to an estimators'
+hyperparameter(s). These hyperparameters may be in the form of a single
+\code{numeric} or a \code{numeric} vector.}
 
-\item{resample_fun}{The function defining the resampling-based procedure used
-to estimate the covariances of entries in the covariance matrix estimator
-and the sample covariance matrix.}
+\item{resample_fun}{The \code{function} defining the resampling-based
+procedure used to estimate the covariances of entries in the covariance
+matrix estimator and the sample covariance matrix.}
 }
 \value{
-A \code{list} providing information on the estimator, its
-hyperparameters (if any), and scaled Frobenius loss for the
-given \code{fold}.
+A \code{tibble} providing information on estimators, their
+hyperparameters (if any), and their scaled Frobenius loss over
+a \code{fold}.
 }
 \description{
 \code{cvFrobeniusLoss} evaluates the scaled Frobenius loss over

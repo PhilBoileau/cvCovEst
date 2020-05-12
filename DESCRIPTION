@@ -29,7 +29,10 @@ Imports:
   Rdpack,
   dplyr,
   future,
-  tidyr
+  tidyr,
+  magrittr,
+  rlang,
+  MASS
 Suggests: 
   testthat
 RdMacros: Rdpack

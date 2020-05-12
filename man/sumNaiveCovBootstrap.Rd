@@ -4,7 +4,7 @@
 \alias{sumNaiveCovBootstrap}
 \title{Naive Bootstrap Estimator of Covariance Matrix and Sample Covariance Matrix Covariance}
 \usage{
-sumNaiveCovBootstrap(estimator_fun, train_data, valid_data, num_iter, ...)
+sumNaiveCovBootstrap(estimator_fun, train_data, valid_data, num_iter, est_args)
 }
 \arguments{
 \item{estimator_fun}{The covariance matrix estimator to be applied to the
@@ -17,7 +17,7 @@ resampled training data.}
 \item{num_iter}{A positive integer defining the number of bootstrap samples
 to compute.}
 
-\item{...}{Arguments corresponding to the hyperparameters of the
+\item{est_args}{Arguments corresponding to the hyperparameters of the
 covariance matrix estimator, \code{estimator_fun}.}
 }
 \value{
