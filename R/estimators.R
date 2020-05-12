@@ -58,3 +58,24 @@ thresholdingEst <- function(dat, gamma) {
   # remove all elements smaller than gamma
   return(replace(sample_cov_mat, abs(sample_cov_mat) < gamma, 0))
 }
+
+
+#' Sample Covariance Matrix
+#'
+#' @description \code{sampleCovEst} computes the sample covariance matrix. This
+#'   function is a wrapper around \code{\link[coop]{covar}}.
+#'
+#' @param dat A numeric \code{data.frame} or matrix.
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'   matrix.
+#'
+#' @importFrom coop covar
+#'
+#' @export
+sampleCovEst <- function(dat) {
+
+  # compute the same covariance matrix
+  return(coop::covar(dat))
+
+}
