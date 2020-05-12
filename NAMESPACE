@@ -2,6 +2,7 @@
 
 export(cvCovEst)
 export(linearShrinkEst)
+export(sampleCovEst)
 export(thresholdingEst)
 importFrom(Rdpack,reprompt)
 importFrom(coop,covar)
@@ -19,3 +20,4 @@ importFrom(origami,training)
 importFrom(origami,validation)
 importFrom(rlang,.data)
 importFrom(tidyr,as_tibble)
+importFrom(tidyr,tibble)

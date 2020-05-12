@@ -6,7 +6,7 @@
 \usage{
 cvCovEst(
   dat,
-  estimators = c("linearShrinkEst", "thresholdingEst"),
+  estimators = c("linearShrinkEst", "thresholdingEst", "sampleCovEst"),
   estimator_params = list(linearShrinkEst = list(alpha = 0), thresholdingEst =
     list(gamma = 0)),
   cv_scheme = "mc",
@@ -29,7 +29,8 @@ The name of each list element should be the name of an estimator passed to
 \code{estimator_funs}. Each element of the \code{estimator_params} is
 itself a named \code{list}, where the names correspond to an estimators'
 hyperparameter(s). These hyperparameters may be in the form of a single
-\code{numeric} or a \code{numeric} vector.}
+\code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
+for a given estimator, then the estimator need not be listed.}
 
 \item{cv_scheme}{A \code{character} indicating the cross-validation scheme
 to be emplyed. There are two options: (1) V-fold cross-validation as

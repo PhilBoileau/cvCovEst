@@ -25,7 +25,7 @@
 #'
 #' @keywords internal
 sumNaiveCovBootstrap <- function(estimator_fun, train_data, valid_data,
-                                 num_iter, est_args) {
+                                 num_iter, est_args = NULL) {
 
   # get sequence of bootstrap samples
   idx <- seq_len(num_iter)
@@ -39,12 +39,21 @@ sumNaiveCovBootstrap <- function(estimator_fun, train_data, valid_data,
   )
 
   # resample training data num_iter times, estimate covariance matrix on each
-  estimates_list <- lapply(
-    idx,
-    function(x) {
-      estimator_fun(sample_frac(train_data, replace = TRUE), est_args)
-    }
-  )
+  if (is.null(est_args)) {
+    estimates_list <- lapply(
+      idx,
+      function(x) {
+        estimator_fun(sample_frac(train_data, replace = TRUE))
+      }
+    )
+  } else {
+    estimates_list <- lapply(
+      idx,
+      function(x) {
+        estimator_fun(sample_frac(train_data, replace = TRUE), est_args)
+      }
+    )
+  }
 
   # resample validation data num_iter times, estimate the sample cov mat on each
   sample_cov_list <- lapply(

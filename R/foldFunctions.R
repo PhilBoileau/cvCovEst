@@ -22,7 +22,8 @@
 #'   \code{estimator_funs}. Each element of the \code{estimator_params} is
 #'   itself a named \code{list}, where the names correspond to an estimators'
 #'   hyperparameter(s). These hyperparameters may be in the form of a single
-#'   \code{numeric} or a \code{numeric} vector.
+#'   \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
+#'   for a given estimator, then the estimator need not be listed.
 #'
 #' @importFrom coop covar
 #' @importFrom origami training
@@ -30,6 +31,7 @@
 #' @importFrom origami fold_index
 #' @importFrom Rdpack reprompt
 #' @importFrom dplyr bind_rows
+#' @importFrom tidyr tibble
 #'
 #' @return A \code{tibble} providing information on estimators, their
 #'   hyperparameters (if any), and their scaled Frobenius loss over
@@ -39,7 +41,7 @@
 cvFrobeniusLoss <- function(
   fold, dat,
   resample_cov_fun = sumNaiveCovBootstrap, resample_iter,
-  estimator_funs, estimator_params) {
+  estimator_funs, estimator_params = NULL) {
 
   # split the data into training and validation
   train_data <- origami::training(dat)
@@ -56,41 +58,66 @@ cvFrobeniusLoss <- function(
       est_name <- est_fun
       est_fun <- get(est_fun)
 
-      # loop through the estimator hyperparameters
+      # check if a hyperparameter is needed
       hyp_name <- names(estimator_params[[est_name]])
-      param_out <- lapply(
-        estimator_params[[est_name]][[hyp_name]],
-        function(param) {
+      if (is.null(hyp_name)) {
+        # fit the covariance matrix estimator on the training set
+        est_mat <- est_fun(train_data)
 
-          # fit the covariance matrix estimator on the training set
-          est_mat <- est_fun(
-            train_data,
-            eval(parse(text = paste(hyp_name, "=", param)))
-          )
+        # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
+        cov_sum <- resample_cov_fun(est_fun, train_data,
+                                    valid_data, resample_iter)
 
-          # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
-          cov_sum <- resample_cov_fun(
-            est_fun, train_data, valid_data, resample_iter,
-            eval(parse(text = paste(hyp_name, "=", param)))
-          )
+        # indicate that there are no hyperparameters
+        estimator_hparams <- "hyperparameters = NA"
 
-          # get the list of estimator params
-          estimator_hparams <- paste(hyp_name, "=", param)
-          if (length(estimator_hparams) == 0)
-            estimator_hparams <- "hyperparameters = NA"
+        # return the results from the fold
+        out <- tidyr::tibble(
+          estimator = est_name,
+          hyperparameters = estimator_hparams,
+          loss = scaledFrobeniusLoss(est_mat, sample_cov_mat, cov_sum),
+          fold = origami::fold_index(fold = fold)
+        )
+        return(out)
 
-          # return the results # return the results from the fold
-          out <- list(
-            estimator = est_name,
-            hyperparameters = estimator_hparams,
-            loss = scaledFrobeniusLoss(est_mat, sample_cov_mat, cov_sum),
-            fold = origami::fold_index(fold = fold)
-          )
-        }
-      )
+      } else {
 
-      # return data frame of estimator for all considered hyperparameters
-      param_out <- dplyr::bind_rows(param_out)
+        # loop through the estimator hyperparameters
+        param_out <- lapply(
+          estimator_params[[est_name]][[hyp_name]],
+          function(param) {
+
+            # fit the covariance matrix estimator on the training set
+            est_mat <- est_fun(
+              train_data,
+              eval(parse(text = paste(hyp_name, "=", param)))
+            )
+
+            # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
+            cov_sum <- resample_cov_fun(
+              est_fun, train_data, valid_data, resample_iter,
+              eval(parse(text = paste(hyp_name, "=", param)))
+            )
+
+            # get the list of estimator params
+            estimator_hparams <- paste(hyp_name, "=", param)
+            if (length(estimator_hparams) == 0)
+              estimator_hparams <- "hyperparameters = NA"
+
+            # return the results from the fold
+            out <- list(
+              estimator = est_name,
+              hyperparameters = estimator_hparams,
+              loss = scaledFrobeniusLoss(est_mat, sample_cov_mat, cov_sum),
+              fold = origami::fold_index(fold = fold)
+            )
+            return(out)
+          }
+        )
+
+        # return data frame of estimator for all considered hyperparameters
+        param_out <- dplyr::bind_rows(param_out)
+      }
 
     }
   )

@@ -10,7 +10,7 @@ cvFrobeniusLoss(
   resample_cov_fun = sumNaiveCovBootstrap,
   resample_iter,
   estimator_funs,
-  estimator_params
+  estimator_params = NULL
 )
 }
 \arguments{
@@ -33,7 +33,8 @@ The name of each list element should be the name of an estimator passed to
 \code{estimator_funs}. Each element of the \code{estimator_params} is
 itself a named \code{list}, where the names correspond to an estimators'
 hyperparameter(s). These hyperparameters may be in the form of a single
-\code{numeric} or a \code{numeric} vector.}
+\code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
+for a given estimator, then the estimator need not be listed.}
 
 \item{resample_fun}{The \code{function} defining the resampling-based
 procedure used to estimate the covariances of entries in the covariance
