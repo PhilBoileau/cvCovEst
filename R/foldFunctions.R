@@ -12,8 +12,8 @@
 #'   to be applied to the training data. Functions should be input as
 #'   \code{character}s.
 #' @param resample_fun The \code{function} defining the resampling-based
-#'   procedure used to estimate the covariances of entries in the covariance
-#'   matrix estimator and the sample covariance matrix.
+#'   procedure used to estimate the entries of the second term in the scaled
+#'   Frobenius loss.
 #' @param resample_iter A \code{numeric} indicating the number of repetitions
 #'   to be performed by \code{resample_fun}.
 #' @param estimator_params A named \code{list} of arguments corresponding to the
@@ -40,7 +40,7 @@
 #' @keywords internal
 cvFrobeniusLoss <- function(
   fold, dat,
-  resample_cov_fun = sumNaiveCovBootstrap, resample_iter,
+  resample_fun = sumNaiveBootstrap, resample_iter,
   estimator_funs, estimator_params = NULL) {
 
   # split the data into training and validation
@@ -65,8 +65,8 @@ cvFrobeniusLoss <- function(
         est_mat <- est_fun(train_data)
 
         # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
-        cov_sum <- resample_cov_fun(est_fun, train_data,
-                                    valid_data, resample_iter)
+        cov_sum <- resample_fun(est_fun, est_mat, sample_cov_mat,
+                                train_data, valid_data, resample_iter)
 
         # indicate that there are no hyperparameters
         estimator_hparams <- "hyperparameters = NA"
@@ -94,8 +94,9 @@ cvFrobeniusLoss <- function(
             )
 
             # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
-            cov_sum <- resample_cov_fun(
-              est_fun, train_data, valid_data, resample_iter,
+            cov_sum <- resample_fun(
+              est_fun, est_mat, sample_cov_mat,
+              train_data, valid_data, resample_iter,
               eval(parse(text = paste(hyp_name, "=", param)))
             )
 

@@ -1,12 +1,15 @@
-#' Naive Bootstrap Estimator of Covariance Matrix and Sample Covariance Matrix Covariance
+#' Naive Bootstrap Estimator of Second Term in Scaled Frobenius Loss
 #'
-#' @description \code{sumNaiveCovBootstrap} estimates the covariance matrix
-#'   between a generic covariance matrix estimator and the sample covariance
-#'   matrix fit over a training set and a validation set, respectively. The
-#'   sum of the estimated covariance matrix's elements are returned.
+#' @description \code{sumNaiveBootstrap} estimates the second term in scaled
+#'   Frobenius loss by computing the bootstrap means of the entries in the
+#'   covariance matrix  estimator and sample covariance matrix.
 #'
 #' @param estimator_fun The covariance matrix estimator to be applied to the
 #'   resampled training data.
+#' @param estimates A \code{matrix} of the estimator's covariance matrix
+#'   estimate over a given fold.
+#' @param sample_cov_mat A \code{matrix} of the sample covariance matrix over a
+#'   given fold.
 #' @param train_data A \code{data.frame} of the training data.
 #' @param valid_data A \code{data.frame} of the validation data.
 #' @param num_iter A positive integer defining the number of bootstrap samples
@@ -14,9 +17,8 @@
 #' @param est_args Arguments corresponding to the hyperparameters of the
 #'   covariance matrix estimator, \code{estimator_fun}.
 #'
-#' @return A \code{numeric} representing the sum of all elements in the
-#'   estimated covariance matrix of the \code{estimator_fun} and the sample
-#'   covariance matrix.
+#' @return A \code{numeric} estimating the second term of the scaled Frobenius
+#'   loss.
 #'
 #' @importFrom coop covar
 #' @importFrom dplyr sample_frac
@@ -24,8 +26,9 @@
 #' @importFrom tidyr as_tibble
 #'
 #' @keywords internal
-sumNaiveCovBootstrap <- function(estimator_fun, train_data, valid_data,
-                                 num_iter, est_args = NULL) {
+sumNaiveBootstrap <- function(estimator_fun, estimates, sample_cov_mat,
+                              train_data, valid_data,
+                              num_iter, est_args = NULL) {
 
   # get sequence of bootstrap samples
   idx <- seq_len(num_iter)
@@ -67,16 +70,13 @@ sumNaiveCovBootstrap <- function(estimator_fun, train_data, valid_data,
   estimates_boot_mean <- 1/num_iter * Reduce(`+`, estimates_list)
   sample_cov_boot_mean <- 1/num_iter * Reduce(`+`, sample_cov_list)
 
-  # "center" estimates_list and sample_cov_list
-  estimates_list <- lapply(estimates_list, function(mat) mat - estimates_boot_mean)
-  sample_cov_list <- lapply(sample_cov_list, function(mat) mat - sample_cov_boot_mean)
+  # "center" estimates and sample_cov
+  estimates <- estimates - estimates_boot_mean
+  sample_cov_mat <- sample_cov_mat - sample_cov_boot_mean
 
-  # multiply centered matrices sharing a bootstrap index
-  boot_mat_mult_list <- lapply(
-    idx,
-    function(x) estimates_list[[x]] * sample_cov_list[[x]]
-  )
+  # compute hadamard produce of estimats and sample cov mat
+  boot_mat_mult_mat <- estimates * sample_cov_mat
 
   # return the sum of all the bootstraped covariance estimates
-  return(1/num_iter * matrixStats::sum2(Reduce(`+`, boot_mat_mult_list)))
+  return(matrixStats::sum2(boot_mat_mult_mat))
 }

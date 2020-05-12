@@ -7,7 +7,7 @@
 cvFrobeniusLoss(
   fold,
   dat,
-  resample_cov_fun = sumNaiveCovBootstrap,
+  resample_fun = sumNaiveBootstrap,
   resample_iter,
   estimator_funs,
   estimator_params = NULL
@@ -19,6 +19,10 @@ take place.}
 
 \item{dat}{The full \code{data.frame} on which the cross-validated procedure
 is performed.}
+
+\item{resample_fun}{The \code{function} defining the resampling-based
+procedure used to estimate the entries of the second term in the scaled
+Frobenius loss.}
 
 \item{resample_iter}{A \code{numeric} indicating the number of repetitions
 to be performed by \code{resample_fun}.}
@@ -35,10 +39,6 @@ itself a named \code{list}, where the names correspond to an estimators'
 hyperparameter(s). These hyperparameters may be in the form of a single
 \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 for a given estimator, then the estimator need not be listed.}
-
-\item{resample_fun}{The \code{function} defining the resampling-based
-procedure used to estimate the covariances of entries in the covariance
-matrix estimator and the sample covariance matrix.}
 }
 \value{
 A \code{tibble} providing information on estimators, their
