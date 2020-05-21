@@ -23,7 +23,7 @@ __Authors:__ [Philippe Boileau](https://pboileau.ca) and
 # TODO
 
 + [ ] Setup repository `README.Rmd` file
-  - [X] Draft description (for `DESCRIPTION` file also) 
+  - [X] Draft description (for `DESCRIPTION` file also)
   - [X] Installation instructions
   - [X] Issues sections
   - [X] Contributions
@@ -40,7 +40,7 @@ __Authors:__ [Philippe Boileau](https://pboileau.ca) and
 estimation in high-dimensional settings. This procedure data-adaptively
 identifies the optimal estimator of the covariance matrix from a set of
 candidates. Dignostic tools are also provided.
-  
+
 ---
 
 ## Installation
@@ -69,7 +69,8 @@ prior to submitting a pull request.
 
 ## License
 
-&copy; 2019-2020 [Philippe Boileau](https://pboileau.ca/)
+&copy; 2020 [Philippe Boileau](https://pboileau.ca/)
 
 The contents of this repository are distributed under the MIT license. See file
-`LICENSE` for details.
+[`LICENSE.md`](https://github.com/PhilBoileau/cvCovEst/blob/master/LICENSE.md)
+for details.

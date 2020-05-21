@@ -1,27 +1,26 @@
 Package: cvCovEst
 Title: Cross-Validated Covariance Matrix Estimation
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: c(
-    person(given = "Philippe",
-           family = "Boileau",
+    person("Philippe", "Boileau", email = "philippe_boileau@berkeley.edu",
            role = c("aut", "cre", "cph"),
-           email = "philippe_boileau@berkeley.edu",
            comment = c(ORCID = "0000-0002-4850-2507")),
-    person(given = "Nima",
-           family = "Hejazi",
+    person("Nima", "Hejazi", email = "nh@nimahejazi.org",
            role = "aut",
-           email = "nh@nimahejazi.org",
-           comment = c(ORCID = "0000-0002-7127-2789"))
-    )
-Description: cvCovEst implements an efficient cross-validated approach to
-  covariance matrix estimation in high-dimensional settings. This procedure
-  data-adaptively identifies the optimal estimator of the covariance matrix from
-  a set of candidates. Dignostic tools are also provided.
-License: MIT + file LICENSE
-Encoding: UTF-8
-LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+           comment = c(ORCID = "0000-0002-7127-2789")),
+    person("Mark", "van der Laan", email = "laan@berkeley.edu",
+           role = c("ctb", "ths"),
+           comment = c(ORCID = "0000-0003-1432-5511"))
+    person("Sandrine", "Dudoit", email = "sandrine@stat.berkeley.edu",
+           role = c("ctb", "ths"),
+           comment = c(ORCID = "0000-0002-6069-8629"))
+  )
+Description: Implements an efficient cross-validated approach to covariance
+  matrix estimation in high-dimensional settings. The procedure data adaptively
+  identifies the optimal estimator of the covariance matrix from a set of
+  pre-specified candidates. Diagnostic tools are also provided for assessing
+  the quality of the selected covariance matrix estimator.
+Depends: R (>= 3.2.0)
 Imports:
   matrixStats,
   origami,
@@ -33,6 +32,14 @@ Imports:
   magrittr,
   rlang,
   MASS
-Suggests: 
+Suggests:
   testthat
+License: MIT + file LICENSE
+URL: https://github.com/PhilBoileau/cvCovEst
+BugReports: https://github.com/PhilBoileau/cvCovEst/issues
+Encoding: UTF-8
+LazyData: true
+VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
 RdMacros: Rdpack

@@ -1,37 +1,42 @@
 #' Cross-Validated Covariance Matrix Estimator Selector
 #'
 #' @description \code{cvCovEst} identifies the optimal covariance matrix
-#'   estimator from among a set of candidate estimators over a high-dimensional
-#'   data set.
+#'   estimator from among a set of candidate estimators.
 #'
-#' @param dat A numeric \code{data.frame} or matrix.
-#' @param estimators A \code{list} of estimator functions.
-#' @param estimator_params A named \code{list} of arguments corresponding to the
-#'   hyperparameters of the covariance matrix estimator, \code{estimator_funs}.
-#'   The name of each list element should be the name of an estimator passed to
-#'   \code{estimator_funs}. Each element of the \code{estimator_params} is
-#'   itself a named \code{list}, where the names correspond to an estimators'
-#'   hyperparameter(s). These hyperparameters may be in the form of a single
-#'   \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
-#'   for a given estimator, then the estimator need not be listed.
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#' @param estimators A \code{character} vector of estimator functions to be
+#'  considered in the cross-validated selection procedure.
+#' @param estimator_params A named \code{list} of arguments corresponding to
+#'  the hyperparameters of covariance matrix estimators in \code{estimators}.
+#'  The name of each list element should match the name of an estimator passed
+#'  to \code{estimators}. Each element of the \code{estimator_params} is itself
+#'  a named \code{list}, with the names corresponding to a given estimators'
+#'  hyperparameter(s). These hyperparameters may be in the form of a single
+#'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
+#'  for a given estimator, then the estimator need not be listed.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
-#'   to be emplyed. There are two options: (1) V-fold cross-validation as
-#'   \code{"v_folds"} and (2) Monte Carlo cross-validation as \code{"mc"}.
-#'   Defaults to \code{"mc"}.
-#' @param mc_split A \code{numeric} between 0 and 1 indicating the proportion of
-#'   data in the validation set of each Monte Carlo cross-validation fold.
+#'   to be employed. There are two options: (1) V-fold cross-validation, via
+#'   \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
+#'   Defaults to Monte Carlo cross-validation.
+#' @param mc_split A \code{numeric} between 0 and 1 indicating the proportion
+#'  of data in the validation set of each Monte Carlo cross-validation fold.
 #' @param v_folds A \code{integer} larger than or equal to 1 indicating the
-#'   number of folds to use during cross-validation. The default is 10,
-#'   regardless of cross-validation scheme.
+#'  number of folds to use during cross-validation. The default is 10,
+#'  regardless of cross-validation scheme.
 #' @param boot_iter A \code{integer} dictating the number of bootstrap
-#'   iterations used to compute the covariance terms of the cross-validated
-#'   scaled Frobenius loss. The default is set to 100.
+#'  iterations used to compute the covariance terms of the cross-validated
+#'  scaled Frobenius loss. The default is set to 100.
 #' @param center A \code{logical} indicating whether or not to center the
-#'   columns of \code{dat}.
+#'  columns of \code{dat}.
 #' @param scale A \code{logical} indicating whether or not to scale the
-#'   columns of \code{dat} to have variance 1.
+#'  columns of \code{dat} to have variance 1.
 #' @param parallel A \code{logical} option for whether to run the main
-#'   cross-validation loop with \code{\link[future.apply]{future_lapply}}.
+#'  cross-validation loop with \code{\link[future.apply]{future_lapply}}.
+#'
+#' @importFrom origami cross_validate folds_vfold folds_montecarlo
+#' @importFrom dplyr arrange summarise group_by "%>%"
+#' @importFrom tibble as_tibble
+#' @importFrom rlang .data
 #'
 #' @return A \code{list} of results containing the following elements:
 #'   \itemize{
@@ -39,22 +44,13 @@
 #'       the optimal covariance matrix estimator.
 #'     \item \code{estimator} - A \code{character} indicating the optimal
 #'       estimator and corresponding hyperparameters, if any.
-#'     \item \code{results_df} - A \code{tibble} providing the results of
-#'       the cross-validation procedure. (TODO)
-#'     \item \code{origami_output} - A \code{tibble} providing the results of
-#'       the \code{\link[origami]{cross_validate}} call.
+#'     \item \code{results_df} - A \code{\link[tibble]{tibble}} providing the
+#'       results of the cross-validation procedure. (TODO)
+#'     \item \code{origami_output} - A \code{\link[tibble]{tibble}} providing
+#'       the results of the \code{\link[origami]{cross_validate}} call.
 #'   }
-#' @export
 #'
-#' @importFrom origami folds_montecarlo
-#' @importFrom origami folds_vfold
-#' @importFrom origami cross_validate
-#' @importFrom tidyr as_tibble
-#' @importFrom dplyr group_by
-#' @importFrom dplyr summarise
-#' @importFrom dplyr arrange
-#' @importFrom magrittr %>%
-#' @importFrom rlang .data
+#' @export
 cvCovEst <- function(
   dat,
   estimators = c("linearShrinkEst", "thresholdingEst", "sampleCovEst"),
