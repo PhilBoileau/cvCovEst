@@ -600,36 +600,18 @@ body {
 
 <body>
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <h1 id="rcvcovest-cross-validated-covariance-matrix-estimation">R/<code>cvCovEst</code>: Cross-Validated Covariance Matrix Estimation</h1>
 <p><strong>Authors:</strong> <a href="https://pboileau.ca">Philippe Boileau</a> and <a href="https://nimahejazi.org">Nima Hejazi</a></p>
 <hr />
-<h1 id="todo">TODO</h1>
-<ul>
-<li>[ ] Setup repository <code>README.Rmd</code> file
-<ul>
-<li>[X] Draft description (for <code>DESCRIPTION</code> file also)</li>
-<li>[X] Installation instructions</li>
-<li>[X] Issues sections</li>
-<li>[X] Contributions</li>
-<li>[X] License</li>
-</ul></li>
-<li>[ ] Identify classes of matrix objects we want to work with</li>
-<li>[ ] Create loss functions</li>
-<li>[ ] Identify estimators we want to consider. Determine if they are already implemented</li>
-</ul>
-<hr />
-<h2 id="description">Description</h2>
-<p><code>cvCovEst</code> implements an efficient cross-validated approach to covariance matrix estimation in high-dimensional settings. This procedure data-adaptively identifies the optimal estimator of the covariance matrix from a set of candidates. Dignostic tools are also provided.</p>
+<h2 id="whats-cvcovest">What’s <code>cvCovEst</code>?</h2>
+<p><code>cvCovEst</code> mplements an efficient cross-validated approach to covariance matrix estimation in high-dimensional settings. A general methodology for data adaptively identifying (via cross-validation) the optimal estimator of the covariance matrix from a set of pre-specified candidates is provided. Diagnostic tools are also provided for assessing the quality of covariance matrix estimators.</p>
 <hr />
 <h2 id="installation">Installation</h2>
-<p>The <code>cvCovEst</code> package can installed from GitHub via <code>remotes</code>:</p>
-<pre><code>remotes::install_github(&quot;PhilBoileau/cvCovEst&quot;)
-</code></pre>
+<p>Install the <em>development version</em> of the <code>cvCovEst</code> package from GitHub via <a href="https://CRAN.R-project.org/package=remotes"><code>remotes</code></a>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;PhilBoileau/cvCovEst&quot;</span>)</a></code></pre></div>
 <hr />
 <h2 id="example">Example</h2>
-<p>To illustrate how <code>cvCovEst</code> may be used to select an optimal covariance estimator via cross-validation, consider the following toy example:</p>
+<p>To illustrate how <code>cvCovEst</code> may be used to select an optimal covariance matrix estimator via cross-validation, consider the following toy example:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(MASS)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">library</span>(cvCovEst)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">set.seed</span>(<span class="dv">1584</span>)</a>
@@ -653,7 +635,7 @@ body {
 <a class="sourceLine" id="cb2-21" data-line-number="21">  )</a>
 <a class="sourceLine" id="cb2-22" data-line-number="22"></a>
 <a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co"># print the table of risk estimates</span></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co"># </span><span class="al">NOTE</span><span class="co">: the estimated covariance matrix lives in the `$estimate` slot</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co"># </span><span class="al">NOTE</span><span class="co">: the estimated covariance matrix is accessible via the `$estimate` slot</span></a>
 <a class="sourceLine" id="cb2-25" data-line-number="25">cv_cov_est_out<span class="op">$</span>risk_df</a>
 <a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
 <a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt; # Groups:   estimator [2]</span></a>
@@ -671,7 +653,7 @@ body {
 <p>Contributions are very welcome. Interested contributors should consult our <a href="https://github.com/PhilBoileau/cvCovEst/blob/master/CONTRIBUTING.md">contribution guidelines</a> prior to submitting a pull request.</p>
 <hr />
 <h2 id="license">License</h2>
-<p>© 2020 <a href="https://pboileau.ca/">Philippe Boileau</a></p>
+<p>© 2020 <a href="https://pboileau.ca">Philippe Boileau</a></p>
 <p>The contents of this repository are distributed under the MIT license. See file <a href="https://github.com/PhilBoileau/cvCovEst/blob/master/LICENSE.md"><code>LICENSE.md</code></a> for details.</p>
 
 </body>

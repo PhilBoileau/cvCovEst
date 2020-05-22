@@ -1,6 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # R/`cvCovEst`: Cross-Validated Covariance Matrix Estimation
 
 **Authors:** [Philippe Boileau](https://pboileau.ca) and [Nima
@@ -8,43 +6,33 @@ Hejazi](https://nimahejazi.org)
 
 -----
 
-# TODO
+## What’s `cvCovEst`?
 
-  - \[ \] Setup repository `README.Rmd` file
-      - \[X\] Draft description (for `DESCRIPTION` file also)
-      - \[X\] Installation instructions
-      - \[X\] Issues sections
-      - \[X\] Contributions
-      - \[X\] License
-  - \[ \] Identify classes of matrix objects we want to work with
-  - \[ \] Create loss functions
-  - \[ \] Identify estimators we want to consider. Determine if they are
-    already implemented
-
------
-
-## Description
-
-`cvCovEst` implements an efficient cross-validated approach to
-covariance matrix estimation in high-dimensional settings. This
-procedure data-adaptively identifies the optimal estimator of the
-covariance matrix from a set of candidates. Dignostic tools are also
-provided.
+`cvCovEst` mplements an efficient cross-validated approach to covariance
+matrix estimation in high-dimensional settings. A general methodology
+for data adaptively identifying (via cross-validation) the optimal
+estimator of the covariance matrix from a set of pre-specified
+candidates is provided. Diagnostic tools are also provided for assessing
+the quality of covariance matrix estimators.
 
 -----
 
 ## Installation
 
-The `cvCovEst` package can installed from GitHub via `remotes`:
+Install the *development version* of the `cvCovEst` package from GitHub
+via [`remotes`](https://CRAN.R-project.org/package=remotes):
 
-    remotes::install_github("PhilBoileau/cvCovEst")
+``` r
+remotes::install_github("PhilBoileau/cvCovEst")
+```
 
 -----
 
 ## Example
 
 To illustrate how `cvCovEst` may be used to select an optimal covariance
-estimator via cross-validation, consider the following toy example:
+matrix estimator via cross-validation, consider the following toy
+example:
 
 ``` r
 library(MASS)
@@ -70,7 +58,7 @@ cv_cov_est_out <- cvCovEst(
   )
 
 # print the table of risk estimates
-# NOTE: the estimated covariance matrix lives in the `$estimate` slot
+# NOTE: the estimated covariance matrix is accessible via the `$estimate` slot
 cv_cov_est_out$risk_df
 #> # A tibble: 4 x 3
 #> # Groups:   estimator [2]
@@ -102,7 +90,7 @@ prior to submitting a pull request.
 
 ## License
 
-© 2020 [Philippe Boileau](https://pboileau.ca/)
+© 2020 [Philippe Boileau](https://pboileau.ca)
 
 The contents of this repository are distributed under the MIT license.
 See file
