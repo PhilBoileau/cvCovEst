@@ -2,7 +2,7 @@
 % Please edit documentation in R/resamplingFunctions.R
 \name{sumNaiveBootstrap}
 \alias{sumNaiveBootstrap}
-\title{Naive Bootstrap Estimator of Second Term in Scaled Frobenius Loss}
+\title{Naive Bootstrap Estimator of Cross Term in Scaled Frobenius Loss}
 \usage{
 sumNaiveBootstrap(
   estimator_fun,

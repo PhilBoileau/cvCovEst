@@ -7,19 +7,18 @@
 thresholdingEst(dat, gamma)
 }
 \arguments{
-\item{dat}{A numeric \code{data.frame} or matrix.}
+\item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
 \item{gamma}{A \code{numeric} larger than or equal to 0 defining the hard
-threshold applied to each element of the \code{dat}'s sample covariance
-matrix.}
+threshold applied to each element of \code{dat}'s sample covariance matrix.}
 }
 \value{
 A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-\code{thresholdingEst} computes the thresholding estimate of the
-covariance matrix for a given value of \code{gamma}. The simple threshold
-estimator of convariance matrix applies a hard thresholding operator to
+\code{thresholdingEst} computes the thresholding estimate of
+the covariance matrix for a given value of \code{gamma}. The threshold
+estimator of the covariance matrix applies a hard thresholding operator to
 each element of the sample covariance matrix.
 }

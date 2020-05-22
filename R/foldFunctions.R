@@ -1,39 +1,37 @@
 #' Cross-Validation Function for Scaled Frobenius Loss
 #'
 #' @description \code{cvFrobeniusLoss} evaluates the scaled Frobenius loss over
-#'   a \code{fold} object defined via the \pkg{origami} package
-#'   \insertRef{Coyle2018}{cvCovEst}.
+#'  a \code{fold} object defined via the \pkg{origami} package
+#'  \insertRef{Coyle2018}{cvCovEst}.
 #'
 #' @param fold A \code{fold} object over which the estimation procedure will
-#'   take place.
+#'  take place.
 #' @param dat The full \code{data.frame} on which the cross-validated procedure
-#'   is performed.
+#'  is performed.
 #' @param estimator_funs A \code{list} of covariance matrix estimator functions
-#'   to be applied to the training data. Functions should be input as
-#'   \code{character}s.
+#'  to be applied to the training data. Functions should be input as
+#'  \code{character}s.
 #' @param resample_fun The \code{function} defining the resampling-based
-#'   procedure used to estimate the entries of the second term in the scaled
-#'   Frobenius loss.
+#'  procedure used to estimate the entries of the second term in the scaled
+#'  Frobenius loss.
 #' @param resample_iter A \code{numeric} indicating the number of repetitions
-#'   to be performed by \code{resample_fun}.
+#'  to be performed by \code{resample_fun}.
 #' @param estimator_params A named \code{list} of arguments corresponding to the
-#'   hyperparameters of the covariance matrix estimator, \code{estimator_funs}.
-#'   The name of each list element should be the name of an estimator passed to
-#'   \code{estimator_funs}. Each element of the \code{estimator_params} is
-#'   itself a named \code{list}, where the names correspond to an estimators'
-#'   hyperparameter(s). These hyperparameters may be in the form of a single
-#'   \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
-#'   for a given estimator, then the estimator need not be listed.
+#'  hyperparameters of the covariance matrix estimator, \code{estimator_funs}.
+#'  The name of each list element should be the name of an estimator passed to
+#'  \code{estimator_funs}. Each element of the \code{estimator_params} is
+#'  itself a named \code{list}, where the names correspond to an estimators'
+#'  hyperparameter(s). These hyperparameters may be in the form of a single
+#'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
+#'  for a given estimator, then the estimator need not be listed.
 #'
 #' @importFrom coop covar
-#' @importFrom origami training
-#' @importFrom origami validation
-#' @importFrom origami fold_index
-#' @importFrom Rdpack reprompt
 #' @importFrom dplyr bind_rows
-#' @importFrom tidyr tibble
+#' @importFrom origami training validation fold_index
+#' @importFrom Rdpack reprompt
+#' @importFrom tibble tibble
 #'
-#' @return A \code{tibble} providing information on estimators, their
+#' @return A \code{\link[tibble]{tibble}} providing information on estimators, their
 #'   hyperparameters (if any), and their scaled Frobenius loss over
 #'   a \code{fold}.
 #'
@@ -72,7 +70,7 @@ cvFrobeniusLoss <- function(
         estimator_hparams <- "hyperparameters = NA"
 
         # return the results from the fold
-        out <- tidyr::tibble(
+        out <- tibble::tibble(
           estimator = est_name,
           hyperparameters = estimator_hparams,
           loss = scaledFrobeniusLoss(est_mat, sample_cov_mat, cov_sum),
@@ -123,8 +121,7 @@ cvFrobeniusLoss <- function(
     }
   )
 
-  # combine into a dataframe and return
+  # combine into a tibble, but wrap in list for origami before returning
   est_out <- dplyr::bind_rows(est_out)
-
-  return(est_out)
+  return(list(est_out))
 }

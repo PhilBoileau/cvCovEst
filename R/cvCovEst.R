@@ -68,12 +68,12 @@ cvCovEst <- function(
   n_obs <- nrow(dat)
   if (cv_scheme == "mc") {
     folds <- origami::make_folds(dat,
-                                 fold_fun = folds_montecarlo,
+                                 fold_fun = origami::folds_montecarlo,
                                  V = v_folds,
                                  pvalidation = mc_split)
   } else if (cv_scheme == "v_fold") {
     folds <- origami::make_folds(dat,
-                                 fold_fun = folds_vfold,
+                                 fold_fun = origami::folds_vfold,
                                  V = v_folds)
   }
 
@@ -85,22 +85,15 @@ cvCovEst <- function(
     estimator_funs = estimators,
     estimator_params = estimator_params,
     resample_iter = boot_iter,
-    use_future = parallel
+    use_future = parallel,
+    .combine = FALSE
   )
 
-  # remove error list from cv_results
-  errors <- fold_results$errors
-  fold_results$errors <- NULL
-
-  # fix tpes
-  fold_results$loss <- as.numeric(fold_results$loss)
-  fold_results$fold <- as.numeric(fold_results$fold)
-
-  # turn results to tibble
-  fold_results <- tidyr::as_tibble(fold_results)
+  # convert results to tibble
+  fold_results_concat <- dplyr::bind_rows(fold_results[[1]])
 
   # compute empirical risk
-  cv_results <- fold_results %>%
+  cv_results <- fold_results_concat %>%
     dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
     dplyr::summarise(empirical_risk = mean(.data$loss)) %>%
     dplyr::arrange(.data$empirical_risk)
@@ -108,20 +101,19 @@ cvCovEst <- function(
   # compute the best estimator's estimate
   best_est <- get(cv_results[1, ]$estimator)
   best_est_hyperparams <- parse(text = cv_results[1, ]$hyperparameters)
-  if (cv_results[1, ]$hyperparameters != "hyperparameters = NA")
+  if (cv_results[1, ]$hyperparameters != "hyperparameters = NA") {
     estimate <- best_est(dat, eval(best_est_hyperparams))
-  else
+  } else {
     estimate <- best_est(dat)
+  }
 
-  # prep output
+  # prep output and return
   out <- list(
     estimate = estimate,
     estimator = paste0(cv_results[1, ]$estimator, ", ",
-                      cv_results[1, ]$hyperparameters),
+                       cv_results[1, ]$hyperparameters),
     risk_df = cv_results,
-    cv_df = fold_results
+    cv_df = fold_results_concat
   )
-
-  # retun dataframe of cv results
   return(out)
 }

@@ -47,7 +47,42 @@ candidates. Dignostic tools are also provided.
 
 The `cvCovEst` package can installed from GitHub via `remotes`:
 ```
-remotes::install_github("PhilBoileau/scPCA")
+remotes::install_github("PhilBoileau/cvCovEst")
+```
+
+---
+
+## Example
+
+To illustrate how `cvCovEst` may be used to select an optimal covariance
+estimator via cross-validation, consider the following toy example:
+
+```{r example, message=FALSE, warning=FALSE}
+library(MASS)
+library(cvCovEst)
+set.seed(1584)
+
+# generate a 50x50 covariance matrix with unit variances and off-diagonal
+# elements equal to 0.5
+Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
+
+# sample 200 observations from multivariate normal with mean = 0, var = Sigma
+dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
+
+# run CV-selector
+cv_cov_est_out <- cvCovEst(
+    dat = dat,
+    estimators = c("linearShrinkEst", "thresholdingEst"),
+    estimator_params = list("linearShrinkEst" = list("alpha" = c(0.1, 0.9)),
+                            "thresholdingEst" = list("gamma" = c(0.2, 2))),
+    cv_scheme = "v_fold", mc_split = 0.5,
+    v_folds = 5, boot_iter = 20,
+    center = TRUE, scale = FALSE, parallel = FALSE
+  )
+
+# print the table of risk estimates
+# NOTE: the estimated covariance matrix lives in the `$estimate` slot
+cv_cov_est_out$risk_df
 ```
 
 ---
@@ -62,7 +97,8 @@ issue](https://github.com/PhilBoileau/cvCovEst/issues).
 ## Contributions
 
 Contributions are very welcome. Interested contributors should consult our
-[contribution guidelines](https://github.com/PhilBoileau/cvCovEst/blob/master/CONTRIBUTING.md)
+[contribution
+guidelines](https://github.com/PhilBoileau/cvCovEst/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
 
 ---

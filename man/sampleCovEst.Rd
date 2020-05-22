@@ -7,7 +7,7 @@
 sampleCovEst(dat)
 }
 \arguments{
-\item{dat}{A numeric \code{data.frame} or matrix.}
+\item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 }
 \value{
 A \code{matrix} corresponding to the estimate of the covariance
@@ -15,5 +15,5 @@ matrix.
 }
 \description{
 \code{sampleCovEst} computes the sample covariance matrix. This
-function is a wrapper around \code{\link[coop]{covar}}.
+function is a simple wrapper around \code{\link[coop]{covar}}.
 }

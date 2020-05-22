@@ -19,26 +19,27 @@ cvCovEst(
 )
 }
 \arguments{
-\item{dat}{A numeric \code{data.frame} or matrix.}
+\item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
-\item{estimators}{A \code{list} of estimator functions.}
+\item{estimators}{A \code{character} vector of estimator functions to be
+considered in the cross-validated selection procedure.}
 
-\item{estimator_params}{A named \code{list} of arguments corresponding to the
-hyperparameters of the covariance matrix estimator, \code{estimator_funs}.
-The name of each list element should be the name of an estimator passed to
-\code{estimator_funs}. Each element of the \code{estimator_params} is
-itself a named \code{list}, where the names correspond to an estimators'
+\item{estimator_params}{A named \code{list} of arguments corresponding to
+the hyperparameters of covariance matrix estimators in \code{estimators}.
+The name of each list element should match the name of an estimator passed
+to \code{estimators}. Each element of the \code{estimator_params} is itself
+a named \code{list}, with the names corresponding to a given estimators'
 hyperparameter(s). These hyperparameters may be in the form of a single
 \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 for a given estimator, then the estimator need not be listed.}
 
 \item{cv_scheme}{A \code{character} indicating the cross-validation scheme
-to be emplyed. There are two options: (1) V-fold cross-validation as
-\code{"v_folds"} and (2) Monte Carlo cross-validation as \code{"mc"}.
-Defaults to \code{"mc"}.}
+to be employed. There are two options: (1) V-fold cross-validation, via
+\code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
+Defaults to Monte Carlo cross-validation.}
 
-\item{mc_split}{A \code{numeric} between 0 and 1 indicating the proportion of
-data in the validation set of each Monte Carlo cross-validation fold.}
+\item{mc_split}{A \code{numeric} between 0 and 1 indicating the proportion
+of data in the validation set of each Monte Carlo cross-validation fold.}
 
 \item{v_folds}{A \code{integer} larger than or equal to 1 indicating the
 number of folds to use during cross-validation. The default is 10,
@@ -64,14 +65,13 @@ A \code{list} of results containing the following elements:
 the optimal covariance matrix estimator.
 \item \code{estimator} - A \code{character} indicating the optimal
 estimator and corresponding hyperparameters, if any.
-\item \code{results_df} - A \code{tibble} providing the results of
-the cross-validation procedure. (TODO)
-\item \code{origami_output} - A \code{tibble} providing the results of
-the \code{\link[origami]{cross_validate}} call.
+\item \code{results_df} - A \code{\link[tibble]{tibble}} providing the
+results of the cross-validation procedure. (TODO)
+\item \code{origami_output} - A \code{\link[tibble]{tibble}} providing
+the results of the \code{\link[origami]{cross_validate}} call.
 }
 }
 \description{
 \code{cvCovEst} identifies the optimal covariance matrix
-estimator from among a set of candidate estimators over a high-dimensional
-data set.
+estimator from among a set of candidate estimators.
 }

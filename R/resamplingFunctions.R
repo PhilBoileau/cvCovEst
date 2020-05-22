@@ -1,4 +1,4 @@
-#' Naive Bootstrap Estimator of Second Term in Scaled Frobenius Loss
+#' Naive Bootstrap Estimator of Cross Term in Scaled Frobenius Loss
 #'
 #' @description \code{sumNaiveBootstrap} estimates the second term in scaled
 #'   Frobenius loss by computing the bootstrap means of the entries in the
@@ -17,13 +17,13 @@
 #' @param est_args Arguments corresponding to the hyperparameters of the
 #'   covariance matrix estimator, \code{estimator_fun}.
 #'
-#' @return A \code{numeric} estimating the second term of the scaled Frobenius
-#'   loss.
-#'
 #' @importFrom coop covar
 #' @importFrom dplyr sample_frac
 #' @importFrom matrixStats sum2
 #' @importFrom tidyr as_tibble
+#'
+#' @return A \code{numeric} estimating the second term of the scaled Frobenius
+#'   loss.
 #'
 #' @keywords internal
 sumNaiveBootstrap <- function(estimator_fun, estimates, sample_cov_mat,

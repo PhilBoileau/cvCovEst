@@ -1,5 +1,4 @@
-# Linear Shrinkage Estimator ###################################################
-
+# Linear Shrinkage Estimator ##################################################
 test_that("linear shrinkage estimator with no shrinkage is S_n", {
   expect_identical(linearShrinkEst(mtcars, alpha = 1),
                    coop::covar(mtcars))
@@ -11,8 +10,7 @@ test_that("linear shrinkage estimator with 100% shrinkage is identity", {
 })
 
 
-# Simple Thresholding Estimator ################################################
-
+# Simple Thresholding Estimator ###############################################
 test_that("simple thresholing estimator without thresholding is S_n", {
   expect_identical(thresholdingEst(mtcars, gamma = 0),
                    coop::covar(mtcars))

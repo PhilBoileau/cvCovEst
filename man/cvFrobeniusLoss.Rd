@@ -41,7 +41,7 @@ hyperparameter(s). These hyperparameters may be in the form of a single
 for a given estimator, then the estimator need not be listed.}
 }
 \value{
-A \code{tibble} providing information on estimators, their
+A \code{\link[tibble]{tibble}} providing information on estimators, their
 hyperparameters (if any), and their scaled Frobenius loss over
 a \code{fold}.
 }
