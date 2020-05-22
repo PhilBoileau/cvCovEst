@@ -1,5 +1,7 @@
 
-# R/`cvCovEst`: Cross-Validated Covariance Matrix Estimation
+# R/`cvCovEst`
+
+> Cross-Validated Covariance Matrix Estimation
 
 **Authors:** [Philippe Boileau](https://pboileau.ca) and [Nima
 Hejazi](https://nimahejazi.org)
@@ -8,12 +10,13 @@ Hejazi](https://nimahejazi.org)
 
 ## What’s `cvCovEst`?
 
-`cvCovEst` mplements an efficient cross-validated approach to covariance
-matrix estimation in high-dimensional settings. A general methodology
-for data adaptively identifying (via cross-validation) the optimal
-estimator of the covariance matrix from a set of pre-specified
-candidates is provided. Diagnostic tools are also provided for assessing
-the quality of covariance matrix estimators.
+`cvCovEst` implements an efficient cross-validated procedure for
+covariance matrix estimation, particularly useful in high-dimensional
+settings. The general methodology allows for cross-validation to be used
+to data adaptively identify the optimal estimator of the covariance
+matrix from a pre-specified set of candidate estimators. Also included
+are diagnostic tools for assessing the quality of covariance matrix
+estimators.
 
 -----
 

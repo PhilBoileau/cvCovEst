@@ -1,8 +1,8 @@
 ---
-title: "`cvCovEst`: Optimal cross-validated covariance matrix selection in `R`"
+title: "`cvCovEst`: Cross-validated covariance matrix estimation in `R`"
 tags:
   - R
-  - covariance matrix
+  - covariance
   - cross-validation
 authors:
   - name: Philippe Boileau
