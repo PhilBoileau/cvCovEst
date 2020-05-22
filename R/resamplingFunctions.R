@@ -75,7 +75,7 @@ sumNaiveBootstrap <- function(estimator_fun,
   estimates <- estimates - estimates_boot_mean
   sample_cov_mat <- sample_cov_mat - sample_cov_boot_mean
 
-  # compute hadamard produce of estimats and sample cov mat
+  # compute hadamard product of estimates and sample cov mat
   boot_mat_mult_mat <- estimates * sample_cov_mat
 
   # return the sum of all the bootstraped covariance estimates
