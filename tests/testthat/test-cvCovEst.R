@@ -10,14 +10,16 @@ dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 
 # run CV-selector
 cv_cov_est_out <- cvCovEst(
-    dat = dat,
-    estimators = c("linearShrinkEst", "thresholdingEst"),
-    estimator_params = list("linearShrinkEst" = list("alpha" = c(0.1, 0.9)),
-                            "thresholdingEst" = list("gamma" = c(0.2, 2))),
-    cv_scheme = "v_fold", mc_split = 0.5,
-    v_folds = 5, boot_iter = 20,
-    center = TRUE, scale = FALSE, parallel = FALSE
-  )
+  dat = dat,
+  estimators = c("linearShrinkEst", "thresholdingEst"),
+  estimator_params = list(
+    "linearShrinkEst" = list("alpha" = c(0.1, 0.9)),
+    "thresholdingEst" = list("gamma" = c(0.2, 2))
+  ),
+  cv_scheme = "v_fold", mc_split = 0.5,
+  v_folds = 5, boot_iter = 20,
+  center = TRUE, scale = FALSE, parallel = FALSE
+)
 
 # simple test (TODO: improve test and add tests to cover more cases)
 test_that("cross-validated covariance selector minimizes risk", {

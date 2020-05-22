@@ -30,8 +30,9 @@
 #'  columns of \code{dat}.
 #' @param scale A \code{logical} indicating whether or not to scale the
 #'  columns of \code{dat} to have variance 1.
-#' @param parallel A \code{logical} option for whether to run the main
-#'  cross-validation loop with \code{\link[future.apply]{future_lapply}}.
+#' @param parallel A \code{logical} option indicating whether to run the main
+#'  cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
+#'  is passed directly to \code{\link[origami]{cross_validate}}.
 #'
 #' @importFrom origami cross_validate folds_vfold folds_montecarlo
 #' @importFrom dplyr arrange summarise group_by "%>%"
@@ -52,14 +53,20 @@
 #'
 #' @export
 cvCovEst <- function(
-  dat,
-  estimators = c("linearShrinkEst", "thresholdingEst", "sampleCovEst"),
-  estimator_params = list("linearShrinkEst" = list("alpha" = 0),
-                          "thresholdingEst" = list("gamma" = 0)),
-  cv_scheme = "mc", mc_split = 0.5, v_folds = 10,
-  boot_iter = 100,
-  center = TRUE, scale = TRUE,
-  parallel = FALSE) {
+                     dat,
+                     estimators = c(
+                       "linearShrinkEst", "thresholdingEst",
+                       "sampleCovEst"
+                     ),
+                     estimator_params = list(
+                       "linearShrinkEst" = list("alpha" = 0),
+                       "thresholdingEst" = list("gamma" = 0)
+                     ),
+                     cv_scheme = "mc", mc_split = 0.5, v_folds = 10L,
+                     boot_iter = 100L,
+                     center = TRUE,
+                     scale = TRUE,
+                     parallel = FALSE) {
 
   # center and scale the data, if desired. (TODO: efficient implementation?)
   dat <- scale(dat, center = center, scale = scale)
@@ -68,13 +75,15 @@ cvCovEst <- function(
   n_obs <- nrow(dat)
   if (cv_scheme == "mc") {
     folds <- origami::make_folds(dat,
-                                 fold_fun = origami::folds_montecarlo,
-                                 V = v_folds,
-                                 pvalidation = mc_split)
+      fold_fun = origami::folds_montecarlo,
+      V = v_folds,
+      pvalidation = mc_split
+    )
   } else if (cv_scheme == "v_fold") {
     folds <- origami::make_folds(dat,
-                                 fold_fun = origami::folds_vfold,
-                                 V = v_folds)
+      fold_fun = origami::folds_vfold,
+      V = v_folds
+    )
   }
 
   # apply the estimators to each fold
@@ -110,8 +119,10 @@ cvCovEst <- function(
   # prep output and return
   out <- list(
     estimate = estimate,
-    estimator = paste0(cv_results[1, ]$estimator, ", ",
-                       cv_results[1, ]$hyperparameters),
+    estimator = paste0(
+      cv_results[1, ]$estimator, ", ",
+      cv_results[1, ]$hyperparameters
+    ),
     risk_df = cv_results,
     cv_df = fold_results_concat
   )

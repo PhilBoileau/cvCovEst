@@ -15,18 +15,18 @@ sumNaiveBootstrap(
 )
 }
 \arguments{
-\item{estimator_fun}{The covariance matrix estimator to be applied to the
-resampled training data.}
+\item{estimator_fun}{A \code{character} indicating the covariance matrix
+estimator to be applied to the resampled training data.}
 
 \item{estimates}{A \code{matrix} of the estimator's covariance matrix
 estimate over a given fold.}
 
-\item{sample_cov_mat}{A \code{matrix} of the sample covariance matrix over a
-given fold.}
+\item{sample_cov_mat}{A \code{matrix} of the sample covariance matrix,
+estimated over a given fold.}
 
-\item{train_data}{A \code{data.frame} of the training data.}
+\item{train_data}{A \code{data.frame} (or similar) of the training data.}
 
-\item{valid_data}{A \code{data.frame} of the validation data.}
+\item{valid_data}{A \code{data.frame} (or similar) of the validation data.}
 
 \item{num_iter}{A positive integer defining the number of bootstrap samples
 to compute.}
@@ -35,12 +35,12 @@ to compute.}
 covariance matrix estimator, \code{estimator_fun}.}
 }
 \value{
-A \code{numeric} estimating the second term of the scaled Frobenius
-loss.
+A \code{numeric} estimating the cross (covariance) term of the
+scaled Frobenius loss.
 }
 \description{
-\code{sumNaiveBootstrap} estimates the second term in scaled
-Frobenius loss by computing the bootstrap means of the entries in the
-covariance matrix  estimator and sample covariance matrix.
+\code{sumNaiveBootstrap} estimates the cross (covariance) term
+in the scaled Frobenius loss by computing the bootstrap means of entries in
+the covariance matrix estimator and sample covariance matrix.
 }
 \keyword{internal}

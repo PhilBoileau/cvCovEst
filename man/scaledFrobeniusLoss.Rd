@@ -9,8 +9,7 @@ scaledFrobeniusLoss(est_mat, sample_cov_mat, cov_sum)
 \arguments{
 \item{est_mat}{A \code{matrix} output from an estimator function.}
 
-\item{sample_cov_mat}{A \code{matrix} consisting of the sample covariance
-matrix.}
+\item{sample_cov_mat}{A \code{matrix}, the sample covariance matrix.}
 
 \item{cov_sum}{A \code{numeric} representing the sum of covariance estimates
 between the identically positioned elements of \code{est_mat} and
@@ -20,7 +19,7 @@ between the identically positioned elements of \code{est_mat} and
 The \code{numeric} scaled Frobenius loss of \code{est_mat}.
 }
 \description{
-\code{scaledFrobeniusLoss} computes the tractable version of the
+\code{scaledFrobeniusLoss} computes a tractable version of the
 scaled Frobenius loss for an estimate of the covariance matrix.
 }
 \keyword{internal}

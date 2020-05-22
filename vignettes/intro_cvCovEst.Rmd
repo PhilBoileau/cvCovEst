@@ -1,0 +1,31 @@
+---
+title: "Optimal Covariance Matrix Estimation via Cross-validated Selection"
+author: "[Philippe Boileau](https://pboileau.ca) and [Nima
+  Hejazi](https://nimahejazi.org)"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+bibliography: ../inst/REFERENCES.bib
+vignette: >
+  %\VignetteIndexEntry{Optimal Covariance Matrix Estimation via Cross-validated Selection}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Background and Motivations
+
+TODO
+
+# Problem Setup and Notation
+
+TODO
+
+# Cross-validated Covariance Matrix Estimation
+
+TODO
+
+# Data Analysis Example
+
+TODO
+
+## References
+

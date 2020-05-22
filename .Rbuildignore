@@ -1,4 +1,4 @@
-^scPCA\.Rproj$
+^cvCovEst\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^appveyor\.yml$
@@ -14,4 +14,4 @@
 ^docs$
 .git
 ./.git
-^manuscript$
+^paper$

@@ -11,8 +11,8 @@ cvCovEst(
     list(gamma = 0)),
   cv_scheme = "mc",
   mc_split = 0.5,
-  v_folds = 10,
-  boot_iter = 100,
+  v_folds = 10L,
+  boot_iter = 100L,
   center = TRUE,
   scale = TRUE,
   parallel = FALSE
@@ -55,8 +55,9 @@ columns of \code{dat}.}
 \item{scale}{A \code{logical} indicating whether or not to scale the
 columns of \code{dat} to have variance 1.}
 
-\item{parallel}{A \code{logical} option for whether to run the main
-cross-validation loop with \code{\link[future.apply]{future_lapply}}.}
+\item{parallel}{A \code{logical} option indicating whether to run the main
+cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
+is passed directly to \code{\link[origami]{cross_validate}}.}
 }
 \value{
 A \code{list} of results containing the following elements:

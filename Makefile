@@ -7,9 +7,6 @@ check:
 checkfast:
 	Rscript -e "devtools::check(build_args = '--no-build-vignettes')"
 
-bioc:
-	Rscript -e "BiocCheck::BiocCheck('.')"
-
 test:
 	Rscript -e "devtools::test()"
 
@@ -25,5 +22,5 @@ buildfast:
 style:
 	Rscript -e "styler::style_pkg()"
 
-pr: style doc check bioc md
+pr: style doc check md
 	echo "If all checks have passed, your PR is ready for submission."
