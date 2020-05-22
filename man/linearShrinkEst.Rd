@@ -7,9 +7,9 @@
 linearShrinkEst(dat, alpha)
 }
 \arguments{
-\item{dat}{A numeric \code{data.frame} or matrix.}
+\item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
-\item{alpha}{A \code{numeric} between 0 and 1 defining the convex combination
+\item{alpha}{A \code{numeric} between 0 and 1 defining convex combinations
 of the sample covariance matrix and the identity. \code{alpha = 1} returns
 the sample covariance matrix, and \code{alpha = 0} returns the identity.}
 }

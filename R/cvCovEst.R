@@ -1,37 +1,43 @@
 #' Cross-Validated Covariance Matrix Estimator Selector
 #'
 #' @description \code{cvCovEst} identifies the optimal covariance matrix
-#'   estimator from among a set of candidate estimators over a high-dimensional
-#'   data set.
+#'   estimator from among a set of candidate estimators.
 #'
-#' @param dat A numeric \code{data.frame} or matrix.
-#' @param estimators A \code{list} of estimator functions.
-#' @param estimator_params A named \code{list} of arguments corresponding to the
-#'   hyperparameters of the covariance matrix estimator, \code{estimator_funs}.
-#'   The name of each list element should be the name of an estimator passed to
-#'   \code{estimator_funs}. Each element of the \code{estimator_params} is
-#'   itself a named \code{list}, where the names correspond to an estimators'
-#'   hyperparameter(s). These hyperparameters may be in the form of a single
-#'   \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
-#'   for a given estimator, then the estimator need not be listed.
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#' @param estimators A \code{character} vector of estimator functions to be
+#'  considered in the cross-validated selection procedure.
+#' @param estimator_params A named \code{list} of arguments corresponding to
+#'  the hyperparameters of covariance matrix estimators in \code{estimators}.
+#'  The name of each list element should match the name of an estimator passed
+#'  to \code{estimators}. Each element of the \code{estimator_params} is itself
+#'  a named \code{list}, with the names corresponding to a given estimators'
+#'  hyperparameter(s). These hyperparameters may be in the form of a single
+#'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
+#'  for a given estimator, then the estimator need not be listed.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
-#'   to be emplyed. There are two options: (1) V-fold cross-validation as
-#'   \code{"v_folds"} and (2) Monte Carlo cross-validation as \code{"mc"}.
-#'   Defaults to \code{"mc"}.
-#' @param mc_split A \code{numeric} between 0 and 1 indicating the proportion of
-#'   data in the validation set of each Monte Carlo cross-validation fold.
+#'   to be employed. There are two options: (1) V-fold cross-validation, via
+#'   \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
+#'   Defaults to Monte Carlo cross-validation.
+#' @param mc_split A \code{numeric} between 0 and 1 indicating the proportion
+#'  of data in the validation set of each Monte Carlo cross-validation fold.
 #' @param v_folds A \code{integer} larger than or equal to 1 indicating the
-#'   number of folds to use during cross-validation. The default is 10,
-#'   regardless of cross-validation scheme.
+#'  number of folds to use during cross-validation. The default is 10,
+#'  regardless of cross-validation scheme.
 #' @param boot_iter A \code{integer} dictating the number of bootstrap
-#'   iterations used to compute the covariance terms of the cross-validated
-#'   scaled Frobenius loss. The default is set to 100.
+#'  iterations used to compute the covariance terms of the cross-validated
+#'  scaled Frobenius loss. The default is set to 100.
 #' @param center A \code{logical} indicating whether or not to center the
-#'   columns of \code{dat}.
+#'  columns of \code{dat}.
 #' @param scale A \code{logical} indicating whether or not to scale the
-#'   columns of \code{dat} to have variance 1.
-#' @param parallel A \code{logical} option for whether to run the main
-#'   cross-validation loop with \code{\link[future.apply]{future_lapply}}.
+#'  columns of \code{dat} to have variance 1.
+#' @param parallel A \code{logical} option indicating whether to run the main
+#'  cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
+#'  is passed directly to \code{\link[origami]{cross_validate}}.
+#'
+#' @importFrom origami cross_validate folds_vfold folds_montecarlo
+#' @importFrom dplyr arrange summarise group_by "%>%"
+#' @importFrom tibble as_tibble
+#' @importFrom rlang .data
 #'
 #' @return A \code{list} of results containing the following elements:
 #'   \itemize{
@@ -39,31 +45,28 @@
 #'       the optimal covariance matrix estimator.
 #'     \item \code{estimator} - A \code{character} indicating the optimal
 #'       estimator and corresponding hyperparameters, if any.
-#'     \item \code{results_df} - A \code{tibble} providing the results of
-#'       the cross-validation procedure. (TODO)
-#'     \item \code{origami_output} - A \code{tibble} providing the results of
-#'       the \code{\link[origami]{cross_validate}} call.
+#'     \item \code{results_df} - A \code{\link[tibble]{tibble}} providing the
+#'       results of the cross-validation procedure. (TODO)
+#'     \item \code{origami_output} - A \code{\link[tibble]{tibble}} providing
+#'       the results of the \code{\link[origami]{cross_validate}} call.
 #'   }
-#' @export
 #'
-#' @importFrom origami folds_montecarlo
-#' @importFrom origami folds_vfold
-#' @importFrom origami cross_validate
-#' @importFrom tidyr as_tibble
-#' @importFrom dplyr group_by
-#' @importFrom dplyr summarise
-#' @importFrom dplyr arrange
-#' @importFrom magrittr %>%
-#' @importFrom rlang .data
+#' @export
 cvCovEst <- function(
-  dat,
-  estimators = c("linearShrinkEst", "thresholdingEst", "sampleCovEst"),
-  estimator_params = list("linearShrinkEst" = list("alpha" = 0),
-                          "thresholdingEst" = list("gamma" = 0)),
-  cv_scheme = "mc", mc_split = 0.5, v_folds = 10,
-  boot_iter = 100,
-  center = TRUE, scale = TRUE,
-  parallel = FALSE) {
+                     dat,
+                     estimators = c(
+                       "linearShrinkEst", "thresholdingEst",
+                       "sampleCovEst"
+                     ),
+                     estimator_params = list(
+                       "linearShrinkEst" = list("alpha" = 0),
+                       "thresholdingEst" = list("gamma" = 0)
+                     ),
+                     cv_scheme = "mc", mc_split = 0.5, v_folds = 10L,
+                     boot_iter = 100L,
+                     center = TRUE,
+                     scale = TRUE,
+                     parallel = FALSE) {
 
   # center and scale the data, if desired. (TODO: efficient implementation?)
   dat <- scale(dat, center = center, scale = scale)
@@ -72,13 +75,15 @@ cvCovEst <- function(
   n_obs <- nrow(dat)
   if (cv_scheme == "mc") {
     folds <- origami::make_folds(dat,
-                                 fold_fun = folds_montecarlo,
-                                 V = v_folds,
-                                 pvalidation = mc_split)
+      fold_fun = origami::folds_montecarlo,
+      V = v_folds,
+      pvalidation = mc_split
+    )
   } else if (cv_scheme == "v_fold") {
     folds <- origami::make_folds(dat,
-                                 fold_fun = folds_vfold,
-                                 V = v_folds)
+      fold_fun = origami::folds_vfold,
+      V = v_folds
+    )
   }
 
   # apply the estimators to each fold
@@ -89,22 +94,15 @@ cvCovEst <- function(
     estimator_funs = estimators,
     estimator_params = estimator_params,
     resample_iter = boot_iter,
-    use_future = parallel
+    use_future = parallel,
+    .combine = FALSE
   )
 
-  # remove error list from cv_results
-  errors <- fold_results$errors
-  fold_results$errors <- NULL
-
-  # fix tpes
-  fold_results$loss <- as.numeric(fold_results$loss)
-  fold_results$fold <- as.numeric(fold_results$fold)
-
-  # turn results to tibble
-  fold_results <- tidyr::as_tibble(fold_results)
+  # convert results to tibble
+  fold_results_concat <- dplyr::bind_rows(fold_results[[1]])
 
   # compute empirical risk
-  cv_results <- fold_results %>%
+  cv_results <- fold_results_concat %>%
     dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
     dplyr::summarise(empirical_risk = mean(.data$loss)) %>%
     dplyr::arrange(.data$empirical_risk)
@@ -112,20 +110,21 @@ cvCovEst <- function(
   # compute the best estimator's estimate
   best_est <- get(cv_results[1, ]$estimator)
   best_est_hyperparams <- parse(text = cv_results[1, ]$hyperparameters)
-  if (cv_results[1, ]$hyperparameters != "hyperparameters = NA")
+  if (cv_results[1, ]$hyperparameters != "hyperparameters = NA") {
     estimate <- best_est(dat, eval(best_est_hyperparams))
-  else
+  } else {
     estimate <- best_est(dat)
+  }
 
-  # prep output
+  # prep output and return
   out <- list(
     estimate = estimate,
-    estimator = paste0(cv_results[1, ]$estimator, ", ",
-                      cv_results[1, ]$hyperparameters),
+    estimator = paste0(
+      cv_results[1, ]$estimator, ", ",
+      cv_results[1, ]$hyperparameters
+    ),
     risk_df = cv_results,
-    cv_df = fold_results
+    cv_df = fold_results_concat
   )
-
-  # retun dataframe of cv results
   return(out)
 }

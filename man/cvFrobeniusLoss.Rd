@@ -14,40 +14,39 @@ cvFrobeniusLoss(
 )
 }
 \arguments{
-\item{fold}{A \code{fold} object over which the estimation procedure will
-take place.}
+\item{fold}{A \code{fold} object (from \code{\link[origami]{make_folds}})
+over which the estimation procedure is to be performed.}
 
-\item{dat}{The full \code{data.frame} on which the cross-validated procedure
-is performed.}
+\item{dat}{A \code{data.frame} containing the full (non-sample-split) data,
+on which the cross-validated procedure is performed.}
 
 \item{resample_fun}{The \code{function} defining the resampling-based
-procedure used to estimate the entries of the second term in the scaled
-Frobenius loss.}
+procedure used to estimate the entries of the cross (covariance) term in
+the scaled Frobenius loss.}
 
 \item{resample_iter}{A \code{numeric} indicating the number of repetitions
 to be performed by \code{resample_fun}.}
 
 \item{estimator_funs}{A \code{list} of covariance matrix estimator functions
-to be applied to the training data. Functions should be input as
+to be applied to the training data. Function names should be input as
 \code{character}s.}
 
-\item{estimator_params}{A named \code{list} of arguments corresponding to the
-hyperparameters of the covariance matrix estimator, \code{estimator_funs}.
+\item{estimator_params}{A named \code{list} of arguments corresponding to
+the hyperparameters of covariance matrix estimators, \code{estimator_funs}.
 The name of each list element should be the name of an estimator passed to
 \code{estimator_funs}. Each element of the \code{estimator_params} is
-itself a named \code{list}, where the names correspond to an estimators'
+itself a named \code{list}, with names corresponding to an estimators'
 hyperparameter(s). These hyperparameters may be in the form of a single
 \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 for a given estimator, then the estimator need not be listed.}
 }
 \value{
-A \code{tibble} providing information on estimators, their
-hyperparameters (if any), and their scaled Frobenius loss over
-a \code{fold}.
+A \code{\link[tibble]{tibble}} providing information on estimators,
+their hyperparameters (if any), and their scaled Frobenius loss evaluated
+on a given \code{fold}.
 }
 \description{
 \code{cvFrobeniusLoss} evaluates the scaled Frobenius loss over
-a \code{fold} object defined via the \pkg{origami} package
-\insertRef{Coyle2018}{cvCovEst}.
+a \code{fold} object (from \pkg{origami} \insertRef{Coyle2018}{cvCovEst}).
 }
 \keyword{internal}
