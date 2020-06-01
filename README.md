@@ -5,6 +5,8 @@
 
 [![Travis build
 status](https://travis-ci.com/PhilBoileau/cvCovEst.svg?branch=master)](https://travis-ci.com/PhilBoileau/cvCovEst)
+[![Codecov test
+coverage](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg)](https://codecov.io/gh/PhilBoileau/cvCovEst?branch=master)
 <!-- badges: end -->
 
 > Cross-Validated Covariance Matrix Estimation
