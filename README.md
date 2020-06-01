@@ -1,6 +1,12 @@
 
 # R/`cvCovEst`
 
+<!-- badges: start -->
+
+[![Travis build
+status](https://travis-ci.com/PhilBoileau/cvCovEst.svg?branch=master)](https://travis-ci.com/PhilBoileau/cvCovEst)
+<!-- badges: end -->
+
 > Cross-Validated Covariance Matrix Estimation
 
 **Authors:** [Philippe Boileau](https://pboileau.ca) and [Nima
