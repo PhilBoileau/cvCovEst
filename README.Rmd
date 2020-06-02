@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/PhilBoileau/cvCovEst.svg?token=YL3L6rYQtszHibWHgFxU&branch=master)](https://travis-ci.com/PhilBoileau/cvCovEst)
-[![Codecov test coverage](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg)](https://codecov.io/gh/PhilBoileau/cvCovEst?branch=master)
+[![codecov](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ)](https://codecov.io/gh/PhilBoileau/cvCovEst)
 <!-- badges: end -->
 
 > Cross-Validated Covariance Matrix Estimation
