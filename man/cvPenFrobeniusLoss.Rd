@@ -27,9 +27,8 @@ the scaled Frobenius loss.}
 \item{resample_iter}{A \code{numeric} indicating the number of repetitions
 to be performed by \code{resample_fun}.}
 
-\item{estimator_funs}{A \code{list} of covariance matrix estimator functions
-to be applied to the training data. Function names should be input as
-\code{character}s.}
+\item{estimator_funs}{An \code{expression} corresponding to a vector of
+covariance matrix estimator functions to be applied to the training data.}
 
 \item{estimator_params}{A named \code{list} of arguments corresponding to
 the hyperparameters of covariance matrix estimators, \code{estimator_funs}.

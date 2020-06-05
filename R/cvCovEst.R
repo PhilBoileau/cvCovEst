@@ -4,7 +4,7 @@
 #'   estimator from among a set of candidate estimators.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
-#' @param estimators A \code{character} vector of estimator functions to be
+#' @param estimators A \code{list} of estimator functions to be
 #'  considered in the cross-validated selection procedure.
 #' @param estimator_params A named \code{list} of arguments corresponding to
 #'  the hyperparameters of covariance matrix estimators in \code{estimators}.
@@ -62,22 +62,24 @@
 cvCovEst <- function(
   dat,
   estimators = c(
-   "linearShrinkEst", "thresholdingEst",
-   "sampleCovEst"
+   linearShrinkEst, thresholdingEst, sampleCovEst
   ),
   estimator_params = list(
-   "linearShrinkEst" = list("alpha" = 0),
-   "thresholdingEst" = list("gamma" = 0)
+   linearShrinkEst = list(alpha = 0),
+   thresholdingEst = list(gamma = 0)
   ),
   cv_scheme = "mc", mc_split = 0.5, v_folds = 10L,
   cv_loss = cvPenFrobeniusLoss,
   boot_iter = 100L,
   center = TRUE,
   scale = TRUE,
-  parallel = FALSE)
+  parallel = FALSE
+)
 {
 
-  # center and scale the data, if desired. (TODO: efficient implementation?)
+  estimators <- rlang::enexpr(estimators)
+
+  # center and scale the data, if desired
   dat <- safeColScale(X = dat, center = center, scale = scale)
 
   # define the folds based on cross-validation scheme
@@ -95,9 +97,10 @@ cvCovEst <- function(
     )
   }
 
+
+  # apply the estimators to each fold
   if (rlang::as_string(rlang::enexpr(cv_loss)) == "cvPenFrobeniusLoss") {
 
-    # apply the estimators to each fold
     fold_results <- origami::cross_validate(
       dat = dat,
       cv_fun = cv_loss,
@@ -111,7 +114,6 @@ cvCovEst <- function(
 
   } else if (rlang::as_string(rlang::enexpr(cv_loss)) == "cvFrobeniusLoss"){
 
-    # apply the estimators to each fold
     fold_results <- origami::cross_validate(
       dat = dat,
       cv_fun = cv_loss,
@@ -126,6 +128,7 @@ cvCovEst <- function(
 
   # convert results to tibble
   fold_results_concat <- dplyr::bind_rows(fold_results[[1]])
+  fold_results_concat
 
   # compute empirical risk
   cv_results <- fold_results_concat %>%

@@ -16,26 +16,20 @@ resub <- make_folds(dat,
 )[[1]]
 
 test_that("linearShrinkEst does not throw error", {
+
+  # get estimators expression call
   expect_silent(cvFrobeniusLoss(
     fold = resub,
     dat = dat,
-    estimator_funs = list("linearShrinkEst"),
-    estimator_params =
-      list(
-        "linearShrinkEst" =
-          list(alpha = c(0, 1))
-      )
+    estimator_funs = rlang::expr(c(linearShrinkEst)),
+    estimator_params = list(linearShrinkEst = list(alpha = c(0, 1)))
   ))
   expect_silent(cvPenFrobeniusLoss(
     fold = resub,
     dat = dat,
     resample_iter = 10,
-    estimator_funs = list("linearShrinkEst"),
-    estimator_params =
-      list(
-        "linearShrinkEst" =
-          list(alpha = c(0, 1))
-      )
+    estimator_funs = rlang::expr(c(linearShrinkEst)),
+    estimator_params = list(linearShrinkEst = list(alpha = c(0, 1)))
   ))
 })
 
@@ -43,23 +37,29 @@ test_that("thresholdEst does not throw error", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,
     dat = dat,
-    estimator_funs = list("thresholdingEst"),
-    estimator_params =
-      list(
-        "thresholdingEst" =
-          list(gamma = c(0, 1))
-      )
+    estimator_funs = rlang::expr(c(thresholdingEst)),
+    estimator_params = list(thresholdingEst = list(gamma = c(0, 1)))
   ))
   expect_silent(cvPenFrobeniusLoss(
     fold = resub,
     dat = dat,
     resample_iter = 10,
-    estimator_funs = list("thresholdingEst"),
-    estimator_params =
-      list(
-        "thresholdingEst" =
-          list(alpha = c(0, 1))
-      )
+    estimator_funs = rlang::expr(c(thresholdingEst)),
+    estimator_params = list(thresholdingEst = list(gamma = c(0, 1)))
+  ))
+})
+
+test_that("sampleCovEst does not throw error", {
+  expect_silent(cvFrobeniusLoss(
+    fold = resub,
+    dat = dat,
+    estimator_funs = rlang::expr(c(sampleCovEst)),
+  ))
+  expect_silent(cvPenFrobeniusLoss(
+    fold = resub,
+    dat = dat,
+    resample_iter = 10,
+    estimator_funs = rlang::expr(c(sampleCovEst))
   ))
 })
 

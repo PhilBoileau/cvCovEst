@@ -7,9 +7,8 @@
 #'  over which the estimation procedure is to be performed.
 #' @param dat A \code{data.frame} containing the full (non-sample-split) data,
 #'  on which the cross-validated procedure is performed.
-#' @param estimator_funs A \code{list} of covariance matrix estimator functions
-#'  to be applied to the training data. Function names should be input as
-#'  \code{character}s.
+#' @param estimator_funs An \code{expression} corresponding to a vector of
+#'  covariance matrix estimator functions to be applied to the training data.
 #' @param estimator_params A named \code{list} of arguments corresponding to
 #'  the hyperparameters of covariance matrix estimators, \code{estimator_funs}.
 #'  The name of each list element should be the name of an estimator passed to
@@ -24,6 +23,8 @@
 #' @importFrom origami training validation fold_index
 #' @importFrom Rdpack reprompt
 #' @importFrom tibble tibble
+#' @importFrom rlang enexpr
+#' @importFrom rlang parse_expr
 #'
 #' @return A \code{\link[tibble]{tibble}} providing information on estimators,
 #'  their hyperparameters (if any), and their scaled Frobenius loss evaluated
@@ -41,53 +42,60 @@ cvFrobeniusLoss <- function(fold, dat,
   # compute the sample covariance matrix over the validation set
   sample_cov_mat <- coop::covar(valid_data)
 
+  # get number of estimators
+  num_estimators <- seq(from = 2, to  = length(estimator_funs))
+
   # loop through estimator functions
-  est_out <- lapply(estimator_funs, function(est_name) {
-    # extract function matching character
-    est_fun <- get(est_name)
+  est_out <- lapply(num_estimators, function(x) {
+
+    # extract estimator function and name
+    est_fun <- eval(estimator_funs[[x]])
+    est_name <- as.character(estimator_funs[[x]])
 
     # check if a hyperparameter is needed
     hyp_name <- names(estimator_params[[est_name]])
     if (is.null(hyp_name)) {
+
       # fit the covariance matrix estimator on the training set
       est_mat <- est_fun(train_data)
 
       # indicate that there are no hyperparameters
-      estimator_hparams <- "hyperparameters = NA"
+      estimator_hparam <- "hyperparameters = NA"
 
       # return the results from the fold
       out <- tibble::tibble(
         estimator = est_name,
-        hyperparameters = estimator_hparams,
+        hyperparameters = estimator_hparam,
         loss = scaledFrobeniusLoss(est_mat, sample_cov_mat),
         fold = origami::fold_index(fold = fold)
       )
+
       return(out)
+
     } else {
+
       # loop through the estimator hyperparameters
       param_out <- lapply(
         estimator_params[[est_name]][[hyp_name]],
         function(param) {
+
           # fit the covariance matrix estimator on the training set
+          estimator_hparam <- paste(hyp_name, "=", param)
           est_mat <- est_fun(
             train_data,
-            eval(parse(text = paste(hyp_name, "=", param)))
+            eval(rlang::parse_expr(estimator_hparam))
           )
-
-          # get the list of estimator params
-          estimator_hparams <- paste(hyp_name, "=", param)
-          if (length(estimator_hparams) == 0) {
-            estimator_hparams <- "hyperparameters = NA"
-          }
 
           # return the results from the fold
           out <- list(
             estimator = est_name,
-            hyperparameters = estimator_hparams,
+            hyperparameters = estimator_hparam,
             loss = scaledFrobeniusLoss(est_mat, sample_cov_mat),
             fold = origami::fold_index(fold = fold)
           )
+
           return(out)
+
         }
       )
 
@@ -112,9 +120,8 @@ cvFrobeniusLoss <- function(fold, dat,
 #'  over which the estimation procedure is to be performed.
 #' @param dat A \code{data.frame} containing the full (non-sample-split) data,
 #'  on which the cross-validated procedure is performed.
-#' @param estimator_funs A \code{list} of covariance matrix estimator functions
-#'  to be applied to the training data. Function names should be input as
-#'  \code{character}s.
+#' @param estimator_funs An \code{expression} corresponding to a vector of
+#'  covariance matrix estimator functions to be applied to the training data.
 #' @param resample_fun The \code{function} defining the resampling-based
 #'  procedure used to estimate the entries of the cross (covariance) term in
 #'  the scaled Frobenius loss.
@@ -141,8 +148,8 @@ cvFrobeniusLoss <- function(fold, dat,
 #'
 #' @keywords internal
 cvPenFrobeniusLoss <- function(fold, dat,
-                            resample_fun = sumNaiveBootstrap, resample_iter,
-                            estimator_funs, estimator_params = NULL) {
+                               resample_fun = sumNaiveBootstrap, resample_iter,
+                               estimator_funs, estimator_params = NULL) {
 
   # split the data into training and validation
   train_data <- origami::training(dat)
@@ -151,14 +158,20 @@ cvPenFrobeniusLoss <- function(fold, dat,
   # compute the sample covariance matrix over the validation set
   sample_cov_mat <- coop::covar(valid_data)
 
+  # get number of estimators
+  num_estimators <- seq(from = 2, to  = length(estimator_funs))
+
   # loop through estimator functions
-  est_out <- lapply(estimator_funs, function(est_name) {
-    # extract function matching character
-    est_fun <- get(est_name)
+  est_out <- lapply(num_estimators, function(x) {
+
+    # extract estimator function and name
+    est_fun <- eval(estimator_funs[[x]])
+    est_name <- as.character(estimator_funs[[x]])
 
     # check if a hyperparameter is needed
     hyp_name <- names(estimator_params[[est_name]])
     if (is.null(hyp_name)) {
+
       # fit the covariance matrix estimator on the training set
       est_mat <- est_fun(train_data)
 
@@ -168,45 +181,41 @@ cvPenFrobeniusLoss <- function(fold, dat,
         train_data, resample_iter
       )
 
-      # indicate that there are no hyperparameters
-      estimator_hparams <- "hyperparameters = NA"
-
       # return the results from the fold
       out <- tibble::tibble(
         estimator = est_name,
-        hyperparameters = estimator_hparams,
+        hyperparameters = "hyperparameters = NA",
         loss = penScaledFrobeniusLoss(est_mat, sample_cov_mat, cov_sum),
         fold = origami::fold_index(fold = fold)
       )
+
       return(out)
+
     } else {
       # loop through the estimator hyperparameters
       param_out <- lapply(
         estimator_params[[est_name]][[hyp_name]],
         function(param) {
+
           # fit the covariance matrix estimator on the training set
+          # fit the covariance matrix estimator on the training set
+          estimator_hparam <- paste(hyp_name, "=", param)
           est_mat <- est_fun(
             train_data,
-            eval(parse(text = paste(hyp_name, "=", param)))
+            eval(rlang::parse_expr(estimator_hparam))
           )
 
           # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
           cov_sum <- resample_fun(
             est_fun, est_mat, sample_cov_mat,
             train_data, resample_iter,
-            eval(parse(text = paste(hyp_name, "=", param)))
+            eval(rlang::parse_expr(estimator_hparam))
           )
-
-          # get the list of estimator params
-          estimator_hparams <- paste(hyp_name, "=", param)
-          if (length(estimator_hparams) == 0) {
-            estimator_hparams <- "hyperparameters = NA"
-          }
 
           # return the results from the fold
           out <- list(
             estimator = est_name,
-            hyperparameters = estimator_hparams,
+            hyperparameters = estimator_hparam,
             loss = penScaledFrobeniusLoss(est_mat, sample_cov_mat, cov_sum),
             fold = origami::fold_index(fold = fold)
           )

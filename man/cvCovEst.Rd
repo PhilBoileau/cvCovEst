@@ -6,7 +6,7 @@
 \usage{
 cvCovEst(
   dat,
-  estimators = c("linearShrinkEst", "thresholdingEst", "sampleCovEst"),
+  estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
   estimator_params = list(linearShrinkEst = list(alpha = 0), thresholdingEst =
     list(gamma = 0)),
   cv_scheme = "mc",
@@ -22,7 +22,7 @@ cvCovEst(
 \arguments{
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
-\item{estimators}{A \code{character} vector of estimator functions to be
+\item{estimators}{A \code{list} of estimator functions to be
 considered in the cross-validated selection procedure.}
 
 \item{estimator_params}{A named \code{list} of arguments corresponding to

@@ -20,9 +20,8 @@ over which the estimation procedure is to be performed.}
 \item{dat}{A \code{data.frame} containing the full (non-sample-split) data,
 on which the cross-validated procedure is performed.}
 
-\item{estimator_funs}{A \code{list} of covariance matrix estimator functions
-to be applied to the training data. Function names should be input as
-\code{character}s.}
+\item{estimator_funs}{An \code{expression} corresponding to a vector of
+covariance matrix estimator functions to be applied to the training data.}
 
 \item{estimator_params}{A named \code{list} of arguments corresponding to
 the hyperparameters of covariance matrix estimators, \code{estimator_funs}.
