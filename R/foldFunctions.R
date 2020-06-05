@@ -10,11 +10,6 @@
 #' @param estimator_funs A \code{list} of covariance matrix estimator functions
 #'  to be applied to the training data. Function names should be input as
 #'  \code{character}s.
-#' @param resample_fun The \code{function} defining the resampling-based
-#'  procedure used to estimate the entries of the cross (covariance) term in
-#'  the scaled Frobenius loss.
-#' @param resample_iter A \code{numeric} indicating the number of repetitions
-#'  to be performed by \code{resample_fun}.
 #' @param estimator_params A named \code{list} of arguments corresponding to
 #'  the hyperparameters of covariance matrix estimators, \code{estimator_funs}.
 #'  The name of each list element should be the name of an estimator passed to
@@ -57,12 +52,6 @@ cvFrobeniusLoss <- function(fold, dat,
       # fit the covariance matrix estimator on the training set
       est_mat <- est_fun(train_data)
 
-      # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
-      cov_sum <- resample_fun(
-        est_fun, est_mat, sample_cov_mat,
-        train_data, valid_data, resample_iter
-      )
-
       # indicate that there are no hyperparameters
       estimator_hparams <- "hyperparameters = NA"
 
@@ -82,13 +71,6 @@ cvFrobeniusLoss <- function(fold, dat,
           # fit the covariance matrix estimator on the training set
           est_mat <- est_fun(
             train_data,
-            eval(parse(text = paste(hyp_name, "=", param)))
-          )
-
-          # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
-          cov_sum <- resample_fun(
-            est_fun, est_mat, sample_cov_mat,
-            train_data, valid_data, resample_iter,
             eval(parse(text = paste(hyp_name, "=", param)))
           )
 
@@ -183,7 +165,7 @@ cvPenFrobeniusLoss <- function(fold, dat,
       # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
       cov_sum <- resample_fun(
         est_fun, est_mat, sample_cov_mat,
-        train_data, valid_data, resample_iter
+        train_data, resample_iter
       )
 
       # indicate that there are no hyperparameters
@@ -211,7 +193,7 @@ cvPenFrobeniusLoss <- function(fold, dat,
           # estimate the sum of covariance terms of Cov(est_mat, sample_cov_mat)
           cov_sum <- resample_fun(
             est_fun, est_mat, sample_cov_mat,
-            train_data, valid_data, resample_iter,
+            train_data, resample_iter,
             eval(parse(text = paste(hyp_name, "=", param)))
           )
 

@@ -20,13 +20,6 @@ over which the estimation procedure is to be performed.}
 \item{dat}{A \code{data.frame} containing the full (non-sample-split) data,
 on which the cross-validated procedure is performed.}
 
-\item{resample_fun}{The \code{function} defining the resampling-based
-procedure used to estimate the entries of the cross (covariance) term in
-the scaled Frobenius loss.}
-
-\item{resample_iter}{A \code{numeric} indicating the number of repetitions
-to be performed by \code{resample_fun}.}
-
 \item{estimator_funs}{A \code{list} of covariance matrix estimator functions
 to be applied to the training data. Function names should be input as
 \code{character}s.}

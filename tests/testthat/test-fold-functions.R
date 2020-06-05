@@ -19,6 +19,16 @@ test_that("linearShrinkEst does not throw error", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,
     dat = dat,
+    estimator_funs = list("linearShrinkEst"),
+    estimator_params =
+      list(
+        "linearShrinkEst" =
+          list(alpha = c(0, 1))
+      )
+  ))
+  expect_silent(cvPenFrobeniusLoss(
+    fold = resub,
+    dat = dat,
     resample_iter = 10,
     estimator_funs = list("linearShrinkEst"),
     estimator_params =
@@ -33,7 +43,6 @@ test_that("thresholdEst does not throw error", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,
     dat = dat,
-    resample_iter = 10,
     estimator_funs = list("thresholdingEst"),
     estimator_params =
       list(
@@ -41,4 +50,16 @@ test_that("thresholdEst does not throw error", {
           list(gamma = c(0, 1))
       )
   ))
+  expect_silent(cvPenFrobeniusLoss(
+    fold = resub,
+    dat = dat,
+    resample_iter = 10,
+    estimator_funs = list("thresholdingEst"),
+    estimator_params =
+      list(
+        "thresholdingEst" =
+          list(alpha = c(0, 1))
+      )
+  ))
 })
+

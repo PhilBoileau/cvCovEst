@@ -15,17 +15,22 @@
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
-#'   to be employed. There are two options: (1) V-fold cross-validation, via
-#'   \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
-#'   Defaults to Monte Carlo cross-validation.
+#'  to be employed. There are two options: (1) V-fold cross-validation, via
+#'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
+#'  Defaults to Monte Carlo cross-validation.
 #' @param mc_split A \code{numeric} between 0 and 1 indicating the proportion
 #'  of data in the validation set of each Monte Carlo cross-validation fold.
 #' @param v_folds A \code{integer} larger than or equal to 1 indicating the
 #'  number of folds to use during cross-validation. The default is 10,
 #'  regardless of cross-validation scheme.
+#' @param cv_loss A \code{function} indicating the loss function to use.
+#'  Defaults to the penalized scaled Frobenius loss, \code{cvPenFrobeniusLoss}.
+#'  The non-penalized version, \code{cvFrobeniusLoss} is offered as well.
 #' @param boot_iter A \code{integer} dictating the number of bootstrap
-#'  iterations used to compute the covariance terms of the cross-validated
-#'  scaled Frobenius loss. The default is set to 100.
+#'  iterations used to compute the penalty term of the cross-validated
+#'  penalized scaled Frobenius loss. The default is set to 100. If
+#'  \code{cvFrobeniusLoss} is selected in place of \code{cvPenFrobeniusLoss},
+#'  then this argument is ignored.
 #' @param center A \code{logical} indicating whether or not to center the
 #'  columns of \code{dat}.
 #' @param scale A \code{logical} indicating whether or not to scale the
@@ -38,6 +43,8 @@
 #' @importFrom dplyr arrange summarise group_by "%>%"
 #' @importFrom tibble as_tibble
 #' @importFrom rlang .data
+#' @importFrom rlang as_string
+#' @importFrom rlang expr
 #'
 #' @return A \code{list} of results containing the following elements:
 #'   \itemize{
@@ -53,23 +60,25 @@
 #'
 #' @export
 cvCovEst <- function(
-                     dat,
-                     estimators = c(
-                       "linearShrinkEst", "thresholdingEst",
-                       "sampleCovEst"
-                     ),
-                     estimator_params = list(
-                       "linearShrinkEst" = list("alpha" = 0),
-                       "thresholdingEst" = list("gamma" = 0)
-                     ),
-                     cv_scheme = "mc", mc_split = 0.5, v_folds = 10L,
-                     boot_iter = 100L,
-                     center = TRUE,
-                     scale = TRUE,
-                     parallel = FALSE) {
+  dat,
+  estimators = c(
+   "linearShrinkEst", "thresholdingEst",
+   "sampleCovEst"
+  ),
+  estimator_params = list(
+   "linearShrinkEst" = list("alpha" = 0),
+   "thresholdingEst" = list("gamma" = 0)
+  ),
+  cv_scheme = "mc", mc_split = 0.5, v_folds = 10L,
+  cv_loss = cvPenFrobeniusLoss,
+  boot_iter = 100L,
+  center = TRUE,
+  scale = TRUE,
+  parallel = FALSE)
+{
 
   # center and scale the data, if desired. (TODO: efficient implementation?)
-  dat <- scale(dat, center = center, scale = scale)
+  dat <- safeColScale(X = dat, center = center, scale = scale)
 
   # define the folds based on cross-validation scheme
   n_obs <- nrow(dat)
@@ -86,17 +95,34 @@ cvCovEst <- function(
     )
   }
 
-  # apply the estimators to each fold
-  fold_results <- origami::cross_validate(
-    dat = dat,
-    cv_fun = cvFrobeniusLoss,
-    folds = folds,
-    estimator_funs = estimators,
-    estimator_params = estimator_params,
-    resample_iter = boot_iter,
-    use_future = parallel,
-    .combine = FALSE
-  )
+  if (rlang::as_string(rlang::enexpr(cv_loss)) == "cvPenFrobeniusLoss") {
+
+    # apply the estimators to each fold
+    fold_results <- origami::cross_validate(
+      dat = dat,
+      cv_fun = cv_loss,
+      folds = folds,
+      estimator_funs = estimators,
+      estimator_params = estimator_params,
+      resample_iter = boot_iter,
+      use_future = parallel,
+      .combine = FALSE
+    )
+
+  } else if (rlang::as_string(rlang::enexpr(cv_loss)) == "cvFrobeniusLoss"){
+
+    # apply the estimators to each fold
+    fold_results <- origami::cross_validate(
+      dat = dat,
+      cv_fun = cv_loss,
+      folds = folds,
+      estimator_funs = estimators,
+      estimator_params = estimator_params,
+      use_future = parallel,
+      .combine = FALSE
+    )
+
+  }
 
   # convert results to tibble
   fold_results_concat <- dplyr::bind_rows(fold_results[[1]])

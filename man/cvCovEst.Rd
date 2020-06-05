@@ -12,6 +12,7 @@ cvCovEst(
   cv_scheme = "mc",
   mc_split = 0.5,
   v_folds = 10L,
+  cv_loss = cvPenFrobeniusLoss,
   boot_iter = 100L,
   center = TRUE,
   scale = TRUE,
@@ -45,9 +46,15 @@ of data in the validation set of each Monte Carlo cross-validation fold.}
 number of folds to use during cross-validation. The default is 10,
 regardless of cross-validation scheme.}
 
+\item{cv_loss}{A \code{function} indicating the loss function to use.
+Defaults to the penalized scaled Frobenius loss, \code{cvPenFrobeniusLoss}.
+The non-penalized version, \code{cvFrobeniusLoss} is offered as well.}
+
 \item{boot_iter}{A \code{integer} dictating the number of bootstrap
-iterations used to compute the covariance terms of the cross-validated
-scaled Frobenius loss. The default is set to 100.}
+iterations used to compute the penalty term of the cross-validated
+penalized scaled Frobenius loss. The default is set to 100. If
+\code{cvFrobeniusLoss} is selected in place of \code{cvPenFrobeniusLoss},
+then this argument is ignored.}
 
 \item{center}{A \code{logical} indicating whether or not to center the
 columns of \code{dat}.}

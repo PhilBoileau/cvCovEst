@@ -11,7 +11,6 @@
 #' @param sample_cov_mat A \code{matrix} of the sample covariance matrix,
 #'  estimated over a given fold.
 #' @param train_data A \code{data.frame} (or similar) of the training data.
-#' @param valid_data A \code{data.frame} (or similar) of the validation data.
 #' @param num_iter A positive integer defining the number of bootstrap samples
 #'   to compute.
 #' @param est_args Arguments corresponding to the hyperparameters of the
@@ -30,7 +29,6 @@ sumNaiveBootstrap <- function(estimator_fun,
                               estimates,
                               sample_cov_mat,
                               train_data,
-                              valid_data,
                               num_iter,
                               est_args = NULL) {
   # get sequence of bootstrap samples
@@ -39,9 +37,6 @@ sumNaiveBootstrap <- function(estimator_fun,
   # convert training data and validation data to tibbles
   train_data <- suppressMessages(
     tibble::as_tibble(train_data, .name_repair = "universal")
-  )
-  valid_data <- suppressMessages(
-    tibble::as_tibble(valid_data, .name_repair = "universal")
   )
 
   # resample training data num_iter times, estimate covariance matrix on each
@@ -64,7 +59,7 @@ sumNaiveBootstrap <- function(estimator_fun,
   # resample validation data num_iter times, estimating the sample covariance
   # matrix on each iteration
   sample_cov_list <- lapply(idx, function(x) {
-    coop::covar(sample_frac(valid_data, replace = TRUE))
+    coop::covar(sample_frac(train_data, replace = TRUE))
   })
 
   # compute the bootstrap means of the estimates_list and sample_cov_list

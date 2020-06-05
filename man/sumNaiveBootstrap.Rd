@@ -9,7 +9,6 @@ sumNaiveBootstrap(
   estimates,
   sample_cov_mat,
   train_data,
-  valid_data,
   num_iter,
   est_args = NULL
 )
@@ -25,8 +24,6 @@ estimate over a given fold.}
 estimated over a given fold.}
 
 \item{train_data}{A \code{data.frame} (or similar) of the training data.}
-
-\item{valid_data}{A \code{data.frame} (or similar) of the validation data.}
 
 \item{num_iter}{A positive integer defining the number of bootstrap samples
 to compute.}
