@@ -4,22 +4,18 @@
 \alias{scaledFrobeniusLoss}
 \title{Scaled Frobenius Loss}
 \usage{
-scaledFrobeniusLoss(est_mat, sample_cov_mat, cov_sum)
+scaledFrobeniusLoss(est_mat, sample_cov_mat)
 }
 \arguments{
 \item{est_mat}{A \code{matrix} output from an estimator function.}
 
 \item{sample_cov_mat}{A \code{matrix}, the sample covariance matrix.}
-
-\item{cov_sum}{A \code{numeric} representing the sum of covariance estimates
-between the identically positioned elements of \code{est_mat} and
-\code{sample_cov_mat}.}
 }
 \value{
 The \code{numeric} scaled Frobenius loss of \code{est_mat}.
 }
 \description{
-\code{scaledFrobeniusLoss} computes a tractable version of the
-scaled Frobenius loss for an estimate of the covariance matrix.
+\code{scaledFrobeniusLoss} computes the scaled Frobenius matrix
+loss of a covariance matrix estimate.
 }
 \keyword{internal}
