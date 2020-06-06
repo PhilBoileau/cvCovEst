@@ -49,4 +49,3 @@ on a given \code{fold}.
 loss over a \code{fold} object (from \pkg{origami}
 \insertRef{Coyle2018}{cvCovEst}).
 }
-\keyword{internal}

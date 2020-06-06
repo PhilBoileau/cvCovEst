@@ -30,9 +30,8 @@
 #'  their hyperparameters (if any), and their scaled Frobenius loss evaluated
 #'  on a given \code{fold}.
 #'
-#' @keywords internal
+#' @export
 cvFrobeniusLoss <- function(fold, dat,
-                            resample_fun = sumNaiveBootstrap, resample_iter,
                             estimator_funs, estimator_params = NULL) {
 
   # split the data into training and validation
@@ -146,7 +145,7 @@ cvFrobeniusLoss <- function(fold, dat,
 #'  their hyperparameters (if any), and their scaled Frobenius loss evaluated
 #'  on a given \code{fold}.
 #'
-#' @keywords internal
+#' @export
 cvPenFrobeniusLoss <- function(fold, dat,
                                resample_fun = sumNaiveBootstrap, resample_iter,
                                estimator_funs, estimator_params = NULL) {

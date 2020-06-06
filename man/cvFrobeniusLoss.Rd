@@ -4,14 +4,7 @@
 \alias{cvFrobeniusLoss}
 \title{Cross-Validation Function for Scaled Frobenius Loss}
 \usage{
-cvFrobeniusLoss(
-  fold,
-  dat,
-  resample_fun = sumNaiveBootstrap,
-  resample_iter,
-  estimator_funs,
-  estimator_params = NULL
-)
+cvFrobeniusLoss(fold, dat, estimator_funs, estimator_params = NULL)
 }
 \arguments{
 \item{fold}{A \code{fold} object (from \code{\link[origami]{make_folds}})
@@ -41,4 +34,3 @@ on a given \code{fold}.
 \code{cvFrobeniusLoss} evaluates the scaled Frobenius loss over
 a \code{fold} object (from \pkg{origami} \insertRef{Coyle2018}{cvCovEst}).
 }
-\keyword{internal}
