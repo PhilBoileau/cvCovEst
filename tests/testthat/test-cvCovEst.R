@@ -16,7 +16,7 @@ cv_cov_est_out <- cvCovEst(
     linearShrinkEst = list(alpha = c(0.1, 0.9)),
     thresholdingEst = list(gamma = c(0.2, 2))
   ),
-  cv_scheme = "v_fold", mc_split = 0.5,
+  cv_scheme = "v_fold",
   v_folds = 5, boot_iter = 20,
   center = TRUE, scale = FALSE, parallel = FALSE
 )
@@ -25,7 +25,7 @@ cv_cov_est_out <- cvCovEst(
 test_that("cross-validated covariance selector runs silently", {
   expect_silent(cvCovEst(
     dat = dat,
-    estimators = c(linearShrinkEst, thresholdingEst),
+    estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2))
@@ -34,10 +34,39 @@ test_that("cross-validated covariance selector runs silently", {
     v_folds = 5, boot_iter = 20,
     center = TRUE, scale = FALSE, parallel = FALSE
   ))
-})
-
-
-# simple test (TODO: improve test and add tests to cover more cases)
-test_that("cross-validated covariance selector minimizes risk", {
-  # TODO: add test
+  expect_silent(cvCovEst(
+    dat = dat,
+    estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2))
+    ),
+    cv_scheme = "mc", mc_split = 0.5,
+    v_folds = 5, boot_iter = 20,
+    center = TRUE, scale = FALSE, parallel = FALSE
+  ))
+  expect_silent(cvCovEst(
+    dat = dat,
+    estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2))
+    ),
+    cv_scheme = "v_fold", mc_split = 0.5,
+    v_folds = 5,
+    cv_loss = cvFrobeniusLoss,
+    center = TRUE, scale = FALSE, parallel = FALSE
+  ))
+  expect_silent(cvCovEst(
+    dat = dat,
+    estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2))
+    ),
+    cv_scheme = "mc", mc_split = 0.5,
+    v_folds = 5,
+    cv_loss = cvFrobeniusLoss,
+    center = TRUE, scale = FALSE, parallel = FALSE
+  ))
 })
