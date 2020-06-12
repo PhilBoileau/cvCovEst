@@ -68,7 +68,9 @@ linearShrinkLWEst <- function(dat) {
   d_n_2 <- matrixStats::sum2((sample_cov_mat - m_n*idn_pn)^2) / p_n
   b_bar_n_2 <- apply(dat, 1,
     function(x) {
+
       matrixStats::sum2((tcrossprod(x)  - sample_cov_mat)^2)
+
     }
   )
   b_bar_n_2 <- 1/n^2 * 1/p_n * sum(b_bar_n_2)
