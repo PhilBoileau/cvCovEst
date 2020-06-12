@@ -33,6 +33,20 @@ test_that("linearShrinkEst does not throw error", {
   ))
 })
 
+test_that("linearShrinkLWEst does not throw error", {
+  expect_silent(cvFrobeniusLoss(
+    fold = resub,
+    dat = dat,
+    estimator_funs = rlang::expr(c(linearShrinkLWEst)),
+  ))
+  expect_silent(cvPenFrobeniusLoss(
+    fold = resub,
+    dat = dat,
+    resample_iter = 10,
+    estimator_funs = rlang::expr(c(linearShrinkLWEst))
+  ))
+})
+
 test_that("thresholdEst does not throw error", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,

@@ -24,20 +24,70 @@ linearShrinkEst <- function(dat, alpha) {
   sample_cov_mat <- coop::covar(dat)
 
   # define the identity
-  ind_pn <- diag(ncol(dat))
+  idn_pn <- diag(ncol(dat))
 
   # shrink the sample covariance matrix
-  return(alpha * sample_cov_mat + (1 - alpha) * ind_pn)
+  return(alpha * sample_cov_mat + (1 - alpha) * idn_pn)
 }
 
-###############################################################################
+################################################################################
+
+#' Ledoit-Wolf Linear Shrinkage Estimator
+#'
+#' @description \code{linearShrinkLWEst} computes the asymptotically optimal
+#'  convex combination of the sample covariance matrix and the identity. This
+#'  convex combination effectively shrinks the eigenvalues of the sample
+#'  covariance matrix towards the identity. This estimator is more accurate
+#'  than the sample covariance matrix in high-dimensional settings under loose
+#'  assumptions. For more information, review the manuscript by
+#'  \insertRef{Ledoit2004}{cvCovEst}).
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#'
+#' @return A \code{matrix} corresponding to the Ledoit-Wolf linear shrinkgage
+#'  estimate of the covariance matrix.
+#'
+#' @importFrom matrixStats sum2
+#'
+#' @export
+linearShrinkLWEst <- function(dat) {
+
+  # get the number of variables and observations
+  p_n <- ncol(dat)
+  n <- nrow(dat)
+
+  # compute the sample covariance matrix
+  sample_cov_mat <- coop::covar(dat)
+
+  # define the identity
+  idn_pn <- diag(p_n)
+
+  # estimate the scalers
+  dat <- as.matrix(dat)
+  m_n <- matrixStats::sum2(sample_cov_mat * idn_pn) / p_n
+  d_n_2 <- matrixStats::sum2((sample_cov_mat - m_n*idn_pn)^2) / p_n
+  b_bar_n_2 <- apply(dat, 1,
+    function(x) {
+      matrixStats::sum2((tcrossprod(x)  - sample_cov_mat)^2)
+    }
+  )
+  b_bar_n_2 <- 1/n^2 * 1/p_n * sum(b_bar_n_2)
+  b_n_2 <- min(b_bar_n_2, d_n_2)
+
+  # compute the estimator
+  return(b_n_2/d_n_2*m_n*idn_pn + (d_n_2 - b_n_2)/d_n_2*sample_cov_mat)
+
+}
+
+################################################################################
 
 #' Simple Thresholding Estimator of Covariance Matrix
 #'
 #' @description \code{thresholdingEst} computes the thresholding estimate of
 #'  the covariance matrix for a given value of \code{gamma}. The threshold
 #'  estimator of the covariance matrix applies a hard thresholding operator to
-#'  each element of the sample covariance matrix.
+#'  each element of the sample covariance matrix. For more information on this
+#'  estimator, review #'  \insertRef{Bickel2008}{cvCovEst}).
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param gamma A \code{numeric} larger than or equal to 0 defining the hard
@@ -57,7 +107,7 @@ thresholdingEst <- function(dat, gamma) {
   return(replace(sample_cov_mat, abs(sample_cov_mat) < gamma, 0))
 }
 
-###############################################################################
+################################################################################
 
 #' Sample Covariance Matrix
 #'

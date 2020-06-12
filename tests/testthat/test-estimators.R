@@ -14,6 +14,13 @@ test_that("linear shrinkage estimator with 100% shrinkage is identity", {
 })
 
 
+# Ledoit Wolf Linear Shrinkage Estimator #######################################
+test_that("LW LS estimator runs without issue", {
+  expect_silent(
+    linearShrinkLWEst(mtcars)
+  )
+})
+
 # Simple Thresholding Estimator ###############################################
 test_that("simple thresholing estimator without thresholding is S_n", {
   expect_identical(

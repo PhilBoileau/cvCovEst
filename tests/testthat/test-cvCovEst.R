@@ -8,24 +8,12 @@ Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
 # sample 200 observations from multivariate normal with mean = 0, var = Sigma
 dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 
-# run CV-selector
-cv_cov_est_out <- cvCovEst(
-  dat = dat,
-  estimators = c(linearShrinkEst, thresholdingEst),
-  estimator_params = list(
-    linearShrinkEst = list(alpha = c(0.1, 0.9)),
-    thresholdingEst = list(gamma = c(0.2, 2))
-  ),
-  cv_scheme = "v_fold",
-  v_folds = 5, boot_iter = 20,
-  center = TRUE, scale = FALSE, parallel = FALSE
-)
-
 # simple test (TODO: improve test and add tests to cover more cases)
 test_that("cross-validated covariance selector runs silently", {
   expect_silent(cvCovEst(
     dat = dat,
-    estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
+    estimators = c(linearShrinkEst, linearShrinkLWEst,
+                   thresholdingEst, sampleCovEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2))
@@ -36,7 +24,8 @@ test_that("cross-validated covariance selector runs silently", {
   ))
   expect_silent(cvCovEst(
     dat = dat,
-    estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
+    estimators = c(linearShrinkEst, linearShrinkLWEst,
+                   thresholdingEst, sampleCovEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2))
@@ -47,7 +36,8 @@ test_that("cross-validated covariance selector runs silently", {
   ))
   expect_silent(cvCovEst(
     dat = dat,
-    estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
+    estimators = c(linearShrinkEst, linearShrinkLWEst,
+                   thresholdingEst, sampleCovEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2))
@@ -59,7 +49,8 @@ test_that("cross-validated covariance selector runs silently", {
   ))
   expect_silent(cvCovEst(
     dat = dat,
-    estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
+    estimators = c(linearShrinkEst, linearShrinkLWEst,
+                   thresholdingEst, sampleCovEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2))
