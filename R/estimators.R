@@ -128,3 +128,27 @@ sampleCovEst <- function(dat) {
   # compute the sample covariance matrix
   return(coop::covar(dat))
 }
+
+
+################################################################################
+
+#' Banding Estimator
+#'
+#' @description \code{bandingEst} estimates the covariance matrix of a data frame 
+#'   with ordered variables by forcing off-diagonal entries to be zero for
+#'   indicies that are far removed from one another.  The i, j - entry of the 
+#'   covariance matrix will be zero if the absolute value of i - j is greater
+#'   than some predetermined value, k. 
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#' 
+#' @param k An \code{integer} or vector containing 1 or more \code{integer}
+#'   values   
+#'
+#' @importFrom coop covar
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'   matrix.
+#'
+#' @export
+
