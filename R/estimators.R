@@ -151,4 +151,21 @@ sampleCovEst <- function(dat) {
 #'   matrix.
 #'
 #' @export
+bandingEst <- function(dat, k) {
+  # compute the sample covariance matrix
+  sam_cov <- coop::covar(dat)
+  
+  n <- nrow(sam_cov)
+  
+  # calculate the difference in indicies, set to 1 or 0 
+  for (i in 1:n) {
+    for (j in 1:n) {
+      
+      sam_cov[i,j] <- ifelse( abs(i - j) > k, 0, sam_cov[i,j] )
+      
+    }
+  }
+  
+  return(sam_cov)
+}
 
