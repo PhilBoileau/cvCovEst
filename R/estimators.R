@@ -137,13 +137,12 @@ sampleCovEst <- function(dat) {
 #' @description \code{bandingEst} estimates the covariance matrix of a data frame 
 #'   with ordered variables by forcing off-diagonal entries to be zero for
 #'   indicies that are far removed from one another.  The i, j - entry of the 
-#'   covariance matrix will be zero if the absolute value of i - j is greater
-#'   than some predetermined value, k. 
+#'   estimated covariance matrix will be zero if the absolute value of i - j is 
+#'   greater than some non-negative constant, k. 
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' 
-#' @param k An \code{integer} or vector containing 1 or more \code{integer}
-#'   values   
+#' @param k A non-negative, numeric integer  
 #'
 #' @importFrom coop covar
 #'
@@ -152,6 +151,18 @@ sampleCovEst <- function(dat) {
 #'
 #' @export
 bandingEst <- function(dat, k) {
+  # check for negative values of k
+  if (any(k < 0)) { 
+    warning("Only non-negative values of k are allowed.")
+    stop()
+  }
+  
+  # check for non-integer values
+  if (as.integer(k) != k) {
+    warning("k must be an integer, not decimal.")
+    stop()
+    }
+  
   # compute the sample covariance matrix
   sam_cov <- coop::covar(dat)
   
