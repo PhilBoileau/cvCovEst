@@ -13,10 +13,11 @@ test_that("cross-validated covariance selector runs silently", {
   expect_silent(cvCovEst(
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
-                   thresholdingEst, sampleCovEst),
+                   thresholdingEst, sampleCovEst, bandingEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
-      thresholdingEst = list(gamma = c(0.2, 2))
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1, 5))
     ),
     cv_scheme = "v_fold", mc_split = 0.5,
     v_folds = 5, boot_iter = 20,
@@ -25,10 +26,11 @@ test_that("cross-validated covariance selector runs silently", {
   expect_silent(cvCovEst(
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
-                   thresholdingEst, sampleCovEst),
+                   thresholdingEst, sampleCovEst, bandingEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
-      thresholdingEst = list(gamma = c(0.2, 2))
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1, 5))
     ),
     cv_scheme = "mc", mc_split = 0.5,
     v_folds = 5, boot_iter = 20,
@@ -37,10 +39,11 @@ test_that("cross-validated covariance selector runs silently", {
   expect_silent(cvCovEst(
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
-                   thresholdingEst, sampleCovEst),
+                   thresholdingEst, sampleCovEst, bandingEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
-      thresholdingEst = list(gamma = c(0.2, 2))
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1, 5))
     ),
     cv_scheme = "v_fold", mc_split = 0.5,
     v_folds = 5,
@@ -50,10 +53,11 @@ test_that("cross-validated covariance selector runs silently", {
   expect_silent(cvCovEst(
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
-                   thresholdingEst, sampleCovEst),
+                   thresholdingEst, sampleCovEst, bandingEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
-      thresholdingEst = list(gamma = c(0.2, 2))
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1, 5))
     ),
     cv_scheme = "mc", mc_split = 0.5,
     v_folds = 5,

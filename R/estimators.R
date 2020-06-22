@@ -128,3 +128,61 @@ sampleCovEst <- function(dat) {
   # compute the sample covariance matrix
   return(coop::covar(dat))
 }
+
+
+################################################################################
+
+#' Banding Estimator
+#'
+#' @description \code{bandingEst} estimates the covariance matrix of a data frame
+#'   with ordered variables by forcing off-diagonal entries to be zero for
+#'   indicies that are far removed from one another.  The i, j - entry of the
+#'   estimated covariance matrix will be zero if the absolute value of i - j is
+#'   greater than some non-negative constant, k.  \emph{Note: argument checks for
+#'   this function were removed for computational efficiency.}
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#'
+#' @param k A non-negative, numeric integer
+#'
+#' @importFrom coop covar
+#' @importFrom dplyr bind_cols
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'   matrix.
+#'
+#' @export
+bandingEst <- function(dat, k) {
+
+  # compute the sample covariance matrix
+  sam_cov <- coop::covar(dat)
+
+  n <- ncol(sam_cov)
+
+  # loop over different indicies to create an indicator matrix
+  indicator_list <- lapply(1:n, function(i) {
+    # only consider the lower triangular matrix entries
+    j <- i:n
+
+    # calculate/indicate any differences greater than k
+    di <- ifelse(abs(i - j) > k, 0, 1)
+
+    # create a new vector corresponding to lower triangular matrix
+    di <- c(rep(0, i-1), di)
+
+    return(di)
+
+  })
+
+  # combine vectors
+  indicator_matrix <- suppressMessages(dplyr::bind_cols(indicator_list))
+
+  # flip the matrix
+  indicator_matrix <- indicator_matrix + t(indicator_matrix) - diag(1, n)
+
+  # replace the sample covariance matrix
+  sam_cov <- replace(sam_cov, which(indicator_matrix == 0), 0)
+
+  return(sam_cov)
+}
+
