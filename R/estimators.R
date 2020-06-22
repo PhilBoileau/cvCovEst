@@ -146,6 +146,7 @@ sampleCovEst <- function(dat) {
 #' @param k A non-negative, numeric integer
 #'
 #' @importFrom coop covar
+#' @importFrom dplyr bind_cols
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'   matrix.
@@ -169,12 +170,12 @@ bandingEst <- function(dat, k) {
     # create a new vector corresponding to lower triangular matrix
     di <- c(rep(0, i-1), di)
 
-    di
+    return(di)
 
   })
 
   # combine vectors
-  indicator_matrix <- dplyr::bind_cols(indicator_list)
+  indicator_matrix <- suppressMessages(dplyr::bind_cols(indicator_list))
 
   # flip the matrix
   indicator_matrix <- indicator_matrix + t(indicator_matrix) - diag(1, n)

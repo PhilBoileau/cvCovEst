@@ -1,3 +1,7 @@
+# cvCovEst 0.03 (2020-06-22)
+
+* Adding banding estimator
+
 # cvCovEst 0.0.2 (2020-06-06)
 
 * Added unpenalized frobenius matrix loss
