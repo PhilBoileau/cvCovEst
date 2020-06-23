@@ -69,7 +69,7 @@ cvCovEst <- function(
    thresholdingEst = list(gamma = 0)
   ),
   cv_scheme = "mc", mc_split = 0.5, v_folds = 10L,
-  cv_loss = cvPenFrobeniusLoss,
+  cv_loss = cvFrobeniusLoss,
   boot_iter = 100L,
   center = TRUE,
   scale = TRUE,
@@ -77,7 +77,19 @@ cvCovEst <- function(
 )
 {
 
+  # grab estimator expression
   estimators <- rlang::enexpr(estimators)
+
+  #grab the cv_loss function name as astring
+  cv_loss_name <- rlang::enexpr(cv_loss)
+
+  # check inputs
+  checkArgs(
+    dat,
+    estimators, estimator_params,
+    cv_scheme, mc_split, v_folds, cv_loss_name, boot_iter,
+    center, scale, parallel
+  )
 
   # center and scale the data, if desired
   dat <- safeColScale(X = dat, center = center, scale = scale)

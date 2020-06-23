@@ -1,3 +1,7 @@
+# cvCovEst 0.03 (2020-06-23)
+
+* Adding argument checker for cvCovEst function
+
 # cvCovEst 0.03 (2020-06-22)
 
 * Adding banding estimator

@@ -39,14 +39,14 @@ test_that("simple thresholing estimator with large threshold is 0 matrix", {
 # Banding Estimator ###########################################################
 test_that("banding estimator with k = 0 is diagonal of S_n", {
   expect_identical(
-    bandingEst(mtcars, k = 0) %>% unname(),
+    bandingEst(mtcars, k = 0L) %>% unname(),
     diag( diag( coop::covar(mtcars) ) )
   )
 })
 
 test_that("banding estimator with k >> 0 is S_n", {
   expect_identical(
-    bandingEst(mtcars, k = 1000000),
+    bandingEst(mtcars, k = 1000000L),
     coop::covar(mtcars)
   )
 })
