@@ -4,7 +4,7 @@
 #'  to the \code{cvCovEst} function meet its specifications.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
-#' @param estimators A \code{list} of estimator functions to be
+#' @param estimators A \code{list} of estimator functions names to be
 #'  considered in the cross-validated selection procedure.
 #' @param estimator_params A named \code{list} of arguments corresponding to
 #'  the hyperparameters of covariance matrix estimators in \code{estimators}.
@@ -23,7 +23,7 @@
 #' @param v_folds A \code{integer} larger than or equal to 1 indicating the
 #'  number of folds to use during cross-validation. The default is 10,
 #'  regardless of cross-validation scheme.
-#' @param cv_loss A \code{function} indicating the loss function to use.
+#' @param cv_loss A \code{character} indicating the loss function to use.
 #'  Defaults to the penalized scaled Frobenius loss, \code{cvPenFrobeniusLoss}.
 #'  The non-penalized version, \code{cvFrobeniusLoss} is offered as well.
 #' @param boot_iter A \code{integer} dictating the number of bootstrap
@@ -39,6 +39,11 @@
 #'  cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
 #'  is passed directly to \code{\link[origami]{cross_validate}}.
 #'
+#' @importFrom assertthat assert_that is.flag
+#' @importFrom methods is
+#' @importFrom dplyr case_when
+#' @importFrom rlang is_bare_numeric is_integer is_null
+#'
 #' @return Whether all argument conditions are satisfied
 #'
 #' @keywords internal
@@ -48,5 +53,63 @@ checkArgs <- function(dat,
                       cv_loss, boot_iter,
                       center, scale,
                       parallel) {
+
+  # assert that the data is of the right class
+  # TODO: test cvCovEst with these sparse matrix classes
+  assertthat::assert_that(
+    tibble::is_tibble(dat) ||
+      is.data.frame(dat) ||
+      is.matrix(dat) ||
+      is(dat, "dgeMatrix") ||
+      is(dat, "dgCMatrix")
+  )
+
+  # assert that estimators are defined in cvCovEst package
+  assertthat::assert_that(
+    all(
+      estimators %in% c("linearShrinkEst", "linearShrinkLWEst",
+                        "thresholdingEst", "sampleCovEst", "bandingEst")
+    )
+  )
+
+  # assert that estimator hyperparameters are well defined
+  dplyr::case_when(
+    "linearShrinkEst" %in% estimators ~ assertthat::assert_that(
+      all(rlang::is_bare_numeric(estimator_params$linearShrinkEst$alpha)),
+      all(estimator_params$linearShrinkEst$alpha >= 0),
+      all(estimator_params$linearShrinkEst$alpha <= 1),
+    ),
+    "thresholdingEst" %in% estimators ~ assertthat::assert_that(
+      all(rlang::is_bare_numeric(estimator_params$thresholdingEst$gamma)),
+      all(estimator_params$thresholdingEst$gamma >= 0)
+    ),
+    "bandingEst" %in% estimators ~ assertthat::assert_that(
+      all(rlang::is_integer(estimator_params$bandingEst$k)),
+      all(estimator_params$bandingEst$k >= 0)
+    )
+  )
+
+  # assert that cv scheme is supported and well defined
+  assertthat::assert_that(
+    cv_scheme == "mc" ||
+      cv_scheme == "v_fold",
+    mc_split > 0,
+    mc_split < 1,
+    v_folds > 1,
+    v_folds < nrow(dat),
+    (rlang::is_null(boot_iter) && cv_loss != "cvPenFrobeniusLoss") ||
+      boot_iter >= 10
+  )
+
+  # assert that choice of loss function is well defined
+  assert_that(
+    cv_loss == "cvFrobeniusLoss" ||
+      cv_loss == "cvPenFrobeniusLoss"
+  )
+
+  # assert that center, scaling, and parallel are flags
+  assertthat::assert_that(assertthat::is.flag(center))
+  assertthat::assert_that(assertthat::is.flag(scale))
+  assertthat::assert_that(assertthat::is.flag(parallel))
 
 }

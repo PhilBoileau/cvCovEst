@@ -31,7 +31,8 @@ Imports:
     tibble,
     assertthat,
     rlang,
-    MASS
+    MASS,
+    methods
 Suggests:
     testthat,
     knitr,
