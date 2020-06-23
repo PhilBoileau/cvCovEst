@@ -68,24 +68,25 @@ checkArgs <- function(dat,
   assertthat::assert_that(
     all(
       estimators %in% c("linearShrinkEst", "linearShrinkLWEst",
-                        "thresholdingEst", "sampleCovEst", "bandingEst")
-    )
+                        "thresholdingEst", "sampleCovEst", "bandingEst") == TRUE
+    ),
+    msg = "Only estimators implemented in the cvCovEst package can be used."
   )
 
   # assert that estimator hyperparameters are well defined
   dplyr::case_when(
     "linearShrinkEst" %in% estimators ~ assertthat::assert_that(
-      all(rlang::is_bare_numeric(estimator_params$linearShrinkEst$alpha)),
-      all(estimator_params$linearShrinkEst$alpha >= 0),
-      all(estimator_params$linearShrinkEst$alpha <= 1),
+      all(rlang::is_bare_numeric(estimator_params$linearShrinkEst$alpha)) == TRUE,
+      all(estimator_params$linearShrinkEst$alpha >= 0) == TRUE,
+      all(estimator_params$linearShrinkEst$alpha <= 1) == TRUE
     ),
     "thresholdingEst" %in% estimators ~ assertthat::assert_that(
-      all(rlang::is_bare_numeric(estimator_params$thresholdingEst$gamma)),
-      all(estimator_params$thresholdingEst$gamma >= 0)
+      all(rlang::is_bare_numeric(estimator_params$thresholdingEst$gamma)) == TRUE,
+      all(estimator_params$thresholdingEst$gamma >= 0) == TRUE
     ),
     "bandingEst" %in% estimators ~ assertthat::assert_that(
-      all(rlang::is_integer(estimator_params$bandingEst$k)),
-      all(estimator_params$bandingEst$k >= 0)
+      all(rlang::is_integer(estimator_params$bandingEst$k)) == TRUE,
+      all(estimator_params$bandingEst$k >= 0) == TRUE
     )
   )
 
@@ -97,8 +98,8 @@ checkArgs <- function(dat,
     mc_split < 1,
     v_folds > 1,
     v_folds < nrow(dat),
-    (rlang::is_null(boot_iter) && cv_loss != "cvPenFrobeniusLoss") ||
-      boot_iter >= 10
+    ifelse(cv_loss == "cvPenFrobeniusLoss" && rlang::is_null(boot_iter), FALSE,
+      ifelse(cv_loss == "cvPenFrobeniusLoss" && boot_iter <= 10, FALSE, TRUE))
   )
 
   # assert that choice of loss function is well defined
