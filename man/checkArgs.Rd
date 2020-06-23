@@ -21,7 +21,7 @@ checkArgs(
 \arguments{
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
-\item{estimators}{A \code{list} of estimator functions names to be
+\item{estimators}{A \code{list} of estimator functions to be
 considered in the cross-validated selection procedure.}
 
 \item{estimator_params}{A named \code{list} of arguments corresponding to
@@ -45,7 +45,7 @@ of data in the validation set of each Monte Carlo cross-validation fold.}
 number of folds to use during cross-validation. The default is 10,
 regardless of cross-validation scheme.}
 
-\item{cv_loss}{A \code{character} indicating the loss function to use.
+\item{cv_loss}{An \code{expression} indicating the loss function to use.
 Defaults to the penalized scaled Frobenius loss, \code{cvPenFrobeniusLoss}.
 The non-penalized version, \code{cvFrobeniusLoss} is offered as well.}
 

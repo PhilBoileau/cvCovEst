@@ -12,7 +12,7 @@ cvCovEst(
   cv_scheme = "mc",
   mc_split = 0.5,
   v_folds = 10L,
-  cv_loss = cvPenFrobeniusLoss,
+  cv_loss = cvFrobeniusLoss,
   boot_iter = 100L,
   center = TRUE,
   scale = TRUE,

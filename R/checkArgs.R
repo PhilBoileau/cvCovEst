@@ -4,7 +4,7 @@
 #'  to the \code{cvCovEst} function meet its specifications.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
-#' @param estimators A \code{list} of estimator functions names to be
+#' @param estimators A \code{list} of estimator functions to be
 #'  considered in the cross-validated selection procedure.
 #' @param estimator_params A named \code{list} of arguments corresponding to
 #'  the hyperparameters of covariance matrix estimators in \code{estimators}.
@@ -23,7 +23,7 @@
 #' @param v_folds A \code{integer} larger than or equal to 1 indicating the
 #'  number of folds to use during cross-validation. The default is 10,
 #'  regardless of cross-validation scheme.
-#' @param cv_loss A \code{character} indicating the loss function to use.
+#' @param cv_loss An \code{expression} indicating the loss function to use.
 #'  Defaults to the penalized scaled Frobenius loss, \code{cvPenFrobeniusLoss}.
 #'  The non-penalized version, \code{cvFrobeniusLoss} is offered as well.
 #' @param boot_iter A \code{integer} dictating the number of bootstrap
@@ -41,8 +41,9 @@
 #'
 #' @importFrom assertthat assert_that is.flag
 #' @importFrom methods is
-#' @importFrom dplyr case_when
-#' @importFrom rlang is_bare_numeric is_integer is_null
+#' @importFrom dplyr case_when "%>%"
+#' @importFrom rlang is_bare_numeric is_integer is_null expr_deparse
+#' @importFrom stringr str_sub str_split
 #'
 #' @return Whether all argument conditions are satisfied
 #'
@@ -53,6 +54,16 @@ checkArgs <- function(dat,
                       cv_loss, boot_iter,
                       center, scale,
                       parallel) {
+
+  # turn list of estimator functions to a vector of strings
+  estimators <- estimators %>%
+    rlang::expr_deparse() %>%
+    stringr::str_sub(3, -2) %>%
+    stringr::str_split(", ", simplify = TRUE) %>%
+    as.vector()
+
+  # return the name of the cv loss
+  cv_loss <- cv_loss %>% rlang::expr_deparse()
 
   # assert that the data is of the right class
   # TODO: test cvCovEst with these sparse matrix classes
@@ -99,7 +110,7 @@ checkArgs <- function(dat,
     v_folds > 1,
     v_folds < nrow(dat),
     ifelse(cv_loss == "cvPenFrobeniusLoss" && rlang::is_null(boot_iter), FALSE,
-      ifelse(cv_loss == "cvPenFrobeniusLoss" && boot_iter <= 10, FALSE, TRUE))
+      ifelse(cv_loss == "cvPenFrobeniusLoss" && boot_iter < 10, FALSE, TRUE))
   )
 
   # assert that choice of loss function is well defined

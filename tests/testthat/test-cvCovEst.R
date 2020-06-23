@@ -17,7 +17,7 @@ test_that("cross-validated covariance selector runs silently", {
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
-      bandingEst = list(k = c(1, 5))
+      bandingEst = list(k = c(1L, 5L))
     ),
     cv_scheme = "v_fold", mc_split = 0.5,
     v_folds = 5, boot_iter = 20,
@@ -30,7 +30,7 @@ test_that("cross-validated covariance selector runs silently", {
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
-      bandingEst = list(k = c(1, 5))
+      bandingEst = list(k = c(1L, 5L))
     ),
     cv_scheme = "mc", mc_split = 0.5,
     v_folds = 5, boot_iter = 20,
@@ -43,11 +43,11 @@ test_that("cross-validated covariance selector runs silently", {
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
-      bandingEst = list(k = c(1, 5))
+      bandingEst = list(k = c(1L, 5L))
     ),
     cv_scheme = "v_fold", mc_split = 0.5,
-    v_folds = 5,
-    cv_loss = cvFrobeniusLoss,
+    v_folds = 5, boot_iter = 10,
+    cv_loss = cvPenFrobeniusLoss,
     center = TRUE, scale = FALSE, parallel = FALSE
   ))
   expect_silent(cvCovEst(
@@ -57,11 +57,11 @@ test_that("cross-validated covariance selector runs silently", {
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
-      bandingEst = list(k = c(1, 5))
+      bandingEst = list(k = c(1L, 5L))
     ),
     cv_scheme = "mc", mc_split = 0.5,
-    v_folds = 5,
-    cv_loss = cvFrobeniusLoss,
+    v_folds = 5, boot_iter = 10,
+    cv_loss = cvPenFrobeniusLoss,
     center = TRUE, scale = FALSE, parallel = FALSE
   ))
 })
