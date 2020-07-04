@@ -62,14 +62,14 @@ test_that("tapering estimator with k = 0 is diagonal of S_n", {
 test_that("tapering estimator with k = 2*p is S_n", {
   expect_identical(
     taperingEst(mtcars, k = 22L) %>% unname(),
-    coop::covar(mtcars)
+    coop::covar(mtcars) %>% unname()
   )
 })
 
 test_that("tapering estimator with k >> 0 is S_n", {
   expect_identical(
     taperingEst(mtcars, k = 1000000L) %>% unname(),
-    coop::covar(mtcars)
+    coop::covar(mtcars) %>% unname()
   )
 })
 

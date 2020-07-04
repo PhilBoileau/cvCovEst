@@ -10,11 +10,12 @@ dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 
 # define the arguments as they appear inside cvCoveEst
 estimators <- rlang::expr(c(linearShrinkEst, thresholdingEst, sampleCovEst,
-                linearShrinkLWEst, bandingEst))
+                linearShrinkLWEst, bandingEst, taperingEst))
 estimator_params <- list(
   linearShrinkEst = list(alpha = c(0.1, 0.9)),
   thresholdingEst = list(gamma = c(0.2, 2)),
-  bandingEst = list(k = c(1L, 5L))
+  bandingEst = list(k = c(1L, 5L)),
+  taperingEst = list(k = c(2L, 6L))
 )
 cv_scheme <- "mc"
 mc_split <- 0.5
@@ -87,7 +88,8 @@ test_that("Only reasonable hyperparameters pass checks", {
     estimator_params = list(
       linearShrinkEst = list(alpha = c(-0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
-      bandingEst = list(k = c(1L, 5L))
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L))
     ),
     cv_scheme = cv_scheme,
     mc_split = mc_split,
@@ -104,7 +106,8 @@ test_that("Only reasonable hyperparameters pass checks", {
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 1.1)),
       thresholdingEst = list(gamma = c(0.2, 2)),
-      bandingEst = list(k = c(1L, 5L))
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L))
     ),
     cv_scheme = cv_scheme,
     mc_split = mc_split,
@@ -121,7 +124,8 @@ test_that("Only reasonable hyperparameters pass checks", {
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(-0.1, 2)),
-      bandingEst = list(k = c(1L, 5L))
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L))
     ),
     cv_scheme = cv_scheme,
     mc_split = mc_split,
@@ -138,7 +142,8 @@ test_that("Only reasonable hyperparameters pass checks", {
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
-      bandingEst = list(k = c(1.1, 5L))
+      bandingEst = list(k = c(1.1, 5L)),
+      taperingEst = list(k = c(2L, 6L))
     ),
     cv_scheme = cv_scheme,
     mc_split = mc_split,
@@ -155,7 +160,62 @@ test_that("Only reasonable hyperparameters pass checks", {
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
-      bandingEst = list(k = c(-2L, 5L))
+      bandingEst = list(k = c(-2L, 5L)),
+      taperingEst = list(k = c(2L, 6L))
+    ),
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    cv_loss = cv_loss,
+    boot_iter = boot_iter,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(2L, 5L)),
+      taperingEst = list(k = c(2.1, 6L))
+    ),
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    cv_loss = cv_loss,
+    boot_iter = boot_iter,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(2L, 5L)),
+      taperingEst = list(k = c(-2L, 6L))
+    ),
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    cv_loss = cv_loss,
+    boot_iter = boot_iter,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(2L, 5L)),
+      taperingEst = list(k = c(3L, 6L))
     ),
     cv_scheme = cv_scheme,
     mc_split = mc_split,
@@ -172,7 +232,8 @@ test_that("Only reasonable hyperparameters pass checks", {
     estimator_params = list(
       linearShrinkEst = list(alpha = c("a", 0.9)),
       thresholdingEst = list(gamma = c(0.2, "b")),
-      bandingEst = list(k = c(1L, 5L))
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L))
     ),
     cv_scheme = cv_scheme,
     mc_split = mc_split,
@@ -189,7 +250,8 @@ test_that("Only reasonable hyperparameters pass checks", {
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, "b")),
-      bandingEst = list(k = c(1L, 5L))
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L))
     ),
     cv_scheme = cv_scheme,
     mc_split = mc_split,
@@ -449,11 +511,13 @@ test_that("checkArgs works well in cvCovEstFunction", {
   expect_silent(cvCovEst(
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
-                   thresholdingEst, sampleCovEst, bandingEst),
+                   thresholdingEst, sampleCovEst, bandingEst,
+                   taperingEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
-      bandingEst = list(k = c(1L, 5L))
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, cv_loss = cvFrobeniusLoss,
     v_folds = 5, boot_iter = 10,
@@ -462,11 +526,13 @@ test_that("checkArgs works well in cvCovEstFunction", {
   expect_error(cvCovEst(
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
-                   thresholdingEst, sampleCovEst, bandingEst),
+                   thresholdingEst, sampleCovEst, bandingEst,
+                   taperingEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(-0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
-      bandingEst = list(k = c(1L, 5L))
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, cv_loss = cvPenFrobeniusLoss,
     v_folds = 5, boot_iter = 10,

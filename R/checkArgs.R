@@ -79,7 +79,8 @@ checkArgs <- function(dat,
   assertthat::assert_that(
     all(
       estimators %in% c("linearShrinkEst", "linearShrinkLWEst",
-                        "thresholdingEst", "sampleCovEst", "bandingEst") == TRUE
+                        "thresholdingEst", "sampleCovEst", "bandingEst",
+                        "taperingEst") == TRUE
     ),
     msg = "Only estimators implemented in the cvCovEst package can be used."
   )
@@ -98,6 +99,11 @@ checkArgs <- function(dat,
     "bandingEst" %in% estimators ~ assertthat::assert_that(
       all(rlang::is_integer(estimator_params$bandingEst$k)) == TRUE,
       all(estimator_params$bandingEst$k >= 0) == TRUE
+    ),
+    "taperingEst" %in% estimators ~ assertthat::assert_that(
+      all(rlang::is_integer(estimator_params$taperingEst$k)) == TRUE,
+      all(estimator_params$taperingEst$k >= 0) == TRUE,
+      all(estimator_params$taperingEst$k %% 2 == 0) == TRUE
     )
   )
 
