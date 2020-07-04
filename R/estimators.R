@@ -200,7 +200,7 @@ bandingEst <- function(dat, k) {
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
-#' @param k a non-negative, numeric integer
+#' @param k a non-negative, even numeric integer
 #'
 #' @importFrom coop covar
 #' @importFrom dplyr bind_cols
@@ -240,7 +240,7 @@ taperingEst <- function(dat, k) {
     })
 
     # multiply by corresponding entries in sample covariance matrix
-    sam_vec <- sam_cov[i, j]
+    sam_vec <- sam_cov[j, i]
     sam_vec <- sam_vec * w
 
     # create a new vector corresponding to lower triangular matrix column
