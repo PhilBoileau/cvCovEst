@@ -186,3 +186,80 @@ bandingEst <- function(dat, k) {
   return(sam_cov)
 }
 
+
+################################################################################
+
+#' Tapering Estimator
+#'
+#' @description \code{taperingEst} estimates the covariance matrix of a data
+#'  frame with ordered variables by gradually shrinking each off-diagonal entry
+#'  of the sample covariance matrix towards zero depending on its distance
+#'  from the diagonal.  The i, j - entry of the estimated covariance matrix will
+#'  be multipled by either 1, 0, or a given weight depending on a distance
+#'  parameter, k.  The value of k also determines the size of the weight.
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#'
+#' @param k a non-negative, numeric integer
+#'
+#' @importFrom coop covar
+#' @importFrom dplyr bind_cols
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'  matirx.
+#'
+#' @export
+taperingEst <- function(dat, k) {
+
+  # compute the sample covariance matrix
+  sam_cov <- coop::covar(dat)
+
+  n <- ncol(sam_cov)
+
+  k_h <- k/2
+
+  # loop over different indicies to create weight vectors
+  weight_list <- lapply(1:n, function(i) {
+    # only consider the lower triangular matrix entries
+    j <- i:n
+
+    # calculate the difference in indicies
+    di <- abs(i - j)
+
+    # loop over elements in the difference vector and assign weights
+    w <- sapply(di, function(d) {
+      wi <- 0
+
+      if (d <= k_h) {
+        wi <- 1
+      }
+      if (d > k_h & d < k) {
+        wi <- 2 - (d/k_h)
+      }
+      return(wi)
+    })
+
+    # multiply by corresponding entries in sample covariance matrix
+    sam_vec <- sam_cov[i, j]
+    sam_vec <- sam_vec * w
+
+    # create a new vector corresponding to lower triangular matrix column
+    sam_vec <- c(rep(0, i-1), sam_vec)
+
+    return(sam_vec)
+    })
+
+  # combine vectors
+  weight_matrix <- suppressMessages(dplyr::bind_cols(weight_list))
+
+  # flip the matrix
+  weight_matrix <- weight_matrix + t(weight_matrix) - diag(diag(sam_cov))
+
+  weight_matrix <- as.matrix(weight_matrix)
+
+  # return the new weight matrix
+  return(weight_matrix)
+
+}
+
+
