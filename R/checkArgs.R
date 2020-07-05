@@ -44,6 +44,7 @@
 #' @importFrom dplyr case_when "%>%"
 #' @importFrom rlang is_bare_numeric is_integer is_null expr_deparse
 #' @importFrom stringr str_sub str_split
+#' @importFrom stringi stri_remove_empty
 #'
 #' @return Whether all argument conditions are satisfied
 #'
@@ -60,7 +61,8 @@ checkArgs <- function(dat,
     rlang::expr_deparse() %>%
     stringr::str_sub(3, -2) %>%
     stringr::str_split(", ", simplify = TRUE) %>%
-    as.vector()
+    as.vector() %>%
+    stringi::stri_remove_empty()
 
   # return the name of the cv loss
   cv_loss <- cv_loss %>% rlang::expr_deparse()

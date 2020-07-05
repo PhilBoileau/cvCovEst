@@ -10,7 +10,7 @@ dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 
 # define the arguments as they appear inside cvCoveEst
 estimators <- rlang::expr(c(linearShrinkEst, thresholdingEst, sampleCovEst,
-                linearShrinkLWEst, bandingEst, taperingEst))
+                            linearShrinkLWEst, bandingEst, taperingEst))
 estimator_params <- list(
   linearShrinkEst = list(alpha = c(0.1, 0.9)),
   thresholdingEst = list(gamma = c(0.2, 2)),

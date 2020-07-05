@@ -55,15 +55,22 @@ test_that("banding estimator with k >> 0 is S_n", {
 test_that("tapering estimator with k = 0 is diagonal of S_n", {
   expect_identical(
     taperingEst(mtcars, k = 0L) %>% unname(),
-    diag( diag( coop::covar(mtcars) ) )
+    diag(diag( coop::covar(mtcars)))
   )
 })
 
-test_that("tapering estimator with k = 2*p is S_n", {
+test_that("tapering estimator with k = 2*p-2 is S_n", {
   expect_identical(
-    taperingEst(mtcars, k = 22L) %>% unname(),
+    taperingEst(mtcars, k = 20L) %>% unname(),
     coop::covar(mtcars) %>% unname()
   )
+})
+
+test_that("tapering estimator with k = 2*p-4 is not S_n", {
+  expect_false(identical(
+    taperingEst(mtcars, k = 18L) %>% unname(),
+    coop::covar(mtcars) %>% unname()
+  ))
 })
 
 test_that("tapering estimator with k >> 0 is S_n", {
