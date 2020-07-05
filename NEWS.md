@@ -1,3 +1,7 @@
+# cvCovEst 0.0.4 (2020-07-05)
+
+* Adding tapering estimator
+
 # cvCovEst 0.0.4 (2020-06-23)
 
 * Adding argument checker for cvCovEst function

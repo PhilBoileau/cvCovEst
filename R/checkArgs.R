@@ -44,6 +44,7 @@
 #' @importFrom dplyr case_when "%>%"
 #' @importFrom rlang is_bare_numeric is_integer is_null expr_deparse
 #' @importFrom stringr str_sub str_split
+#' @importFrom stringi stri_remove_empty
 #'
 #' @return Whether all argument conditions are satisfied
 #'
@@ -60,7 +61,8 @@ checkArgs <- function(dat,
     rlang::expr_deparse() %>%
     stringr::str_sub(3, -2) %>%
     stringr::str_split(", ", simplify = TRUE) %>%
-    as.vector()
+    as.vector() %>%
+    stringi::stri_remove_empty()
 
   # return the name of the cv loss
   cv_loss <- cv_loss %>% rlang::expr_deparse()
@@ -79,7 +81,8 @@ checkArgs <- function(dat,
   assertthat::assert_that(
     all(
       estimators %in% c("linearShrinkEst", "linearShrinkLWEst",
-                        "thresholdingEst", "sampleCovEst", "bandingEst") == TRUE
+                        "thresholdingEst", "sampleCovEst", "bandingEst",
+                        "taperingEst") == TRUE
     ),
     msg = "Only estimators implemented in the cvCovEst package can be used."
   )
@@ -98,6 +101,11 @@ checkArgs <- function(dat,
     "bandingEst" %in% estimators ~ assertthat::assert_that(
       all(rlang::is_integer(estimator_params$bandingEst$k)) == TRUE,
       all(estimator_params$bandingEst$k >= 0) == TRUE
+    ),
+    "taperingEst" %in% estimators ~ assertthat::assert_that(
+      all(rlang::is_integer(estimator_params$taperingEst$k)) == TRUE,
+      all(estimator_params$taperingEst$k >= 0) == TRUE,
+      all(estimator_params$taperingEst$k %% 2 == 0) == TRUE
     )
   )
 
