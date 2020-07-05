@@ -9,17 +9,26 @@ taperingEst(dat, k)
 \arguments{
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
-\item{k}{a non-negative, even numeric integer}
+\item{k}{A non-negative, even \code{numeric} integer.}
 }
 \value{
 A \code{matrix} corresponding to the estimate of the covariance
-matirx.
+matrix.
 }
 \description{
-\code{taperingEst} estimates the covariance matrix of a data
-frame with ordered variables by gradually shrinking each off-diagonal entry
-of the sample covariance matrix towards zero depending on its distance
-from the diagonal.  The i, j - entry of the estimated covariance matrix will
-be multipled by either 1, 0, or a given weight depending on a distance
-parameter, k.  The value of k also determines the size of the weight.
+\code{taperingEst} estimates the covariance matrix of a
+\code{data.frame}-like object with ordered variables by gradually shrinking
+the bands of the sample covariance matrix towards zero. The estimator is
+defined as the hadamard product of the sample covariance matrix and a weight
+matrix. The amount of shrinkage is dictated by the weight matrix, and is
+controlled by a hyperparameter, \code{k}. This estimator is attributed to
+\insertRef{cai2010}{cvCovEst}.
+
+The weight matrix is a Toeplitz matrix whose entries are defined as follows:
+Let i and j index the rows and columns of the weight matrix, respectively.
+If \code{abs(i-j) <= k/2}, then entry i,j in the weight matrix is equal to
+\enumerate{
+\item If \code{k/2 < abs(i-j) < k}, then entry i,j is equal to
+\code{2 - 2*abs(i-j)/k}. Otherwise, entry i,j is equal to 0.
+}
 }

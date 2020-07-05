@@ -89,7 +89,7 @@ linearShrinkLWEst <- function(dat) {
 #'  the covariance matrix for a given value of \code{gamma}. The threshold
 #'  estimator of the covariance matrix applies a hard thresholding operator to
 #'  each element of the sample covariance matrix. For more information on this
-#'  estimator, review #'  \insertRef{Bickel2008}{cvCovEst}).
+#'  estimator, review \insertRef{Bickel2008_thresh}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param gamma A \code{numeric} larger than or equal to 0 defining the hard
@@ -138,8 +138,8 @@ sampleCovEst <- function(dat) {
 #'   with ordered variables by forcing off-diagonal entries to be zero for
 #'   indicies that are far removed from one another.  The i, j - entry of the
 #'   estimated covariance matrix will be zero if the absolute value of i - j is
-#'   greater than some non-negative constant, k.  \emph{Note: argument checks for
-#'   this function were removed for computational efficiency.}
+#'   greater than some non-negative constant, \code{k}. This estimator was
+#'   put forth by \insertRef{bickel2008_banding}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
@@ -191,22 +191,30 @@ bandingEst <- function(dat, k) {
 
 #' Tapering Estimator
 #'
-#' @description \code{taperingEst} estimates the covariance matrix of a data
-#'  frame with ordered variables by gradually shrinking each off-diagonal entry
-#'  of the sample covariance matrix towards zero depending on its distance
-#'  from the diagonal.  The i, j - entry of the estimated covariance matrix will
-#'  be multipled by either 1, 0, or a given weight depending on a distance
-#'  parameter, k.  The value of k also determines the size of the weight.
+#' @description \code{taperingEst} estimates the covariance matrix of a
+#'  \code{data.frame}-like object with ordered variables by gradually shrinking
+#'  the bands of the sample covariance matrix towards zero. The estimator is
+#'  defined as the hadamard product of the sample covariance matrix and a weight
+#'  matrix. The amount of shrinkage is dictated by the weight matrix, and is
+#'  controlled by a hyperparameter, \code{k}. This estimator is attributed to
+#'  \insertRef{cai2010}{cvCovEst}.
+#'
+#'  The weight matrix is a Toeplitz matrix whose entries are defined as follows:
+#'  Let i and j index the rows and columns of the weight matrix, respectively.
+#'  If \code{abs(i-j) <= k/2}, then entry i,j in the weight matrix is equal to
+#'  1. If \code{k/2 < abs(i-j) < k}, then entry i,j is equal to
+#'  \code{2 - 2*abs(i-j)/k}. Otherwise, entry i,j is equal to 0.
+#'
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
-#' @param k a non-negative, even numeric integer
+#' @param k A non-negative, even \code{numeric} integer.
 #'
 #' @importFrom coop covar
 #' @importFrom dplyr bind_cols
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
-#'  matirx.
+#'  matrix.
 #'
 #' @export
 taperingEst <- function(dat, k) {
@@ -228,13 +236,13 @@ taperingEst <- function(dat, k) {
 
     # loop over elements in the difference vector and assign weights
     w <- sapply(di, function(d) {
-      wi <- 0
 
       if (d <= k_h) {
         wi <- 1
-      }
-      if (d > k_h & d < k) {
+      } else if (d > k_h & d < k) {
         wi <- 2 - (d/k_h)
+      } else {
+        wi <- 0
       }
       return(wi)
     })
@@ -254,7 +262,6 @@ taperingEst <- function(dat, k) {
 
   # flip the matrix
   weight_matrix <- weight_matrix + t(weight_matrix) - diag(diag(sam_cov))
-
   weight_matrix <- as.matrix(weight_matrix)
 
   # return the new weight matrix
