@@ -270,3 +270,107 @@ taperingEst <- function(dat, k) {
 }
 
 
+################################################################################
+
+#' Non-Linear Shrinkage Estimator (Description Not Updated)
+#'
+#' @description \code{nonlinearShrinkLWEst} estimates the covariance matrix of a
+#'  \code{data.frame}-like object with ordered variables by gradually shrinking
+#'  the bands of the sample covariance matrix towards zero. The estimator is
+#'  defined as the hadamard product of the sample covariance matrix and a weight
+#'  matrix. The amount of shrinkage is dictated by the weight matrix, and is
+#'  controlled by a hyperparameter, \code{k}. This estimator is attributed to
+#'  \insertRef{cai2010}{cvCovEst}.
+#'
+#'  The weight matrix is a Toeplitz matrix whose entries are defined as follows:
+#'  Let i and j index the rows and columns of the weight matrix, respectively.
+#'  If \code{abs(i-j) <= k/2}, then entry i,j in the weight matrix is equal to
+#'  1. If \code{k/2 < abs(i-j) < k}, then entry i,j is equal to
+#'  \code{2 - 2*abs(i-j)/k}. Otherwise, entry i,j is equal to 0.
+#'
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#'
+#'
+#'
+#' @importFrom coop covar
+#' @importFrom dplyr bind_cols
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'  matrix.
+#'
+#' @export
+nonlinearShrinkLWEst <- function(dat) {
+
+  n <- nrow(dat)
+  p <- ncol(dat)
+
+  # Compute the Sample Covariance Matrix
+  sam_cov <- coop::covar(dat)
+
+  # Get the sorted eigenvalues and eigenvectors
+  sam_eig <- eigen(sam_cov)
+
+  lambda <- sort(sam_eig$values, decreasing = FALSE, index.return = TRUE)
+
+  u <- sam_eig$vectors[,lambda$ix]
+
+  # Analytical Nonlinear Shrinkage Kernal Formula
+  i <- max(1, p - n + 1)
+  lambda <- lambda$x[i:p]
+  r <- length(lambda)
+  c <- min(n, p)
+  L <- matrix(lambda, nrow = r, ncol = c)
+
+  # LW Equation 4.9
+  h <- n^(-1/3)
+  H <- h * t(L)
+  x <- (L - t(L))/H
+
+  # LW Equation 4.7
+  s1 <- (3/4)/sqrt(5)
+  s2 <- -(3/10)/pi
+  pos_x <- (1 - (x^2)/5)
+  pos_x <- replace(pos_x, list = which(pos_x < 0), 0)
+  f_tilde = s1 * rowMeans(pos_x/H)
+
+  # LW Equation 4.8
+  log_term <- log(abs((sqrt(5) - x)/(sqrt(5) + x)))
+  Hftemp <- (s2 * x) + (s1/pi) * (1 - (x^2)/5) * log_term
+  sq5 <- which(abs(x) == sqrt(5))
+  Hftemp[sq5] <- s2*x[sq5]
+  H_tilde <- rowMeans(Hftemp/H)
+
+  # LW Equation 4.3
+  s3 <- pi*(p/n)
+  s4 <- 1/(h^2)
+  if (p <= n) {
+    d_tilde <- lambda/((s3 * lambda * f_tilde)^2 +
+                         (1 - (p/n) - s3 *lambda*H_tilde)^2)
+
+  }
+  else {
+    ones <- rep(1, p-n)
+    log_term <- log((1 + sqrt(5)*h)/(1 - sqrt(5)*h))
+    m <- mean(1/lambda)
+
+    # LW Equation C.8
+    Hf_tilde0 <- (1/pi) * ((3/10)*s4 + (s1/h)*(1 - (1/5)*s4) * log_term) * m
+
+    # LW Equation C.5
+    d_tilde0 <- 1/(pi*(p - n))/(n*Hf_tilde0)
+
+    # LW Equation C.4
+    d_tilde1 <- lambda/((pi^2 * lambda^2)*(f_tilde^2 + H_tilde^2))
+    d_tilde <- c(dtilde0*ones, dtilde1)
+  }
+
+  # LW Equation 4.4
+  sigma_tilde <- u %*% diag(d_tilde) %*% t(u)
+
+  return(sigma_tilde)
+}
+
+
+
+
