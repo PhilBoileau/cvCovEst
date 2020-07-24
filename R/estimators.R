@@ -274,27 +274,20 @@ taperingEst <- function(dat, k) {
 
 #' Non-Linear Shrinkage Estimator (Description Not Updated)
 #'
-#' @description \code{nonlinearShrinkLWEst} estimates the covariance matrix of a
-#'  \code{data.frame}-like object with ordered variables by gradually shrinking
-#'  the bands of the sample covariance matrix towards zero. The estimator is
-#'  defined as the hadamard product of the sample covariance matrix and a weight
-#'  matrix. The amount of shrinkage is dictated by the weight matrix, and is
-#'  controlled by a hyperparameter, \code{k}. This estimator is attributed to
-#'  \insertRef{cai2010}{cvCovEst}.
-#'
-#'  The weight matrix is a Toeplitz matrix whose entries are defined as follows:
-#'  Let i and j index the rows and columns of the weight matrix, respectively.
-#'  If \code{abs(i-j) <= k/2}, then entry i,j in the weight matrix is equal to
-#'  1. If \code{k/2 < abs(i-j) < k}, then entry i,j is equal to
-#'  \code{2 - 2*abs(i-j)/k}. Otherwise, entry i,j is equal to 0.
+#' @description \code{nonlinearShrinkLWEst} invokes the analytical formula
+#'  presented by Ledoit and Wolfe for applying a nonlinear shrinkage function
+#'  to the sample eigenvalues of the covariance matrix.  The shrinkage function
+#'  utilizes the limiting spectral density of the sample eigenvalues and its
+#'  Hilbert Transform, both of which are representated using nonparametric
+#'  kernel estimation.  The result of the Hilbert transform is that smaller
+#'  clusters of eigenvalues are pushed up towards larger clusters, thus creating
+#'  a localized shrinkage effect rather than a global one.  For more
+#'  information, see \insertRef{Ledoit2018}{cvCovEst}.
 #'
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
-#'
-#'
 #' @importFrom coop covar
-#' @importFrom dplyr bind_cols
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.

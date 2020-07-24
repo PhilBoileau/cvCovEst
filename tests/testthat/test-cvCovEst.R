@@ -14,7 +14,7 @@ test_that("cross-validated covariance selector runs silently", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst),
+                   taperingEst, nonlinearShrinkLWEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
@@ -29,7 +29,7 @@ test_that("cross-validated covariance selector runs silently", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst),
+                   taperingEst, nonlinearShrinkLWEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
@@ -44,7 +44,7 @@ test_that("cross-validated covariance selector runs silently", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst),
+                   taperingEst, nonlinearShrinkLWEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
@@ -60,7 +60,7 @@ test_that("cross-validated covariance selector runs silently", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst),
+                   taperingEst, nonlinearShrinkLWEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
