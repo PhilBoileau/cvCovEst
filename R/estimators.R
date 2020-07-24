@@ -355,7 +355,7 @@ nonlinearShrinkLWEst <- function(dat) {
 
     # LW Equation C.4
     d_tilde1 <- lambda/((pi^2 * lambda^2)*(f_tilde^2 + H_tilde^2))
-    d_tilde <- c(dtilde0*ones, dtilde1)
+    d_tilde <- c(d_tilde0*ones, d_tilde1)
   }
 
   # LW Equation 4.4
