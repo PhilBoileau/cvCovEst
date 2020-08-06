@@ -1,3 +1,7 @@
+# cvCovEst 0.0.5 (2020-08-06)
+
+* Adding analytical nonlinear shrinkage estimator 
+
 # cvCovEst 0.0.4 (2020-07-05)
 
 * Adding tapering estimator

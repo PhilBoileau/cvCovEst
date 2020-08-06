@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimators.R
 \name{thresholdingEst}
 \alias{thresholdingEst}
-\title{Simple Thresholding Estimator of Covariance Matrix}
+\title{Simple Thresholding Estimator}
 \usage{
 thresholdingEst(dat, gamma)
 }

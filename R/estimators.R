@@ -1,4 +1,4 @@
-#' Linear Shrinkage Estimator of Covariance Matrix
+#' Linear Shrinkage Estimator
 #'
 #' @description \code{linearShrinkEst} computes the linear shrinkage estimate
 #'   of the covariance matrix for a given value of \code{alpha}. The linear
@@ -83,7 +83,7 @@ linearShrinkLWEst <- function(dat) {
 
 ################################################################################
 
-#' Simple Thresholding Estimator of Covariance Matrix
+#' Simple Thresholding Estimator
 #'
 #' @description \code{thresholdingEst} computes the thresholding estimate of
 #'  the covariance matrix for a given value of \code{gamma}. The threshold
@@ -268,5 +268,102 @@ taperingEst <- function(dat, k) {
   return(weight_matrix)
 
 }
+
+
+################################################################################
+
+#' Analytical Non-Linear Shrinkage Estimator
+#'
+#' @description \code{nlShrinkLWEst} invokes the analytical estimator
+#'  presented by \insertRef{Ledoit2020}{cvCovEst} for applying a nonlinear
+#'  shrinkage function to the sample eigenvalues of the covariance matrix.
+#'  The shrinkage function relies on an application of the Hilbert Transform to
+#'  an estimate of the sample eigenvalues' limiting spectral density. This
+#'  estimated density is computed with the Epanechnikov kernel using a global
+#'  bandwidth parameter of n^(-1/3). The resulting shrinkage function pulls
+#'  eigenvalues towards the nearest mode of their empirical distribution, thus
+#'  creating a localized shrinkage effect rather than a global one.
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#'
+#' @importFrom coop covar
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'  matrix.
+#'
+#' @export
+nlShrinkLWEst <- function(dat) {
+
+  # get the dimensions of the data
+  n <- nrow(dat)
+  p <- ncol(dat)
+
+  # Compute the Sample Covariance Matrix
+  sam_cov <- coop::covar(dat)
+
+  # Get the sorted eigenvalues and eigenvectors
+  sam_eig <- eigen(sam_cov)
+  lambda <- sort(sam_eig$values, decreasing = FALSE, index.return = TRUE)
+  u <- sam_eig$vectors[, lambda$ix]
+
+  # Analytical Nonlinear Shrinkage Kernal Formula
+  i <- max(1, p - n + 1)
+  lambda <- lambda$x[i:p]
+  r <- length(lambda)
+  c <- min(n, p)
+  L <- matrix(lambda, nrow = r, ncol = c)
+
+  # LW Equation 4.9
+  h <- n^(-1/3)
+  H <- h * t(L)
+  x <- (L - t(L))/H
+
+  # LW Equation 4.7
+  s1 <- (3/4)/sqrt(5)
+  s2 <- -(3/10)/pi
+  pos_x <- (1 - (x^2)/5)
+  pos_x <- replace(pos_x, list = which(pos_x < 0), 0)
+  f_tilde = s1 * rowMeans(pos_x/H)
+
+  # LW Equation 4.8
+  log_term <- log(abs((sqrt(5) - x)/(sqrt(5) + x)))
+  Hftemp <- (s2 * x) + (s1/pi) * (1 - (x^2)/5) * log_term
+  sq5 <- which(abs(x) == sqrt(5))
+  Hftemp[sq5] <- s2*x[sq5]
+  H_tilde <- rowMeans(Hftemp/H)
+
+  # LW Equation 4.3
+  s3 <- pi*(p/n)
+  s4 <- 1/(h^2)
+  if (p <= n) {
+
+    d_tilde <- lambda/((s3 * lambda * f_tilde)^2 +
+                         (1 - (p/n) - s3 *lambda*H_tilde)^2)
+
+  } else {
+
+    ones <- rep(1, p-n)
+    log_term <- log((1 + sqrt(5)*h)/(1 - sqrt(5)*h))
+    m <- mean(1/lambda)
+
+    # LW Equation C.8
+    Hf_tilde0 <- (1/pi) * ((3/10)*s4 + (s1/h)*(1 - (1/5)*s4) * log_term) * m
+
+    # LW Equation C.5
+    d_tilde0 <- 1/(pi*(p - n))/(n*Hf_tilde0)
+
+    # LW Equation C.4
+    d_tilde1 <- lambda/((pi^2 * lambda^2)*(f_tilde^2 + H_tilde^2))
+    d_tilde <- c(d_tilde0*ones, d_tilde1)
+
+  }
+
+  # LW Equation 4.4
+  sigma_tilde <- u %*% diag(d_tilde) %*% t(u)
+
+  return(sigma_tilde)
+}
+
+
 
 

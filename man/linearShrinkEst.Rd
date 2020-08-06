@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimators.R
 \name{linearShrinkEst}
 \alias{linearShrinkEst}
-\title{Linear Shrinkage Estimator of Covariance Matrix}
+\title{Linear Shrinkage Estimator}
 \usage{
 linearShrinkEst(dat, alpha)
 }

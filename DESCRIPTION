@@ -8,6 +8,8 @@ Authors@R: c(
     person("Nima", "Hejazi", email = "nh@nimahejazi.org",
            role = "aut",
            comment = c(ORCID = "0000-0002-7127-2789")),
+    person("Brian", "Collica", email = "bcollica@berkeley.edu ",
+            role = "aut"),
     person("Mark", "van der Laan", email = "laan@berkeley.edu",
            role = c("ctb", "ths"),
            comment = c(ORCID = "0000-0003-1432-5511")),
@@ -19,8 +21,7 @@ Description: An efficient cross-validated approach for covariance matrix
     estimation, particularly useful in high-dimensional settings. The general
     methodology allows for cross-validation to be used to data-adaptively
     identify the optimal estimator of the covariance matrix from a pre-specified
-    set of candidate estimators. Also included are diagnostic tools for
-    assessing the quality of covariance matrix estimators.
+    set of candidate estimators.
 Depends: R (>= 3.2.0)
 Imports:
     matrixStats,
@@ -47,5 +48,5 @@ Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 RdMacros: Rdpack
