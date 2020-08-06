@@ -292,8 +292,9 @@ taperingEst <- function(dat, k) {
 #'  matrix.
 #'
 #' @export
-nonlinearShrinkLWEst <- function(dat) {
+nlShrinkLWEst <- function(dat) {
 
+  # get the dimensions of the data
   n <- nrow(dat)
   p <- ncol(dat)
 
@@ -302,10 +303,8 @@ nonlinearShrinkLWEst <- function(dat) {
 
   # Get the sorted eigenvalues and eigenvectors
   sam_eig <- eigen(sam_cov)
-
   lambda <- sort(sam_eig$values, decreasing = FALSE, index.return = TRUE)
-
-  u <- sam_eig$vectors[,lambda$ix]
+  u <- sam_eig$vectors[, lambda$ix]
 
   # Analytical Nonlinear Shrinkage Kernal Formula
   i <- max(1, p - n + 1)
@@ -337,11 +336,12 @@ nonlinearShrinkLWEst <- function(dat) {
   s3 <- pi*(p/n)
   s4 <- 1/(h^2)
   if (p <= n) {
+
     d_tilde <- lambda/((s3 * lambda * f_tilde)^2 +
                          (1 - (p/n) - s3 *lambda*H_tilde)^2)
 
-  }
-  else {
+  } else {
+
     ones <- rep(1, p-n)
     log_term <- log((1 + sqrt(5)*h)/(1 - sqrt(5)*h))
     m <- mean(1/lambda)
@@ -355,6 +355,7 @@ nonlinearShrinkLWEst <- function(dat) {
     # LW Equation C.4
     d_tilde1 <- lambda/((pi^2 * lambda^2)*(f_tilde^2 + H_tilde^2))
     d_tilde <- c(d_tilde0*ones, d_tilde1)
+
   }
 
   # LW Equation 4.4
