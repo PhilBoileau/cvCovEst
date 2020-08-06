@@ -83,7 +83,7 @@ test_that("tapering estimator with k >> 0 is S_n", {
 # Ledoit Wolf Nonlinear Shrinkage Estimator ####################################
 test_that("LW NLS estimator runs without issue", {
   expect_silent(
-    nonlinearShrinkLWEst(mtcars)
+    nlShrinkLWEst(mtcars)
   )
 })
 

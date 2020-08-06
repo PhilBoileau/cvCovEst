@@ -11,7 +11,7 @@ dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 # define the arguments as they appear inside cvCoveEst
 estimators <- rlang::expr(c(linearShrinkEst, thresholdingEst, sampleCovEst,
                             linearShrinkLWEst, bandingEst, taperingEst,
-                            nonlinearShrinkLWEst))
+                            nlShrinkLWEst))
 estimator_params <- list(
   linearShrinkEst = list(alpha = c(0.1, 0.9)),
   thresholdingEst = list(gamma = c(0.2, 2)),
@@ -531,7 +531,7 @@ test_that("checkArgs works well in cvCovEstFunction", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst, nonlinearShrinkLWEst),
+                   taperingEst, nlShrinkLWEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
@@ -546,7 +546,7 @@ test_that("checkArgs works well in cvCovEstFunction", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst, nonlinearShrinkLWEst),
+                   taperingEst, nlShrinkLWEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(-0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
