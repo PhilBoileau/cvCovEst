@@ -1,4 +1,4 @@
-#' Linear Shrinkage Estimator of Covariance Matrix
+#' Linear Shrinkage Estimator
 #'
 #' @description \code{linearShrinkEst} computes the linear shrinkage estimate
 #'   of the covariance matrix for a given value of \code{alpha}. The linear
@@ -83,7 +83,7 @@ linearShrinkLWEst <- function(dat) {
 
 ################################################################################
 
-#' Simple Thresholding Estimator of Covariance Matrix
+#' Simple Thresholding Estimator
 #'
 #' @description \code{thresholdingEst} computes the thresholding estimate of
 #'  the covariance matrix for a given value of \code{gamma}. The threshold
@@ -272,18 +272,17 @@ taperingEst <- function(dat, k) {
 
 ################################################################################
 
-#' Non-Linear Shrinkage Estimator (Description Not Updated)
+#' Analytical Non-Linear Shrinkage Estimator
 #'
-#' @description \code{nonlinearShrinkLWEst} invokes the analytical formula
-#'  presented by Ledoit and Wolfe for applying a nonlinear shrinkage function
-#'  to the sample eigenvalues of the covariance matrix.  The shrinkage function
-#'  utilizes the limiting spectral density of the sample eigenvalues and its
-#'  Hilbert Transform, both of which are representated using nonparametric
-#'  kernel estimation.  The result of the Hilbert transform is that smaller
-#'  clusters of eigenvalues are pushed up towards larger clusters, thus creating
-#'  a localized shrinkage effect rather than a global one.  For more
-#'  information, see \insertRef{Ledoit2018}{cvCovEst}.
-#'
+#' @description \code{nlShrinkLWEst} invokes the analytical estimator
+#'  presented by \insertRef{Ledoit2020}{cvCovEst} for applying a nonlinear
+#'  shrinkage function to the sample eigenvalues of the covariance matrix.
+#'  The shrinkage function relies on an application of the Hilbert Transform to
+#'  an estimate of the sample eigenvalues' limiting spectral density. This
+#'  estimated density is computed with the Epanechnikov kernel using a global
+#'  bandwidth parameter of n^(-1/3). The resulting shrinkage function pulls
+#'  eigenvalues towards the nearest mode of their empirical distribution, thus
+#'  creating a localized shrinkage effect rather than a global one.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
