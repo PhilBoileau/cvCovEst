@@ -82,7 +82,8 @@ checkArgs <- function(dat,
     all(
       estimators %in% c("linearShrinkEst", "linearShrinkLWEst",
                         "thresholdingEst", "sampleCovEst", "bandingEst",
-                        "taperingEst", "nlShrinkLWEst") == TRUE
+                        "taperingEst", "nlShrinkLWEst",
+                        "denseLinearShrinkEst") == TRUE
     ),
     msg = "Only estimators implemented in the cvCovEst package can be used."
   )
