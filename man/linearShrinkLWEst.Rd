@@ -20,5 +20,8 @@ convex combination effectively shrinks the eigenvalues of the sample
 covariance matrix towards the identity. This estimator is more accurate
 than the sample covariance matrix in high-dimensional settings under loose
 assumptions. For more information, review the manuscript by
-\insertRef{Ledoit2004}{cvCovEst}).
+\insertCite{Ledoit2004;textual}{cvCovEst}).
+}
+\references{
+\insertAllCited{}
 }

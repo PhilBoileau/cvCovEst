@@ -21,5 +21,8 @@ with ordered variables by forcing off-diagonal entries to be zero for
 indicies that are far removed from one another.  The i, j - entry of the
 estimated covariance matrix will be zero if the absolute value of i - j is
 greater than some non-negative constant, \code{k}. This estimator was
-put forth by \insertRef{bickel2008_banding}{cvCovEst}.
+put forth by \insertCite{bickel2008_banding;textual}{cvCovEst}.
+}
+\references{
+\insertAllCited{}
 }

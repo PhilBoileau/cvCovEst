@@ -20,6 +20,9 @@ matrix. This target matrix's diagonal elements are equal to the average
 of the sample covariance matrix estimate's diagonal elements, and its
 off-diagonal elements are equal to the average of the sample covariance
 matrix estimate's off-diagonal elements. For information on this estimator's
-derivation, see \insertCite{Ledoit2020b}{cvCovEst} and
-\insertCite{shafer2005}{cvCovEst}.
+derivation, see \insertCite{Ledoit2020b;textual}{cvCovEst} and
+\insertCite{shafer2005;textual}{cvCovEst}.
+}
+\references{
+\insertAllCited{}
 }
