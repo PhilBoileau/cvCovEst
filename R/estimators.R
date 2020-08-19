@@ -20,6 +20,7 @@
 #'
 #' @export
 linearShrinkEst <- function(dat, alpha) {
+
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
@@ -69,7 +70,7 @@ linearShrinkLWEst <- function(dat) {
   b_bar_n_2 <- apply(dat, 1,
     function(x) {
 
-      matrixStats::sum2((tcrossprod(x)  - sample_cov_mat)^2)
+      matrixStats::sum2((tcrossprod(x) - sample_cov_mat)^2)
 
     }
   )
@@ -365,5 +366,60 @@ nlShrinkLWEst <- function(dat) {
 }
 
 
+################################################################################
+
+#' Linear Shrinakge Estimator, Dense Target
+#'
+#' @description \code{denseLinearShrinkEst} computes the asymptotically optimal
+#'  convex combination of the sample covariance matrix and a dense, target
+#'  matrix. This target matrix's diagonal elements are equal to the average
+#'  of the sample covariance matrix estimate's diagonal elements, and its
+#'  off-diagonal elements are equal to the average of the sample covariance
+#'  matrix estimate's off-diagonal elements. For information on this estimator's
+#'  derivation, see \insertCite{Ledoit2020b}{cvCovEst} and
+#'  \insertCite{shafer2005}{cvCovEst}.
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#'
+#' @importFrom coop covar
+#' @importFrom Matrix triu
+#' @importFrom matrixStats sum2
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'  matrix.
+#'
+#' @export
+denseLinearShrinkEst <- function(dat) {
+
+  # get the number of variables and observations
+  p_n <- ncol(dat)
+  n <- nrow(dat)
+
+  # compute the sample covariance matrix
+  sample_cov_mat <- coop::covar(dat)
+
+  # compute elements of the dense target
+  mean_var <- mean(diag(sample_cov_mat))
+  mean_cov <- mean(Matrix::triu(sample_cov_mat)[upper.tri(sample_cov_mat)])
+  f_mat <- matrix(data = mean_cov, nrow = p_n, ncol = p_n)
+  diag(f_mat) <- mean_var
 
 
+  # compute shrinkage denominator
+  nu_hat <- matrixStats::sum2((f_mat - sample_cov_mat)^2)
+
+  # compute pi_hat
+  pi_hat <- apply(
+    dat, 1,
+    function(x) {
+      matrixStats::sum2((tcrossprod(x) - sample_cov_mat)^2)
+    }
+  )
+  pi_hat <- 1/n * sum(pi_hat)
+
+  # compute shrunken cov mat
+  gamma_hat <- 1/n * pi_hat / nu_hat
+  gamma_hat <- min(max(gamma_hat, 0), 1)
+
+  return(gamma_hat * f_mat + (1 - gamma_hat) * sample_cov_mat)
+}
