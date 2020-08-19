@@ -20,6 +20,7 @@
 #'
 #' @export
 linearShrinkEst <- function(dat, alpha) {
+
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
@@ -40,12 +41,15 @@ linearShrinkEst <- function(dat, alpha) {
 #'  covariance matrix towards the identity. This estimator is more accurate
 #'  than the sample covariance matrix in high-dimensional settings under loose
 #'  assumptions. For more information, review the manuscript by
-#'  \insertRef{Ledoit2004}{cvCovEst}).
+#'  \insertCite{Ledoit2004;textual}{cvCovEst}).
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
 #' @return A \code{matrix} corresponding to the Ledoit-Wolf linear shrinkgage
 #'  estimate of the covariance matrix.
+#'
+#' @references
+#'   \insertAllCited{}
 #'
 #' @importFrom matrixStats sum2
 #'
@@ -69,7 +73,7 @@ linearShrinkLWEst <- function(dat) {
   b_bar_n_2 <- apply(dat, 1,
     function(x) {
 
-      matrixStats::sum2((tcrossprod(x)  - sample_cov_mat)^2)
+      matrixStats::sum2((tcrossprod(x) - sample_cov_mat)^2)
 
     }
   )
@@ -89,13 +93,16 @@ linearShrinkLWEst <- function(dat) {
 #'  the covariance matrix for a given value of \code{gamma}. The threshold
 #'  estimator of the covariance matrix applies a hard thresholding operator to
 #'  each element of the sample covariance matrix. For more information on this
-#'  estimator, review \insertRef{Bickel2008_thresh}{cvCovEst}.
+#'  estimator, review \insertCite{Bickel2008_thresh;textual}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param gamma A \code{numeric} larger than or equal to 0 defining the hard
 #'  threshold applied to each element of \code{dat}'s sample covariance matrix.
 #'
 #' @importFrom coop covar
+#'
+#' @references
+#'   \insertAllCited{}
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'   matrix.
@@ -139,7 +146,7 @@ sampleCovEst <- function(dat) {
 #'   indicies that are far removed from one another.  The i, j - entry of the
 #'   estimated covariance matrix will be zero if the absolute value of i - j is
 #'   greater than some non-negative constant, \code{k}. This estimator was
-#'   put forth by \insertRef{bickel2008_banding}{cvCovEst}.
+#'   put forth by \insertCite{bickel2008_banding;textual}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
@@ -147,6 +154,9 @@ sampleCovEst <- function(dat) {
 #'
 #' @importFrom coop covar
 #' @importFrom dplyr bind_cols
+#'
+#' @references
+#'   \insertAllCited{}
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'   matrix.
@@ -197,7 +207,7 @@ bandingEst <- function(dat, k) {
 #'  defined as the hadamard product of the sample covariance matrix and a weight
 #'  matrix. The amount of shrinkage is dictated by the weight matrix, and is
 #'  controlled by a hyperparameter, \code{k}. This estimator is attributed to
-#'  \insertRef{cai2010}{cvCovEst}.
+#'  \insertCite{cai2010;textual}{cvCovEst}.
 #'
 #'  The weight matrix is a Toeplitz matrix whose entries are defined as follows:
 #'  Let i and j index the rows and columns of the weight matrix, respectively.
@@ -212,6 +222,9 @@ bandingEst <- function(dat, k) {
 #'
 #' @importFrom coop covar
 #' @importFrom dplyr bind_cols
+#'
+#' @references
+#'   \insertAllCited{}
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
@@ -275,18 +288,22 @@ taperingEst <- function(dat, k) {
 #' Analytical Non-Linear Shrinkage Estimator
 #'
 #' @description \code{nlShrinkLWEst} invokes the analytical estimator
-#'  presented by \insertRef{Ledoit2020}{cvCovEst} for applying a nonlinear
-#'  shrinkage function to the sample eigenvalues of the covariance matrix.
-#'  The shrinkage function relies on an application of the Hilbert Transform to
-#'  an estimate of the sample eigenvalues' limiting spectral density. This
-#'  estimated density is computed with the Epanechnikov kernel using a global
-#'  bandwidth parameter of n^(-1/3). The resulting shrinkage function pulls
-#'  eigenvalues towards the nearest mode of their empirical distribution, thus
-#'  creating a localized shrinkage effect rather than a global one.
+#'  presented by \insertCite{Ledoit2020;textual}{cvCovEst} for applying a
+#'  nonlinear shrinkage function to the sample eigenvalues of the covariance
+#'  matrix. The shrinkage function relies on an application of the Hilbert
+#'  Transform to an estimate of the sample eigenvalues' limiting spectral
+#'  density. This estimated density is computed with the Epanechnikov kernel
+#'  using a global bandwidth parameter of n^(-1/3). The resulting shrinkage
+#'  function pulls eigenvalues towards the nearest mode of their empirical
+#'  distribution, thus creating a localized shrinkage effect rather than a
+#'  global one.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
 #' @importFrom coop covar
+#'
+#' @references
+#'   \insertAllCited{}
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
@@ -365,5 +382,63 @@ nlShrinkLWEst <- function(dat) {
 }
 
 
+################################################################################
+
+#' Linear Shrinakge Estimator, Dense Target
+#'
+#' @description \code{denseLinearShrinkEst} computes the asymptotically optimal
+#'  convex combination of the sample covariance matrix and a dense, target
+#'  matrix. This target matrix's diagonal elements are equal to the average
+#'  of the sample covariance matrix estimate's diagonal elements, and its
+#'  off-diagonal elements are equal to the average of the sample covariance
+#'  matrix estimate's off-diagonal elements. For information on this estimator's
+#'  derivation, see \insertCite{Ledoit2020b;textual}{cvCovEst} and
+#'  \insertCite{shafer2005;textual}{cvCovEst}.
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#'
+#' @importFrom coop covar
+#' @importFrom Matrix triu
+#' @importFrom matrixStats sum2
+#'
+#' @references
+#'   \insertAllCited{}
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'  matrix.
+#'
+#' @export
+denseLinearShrinkEst <- function(dat) {
+
+  # get the number of variables and observations
+  p_n <- ncol(dat)
+  n <- nrow(dat)
+
+  # compute the sample covariance matrix
+  sample_cov_mat <- coop::covar(dat)
+
+  # compute elements of the dense target
+  mean_var <- mean(diag(sample_cov_mat))
+  mean_cov <- mean(Matrix::triu(sample_cov_mat)[upper.tri(sample_cov_mat)])
+  f_mat <- matrix(data = mean_cov, nrow = p_n, ncol = p_n)
+  diag(f_mat) <- mean_var
 
 
+  # compute shrinkage denominator
+  nu_hat <- matrixStats::sum2((f_mat - sample_cov_mat)^2)
+
+  # compute pi_hat
+  pi_hat <- apply(
+    dat, 1,
+    function(x) {
+      matrixStats::sum2((tcrossprod(x) - sample_cov_mat)^2)
+    }
+  )
+  pi_hat <- 1/n * sum(pi_hat)
+
+  # compute shrunken cov mat
+  gamma_hat <- 1/n * pi_hat / nu_hat
+  gamma_hat <- min(max(gamma_hat, 0), 1)
+
+  return(gamma_hat * f_mat + (1 - gamma_hat) * sample_cov_mat)
+}

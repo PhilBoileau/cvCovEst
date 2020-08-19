@@ -21,5 +21,8 @@ matrix.
 the covariance matrix for a given value of \code{gamma}. The threshold
 estimator of the covariance matrix applies a hard thresholding operator to
 each element of the sample covariance matrix. For more information on this
-estimator, review \insertRef{Bickel2008_thresh}{cvCovEst}.
+estimator, review \insertCite{Bickel2008_thresh;textual}{cvCovEst}.
+}
+\references{
+\insertAllCited{}
 }

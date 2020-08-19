@@ -1,3 +1,8 @@
+# cvCovEst 0.0.6 (2020-08-19)
+
+* Adding dense covariance matrix linear shrinkage estimator
+* Updating citations in estimators docs
+
 # cvCovEst 0.0.5 (2020-08-06)
 
 * Adding analytical nonlinear shrinkage estimator 
