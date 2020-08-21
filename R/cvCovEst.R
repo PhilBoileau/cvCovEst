@@ -84,6 +84,8 @@ cvCovEst <- function(
   cv_loss_name <- rlang::enexpr(cv_loss)
 
   # check inputs
+  # NOTE: Check if columns are centered when center = FALSE. If not, output
+  # message that they were centered automatically.
   checkArgs(
     dat,
     estimators, estimator_params,

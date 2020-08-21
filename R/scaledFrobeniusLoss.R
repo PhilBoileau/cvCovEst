@@ -30,30 +30,41 @@ penScaledFrobeniusLoss <- function(est_mat, sample_cov_mat, cov_sum) {
 }
 
 
-#' Scaled Frobenius Loss
+#' Aggregated Frobenius Loss
 #'
-#' @description \code{scaledFrobeniusLoss} computes the scaled Frobenius matrix
-#'  loss of a covariance matrix estimate.
+#' @description \code{frobeniusLoss} computes the aggregated, cross-validated
+#'   loss of \code{est_mat}, an estimate output by a covariance matrix
+#'   estimator, over a validation set.
 #'
 #' @param est_mat A \code{matrix} output from an estimator function.
-#' @param sample_cov_mat A \code{matrix}, the sample covariance matrix.
+#' @param valid_data A \code{numeric} \code{matrix} corresponding to the
+#'   validation set.
 #'
-#' @return The \code{numeric} scaled Frobenius loss of \code{est_mat}.
+#' @return The \code{numeric} aggregated Frobenius loss of \code{est_mat} for
+#'   over \code{valid_data}.
 #'
 #' @importFrom matrixStats sum2
+#' @importFrom Matrix tcrossproc
 #'
 #' @keywords internal
-scaledFrobeniusLoss <- function(est_mat, sample_cov_mat) {
+frobeniusloss <- function(est_mat, valid_data) {
   # TODO: implement sparse option
   # NOTE: don't check format here; will be computationally taxing
 
-  # compute the scaling factor
-  scaling_factor <- 1 / nrow(est_mat)
+  # compute the Frobenius loss for each observation in the validation set
+  valid_losses <- apply(
+    valid_data, 1,
+    function(obs) {
 
-  # compute the Frobenius norm
-  frobenius_norm <- matrixStats::sum2((est_mat - sample_cov_mat)^2)
+      # compute the rank one estimate of the validation set observation
+      rank_one_cov_mat <- Matrix::tcrossprod(obs)
 
-  # return the loss
-  loss <- scaling_factor * frobenius_norm
-  return(loss)
+      # compute the Frobenius loss
+      matrixStats::sum2((est_mat - rank_one_cov_mat)^2)
+
+    }
+  )
+
+  # compute the aggregated Frobenius loss
+  return(sum(valid_losses))
 }
