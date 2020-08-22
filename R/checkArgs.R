@@ -77,29 +77,38 @@ checkArgs <- function(dat,
   )
 
   # assert that estimator hyperparameters are well defined
-  dplyr::case_when(
-    "linearShrinkEst" %in% estimators ~ assertthat::assert_that(
+
+  if ("linearShrinkEst" %in% estimators) {
+    assertthat::assert_that(
       all(rlang::is_bare_numeric(estimator_params$linearShrinkEst$alpha)) == TRUE,
       all(estimator_params$linearShrinkEst$alpha >= 0) == TRUE,
       all(estimator_params$linearShrinkEst$alpha <= 1) == TRUE
-    ),
-    "thresholdingEst" %in% estimators ~ assertthat::assert_that(
+    )
+  }
+  if ("thresholdingEst" %in% estimators) {
+    assertthat::assert_that(
       all(rlang::is_bare_numeric(estimator_params$thresholdingEst$gamma)) == TRUE,
       all(estimator_params$thresholdingEst$gamma >= 0) == TRUE
-    ),
-    "bandingEst" %in% estimators ~ assertthat::assert_that(
+    )
+  }
+  if ("bandingEst" %in% estimators) {
+    assertthat::assert_that(
       all(rlang::is_integer(estimator_params$bandingEst$k)) == TRUE,
       all(estimator_params$bandingEst$k >= 0) == TRUE
-    ),
-    "taperingEst" %in% estimators ~ assertthat::assert_that(
+    )
+  }
+  if ("taperingEst" %in% estimators) {
+    assertthat::assert_that(
       all(rlang::is_integer(estimator_params$taperingEst$k)) == TRUE,
       all(estimator_params$taperingEst$k >= 0) == TRUE,
       all(estimator_params$taperingEst$k %% 2 == 0) == TRUE
-    ),
-    "nlShrinkLWEst" %in% estimators ~ assertthat::assert_that(
+    )
+  }
+  if ("nlShrinkLWEst" %in% estimators) {
+    assertthat::assert_that(
       nrow(dat) >= 12
     )
-  )
+  }
 
   # assert that cv scheme is supported and well defined
   assertthat::assert_that(

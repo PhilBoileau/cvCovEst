@@ -20,7 +20,8 @@ knitr::opts_chunk$set(
 
 > Cross-Validated Covariance Matrix Estimation
 
-__Authors:__ [Philippe Boileau](https://pboileau.ca) and
+__Authors:__ [Philippe Boileau](https://pboileau.ca),
+[Brian  Colica](https://www.linkedin.com/in/brian-collica-553b0b94), and
   [Nima Hejazi](https://nimahejazi.org)
 
 ---
@@ -67,11 +68,12 @@ dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 # run CV-selector
 cv_cov_est_out <- cvCovEst(
     dat = dat,
-    estimators = c("linearShrinkEst", "thresholdingEst"),
-    estimator_params = list("linearShrinkEst" = list("alpha" = c(0.1, 0.9)),
-                            "thresholdingEst" = list("gamma" = c(0.2, 2))),
-    cv_scheme = "v_fold", mc_split = 0.5,
-    v_folds = 5, boot_iter = 20,
+    estimators = c(linearShrinkLWEst, denseLinearShrinkEst,
+                   thresholdingEst, sampleCovEst),
+    estimator_params = list(
+      thresholdingEst = list(gamma = c(0.2, 2))
+    ),
+    cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
   )
 

@@ -10,7 +10,8 @@ status](https://travis-ci.com/PhilBoileau/cvCovEst.svg?token=YL3L6rYQtszHibWHgFx
 
 > Cross-Validated Covariance Matrix Estimation
 
-**Authors:** [Philippe Boileau](https://pboileau.ca) and [Nima
+**Authors:** [Philippe Boileau](https://pboileau.ca), [Brian
+Colica](https://www.linkedin.com/in/brian-collica-553b0b94), and [Nima
 Hejazi](https://nimahejazi.org)
 
 -----
@@ -59,25 +60,27 @@ dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 # run CV-selector
 cv_cov_est_out <- cvCovEst(
     dat = dat,
-    estimators = c("linearShrinkEst", "thresholdingEst"),
-    estimator_params = list("linearShrinkEst" = list("alpha" = c(0.1, 0.9)),
-                            "thresholdingEst" = list("gamma" = c(0.2, 2))),
-    cv_scheme = "v_fold", mc_split = 0.5,
-    v_folds = 5, boot_iter = 20,
+    estimators = c(linearShrinkLWEst, denseLinearShrinkEst,
+                   thresholdingEst, sampleCovEst),
+    estimator_params = list(
+      thresholdingEst = list(gamma = c(0.2, 2))
+    ),
+    cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
   )
 
 # print the table of risk estimates
 # NOTE: the estimated covariance matrix is accessible via the `$estimate` slot
 cv_cov_est_out$risk_df
-#> # A tibble: 4 x 3
-#> # Groups:   estimator [2]
-#>   estimator       hyperparameters empirical_risk
-#>   <chr>           <chr>                    <dbl>
-#> 1 thresholdingEst gamma = 0.2               2.49
-#> 2 linearShrinkEst alpha = 0.9               2.49
-#> 3 linearShrinkEst alpha = 0.1              11.3 
-#> 4 thresholdingEst gamma = 2                14.5
+#> # A tibble: 5 x 3
+#> # Groups:   estimator [4]
+#>   estimator            hyperparameters      empirical_risk
+#>   <chr>                <chr>                         <dbl>
+#> 1 denseLinearShrinkEst hyperparameters = NA          3533.
+#> 2 linearShrinkLWEst    hyperparameters = NA          3544.
+#> 3 sampleCovEst         hyperparameters = NA          3545.
+#> 4 thresholdingEst      gamma = 0.2                   3545.
+#> 5 thresholdingEst      gamma = 2                     4164.
 ```
 
 -----
