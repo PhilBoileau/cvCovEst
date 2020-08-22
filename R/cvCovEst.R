@@ -17,14 +17,15 @@
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
-#'  Defaults to Monte Carlo cross-validation.
+#'  Defaults to V-fold cross-validation.
 #' @param mc_split A \code{numeric} between 0 and 1 indicating the proportion
 #'  of data in the validation set of each Monte Carlo cross-validation fold.
 #' @param v_folds A \code{integer} larger than or equal to 1 indicating the
 #'  number of folds to use during cross-validation. The default is 10,
 #'  regardless of cross-validation scheme.
 #' @param center A \code{logical} indicating whether or not to center the
-#'  columns of \code{dat}.
+#'  columns of \code{dat}. Set to \code{FALSE} only if the columns have already
+#'  been centered.
 #' @param scale A \code{logical} indicating whether or not to scale the
 #'  columns of \code{dat} to have variance 1.
 #' @param parallel A \code{logical} option indicating whether to run the main
@@ -35,8 +36,7 @@
 #' @importFrom dplyr arrange summarise group_by "%>%"
 #' @importFrom tibble as_tibble
 #' @importFrom rlang .data
-#' @importFrom rlang as_string
-#' @importFrom rlang expr
+#' @importFrom rlang enexpr
 #' @importFrom matrixStats colMeans2
 #'
 #' @return A \code{list} of results containing the following elements:
@@ -45,10 +45,11 @@
 #'       the optimal covariance matrix estimator.
 #'     \item \code{estimator} - A \code{character} indicating the optimal
 #'       estimator and corresponding hyperparameters, if any.
-#'     \item \code{results_df} - A \code{\link[tibble]{tibble}} providing the
-#'       results of the cross-validation procedure. (TODO)
-#'     \item \code{origami_output} - A \code{\link[tibble]{tibble}} providing
-#'       the results of the \code{\link[origami]{cross_validate}} call.
+#'     \item \code{risk_df} - A \code{\link[tibble]{tibble}} providing the
+#'       cross-validated risk estimates of each estimator.
+#'     \item \code{cv_df} - A \code{\link[tibble]{tibble}} providing
+#'       each estimators' loss over the various folds of the cross-validatied
+#'       procedure.
 #'   }
 #'
 #' @export
@@ -61,7 +62,7 @@ cvCovEst <- function(
    linearShrinkEst = list(alpha = 0),
    thresholdingEst = list(gamma = 0)
   ),
-  cv_scheme = "mc", mc_split = 0.5, v_folds = 10L,
+  cv_scheme = "v_fold", mc_split = 0.5, v_folds = 10L,
   center = TRUE,
   scale = TRUE,
   parallel = FALSE

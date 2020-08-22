@@ -35,3 +35,6 @@ on a given \code{fold}.
 over a \code{fold} object (from \pkg{origami}
 \insertCite{Coyle2018}{cvCovEst}).
 }
+\references{
+\insertAllCited{}
+}

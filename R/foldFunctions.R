@@ -24,12 +24,14 @@
 #' @importFrom origami training validation fold_index
 #' @importFrom Rdpack reprompt
 #' @importFrom tibble tibble
-#' @importFrom rlang enexpr
 #' @importFrom rlang parse_expr
 #'
 #' @return A \code{\link[tibble]{tibble}} providing information on estimators,
 #'  their hyperparameters (if any), and their scaled Frobenius loss evaluated
 #'  on a given \code{fold}.
+#'
+#' @references
+#'   \insertAllCited{}
 #'
 #' @export
 cvFrobeniusLoss <- function(fold, dat, estimator_funs,
