@@ -2,7 +2,7 @@
 % Please edit documentation in R/foldFunctions.R
 \name{cvFrobeniusLoss}
 \alias{cvFrobeniusLoss}
-\title{Cross-Validation Function for Scaled Frobenius Loss}
+\title{Cross-Validation Function for Aggregated Frobenius Loss}
 \usage{
 cvFrobeniusLoss(fold, dat, estimator_funs, estimator_params = NULL)
 }
@@ -31,6 +31,10 @@ their hyperparameters (if any), and their scaled Frobenius loss evaluated
 on a given \code{fold}.
 }
 \description{
-\code{cvFrobeniusLoss} evaluates the scaled Frobenius loss over
-a \code{fold} object (from \pkg{origami} \insertRef{Coyle2018}{cvCovEst}).
+\code{cvFrobeniusLoss} evaluates the aggregated Frobenius loss
+over a \code{fold} object (from \pkg{origami}
+\insertCite{Coyle2018}{cvCovEst}).
+}
+\references{
+\insertAllCited{}
 }

@@ -11,8 +11,6 @@ checkArgs(
   cv_scheme,
   mc_split,
   v_folds,
-  cv_loss,
-  boot_iter,
   center,
   scale,
   parallel
@@ -44,16 +42,6 @@ of data in the validation set of each Monte Carlo cross-validation fold.}
 \item{v_folds}{A \code{integer} larger than or equal to 1 indicating the
 number of folds to use during cross-validation. The default is 10,
 regardless of cross-validation scheme.}
-
-\item{cv_loss}{An \code{expression} indicating the loss function to use.
-Defaults to the penalized scaled Frobenius loss, \code{cvPenFrobeniusLoss}.
-The non-penalized version, \code{cvFrobeniusLoss} is offered as well.}
-
-\item{boot_iter}{A \code{integer} dictating the number of bootstrap
-iterations used to compute the penalty term of the cross-validated
-penalized scaled Frobenius loss. The default is set to 100. If
-\code{cvFrobeniusLoss} is selected in place of \code{cvPenFrobeniusLoss},
-then this argument is ignored.}
 
 \item{center}{A \code{logical} indicating whether or not to center the
 columns of \code{dat}.}

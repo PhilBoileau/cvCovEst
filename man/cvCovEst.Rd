@@ -9,11 +9,9 @@ cvCovEst(
   estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
   estimator_params = list(linearShrinkEst = list(alpha = 0), thresholdingEst =
     list(gamma = 0)),
-  cv_scheme = "mc",
+  cv_scheme = "v_fold",
   mc_split = 0.5,
   v_folds = 10L,
-  cv_loss = cvFrobeniusLoss,
-  boot_iter = 100L,
   center = TRUE,
   scale = TRUE,
   parallel = FALSE
@@ -37,7 +35,7 @@ for a given estimator, then the estimator need not be listed.}
 \item{cv_scheme}{A \code{character} indicating the cross-validation scheme
 to be employed. There are two options: (1) V-fold cross-validation, via
 \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
-Defaults to Monte Carlo cross-validation.}
+Defaults to V-fold cross-validation.}
 
 \item{mc_split}{A \code{numeric} between 0 and 1 indicating the proportion
 of data in the validation set of each Monte Carlo cross-validation fold.}
@@ -46,18 +44,9 @@ of data in the validation set of each Monte Carlo cross-validation fold.}
 number of folds to use during cross-validation. The default is 10,
 regardless of cross-validation scheme.}
 
-\item{cv_loss}{A \code{function} indicating the loss function to use.
-Defaults to the penalized scaled Frobenius loss, \code{cvPenFrobeniusLoss}.
-The non-penalized version, \code{cvFrobeniusLoss} is offered as well.}
-
-\item{boot_iter}{A \code{integer} dictating the number of bootstrap
-iterations used to compute the penalty term of the cross-validated
-penalized scaled Frobenius loss. The default is set to 100. If
-\code{cvFrobeniusLoss} is selected in place of \code{cvPenFrobeniusLoss},
-then this argument is ignored.}
-
 \item{center}{A \code{logical} indicating whether or not to center the
-columns of \code{dat}.}
+columns of \code{dat}. Set to \code{FALSE} only if the columns have already
+been centered.}
 
 \item{scale}{A \code{logical} indicating whether or not to scale the
 columns of \code{dat} to have variance 1.}
@@ -73,10 +62,11 @@ A \code{list} of results containing the following elements:
 the optimal covariance matrix estimator.
 \item \code{estimator} - A \code{character} indicating the optimal
 estimator and corresponding hyperparameters, if any.
-\item \code{results_df} - A \code{\link[tibble]{tibble}} providing the
-results of the cross-validation procedure. (TODO)
-\item \code{origami_output} - A \code{\link[tibble]{tibble}} providing
-the results of the \code{\link[origami]{cross_validate}} call.
+\item \code{risk_df} - A \code{\link[tibble]{tibble}} providing the
+cross-validated risk estimates of each estimator.
+\item \code{cv_df} - A \code{\link[tibble]{tibble}} providing
+each estimators' loss over the various folds of the cross-validatied
+procedure.
 }
 }
 \description{

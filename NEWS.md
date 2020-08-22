@@ -1,3 +1,10 @@
+# cvCovEst 0.0.7 (2020-08-2)
+
+* Updated the loss computation; it now patches the formula used in the draft. Note that it vastly overestimates the true risk of an estimator, but that it provides an equivalent decision rule compared to a matrix-based loss. Perhaps we're missing a scaling factor in our calculations?
+* Moved Frobenius loss calculations to cv fold loss function. 
+* Removed the penalized cross-validation loss. Doesn't make sense to include.
+* Included check for centered data matrix
+
 # cvCovEst 0.0.6 (2020-08-19)
 
 * Adding dense covariance matrix linear shrinkage estimator
