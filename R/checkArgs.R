@@ -23,14 +23,6 @@
 #' @param v_folds A \code{integer} larger than or equal to 1 indicating the
 #'  number of folds to use during cross-validation. The default is 10,
 #'  regardless of cross-validation scheme.
-#' @param cv_loss An \code{expression} indicating the loss function to use.
-#'  Defaults to the penalized scaled Frobenius loss, \code{cvPenFrobeniusLoss}.
-#'  The non-penalized version, \code{cvFrobeniusLoss} is offered as well.
-#' @param boot_iter A \code{integer} dictating the number of bootstrap
-#'  iterations used to compute the penalty term of the cross-validated
-#'  penalized scaled Frobenius loss. The default is set to 100. If
-#'  \code{cvFrobeniusLoss} is selected in place of \code{cvPenFrobeniusLoss},
-#'  then this argument is ignored.
 #' @param center A \code{logical} indicating whether or not to center the
 #'  columns of \code{dat}.
 #' @param scale A \code{logical} indicating whether or not to scale the
@@ -52,7 +44,6 @@
 checkArgs <- function(dat,
                       estimators, estimator_params,
                       cv_scheme, mc_split, v_folds,
-                      cv_loss, boot_iter,
                       center, scale,
                       parallel) {
 
@@ -63,9 +54,6 @@ checkArgs <- function(dat,
     stringr::str_split(", ", simplify = TRUE) %>%
     as.vector() %>%
     stringi::stri_remove_empty()
-
-  # return the name of the cv loss
-  cv_loss <- cv_loss %>% rlang::expr_deparse()
 
   # assert that the data is of the right class
   # TODO: test cvCovEst with these sparse matrix classes
@@ -120,15 +108,7 @@ checkArgs <- function(dat,
     mc_split > 0,
     mc_split < 1,
     v_folds > 1,
-    v_folds < nrow(dat),
-    ifelse(cv_loss == "cvPenFrobeniusLoss" && rlang::is_null(boot_iter), FALSE,
-      ifelse(cv_loss == "cvPenFrobeniusLoss" && boot_iter < 10, FALSE, TRUE))
-  )
-
-  # assert that choice of loss function is well defined
-  assert_that(
-    cv_loss == "cvFrobeniusLoss" ||
-      cv_loss == "cvPenFrobeniusLoss"
+    v_folds < nrow(dat)
   )
 
   # assert that center, scaling, and parallel are flags

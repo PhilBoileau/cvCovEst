@@ -23,14 +23,6 @@
 #' @param v_folds A \code{integer} larger than or equal to 1 indicating the
 #'  number of folds to use during cross-validation. The default is 10,
 #'  regardless of cross-validation scheme.
-#' @param cv_loss A \code{function} indicating the loss function to use.
-#'  Defaults to the penalized scaled Frobenius loss, \code{cvPenFrobeniusLoss}.
-#'  The non-penalized version, \code{cvFrobeniusLoss} is offered as well.
-#' @param boot_iter A \code{integer} dictating the number of bootstrap
-#'  iterations used to compute the penalty term of the cross-validated
-#'  penalized scaled Frobenius loss. The default is set to 100. If
-#'  \code{cvFrobeniusLoss} is selected in place of \code{cvPenFrobeniusLoss},
-#'  then this argument is ignored.
 #' @param center A \code{logical} indicating whether or not to center the
 #'  columns of \code{dat}.
 #' @param scale A \code{logical} indicating whether or not to scale the
@@ -45,6 +37,7 @@
 #' @importFrom rlang .data
 #' @importFrom rlang as_string
 #' @importFrom rlang expr
+#' @importFrom matrixStats colMeans2
 #'
 #' @return A \code{list} of results containing the following elements:
 #'   \itemize{
@@ -69,8 +62,6 @@ cvCovEst <- function(
    thresholdingEst = list(gamma = 0)
   ),
   cv_scheme = "mc", mc_split = 0.5, v_folds = 10L,
-  cv_loss = cvFrobeniusLoss,
-  boot_iter = 100L,
   center = TRUE,
   scale = TRUE,
   parallel = FALSE
@@ -80,21 +71,25 @@ cvCovEst <- function(
   # grab estimator expression
   estimators <- rlang::enexpr(estimators)
 
-  #grab the cv_loss function name as astring
-  cv_loss_name <- rlang::enexpr(cv_loss)
-
   # check inputs
-  # NOTE: Check if columns are centered when center = FALSE. If not, output
-  # message that they were centered automatically.
   checkArgs(
     dat,
     estimators, estimator_params,
-    cv_scheme, mc_split, v_folds, cv_loss_name, boot_iter,
+    cv_scheme, mc_split, v_folds,
     center, scale, parallel
   )
 
   # center and scale the data, if desired
-  dat <- safeColScale(X = dat, center = center, scale = scale)
+  if (center == FALSE) {
+    col_means <- matrixStats::colMeans2(dat)
+    abs_diff_zero <- abs(col_means - rep(0, length(col_means)))
+    if (any(abs_diff_zero > 1e-10)) {
+      message("`dat` argument's columns have been centered automatically")
+      dat <- safeColScale(X = dat, center = center, scale = scale)
+    }
+  } else {
+    dat <- safeColScale(X = dat, center = center, scale = scale)
+  }
 
   # define the folds based on cross-validation scheme
   n_obs <- nrow(dat)
@@ -113,32 +108,15 @@ cvCovEst <- function(
 
 
   # apply the estimators to each fold
-  if (rlang::as_string(rlang::enexpr(cv_loss)) == "cvPenFrobeniusLoss") {
-
-    fold_results <- origami::cross_validate(
+ fold_results <- origami::cross_validate(
       dat = dat,
-      cv_fun = cv_loss,
-      folds = folds,
-      estimator_funs = estimators,
-      estimator_params = estimator_params,
-      resample_iter = boot_iter,
-      use_future = parallel,
-      .combine = FALSE
-    )
-
-  } else if (rlang::as_string(rlang::enexpr(cv_loss)) == "cvFrobeniusLoss"){
-
-    fold_results <- origami::cross_validate(
-      dat = dat,
-      cv_fun = cv_loss,
+      cv_fun = cvFrobeniusLoss, # might provide other options at a later date
       folds = folds,
       estimator_funs = estimators,
       estimator_params = estimator_params,
       use_future = parallel,
       .combine = FALSE
     )
-
-  }
 
   # convert results to tibble
   fold_results_concat <- dplyr::bind_rows(fold_results[[1]])
