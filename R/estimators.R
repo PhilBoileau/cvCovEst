@@ -87,10 +87,10 @@ linearShrinkLWEst <- function(dat) {
 
 ################################################################################
 
-#' Simple Thresholding Estimator
+#' Hard Thresholding Estimator
 #'
-#' @description \code{thresholdingEst} computes the thresholding estimate of
-#'  the covariance matrix for a given value of \code{gamma}. The threshold
+#' @description \code{thresholdingEst} computes the hard thresholding estimate
+#'  of the covariance matrix for a given value of \code{gamma}. The threshold
 #'  estimator of the covariance matrix applies a hard thresholding operator to
 #'  each element of the sample covariance matrix. For more information on this
 #'  estimator, review \insertCite{Bickel2008_thresh;textual}{cvCovEst}.
@@ -477,4 +477,54 @@ scadEst <- function(dat, lambda) {
   # TODO: Create a symmertric apply for covariance matrices
   return(apply(sample_cov_mat, c(1, 2), scadThreshold,
                lambda = lambda, a = 3.7))
+}
+
+################################################################################
+
+#' POET Estimator
+#'
+#' @description \code{poetEst} implements the Principal Orthogonal complEment
+#'   Thresholding (POET) estimator, a nonparametric, unobserved-factor-based
+#'   estimator of the covariance matrix \insertCite{fan2013}{cvCovEst}. The
+#'   estimator is defined as the sum of the sample covariance matrix'
+#'   rank-\code{k} approximation and its thresholded principal orthogonal
+#'   complement. The hard thresholding function is used here, though others
+#'   could be used instead.
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#' @param k An \code{integer} indicating the number of unobserved latent
+#'   factors. Empirical evidence suggests that the POET estimator is robust to
+#'   overestimations of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+#'   practice, it is therefore preferable to use larger values.
+#' @param lambda A non-negative \code{numeric} defining the amount of
+#'   thresholding applied to each element of sample covariance matrix's
+#'   orthogonal complement.
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'  matrix.
+#'
+#' @importFrom coop covar
+#' @importFrom RSpectra eigs_sym
+#'
+#' @export
+#'
+#' @references
+#'   \insertAllCited{}
+poetEst <- function(dat, k, lambda) {
+
+  # compute the sample covariance matrix
+  sample_cov_mat <- coop::covar(dat)
+
+  # perform the eigenvalue decomposition
+  eig_decomp <- RSpectra::eigs_sym(sample_cov_mat, k)
+
+  # compute spectral decomposition
+
+  # compute principal orthogonal complement
+
+  # regularize principal orthogonal complement
+
+  # return the estimate
+
+
 }
