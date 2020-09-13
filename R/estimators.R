@@ -464,16 +464,17 @@ denseLinearShrinkEst <- function(dat) {
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
 #'
-#'  @importFrom coop covar
+#' @importFrom coop covar
 #'
 #' @export
 #'
 #' @references
 #'   \insertAllCited{}
 scadEst <- function(dat, lambda, a = 3.7) {
+
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
   # apply threshold by removing all elements smaller than gamma
-  return(replace(sample_cov_mat, abs(sample_cov_mat) < gamma, 0))
+  return(apply(sample_cov_mat, c(1, 2), scadThreshold, lambda = lambda, a = a))
 }
