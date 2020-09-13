@@ -501,7 +501,7 @@ scadEst <- function(dat, lambda) {
 #'   orthogonal complement.
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
-#'  matrix.
+#'   matrix.
 #'
 #' @importFrom coop covar
 #' @importFrom RSpectra eigs_sym
@@ -519,12 +519,25 @@ poetEst <- function(dat, k, lambda) {
   eig_decomp <- RSpectra::eigs_sym(sample_cov_mat, k)
 
   # compute spectral decomposition
+  spectral_decomp <- lapply(
+    seq_len(k),
+    function(i) {
+      eig_decomp$values[i] *
+        eig_decomp$vectors[, i] %*% t(eig_decomp$vectors[, i])
+      }
+  )
+  spectral_decomp <- Reduce(`+`, spectral_decomp)
 
   # compute principal orthogonal complement
+  poc <- sample_cov_mat - spectral_decomp
+  poc_diag <- diag(diag(poc))
 
   # regularize principal orthogonal complement
+  # TODO: Create a symmertric apply for covariance matrices
+  poc <- replace(poc, abs(poc) < lambda, 0)
+  poc <- poc - diag(diag(poc)) + poc_diag
 
   # return the estimate
-
+  return(spectral_decomp + poc)
 
 }

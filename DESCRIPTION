@@ -22,7 +22,7 @@ Description: An efficient cross-validated approach for covariance matrix
     methodology allows for cross-validation to be used to data-adaptively
     identify the optimal estimator of the covariance matrix from a pre-specified
     set of candidate estimators.
-Depends: R (>= 3.2.0)
+Depends: R (>= 3.6.0)
 Imports:
     matrixStats,
     origami,
@@ -36,7 +36,8 @@ Imports:
     methods,
     stringr,
     stringi,
-    Matrix
+    Matrix,
+    RSpectra
 Suggests:
     testthat,
     knitr,
