@@ -4,8 +4,9 @@
 #' @param lambda A non-negative \code{numeric} defining the amount of
 #'   thresholding applied to each element of \code{dat}'s sample covariance
 #'   matrix.
-#' @param a A non-negative \code{numeric} defining the point at which the SCAD
-#'   thresholding functions becomes equal to the hard thresholding function.
+#' @param a A \code{numeric} larger than or equal to \code{2} defining the point
+#'   at which the SCAD thresholding functions becomes equal to the hard
+#'   thresholding function.
 #'
 #' @return A regularized \code{numeric}.
 #'

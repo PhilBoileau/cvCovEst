@@ -451,15 +451,13 @@ denseLinearShrinkEst <- function(dat) {
 #'   covariance matrix. This penalized estimator constitutes a compromise
 #'   between hard and soft thresholding of the sample covariance matrix: it is
 #'   a linear interpolation between soft thresholding up to \code{2*lambda} and
-#'   hard thresholding after \code{a*lambda}
+#'   hard thresholding after \code{3.7*lambda}
 #'   \insertCite{rothman2009}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param lambda A non-negative \code{numeric} defining the amount of
 #'   thresholding applied to each element of \code{dat}'s sample covariance
 #'   matrix.
-#' @param a A non-negative \code{numeric} defining the point at which the SCAD
-#'   thresholding functions becomes equal to the hard thresholding function.
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
@@ -470,11 +468,12 @@ denseLinearShrinkEst <- function(dat) {
 #'
 #' @references
 #'   \insertAllCited{}
-scadEst <- function(dat, lambda, a = 3.7) {
+scadEst <- function(dat, lambda) {
 
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
   # apply threshold by removing all elements smaller than gamma
-  return(apply(sample_cov_mat, c(1, 2), scadThreshold, lambda = lambda, a = a))
+  return(apply(sample_cov_mat, c(1, 2), scadThreshold,
+               lambda = lambda, a = 3.7))
 }

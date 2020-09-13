@@ -71,7 +71,7 @@ checkArgs <- function(dat,
       estimators %in% c("linearShrinkEst", "linearShrinkLWEst",
                         "thresholdingEst", "sampleCovEst", "bandingEst",
                         "taperingEst", "nlShrinkLWEst",
-                        "denseLinearShrinkEst") == TRUE
+                        "denseLinearShrinkEst", "scadEst") == TRUE
     ),
     msg = "Only estimators implemented in the cvCovEst package can be used."
   )
@@ -107,6 +107,13 @@ checkArgs <- function(dat,
   if ("nlShrinkLWEst" %in% estimators) {
     assertthat::assert_that(
       nrow(dat) >= 12
+    )
+
+  }
+  if ("scadEst" %in% estimators) {
+    assertthat::assert_that(
+      all(rlang::is_bare_numeric(estimator_params$scadEst$lambda)) == TRUE,
+      all(estimator_params$scadEst$lambda >= 0) == TRUE
     )
   }
 
