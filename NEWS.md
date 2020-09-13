@@ -1,4 +1,8 @@
-# cvCovEst 0.0.7 (2020-08-2)
+# cvCovEst 0.0.8 (2020-09-12)
+
+* Adding smoothly clipped abslute deviation thresholding estimator
+
+# cvCovEst 0.0.7 (2020-08-22)
 
 * Updated the loss computation; it now patches the formula used in the draft. Note that it vastly overestimates the true risk of an estimator, but that it provides an equivalent decision rule compared to a matrix-based loss. Perhaps we're missing a scaling factor in our calculations?
 * Moved Frobenius loss calculations to cv fold loss function. 
