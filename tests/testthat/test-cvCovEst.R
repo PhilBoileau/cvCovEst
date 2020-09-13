@@ -14,12 +14,14 @@ test_that("cross-validated covariance selector runs silently", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst),
+                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+                   scadEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
       bandingEst = list(k = c(1L, 5L)),
-      taperingEst = list(k = c(2L, 6L))
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
@@ -28,12 +30,14 @@ test_that("cross-validated covariance selector runs silently", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst),
+                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+                   scadEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
       bandingEst = list(k = c(1L, 5L)),
-      taperingEst = list(k = c(2L, 6L))
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2))
     ),
     cv_scheme = "mc", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
@@ -42,12 +46,14 @@ test_that("cross-validated covariance selector runs silently", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst),
+                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+                   scadEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
       bandingEst = list(k = c(1L, 5L)),
-      taperingEst = list(k = c(2L, 6L))
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
@@ -56,12 +62,14 @@ test_that("cross-validated covariance selector runs silently", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst),
+                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+                   scadEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
       bandingEst = list(k = c(1L, 5L)),
-      taperingEst = list(k = c(2L, 6L))
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2))
     ),
     cv_scheme = "mc", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
@@ -73,12 +81,14 @@ test_that("cvCovEst automatically centers non-centered data", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst),
+                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+                   scadEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
       bandingEst = list(k = c(1L, 5L)),
-      taperingEst = list(k = c(2L, 6L))
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
@@ -87,12 +97,14 @@ test_that("cvCovEst automatically centers non-centered data", {
     dat = dat,
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst),
+                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+                   scadEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
       bandingEst = list(k = c(1L, 5L)),
-      taperingEst = list(k = c(2L, 6L))
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = FALSE, scale = FALSE, parallel = FALSE
