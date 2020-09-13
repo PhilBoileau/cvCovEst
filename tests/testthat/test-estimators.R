@@ -118,3 +118,19 @@ test_that("Dense linear shrinkage estimator produces shrunken estimates", {
     sum(round((abs_sample_cov - abs_est), digits = 6) >= 0) == 121
   )
 })
+
+# SCAD Thresholding Estimator ##################################################
+
+test_that("SCAD estimator doesn't generate any errors for no reason", {
+  expect_silent(
+    scadEst(mtcars, lambda = 0.1)
+  )
+})
+
+test_that("SCAD estimator generates zero matrix for large lambda", {
+  dat <- scale(mtcars, center = TRUE, scale = TRUE)
+  expect_equal(
+    sum(scadEst(dat, lambda = 10) == 0),
+    121
+  )
+})
