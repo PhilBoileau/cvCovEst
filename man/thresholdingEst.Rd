@@ -9,8 +9,8 @@ thresholdingEst(dat, gamma)
 \arguments{
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
-\item{gamma}{A \code{numeric} larger than or equal to 0 defining the hard
-threshold applied to each element of \code{dat}'s sample covariance matrix.}
+\item{gamma}{A non-negative \code{numeric} defining the amount of hard
+thresholding applied to each element of \code{dat}'s sample covariance matrix.}
 }
 \value{
 A \code{matrix} corresponding to the estimate of the covariance

@@ -96,8 +96,8 @@ linearShrinkLWEst <- function(dat) {
 #'  estimator, review \insertCite{Bickel2008_thresh;textual}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
-#' @param gamma A \code{numeric} larger than or equal to 0 defining the hard
-#'  threshold applied to each element of \code{dat}'s sample covariance matrix.
+#' @param gamma A non-negative \code{numeric} defining the amount of hard
+#' thresholding applied to each element of \code{dat}'s sample covariance matrix.
 #'
 #' @importFrom coop covar
 #'
@@ -149,7 +149,6 @@ sampleCovEst <- function(dat) {
 #'   put forth by \insertCite{bickel2008_banding;textual}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
-#'
 #' @param k A non-negative, numeric integer
 #'
 #' @importFrom coop covar
@@ -217,7 +216,6 @@ bandingEst <- function(dat, k) {
 #'
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
-#'
 #' @param k A non-negative, even \code{numeric} integer.
 #'
 #' @importFrom coop covar
@@ -441,4 +439,41 @@ denseLinearShrinkEst <- function(dat) {
   gamma_hat <- min(max(gamma_hat, 0), 1)
 
   return(gamma_hat * f_mat + (1 - gamma_hat) * sample_cov_mat)
+}
+
+################################################################################
+
+#' Smoothly Clipped Absolute Deviation Estimator
+#'
+#' @description The Smoothly Clipped Absolute Deviation (SCAD) covariance matrix
+#'   estimator applies the SCAD threholding function of
+#'   \insertCite{fan2001;textual}{cvCovEst} to each entry of the sample
+#'   covariance matrix. This penalized estimator constitutes a compromise
+#'   between hard and soft thresholding of the sample covariance matrix: it is
+#'   a linear interpolation between soft thresholding up to \code{2*lambda} and
+#'   hard thresholding after \code{a*lambda}
+#'   \insertCite{rothman2009}{cvCovEst}.
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#' @param lambda A non-negative \code{numeric} defining the amount of
+#'   thresholding applied to each element of \code{dat}'s sample covariance
+#'   matrix.
+#' @param a A non-negative \code{numeric} defining the point at which the SCAD
+#'   thresholding functions becomes equal to the hard thresholding function.
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'  matrix.
+#'
+#'  @importFrom coop covar
+#'
+#' @export
+#'
+#' @references
+#'   \insertAllCited{}
+scadEst <- function(dat, lambda, a = 3.7) {
+  # compute the sample covariance matrix
+  sample_cov_mat <- coop::covar(dat)
+
+  # apply threshold by removing all elements smaller than gamma
+  return(replace(sample_cov_mat, abs(sample_cov_mat) < gamma, 0))
 }
