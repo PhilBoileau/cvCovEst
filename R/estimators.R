@@ -474,6 +474,7 @@ scadEst <- function(dat, lambda) {
   sample_cov_mat <- coop::covar(dat)
 
   # apply threshold by removing all elements smaller than gamma
+  # TODO: Create a symmertric apply for covariance matrices
   return(apply(sample_cov_mat, c(1, 2), scadThreshold,
                lambda = lambda, a = 3.7))
 }
