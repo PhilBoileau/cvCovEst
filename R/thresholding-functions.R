@@ -18,7 +18,7 @@ scadThreshold <- function(entry, lambda, a) {
     else
       reg_entry <- 0
   } else if (abs(entry) <= a*lambda) {
-    reg_entry <- ((a - 1)*entry - abs(entry)*a*lambda)/(a - 2)
+    reg_entry <- ((a - 1)*entry - sign(entry)*a*lambda)/(a - 2)
   } else {
     reg_entry <- entry
   }
