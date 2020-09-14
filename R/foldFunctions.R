@@ -24,7 +24,7 @@
 #' @importFrom origami training validation fold_index
 #' @importFrom Rdpack reprompt
 #' @importFrom tibble tibble
-#' @importFrom rlang parse_expr
+#' @importFrom rlang eval_tidy !!! exec
 #'
 #' @return A \code{\link[tibble]{tibble}} providing information on estimators,
 #'  their hyperparameters (if any), and their scaled Frobenius loss evaluated
@@ -56,7 +56,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
   est_out <- lapply(num_estimators, function(x) {
 
     # extract estimator function and name
-    est_fun <- eval(estimator_funs[[x]])
+    est_fun <- eval_tidy(estimator_funs[[x]])
     est_name <- as.character(estimator_funs[[x]])
 
     # check if a hyperparameter is needed
@@ -92,16 +92,22 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
 
     } else {
 
+      # Compute the grid of hyperparameters
+      hparam_grid <- expand.grid(estimator_params[[est_name]])
+
       # loop through the estimator hyperparameters
       param_out <- lapply(
-        estimator_params[[est_name]][[hyp_name]],
-        function(param) {
+        seq_len(nrow(hparam_grid)),
+        function(idx) {
 
           # fit the covariance matrix estimator on the training set
-          estimator_hparam <- paste(hyp_name, "=", param)
-          est_mat <- est_fun(
+          estimator_hparam <- paste(hyp_name, "=", hparam_grid[idx, ])
+          if (length(estimator_hparam) > 1)
+            estimator_hparam <- paste(estimator_hparam, collapse = ", ")
+          est_mat <- rlang::exec(
+            est_fun,
             train_data,
-            eval(rlang::parse_expr(estimator_hparam))
+            !!!as.list(unlist(hparam_grid[idx, ]))
           )
 
           # compute the loss for each observation
