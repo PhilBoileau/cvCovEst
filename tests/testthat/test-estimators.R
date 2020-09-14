@@ -134,3 +134,29 @@ test_that("SCAD estimator generates zero matrix for large lambda", {
     121
   )
 })
+
+# POET Estimator ###############################################################
+
+test_that("Verify POET estimator's results", {
+  # check that the off diagonal elemets of the POET estimator equal to the
+  # off diagonal elements of the rank-1 approximation of the sample covariance
+  # matrix
+
+  # compute the rank-1 approx
+  dat <- scale(mtcars, center = TRUE, scale = TRUE)
+  sample_cov_mat <- coop::covar(dat)
+  eig_decomp <- RSpectra::eigs_sym(sample_cov_mat, 1)
+  rank_one_sample_cov <- eig_decomp$values *
+    eig_decomp$vectors %*% t(eig_decomp$vectors)
+
+  # compute the POET estimate with a large lambda
+  poet_estimate <- poetEst(dat, k = 1, lambda = 10)
+
+  # remove the diagonal
+  diag(rank_one_sample_cov) <- 0
+  diag(poet_estimate) <- 0
+  poet_estimate <- poet_estimate %>% unname
+
+  # compare
+  expect_identical(round(rank_one_sample_cov, 10), round(poet_estimate, 10))
+})

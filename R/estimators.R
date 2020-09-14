@@ -533,7 +533,7 @@ poetEst <- function(dat, k, lambda) {
   poc_diag <- diag(diag(poc))
 
   # regularize principal orthogonal complement
-  # TODO: Create a symmertric apply for covariance matrices
+  # TODO: Create a symmetric apply for covariance matrices
   poc <- replace(poc, abs(poc) < lambda, 0)
   poc <- poc - diag(diag(poc)) + poc_diag
 
