@@ -61,9 +61,10 @@ dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 cv_cov_est_out <- cvCovEst(
     dat = dat,
     estimators = c(linearShrinkLWEst, denseLinearShrinkEst,
-                   thresholdingEst, sampleCovEst),
+                   thresholdingEst, poetEst, sampleCovEst),
     estimator_params = list(
-      thresholdingEst = list(gamma = c(0.2, 2))
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
@@ -72,15 +73,19 @@ cv_cov_est_out <- cvCovEst(
 # print the table of risk estimates
 # NOTE: the estimated covariance matrix is accessible via the `$estimate` slot
 cv_cov_est_out$risk_df
-#> # A tibble: 5 x 3
-#> # Groups:   estimator [4]
+#> # A tibble: 9 x 3
+#> # Groups:   estimator [5]
 #>   estimator            hyperparameters      empirical_risk
 #>   <chr>                <chr>                         <dbl>
 #> 1 denseLinearShrinkEst hyperparameters = NA          3533.
-#> 2 linearShrinkLWEst    hyperparameters = NA          3544.
-#> 3 sampleCovEst         hyperparameters = NA          3545.
-#> 4 thresholdingEst      gamma = 0.2                   3545.
-#> 5 thresholdingEst      gamma = 2                     4164.
+#> 2 poetEst              lambda = 0.2, k = 1           3542.
+#> 3 poetEst              lambda = 0.1, k = 1           3542.
+#> 4 poetEst              lambda = 0.2, k = 2           3543.
+#> 5 poetEst              lambda = 0.1, k = 2           3543.
+#> 6 linearShrinkLWEst    hyperparameters = NA          3544.
+#> 7 sampleCovEst         hyperparameters = NA          3545.
+#> 8 thresholdingEst      gamma = 0.2                   3545.
+#> 9 thresholdingEst      gamma = 2                     4164.
 ```
 
 -----

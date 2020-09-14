@@ -1,4 +1,9 @@
-# cvCovEst 0.0.8 (2020-09-12)
+# cvCovEst 0.0.8 (2020-09-13)
+
+* Adding POET estimator
+* Estimators can now take multiple hyperparameter arguments
+
+# cvCovEst 0.0.8 (2020-09-13)
 
 * Adding smoothly clipped abslute deviation thresholding estimator
 

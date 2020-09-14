@@ -109,7 +109,7 @@ cvCovEst <- function(
 
 
   # apply the estimators to each fold
- fold_results <- origami::cross_validate(
+  fold_results <- origami::cross_validate(
       dat = dat,
       cv_fun = cvFrobeniusLoss, # might provide other options at a later date
       folds = folds,
@@ -117,7 +117,7 @@ cvCovEst <- function(
       estimator_params = estimator_params,
       use_future = parallel,
       .combine = FALSE
-    )
+  )
 
   # convert results to tibble
   fold_results_concat <- dplyr::bind_rows(fold_results[[1]])

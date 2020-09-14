@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimators.R
 \name{thresholdingEst}
 \alias{thresholdingEst}
-\title{Simple Thresholding Estimator}
+\title{Hard Thresholding Estimator}
 \usage{
 thresholdingEst(dat, gamma)
 }
@@ -17,8 +17,8 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-\code{thresholdingEst} computes the thresholding estimate of
-the covariance matrix for a given value of \code{gamma}. The threshold
+\code{thresholdingEst} computes the hard thresholding estimate
+of the covariance matrix for a given value of \code{gamma}. The threshold
 estimator of the covariance matrix applies a hard thresholding operator to
 each element of the sample covariance matrix. For more information on this
 estimator, review \insertCite{Bickel2008_thresh;textual}{cvCovEst}.
