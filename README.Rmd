@@ -74,8 +74,7 @@ cv_cov_est_out <- cvCovEst(
       thresholdingEst = list(gamma = c(0.2, 2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L))
     ),
-    cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
-    center = TRUE, scale = FALSE, parallel = FALSE
+    cv_scheme = "v_fold", v_folds = 5,
   )
 
 # print the table of risk estimates
