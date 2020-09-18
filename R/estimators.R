@@ -541,3 +541,5 @@ poetEst <- function(dat, k, lambda) {
   return(spectral_decomp + poc)
 
 }
+
+

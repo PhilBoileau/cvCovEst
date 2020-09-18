@@ -26,3 +26,28 @@ scadThreshold <- function(entry, lambda, a) {
 
   return(reg_entry)
 }
+
+################################################################################
+#' Adaptive Lasso Thresholding Function
+#'
+#' @param entry A \code{numeric} entry in a covariance matrix estimate.
+#' @param lambda A non-negative \code{numeric} defining the amount of
+#'   thresholding applied to each element of \code{dat}'s sample covariance
+#'   matrix.
+#' @param n A non-negative \code{numeric} defining the adaptive weight
+#'   applied to each element of \code{dat}'s sample covariance matrix.
+#'
+#' @return A regularized \code{numeric}.
+#'
+#' @keywords internal
+adaptiveLassoThreshold <- function(entry, lambda, n) {
+  s <- abs(entry) - (lambda^(n + 1))*abs(entry)^(-n)
+
+  if (s > 0) {
+    reg_entry <- sign(entry)*s
+  } else {
+    reg_entry <- 0
+  }
+
+  return(reg_entry)
+}
