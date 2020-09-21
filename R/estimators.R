@@ -548,7 +548,7 @@ poetEst <- function(dat, k, lambda) {
 #'
 #' @description The Adaptive Lasso Thresholding function is a modification of
 #'   the similarly named regression penalty introduced by
-#'   \insertCite{zhou2006}{cvCovEst}.  The thresholding function assigns a
+#'   \insertCite{zou2006}{cvCovEst}.  The thresholding function assigns a
 #'   weight to each entry of the sample covariance matrix based on its initial
 #'   value.  This weight then determines the relative size of the penalty
 #'   resulting in larger values being penalized less and reducing bias

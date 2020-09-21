@@ -12,14 +12,15 @@ dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 estimators <- rlang::expr(c(linearShrinkEst, thresholdingEst, sampleCovEst,
                             linearShrinkLWEst, bandingEst, taperingEst,
                             nlShrinkLWEst, denseLinearShrinkEst, scadEst,
-                            poetEst))
+                            poetEst, adaptiveLassoEst))
 estimator_params <- list(
   linearShrinkEst = list(alpha = c(0.1, 0.9)),
   thresholdingEst = list(gamma = c(0.2, 2)),
   bandingEst = list(k = c(1L, 5L)),
   taperingEst = list(k = c(2L, 6L)),
   scadEst = list(lambda = c(0.1, 0.2)),
-  poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L))
+  poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
+  adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
 )
 cv_scheme <- "mc"
 mc_split <- 0.5
@@ -322,6 +323,63 @@ test_that("Only reasonable hyperparameters pass checks", {
     scale = scale,
     parallel = parallel
   ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = 0.1),
+      poetEst = list(lambda = 0.1, k = c(1, 2)),
+      adaptiveLassoEst = list(lambda = -0.1, n = 0)
+      ),
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = 0.1),
+      poetEst = list(lambda = 0.1, k = c(1, 2)),
+      adaptiveLassoEst = list(lambda = 1, n = -0.1)
+    ),
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = 0.1),
+      poetEst = list(lambda = 0.1, k = c(1, 2)),
+      adaptiveLassoEst = list(lambda = "a", n = 0)
+    ),
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
 })
 
 test_that("Only reasonable CV schemes pass checks",{
@@ -468,14 +526,15 @@ test_that("checkArgs works well in cvCovEst Function", {
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
                    taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-                   scadEst, poetEst),
+                   scadEst, poetEst, adaptiveLassoEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
       bandingEst = list(k = c(1L, 5L)),
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
-      poetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L))
+      poetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L)),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
@@ -485,14 +544,15 @@ test_that("checkArgs works well in cvCovEst Function", {
     estimators = c(linearShrinkEst, linearShrinkLWEst,
                    thresholdingEst, sampleCovEst, bandingEst,
                    taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-                   scadEst, poetEst),
+                   scadEst, poetEst, adaptiveLassoEst),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
       bandingEst = list(k = c(1L, 5L)),
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
-      poetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L))
+      poetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L)),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_scheme = "mc", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
