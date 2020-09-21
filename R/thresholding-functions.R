@@ -28,6 +28,7 @@ scadThreshold <- function(entry, lambda, a) {
 }
 
 ################################################################################
+
 #' Adaptive Lasso Thresholding Function
 #'
 #' @param entry A \code{numeric} entry in a covariance matrix estimate.
@@ -53,41 +54,46 @@ adaptiveLassoThreshold <- function(entry, lambda, n) {
 }
 
 ################################################################################
+
 #' Symmetric Apply Function for Covariance Matricies
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
-#' @param fun a function to apply to each element of the covariance matrix.
+#' @param sym_fun a function to apply to each element of the covariance matrix.
+#' @param sym_args a named vector or \code{list} of arguments to be passed to
+#'   \code{sym_fun}.
 #'
 #' @return A \code{matrix}.
 #'
+#' @importFrom rlang exec
+#'
 #' @keywords internal
 symmetricApply <- function(dat, sym_fun, sym_args) {
-  n <- nrow(dat)
+  n <- ncol(dat)
 
-  # loop over different indicies in dat matrix
-  sym_list <- lapply(1:n, function(i) {
-    # only consider the lower triangular matrix entries
-    j <- i:n
+  # loop over different columns in dat
+  lower_matrix <- sapply(1:n, function(i) {
+    # extract lower triangular entries of dat
+    lt_vec <- dat[i, i:n]
 
     # apply function to each element
-    w <- sapply(j, sym_fun, sym_args)
+    app_vec <- sapply(lt_vec, function(k) {
+      f_args <- as.list(c(k, sym_args))
+      return(rlang::exec(sym_fun, !!!f_args))
+    })
 
-    # create a new vector corresponding to lower triangular matrix column
-    new_vec <- c(rep(0, i-1), w)
+    # return a new vector corresponding to lower triangular matrix column
+    new_vec <- c(rep(0, i-1), app_vec)
 
     return(new_vec)
   })
 
   # combine vectors
-  lower_matrix <- suppressMessages(dplyr::bind_cols(sym_list))
+  sym_matrix <- suppressMessages(dplyr::bind_cols(lower_matrix))
+  sym_matrix <- as.matrix(sym_matrix)
 
   # flip the matrix
-  lower_matrix <- lower_matrix + t(lower_matrix) - diag(diag(lower_matrix))
-  lower_matrix <- as.matrix(lower_matrix)
+  sym_matrix <- sym_matrix + t(sym_matrix) - diag(diag(sym_matrix))
 
   # return the new symmetric matrix
-  return(lower_matrix)
+  return(sym_matrix)
 }
-
-sapply
-sapply(1:5, adaptiveLassoThreshold, lambda = 1, n = 2)

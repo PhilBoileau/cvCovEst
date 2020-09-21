@@ -575,12 +575,12 @@ adaptiveLassoEst <- function(dat, lambda, n) {
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
-  lower_tri <- sample_cov_mat[lower.tri(sample_cov_mat, diag = TRUE)]
+  # run symmetricApply on samplt_cov_mat
+  thresh_mat <- symmetricApply(sample_cov_mat,
+                               adaptiveLassoThreshold,
+                               sym_args = c(lambda = lambda, n = n))
 
-  # apply threshold by removing all elements smaller than gamma
-  # TODO: Create a symmertric apply for covariance matrices
-  return(apply(sample_cov_mat, c(1, 2), adaptiveLassoThreshold,
-               lambda = lambda, a = 3.7))
+  return(thresh_mat)
 }
 
 
