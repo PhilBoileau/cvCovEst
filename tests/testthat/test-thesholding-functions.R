@@ -16,3 +16,21 @@ test_that("SCAD Estimator regularizes as intended", {
   expect_equal(scadThreshold(entry = 2, lambda = 0.3, a = 4), 2)
   expect_equal(scadThreshold(entry = -2, lambda = 0.3, a = 4), -2)
 })
+
+test_that("Adaptive Lasso Estimator regularizes as intended", {
+
+  # values of lambda
+  expect_equal(adaptiveLassoThreshold(entry = 1, lambda = 1, n = 1), 0)
+  expect_equal(adaptiveLassoThreshold(entry = -1, lambda = 1, n = 1), 0)
+  expect_equal(adaptiveLassoThreshold(entry = 1, lambda = 0.5, n = 1), 0.75)
+  expect_equal(adaptiveLassoThreshold(entry = -1, lambda = 0.5, n = 1), -0.75)
+
+  # values of n
+  expect_equal(adaptiveLassoThreshold(entry = 1, lambda = 0.1, n = 1), 0.99)
+  expect_equal(adaptiveLassoThreshold(entry = -1, lambda = 0.1, n = 1), -0.99)
+  expect_equal(adaptiveLassoThreshold(entry = 1, lambda = 0.1, n = 2), 0.999)
+  expect_equal(adaptiveLassoThreshold(entry = -1, lambda = 0.1, n = 2), -0.999)
+})
+
+
+
