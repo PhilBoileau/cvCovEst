@@ -51,3 +51,43 @@ adaptiveLassoThreshold <- function(entry, lambda, n) {
 
   return(reg_entry)
 }
+
+################################################################################
+#' Symmetric Apply Function for Covariance Matricies
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#' @param fun a function to apply to each element of the covariance matrix.
+#'
+#' @return A \code{matrix}.
+#'
+#' @keywords internal
+symmetricApply <- function(dat, sym_fun, sym_args) {
+  n <- nrow(dat)
+
+  # loop over different indicies in dat matrix
+  sym_list <- lapply(1:n, function(i) {
+    # only consider the lower triangular matrix entries
+    j <- i:n
+
+    # apply function to each element
+    w <- sapply(j, sym_fun, sym_args)
+
+    # create a new vector corresponding to lower triangular matrix column
+    new_vec <- c(rep(0, i-1), w)
+
+    return(new_vec)
+  })
+
+  # combine vectors
+  lower_matrix <- suppressMessages(dplyr::bind_cols(sym_list))
+
+  # flip the matrix
+  lower_matrix <- lower_matrix + t(lower_matrix) - diag(diag(lower_matrix))
+  lower_matrix <- as.matrix(lower_matrix)
+
+  # return the new symmetric matrix
+  return(lower_matrix)
+}
+
+sapply
+sapply(1:5, adaptiveLassoThreshold, lambda = 1, n = 2)
