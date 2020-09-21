@@ -25,9 +25,9 @@
 #'  regardless of cross-validation scheme.
 #' @param center A \code{logical} indicating whether or not to center the
 #'  columns of \code{dat}. Set to \code{FALSE} only if the columns have already
-#'  been centered.
+#'  been centered. Defaults to \code{TRUE}.
 #' @param scale A \code{logical} indicating whether or not to scale the
-#'  columns of \code{dat} to have variance 1.
+#'  columns of \code{dat} to have variance 1. Defaults to \code{FALSE}.
 #' @param parallel A \code{logical} option indicating whether to run the main
 #'  cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
 #'  is passed directly to \code{\link[origami]{cross_validate}}.
@@ -64,7 +64,7 @@ cvCovEst <- function(
   ),
   cv_scheme = "v_fold", mc_split = 0.5, v_folds = 10L,
   center = TRUE,
-  scale = TRUE,
+  scale = FALSE,
   parallel = FALSE
 )
 {
