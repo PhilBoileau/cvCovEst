@@ -31,13 +31,21 @@
 #' @param parallel A \code{logical} option indicating whether to run the main
 #'  cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
 #'  is passed directly to \code{\link[origami]{cross_validate}}.
+#' @param true_cov_mat A \code{matrix} like object representing the true
+#'  covariance matrix of the data generating distribution, which is assumed to
+#'  be Gaussian. This parameter is intended for use only in simulation studies,
+#'  and defaults to a value of \code{NULL}. If not \code{NULL}, conditional risk
+#'  difference ratios of the estimator selected by \code{cvCovEst} are computed
+#'  relative to the cross-validated oracle selector and to the full dataset
+#'  oracle selector.
 #'
 #' @importFrom origami cross_validate folds_vfold folds_montecarlo
 #' @importFrom dplyr arrange summarise group_by "%>%"
 #' @importFrom tibble as_tibble
 #' @importFrom rlang .data
 #' @importFrom rlang enexpr
-#' @importFrom matrixStats colMeans2
+#' @importFrom matrixStats colMeans2 sum2
+#' @importFrom Matrix tcrossprod
 #'
 #' @return A \code{list} of results containing the following elements:
 #'   \itemize{
@@ -65,7 +73,8 @@ cvCovEst <- function(
   cv_scheme = "v_fold", mc_split = 0.5, v_folds = 10L,
   center = TRUE,
   scale = FALSE,
-  parallel = FALSE
+  parallel = FALSE,
+  true_cov_mat = NULL
 )
 {
 
@@ -107,7 +116,6 @@ cvCovEst <- function(
     )
   }
 
-
   # apply the estimators to each fold
   fold_results <- origami::cross_validate(
       dat = dat,
@@ -123,30 +131,84 @@ cvCovEst <- function(
   fold_results_concat <- dplyr::bind_rows(fold_results[[1]])
   fold_results_concat
 
-  # compute empirical risk
-  cv_results <- fold_results_concat %>%
-    dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
-    dplyr::summarise(empirical_risk = mean(.data$loss)) %>%
-    dplyr::arrange(.data$empirical_risk)
+  # compute the true cross-validated risk if true_covar_mat is passed in
+  if(is.null(true_cov_mat)) {
 
-  # compute the best estimator's estimate
-  best_est <- get(cv_results[1, ]$estimator)
-  best_est_hyperparams <- parse(text = cv_results[1, ]$hyperparameters)
-  if (cv_results[1, ]$hyperparameters != "hyperparameters = NA") {
-    estimate <- best_est(dat, eval(best_est_hyperparams))
+    # compute empirical risk
+    cv_results <- fold_results_concat %>%
+      dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
+      dplyr::summarise(empirical_risk = mean(.data$loss)) %>%
+      dplyr::arrange(.data$empirical_risk)
+
+    # compute the best estimator's estimate
+    best_est <- get(cv_results[1, ]$estimator)
+    best_est_hyperparams <- parse(text = cv_results[1, ]$hyperparameters)
+    if (cv_results[1, ]$hyperparameters != "hyperparameters = NA") {
+      estimate <- best_est(dat, eval(best_est_hyperparams))
+    } else {
+      estimate <- best_est(dat)
+    }
+
+    # prep output and return
+    out <- list(
+      estimate = estimate,
+      estimator = paste0(
+        cv_results[1, ]$estimator, ", ",
+        cv_results[1, ]$hyperparameters
+      ),
+      risk_df = cv_results,
+      cv_df = fold_results_concat
+    )
   } else {
-    estimate <- best_est(dat)
+
+    # compute the minimum Frobenius risk, assuming Gaussian data
+    d_true_cov <- diag(true_cov_mat)
+    combo_mat <- Matrix::tcrossprod(d_true_cov, d_true_cov) + true_cov_mat^2
+    min_full_risk <- matrixStats::sum2(combo_mat)
+
+    # compute the true cross-validated risk and the cv-estimated risk
+    cv_results <- fold_results_concat %>%
+      dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
+      dplyr::summarise(true_cv_risk = mean(.data$true_loss),
+                       empirical_risk = mean(.data$loss))  %>%
+      dplyr::arrange(.data$empirical_risk)
+
+    # compute the risk distance ratio under the cross-validated risk
+    # of the cross-validated oracle and the cross-validated selection
+    cvCovEst_true_cv_risk <- cv_results$true_cv_risk[1]
+    oracle_true_cv_risk <- cv_results %>%
+      dplyr::arrange(.data$true_cv_risk) %>%
+      pull(true_cv_risk)[1]
+    cv_oracle_riskdiff_ratio <- (cvCovEst_true_cv_risk - min_full_risk) /
+      (oracle_true_cv_risk - min_full_risk)
+
+    # compute the risk distance ratio under the full dataset risk
+    # of the full dataset oracle and the cross-validated selection
+    oracle_riskdiff_ratio <- (cvCovEst_true_cv_risk - min_full_risk) /
+      (oracle_true_risk - min_full_risk)
+
+    # compute the cvCovEst estimator's estimate
+    best_est <- get(cv_results[1, ]$estimator)
+    best_est_hyperparams <- parse(text = cv_results[1, ]$hyperparameters)
+    if (cv_results[1, ]$hyperparameters != "hyperparameters = NA") {
+      estimate <- best_est(dat, eval(best_est_hyperparams))
+    } else {
+      estimate <- best_est(dat)
+    }
+
+    # prep output and return
+    out <- list(
+      estimate = estimate,
+      estimator = paste0(
+        cv_results[1, ]$estimator, ", ",
+        cv_results[1, ]$hyperparameters
+      ),
+      risk_df = cv_results,
+      cv_df = fold_results_concat,
+      cv_oracle_riskdiff_ratio = cv_oracle_riskdiff_ratio,
+      oracle_riskdiff_ratio = oracle_riskdiff_ratio
+    )
   }
 
-  # prep output and return
-  out <- list(
-    estimate = estimate,
-    estimator = paste0(
-      cv_results[1, ]$estimator, ", ",
-      cv_results[1, ]$hyperparameters
-    ),
-    risk_df = cv_results,
-    cv_df = fold_results_concat
-  )
   return(out)
 }
