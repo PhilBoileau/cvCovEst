@@ -59,10 +59,10 @@ is passed directly to \code{\link[origami]{cross_validate}}.}
 \item{true_cov_mat}{A \code{matrix} like object representing the true
 covariance matrix of the data generating distribution, which is assumed to
 be Gaussian. This parameter is intended for use only in simulation studies,
-and defaults to a value of \code{NULL}. If not \code{NULL}, conditional risk
-difference ratios of the estimator selected by \code{cvCovEst} are computed
-relative to the cross-validated oracle selector and to the full dataset
-oracle selector.}
+and defaults to a value of \code{NULL}. If not \code{NULL}, the
+cross-validated conditional risk difference ratio of the estimator selected
+by \code{cvCovEst} is computed relative to the cross-validated oracle
+selector.}
 }
 \value{
 A \code{list} of results containing the following elements:

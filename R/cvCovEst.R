@@ -34,13 +34,13 @@
 #' @param true_cov_mat A \code{matrix} like object representing the true
 #'  covariance matrix of the data generating distribution, which is assumed to
 #'  be Gaussian. This parameter is intended for use only in simulation studies,
-#'  and defaults to a value of \code{NULL}. If not \code{NULL}, conditional risk
-#'  difference ratios of the estimator selected by \code{cvCovEst} are computed
-#'  relative to the cross-validated oracle selector and to the full dataset
-#'  oracle selector.
+#'  and defaults to a value of \code{NULL}. If not \code{NULL}, the
+#'  cross-validated conditional risk difference ratio of the estimator selected
+#'  by \code{cvCovEst} is computed relative to the cross-validated oracle
+#'  selector.
 #'
 #' @importFrom origami cross_validate folds_vfold folds_montecarlo
-#' @importFrom dplyr arrange summarise group_by "%>%"
+#' @importFrom dplyr arrange summarise group_by "%>%" pull
 #' @importFrom tibble as_tibble
 #' @importFrom rlang .data
 #' @importFrom rlang enexpr
@@ -178,14 +178,9 @@ cvCovEst <- function(
     cvCovEst_true_cv_risk <- cv_results$true_cv_risk[1]
     oracle_true_cv_risk <- cv_results %>%
       dplyr::arrange(.data$true_cv_risk) %>%
-      pull(true_cv_risk)[1]
+      pull(.data$true_cv_risk)[1]
     cv_oracle_riskdiff_ratio <- (cvCovEst_true_cv_risk - min_full_risk) /
       (oracle_true_cv_risk - min_full_risk)
-
-    # compute the risk distance ratio under the full dataset risk
-    # of the full dataset oracle and the cross-validated selection
-    oracle_riskdiff_ratio <- (cvCovEst_true_cv_risk - min_full_risk) /
-      (oracle_true_risk - min_full_risk)
 
     # compute the cvCovEst estimator's estimate
     best_est <- get(cv_results[1, ]$estimator)
@@ -205,8 +200,7 @@ cvCovEst <- function(
       ),
       risk_df = cv_results,
       cv_df = fold_results_concat,
-      cv_oracle_riskdiff_ratio = cv_oracle_riskdiff_ratio,
-      oracle_riskdiff_ratio = oracle_riskdiff_ratio
+      cv_oracle_riskdiff_ratio = cv_oracle_riskdiff_ratio
     )
   }
 
