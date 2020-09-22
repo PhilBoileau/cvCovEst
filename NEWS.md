@@ -1,4 +1,9 @@
-# cvCovEst 0.0.8 (2020-09-13)
+# cvCovEst 0.0.10 (2020-09-22)
+
+* Added adaptive LASSO estimator
+* Users now have the option to include the true covariance matrix of their multivariate Gaussian data, allowing them to compare cvCovEst's selection versus that of the cross-valdidated oracle.
+
+# cvCovEst 0.0.9 (2020-09-13)
 
 * Adding POET estimator
 * Estimators can now take multiple hyperparameter arguments

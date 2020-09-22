@@ -14,7 +14,8 @@ cvCovEst(
   v_folds = 10L,
   center = TRUE,
   scale = FALSE,
-  parallel = FALSE
+  parallel = FALSE,
+  true_cov_mat = NULL
 )
 }
 \arguments{
@@ -54,6 +55,14 @@ columns of \code{dat} to have variance 1. Defaults to \code{FALSE}.}
 \item{parallel}{A \code{logical} option indicating whether to run the main
 cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
 is passed directly to \code{\link[origami]{cross_validate}}.}
+
+\item{true_cov_mat}{A \code{matrix} like object representing the true
+covariance matrix of the data generating distribution, which is assumed to
+be Gaussian. This parameter is intended for use only in simulation studies,
+and defaults to a value of \code{NULL}. If not \code{NULL}, the
+cross-validated conditional risk difference ratio of the estimator selected
+by \code{cvCovEst} is computed relative to the cross-validated oracle
+selector.}
 }
 \value{
 A \code{list} of results containing the following elements:
