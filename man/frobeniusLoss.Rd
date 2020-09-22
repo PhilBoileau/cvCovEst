@@ -7,8 +7,8 @@
 frobeniusLoss(estimate, dat, rank_one_crossp)
 }
 \arguments{
-\item{estimate}{A \code{matrix} corresponding to the estimate of the covariance
-matrix.}
+\item{estimate}{A \code{matrix} corresponding to the estimate of the
+covariance matrix.}
 
 \item{dat}{A \code{data.frame} containing the data on which the loss will be
 computed.}

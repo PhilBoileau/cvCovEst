@@ -50,3 +50,29 @@ test_that("sampleCovEst does not throw error", {
     estimator_funs = rlang::expr(c(sampleCovEst)),
   ))
 })
+
+test_that("trueFrobeniusLoss computes the correct validation set loss", {
+  est <- matrix(c(1, 2, 3, 2, 1, 2, 3, 2, 1), nrow = 3)
+  true_cov <- matrix(c(1, 2, 2, 2, 1, 2, 2, 2, 1), nrow = 3)
+  expect_equal(trueFrobeniusLoss(est, true_cov), 38)
+})
+
+test_that("the true covariance matrix can be passed in",{
+  expect_silent(cvFrobeniusLoss(
+    fold = resub,
+    dat = dat,
+    estimator_funs = rlang::expr(c(sampleCovEst, poetEst)),
+    estimator_params = list(poetEst = list(k = 5L, lambda = 0.2)),
+    true_cov_mat = Sigma
+  ))
+  output <- cvFrobeniusLoss(
+    fold = resub,
+    dat = dat,
+    estimator_funs = rlang::expr(c(sampleCovEst, poetEst)),
+    estimator_params = list(poetEst = list(k = 5L, lambda = 0.2)),
+    true_cov_mat = Sigma
+  )[[1]]
+  expect_equal(nrow(output), 2)
+  expect_equal(ncol(output), 5)
+  expect_true(!is.null(output$true_loss))
+})
