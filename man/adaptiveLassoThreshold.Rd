@@ -2,7 +2,7 @@
 % Please edit documentation in R/thresholding-functions.R
 \name{adaptiveLassoThreshold}
 \alias{adaptiveLassoThreshold}
-\title{Adaptive Lasso Thresholding Function}
+\title{Adaptive LASSO Thresholding Function}
 \usage{
 adaptiveLassoThreshold(entry, lambda, n)
 }
@@ -20,6 +20,6 @@ applied to each element of \code{dat}'s sample covariance matrix.}
 A regularized \code{numeric}.
 }
 \description{
-Adaptive Lasso Thresholding Function
+Adaptive LASSO Thresholding Function
 }
 \keyword{internal}

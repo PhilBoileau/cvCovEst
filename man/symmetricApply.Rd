@@ -18,6 +18,7 @@ symmetricApply(dat, sym_fun, sym_args)
 A \code{matrix}.
 }
 \description{
-Symmetric Apply Function for Covariance Matricies
+\code{symmetricApply} implements a version of \code{apply}
+expressly made for looping over symmetric matrices.
 }
 \keyword{internal}

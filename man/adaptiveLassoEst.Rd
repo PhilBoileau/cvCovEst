@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimators.R
 \name{adaptiveLassoEst}
 \alias{adaptiveLassoEst}
-\title{Adaptive Lasso Estimator}
+\title{Adaptive LASSO Estimator}
 \usage{
 adaptiveLassoEst(dat, lambda, n)
 }
@@ -21,11 +21,11 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-The Adaptive Lasso Thresholding function is a modification of
-the similarly named regression penalty introduced by
-\insertCite{zou2006}{cvCovEst}.  The thresholding function assigns a
+The \code{adaptiveLassoEst} function is a modification of
+the similarly named penalized regression introduced by
+\insertCite{zou2006;textual}{cvCovEst}. The thresholding function assigns a
 weight to each entry of the sample covariance matrix based on its initial
-value.  This weight then determines the relative size of the penalty
+value. This weight then determines the relative size of the penalty
 resulting in larger values being penalized less and reducing bias
 \insertCite{rothman2009}{cvCovEst}.
 }

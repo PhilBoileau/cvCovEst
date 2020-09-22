@@ -29,7 +29,7 @@ scadThreshold <- function(entry, lambda, a) {
 
 ################################################################################
 
-#' Adaptive Lasso Thresholding Function
+#' Adaptive LASSO Thresholding Function
 #'
 #' @param entry A \code{numeric} entry in a covariance matrix estimate.
 #' @param lambda A non-negative \code{numeric} defining the amount of
@@ -57,6 +57,9 @@ adaptiveLassoThreshold <- function(entry, lambda, n) {
 
 #' Symmetric Apply Function for Covariance Matricies
 #'
+#' @description \code{symmetricApply} implements a version of \code{apply}
+#'   expressly made for looping over symmetric matrices.
+#'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param sym_fun a function to apply to each element of the covariance matrix.
 #' @param sym_args a named vector or \code{list} of arguments to be passed to
@@ -68,11 +71,13 @@ adaptiveLassoThreshold <- function(entry, lambda, n) {
 #'
 #' @keywords internal
 symmetricApply <- function(dat, sym_fun, sym_args) {
+
+  # get number of columns
   n <- ncol(dat)
 
   # loop over different columns in dat
   lower_matrix <- sapply(1:n, function(i) {
-    # extract lower triangular entries of dat
+    # extract upper triangular entries of dat
     lt_vec <- dat[i, i:n]
 
     # apply function to each element
@@ -93,6 +98,10 @@ symmetricApply <- function(dat, sym_fun, sym_args) {
 
   # flip the matrix
   sym_matrix <- sym_matrix + t(sym_matrix) - diag(diag(sym_matrix))
+
+  # rename the columns and rows
+  colnames(sym_matrix) <- colnames(dat)
+  rownames(sym_matrix) <- colnames(dat)
 
   # return the new symmetric matrix
   return(sym_matrix)
