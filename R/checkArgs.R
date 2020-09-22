@@ -30,6 +30,14 @@
 #' @param parallel A \code{logical} option indicating whether to run the main
 #'  cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
 #'  is passed directly to \code{\link[origami]{cross_validate}}.
+#' @param true_cov_mat A \code{matrix} like object representing the true
+#'  covariance matrix of the data generating distribution, which is assumed to
+#'  be Gaussian. This parameter is intended for use only in simulation studies,
+#'  and defaults to a value of \code{NULL}. If not \code{NULL}, the
+#'  cross-validated conditional risk difference ratio of the estimator selected
+#'  by \code{cvCovEst} is computed relative to the cross-validated oracle
+#'  selector.
+#'
 #'
 #' @importFrom assertthat assert_that is.flag
 #' @importFrom methods is
@@ -45,7 +53,7 @@ checkArgs <- function(dat,
                       estimators, estimator_params,
                       cv_scheme, mc_split, v_folds,
                       center, scale,
-                      parallel) {
+                      parallel, true_cov_mat = NULL) {
 
   # turn list of estimator functions to a vector of strings
   estimators <- estimators %>%
@@ -148,5 +156,16 @@ checkArgs <- function(dat,
   assertthat::assert_that(assertthat::is.flag(center))
   assertthat::assert_that(assertthat::is.flag(scale))
   assertthat::assert_that(assertthat::is.flag(parallel))
+
+  # when not null, assert that true_cov_matis of the appropriate type and dims
+  if (!is.null(true_cov_mat)) {
+    assertthat::assert_that(is.matrix(true_cov_mat) ||
+                            is(true_cov_mat, "dgeMatrix") ||
+                            is(true_cov_mat, "dgCMatrix"))
+    assertthat::assert_that(identical(dim(true_cov_mat)[1], ncol(dat)))
+    assertthat::assert_that(identical(dim(true_cov_mat)[2], ncol(dat)))
+  } else {
+    TRUE
+  }
 
 }

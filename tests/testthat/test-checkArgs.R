@@ -77,6 +77,18 @@ test_that("Only reasonable hyperparameters pass checks", {
     scale = scale,
     parallel = parallel
   ))
+  expect_true(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = estimator_params,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel,
+    true_cov_mat = Sigma
+  ))
   expect_error(checkArgs(
     dat = dat,
     estimators = estimators,
@@ -418,6 +430,42 @@ test_that("Only reasonable hyperparameters pass checks", {
     center = center,
     scale = scale,
     parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = estimator_params,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel,
+    true_cov_mat = dat
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = estimator_params,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel,
+    true_cov_mat = Sigma[1:50, 1:20]
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = estimator_params,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel,
+    true_cov_mat = as.character(Sigma)
   ))
 })
 

@@ -82,6 +82,25 @@ test_that("cross-validated covariance selector runs silently", {
     cv_scheme = "mc", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
   ))
+  expect_silent(cvCovEst(
+    dat = dat,
+    estimators = c(linearShrinkEst, linearShrinkLWEst,
+                   thresholdingEst, sampleCovEst, bandingEst,
+                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+                   scadEst, poetEst, adaptiveLassoEst),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2)),
+      poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+    ),
+    cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
+    center = TRUE, scale = FALSE, parallel = FALSE,
+    true_cov_mat = Sigma
+  ))
 })
 
 test_that("cvCovEst automatically centers non-centered data", {
@@ -122,4 +141,53 @@ test_that("cvCovEst automatically centers non-centered data", {
     center = FALSE, scale = FALSE, parallel = FALSE
   ),
   "`dat` argument's columns have been centered automatically")
+})
+
+test_that("cvCovEst's outputs are of the correct dimensions", {
+  with_true_covmat <- cvCovEst(
+    dat = dat,
+    estimators = c(linearShrinkEst, linearShrinkLWEst,
+                   thresholdingEst, sampleCovEst, bandingEst,
+                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+                   scadEst, poetEst, adaptiveLassoEst),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2)),
+      poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+    ),
+    cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
+    center = TRUE, scale = FALSE, parallel = FALSE,
+    true_cov_mat = Sigma
+  )
+  expect_true(length(with_true_covmat) == 5)
+  expect_true(ncol(with_true_covmat$risk_df) == 4)
+  expect_true(ncol(with_true_covmat$cv_df) == 5)
+  expect_true(is.numeric(with_true_covmat$cv_oracle_riskdiff_ratio))
+
+  without_true_covmat <- cvCovEst(
+    dat = dat,
+    estimators = c(linearShrinkEst, linearShrinkLWEst,
+                   thresholdingEst, sampleCovEst, bandingEst,
+                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+                   scadEst, poetEst, adaptiveLassoEst),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2)),
+      poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+    ),
+    cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
+    center = TRUE, scale = FALSE, parallel = FALSE
+  )
+  expect_true(length(without_true_covmat) == 4)
+  expect_true(ncol(without_true_covmat$risk_df) == 3)
+  expect_true(ncol(without_true_covmat$cv_df) == 4)
+  expect_true(is.null(without_true_covmat$cv_oracle_riskdiff_ratio))
 })

@@ -40,7 +40,7 @@
 #'  selector.
 #'
 #' @importFrom origami cross_validate folds_vfold folds_montecarlo
-#' @importFrom dplyr arrange summarise group_by "%>%" pull
+#' @importFrom dplyr arrange summarise group_by "%>%"
 #' @importFrom tibble as_tibble
 #' @importFrom rlang .data
 #' @importFrom rlang enexpr
@@ -123,6 +123,7 @@ cvCovEst <- function(
       folds = folds,
       estimator_funs = estimators,
       estimator_params = estimator_params,
+      true_cov_mat = true_cov_mat,
       use_future = parallel,
       .combine = FALSE
   )
@@ -177,8 +178,8 @@ cvCovEst <- function(
     # of the cross-validated oracle and the cross-validated selection
     cvCovEst_true_cv_risk <- cv_results$true_cv_risk[1]
     oracle_true_cv_risk <- cv_results %>%
-      dplyr::arrange(.data$true_cv_risk) %>%
-      pull(.data$true_cv_risk)[1]
+      dplyr::arrange(.data$true_cv_risk)
+    oracle_true_cv_risk <- oracle_true_cv_risk$true_cv_risk[1]
     cv_oracle_riskdiff_ratio <- (cvCovEst_true_cv_risk - min_full_risk) /
       (oracle_true_cv_risk - min_full_risk)
 
