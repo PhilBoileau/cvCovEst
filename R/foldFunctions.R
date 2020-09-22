@@ -69,22 +69,11 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
       # indicate that there are no hyperparameters
       estimator_hparam <- "hyperparameters = NA"
 
-      # compute the loss for each observation
-      valid_losses <- sapply(
-        seq_len(nrow(valid_data)),
-        function(x) {
-
-          # compute the Frobenius loss
-          matrixStats::sum2((est_mat - rank_one_crossp[[x]])^2)
-
-        }
-      )
-
       # return the results from the fold
       out <- tibble::tibble(
         estimator = est_name,
         hyperparameters = estimator_hparam,
-        loss = 1/nrow(valid_data) * sum(valid_losses),
+        loss = frobeniusLoss(est_mat, valid_data, rank_one_crossp),
         fold = origami::fold_index(fold = fold)
       )
 
@@ -110,22 +99,11 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
             !!!as.list(unlist(hparam_grid[idx, ]))
           )
 
-          # compute the loss for each observation
-          valid_losses <- sapply(
-            seq_len(nrow(valid_data)),
-            function(x) {
-
-              # compute the Frobenius loss
-              matrixStats::sum2((est_mat - rank_one_crossp[[x]])^2)
-
-            }
-          )
-
           # return the results from the fold
           out <- list(
             estimator = est_name,
             hyperparameters = estimator_hparam,
-            loss = 1/nrow(valid_data)*sum(valid_losses),
+            loss = frobeniusLoss(est_mat, valid_data, rank_one_crossp),
             fold = origami::fold_index(fold = fold)
           )
 
@@ -142,4 +120,37 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
   # combine into a tibble, but wrap in list for origami before returning
   est_out <- dplyr::bind_rows(est_out)
   return(list(est_out))
+}
+
+################################################################################
+
+#' Frobenius Loss
+#'
+#' @description \code{frobeniusLoss} computes the Frobenius
+#'   loss over the given dataset for the given covariance matrix estimate.
+#'
+#' @param estimate A \code{matrix} corresponding to the estimate of the covariance
+#'   matrix.
+#' @param dat A \code{data.frame} containing the data on which the loss will be
+#'   computed.
+#' @param rank_one_crossp A \code{list} of \code{matrix} objects consisting
+#'   of the outer products of each of \code{dat}'s rows.
+#'
+#' @return The average Frobenius loss over \code{dat} of \code{estimate} as
+#'   a \code{numeric}.
+#'
+#' @keywords internal
+frobeniusLoss <- function(estimate, dat, rank_one_crossp) {
+
+  # compute the losses
+  losses <- sapply(
+    seq_len(nrow(dat)),
+    function(x) {
+      # compute the Frobenius loss
+      matrixStats::sum2((estimate - rank_one_crossp[[x]])^2)
+    }
+  )
+
+  # compute the fold loss
+  return(1/nrow(dat)*sum(losses))
 }
