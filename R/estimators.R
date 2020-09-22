@@ -541,3 +541,47 @@ poetEst <- function(dat, k, lambda) {
   return(spectral_decomp + poc)
 
 }
+
+################################################################################
+
+#' Adaptive LASSO Estimator
+#'
+#' @description The \code{adaptiveLassoEst} function is a modification of
+#'   the similarly named penalized regression introduced by
+#'   \insertCite{zou2006;textual}{cvCovEst}. The thresholding function assigns a
+#'   weight to each entry of the sample covariance matrix based on its initial
+#'   value. This weight then determines the relative size of the penalty
+#'   resulting in larger values being penalized less and reducing bias
+#'   \insertCite{rothman2009}{cvCovEst}.
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#' @param lambda A non-negative \code{numeric} defining the amount of
+#'   thresholding applied to each element of \code{dat}'s sample covariance
+#'   matrix.
+#' @param n A non-negative \code{numeric} defining the exponent of the adaptive
+#'   weight applied to each element of \code{dat}'s sample covariance matrix.
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'  matrix.
+#'
+#' @importFrom coop covar
+#'
+#' @export
+#'
+#' @references
+#'   \insertAllCited{}
+adaptiveLassoEst <- function(dat, lambda, n) {
+
+  # compute the sample covariance matrix
+  sample_cov_mat <- coop::covar(dat)
+
+  # run symmetricApply on samplt_cov_mat
+  thresh_mat <- symmetricApply(sample_cov_mat,
+                               adaptiveLassoThreshold,
+                               sym_args = c(lambda = lambda, n = n))
+
+  return(thresh_mat)
+}
+
+
+

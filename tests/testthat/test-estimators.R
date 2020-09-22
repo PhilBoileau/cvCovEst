@@ -160,3 +160,29 @@ test_that("Verify POET estimator's results", {
   # compare
   expect_identical(round(rank_one_sample_cov, 10), round(poet_estimate, 10))
 })
+
+# Adaptive Lasso Estimator #####################################################
+
+test_that("adaptive Lasso estimator with no penalty is Sn", {
+  expect_identical(
+    adaptiveLassoEst(mtcars, lambda = 0, n = 0) %>% unname(),
+    coop::covar(mtcars) %>% unname()
+  )
+})
+
+test_that("adaptive Lasso estimator with no penalty and non-zero n is Sn", {
+  expect_identical(
+    adaptiveLassoEst(mtcars, lambda = 0, n = 1) %>% unname(),
+    coop::covar(mtcars) %>% unname()
+  )
+})
+
+test_that("adaptive Lasso estimator with large threshold is 0 matrix", {
+  expect_identical(
+    adaptiveLassoEst(mtcars, lambda = 1000000, n = 0) %>% unname(),
+    matrix(data = 0, nrow = ncol(mtcars), ncol = ncol(mtcars))
+  )
+})
+
+
+
