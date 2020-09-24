@@ -116,6 +116,16 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
             !!!as.list(unlist(hparam_grid[idx, ]))
           )
 
+          # fit the covariance matrix estimator on the full dataset
+          # NOTE: this is located here out of convenience... not computationally
+          # efficient, but not all that important since only for simulations,
+          # and this will not be released in the main package.
+          est_mat_full <- rlang::exec(
+            est_fun,
+            dat,
+            !!!as.list(unlist(hparam_grid[idx, ]))
+          )
+
           # return the results from the fold
           if (is.null(true_cov_mat)) {
             out <- tibble::tibble(
@@ -130,6 +140,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
               hyperparameters = estimator_hparam,
               loss = frobeniusLoss(est_mat, valid_data, rank_one_crossp),
               true_loss = trueFrobeniusLoss(est_mat, true_cov_mat),
+              true_full_loss = trueFrobeniusLoss(est_mat_full, true_cov_mat),
               fold = origami::fold_index(fold = fold)
             )
           }
