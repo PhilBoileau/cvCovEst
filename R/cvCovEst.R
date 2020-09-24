@@ -155,12 +155,23 @@ cvCovEst <- function(
       dplyr::arrange(.data$empirical_risk)
 
     # compute the best estimator's estimate
-    best_est <- get(cv_results[1, ]$estimator)
-    best_est_hyperparams <- parse(text = cv_results[1, ]$hyperparameters)
-    if (cv_results[1, ]$hyperparameters != "hyperparameters = NA") {
-      estimate <- best_est(dat, eval(best_est_hyperparams))
+    best_est_fun <- get(cv_results[1, ]$estimator)
+    best_est_hparams <- cv_results[1, ]$hyperparameters
+    if (best_est_hparams != "hyperparameters = NA") {
+      best_est_hparams_table <- best_est_hparams %>%
+        str_split(pattern = ", ") %>%
+        unlist %>%
+        str_split(pattern = " = ", simplify = TRUE)
+      best_hparams_list <- as.list(best_est_hparams_table[, 2])
+      names(best_hparams_list) <- best_est_hparams_table[, 1]
+      best_hparams_list <- lapply(best_hparams_list, strToNumber)
+      estimate <- exec(
+        best_est_fun,
+        dat,
+        !!!best_hparams_list
+      )
     } else {
-      estimate <- best_est(dat)
+      estimate <- best_est_fun(dat)
     }
 
     # prep output and return
@@ -199,12 +210,23 @@ cvCovEst <- function(
       (oracle_true_cv_risk - min_full_risk)
 
     # compute the cvCovEst estimator's estimate
-    best_est <- get(cv_results[1, ]$estimator)
-    best_est_hyperparams <- parse(text = cv_results[1, ]$hyperparameters)
-    if (cv_results[1, ]$hyperparameters != "hyperparameters = NA") {
-      estimate <- best_est(dat, eval(best_est_hyperparams))
+    best_est_fun <- get(cv_results[1, ]$estimator)
+    best_est_hparams <- cv_results[1, ]$hyperparameters
+    if (best_est_hparams != "hyperparameters = NA") {
+      best_est_hparams_table <- best_est_hparams %>%
+        str_split(pattern = ", ") %>%
+        unlist %>%
+        str_split(pattern = " = ", simplify = TRUE)
+      best_hparams_list <- as.list(best_est_hparams_table[, 2])
+      names(best_hparams_list) <- best_est_hparams_table[, 1]
+      best_hparams_list <- lapply(best_hparams_list, strToNumber)
+      estimate <- exec(
+        best_est_fun,
+        dat,
+        !!!best_hparams_list
+      )
     } else {
-      estimate <- best_est(dat)
+      estimate <- best_est_fun(dat)
     }
 
     # compute the risk difference ratios of the true cv risk for the cvCovEst
@@ -236,4 +258,22 @@ cvCovEst <- function(
   }
 
   return(out)
+}
+
+
+################################################################################
+
+#' Convert String to Numeric or Integer
+#'
+#' @param x A \code{character} representing a number or an integer.
+#'
+#' @return \code{x} converted to the appropriate type.
+#'
+#' @keywords internal
+strToNumber <- function(x) {
+
+  if (str_sub(x, start = -1) == "L")
+    as.integer(str_sub(x, end = -2))
+  else
+    as.numeric(x)
 }
