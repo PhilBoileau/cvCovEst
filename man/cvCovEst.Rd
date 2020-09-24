@@ -88,7 +88,7 @@ difference of the cvCovEst selection over the full dataset risk
 difference of the full dataset oracle selection.
 \item \code{full_oracle_riskdiff_ratio} - A \code{numeric} corresponding
 to the full data risk difference ratio of the the
-cvCovEst selection and the cross-validated oracle selection.
+cvCovEst selection and the full dataset oracle selection.
 }
 }
 \description{
