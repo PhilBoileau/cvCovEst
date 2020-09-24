@@ -1,3 +1,7 @@
+# cvCovEst 0.0.11 (2020-09-24)
+
+* Adding additional risk difference ratio calculations when the true covariance matrix of Gaussian Multivariate data is provided.
+
 # cvCovEst 0.0.10 (2020-09-22)
 
 * Added adaptive LASSO estimator

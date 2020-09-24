@@ -59,10 +59,9 @@ is passed directly to \code{\link[origami]{cross_validate}}.}
 \item{true_cov_mat}{A \code{matrix} like object representing the true
 covariance matrix of the data generating distribution, which is assumed to
 be Gaussian. This parameter is intended for use only in simulation studies,
-and defaults to a value of \code{NULL}. If not \code{NULL}, the
-cross-validated conditional risk difference ratio of the estimator selected
-by \code{cvCovEst} is computed relative to the cross-validated oracle
-selector.}
+and defaults to a value of \code{NULL}. If not \code{NULL}, various
+conditional risk difference ratios of the estimator selected
+by \code{cvCovEst} are computed relative to the different oracle selectors.}
 }
 \value{
 A \code{list} of results containing the following elements:
@@ -76,6 +75,20 @@ cross-validated risk estimates of each estimator.
 \item \code{cv_df} - A \code{\link[tibble]{tibble}} providing
 each estimators' loss over the various folds of the cross-validatied
 procedure.
+}
+If the true covariance matrix is input through \code{true_cov_mat}, then
+three additional elements are returned:
+\itemize{
+\item \code{cv_oracle_riskdiff_ratio} - A \code{numeric} corresponding
+to the conditional cross-validated risk difference ratio of the the
+cvCovEst selection and the cross-validated oracle selection.
+\item \code{full_cv_oracle_riskdiff_ratio} - A \code{numeric}
+corresponding to the risk difference ratio of the cross-validated risk
+difference of the cvCovEst selection over the full dataset risk
+difference of the full dataset oracle selection.
+\item \code{full_oracle_riskdiff_ratio} - A \code{numeric} corresponding
+to the full data risk difference ratio of the the
+cvCovEst selection and the full dataset oracle selection.
 }
 }
 \description{
