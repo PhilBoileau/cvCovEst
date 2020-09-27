@@ -65,6 +65,61 @@ test_that("Only implmented estimators pass checks", {
   ), "Only estimators implemented in the cvCovEst package can be used.")
 })
 
+test_that("Lone estimators without hyperparams aren't permitted", {
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = rlang::expr(c(sampleCovEst)),
+    estimator_params = estimator_params,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ),
+  "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
+  )
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = rlang::expr(c(nlShrinkLWEst)),
+    estimator_params = estimator_params,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ),
+  "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
+  )
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = rlang::expr(c(linearShrinkLWEst)),
+    estimator_params = estimator_params,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ),
+  "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
+  )
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = rlang::expr(c(denseLinearShrinkEst)),
+    estimator_params = estimator_params,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ),
+  "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
+  )
+})
+
 test_that("Only reasonable hyperparameters pass checks", {
   expect_true(checkArgs(
     dat = dat,

@@ -114,6 +114,13 @@ cvCovEst <- function(
     dat <- safeColScale(X = dat, center = center, scale = scale)
   }
 
+  # coerce true_cov_mat to matrix if needed
+  if (!is.null(true_cov_mat)) {
+    if (class(true_cov_mat)[1] != "matrix") {
+      true_cov_mat <- as.matrix(true_cov_mat)
+    }
+  }
+
   # define the folds based on cross-validation scheme
   n_obs <- nrow(dat)
   if (cv_scheme == "mc") {

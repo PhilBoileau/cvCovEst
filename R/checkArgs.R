@@ -73,6 +73,16 @@ checkArgs <- function(dat,
       is(dat, "dgCMatrix")
   )
 
+  # if only one estimator is passed in, and it doesn't have any hyperparameters,
+  # then tell users not to use cvCovEst
+  if (length(estimators) == 1) {
+    assertthat::assert_that(
+      estimators != "linearShrinkLWEst", estimators != "sampleCovEst",
+      estimators != "nlShrinkLWEst", estimators != "denseLinearShrinkEst",
+      msg = "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
+    )
+  }
+
   # assert that estimators are defined in cvCovEst package
   assertthat::assert_that(
     all(

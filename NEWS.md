@@ -1,3 +1,9 @@
+# cvCovEst 0.0.12 (2020-09-26)
+
+* Removing coop::covar due to strange parallelization issue on Linux machines. Hopefully we can use it again one day.
+* Prevent users from including a lone estimator as input to cvCovEst if the estimator in questions doesn't have any hyperparameters.
+* Coerce sparse, true covariance matrices to regular matrix objects if and when input to cvCovEst. 
+
 # cvCovEst 0.0.11 (2020-09-24)
 
 * Adding additional risk difference ratio calculations when the true covariance matrix of Gaussian Multivariate data is provided.
