@@ -150,7 +150,6 @@ cvCovEst <- function(
 
   # convert results to tibble
   fold_results_concat <- dplyr::bind_rows(fold_results[[1]])
-  fold_results_concat
 
   # compute the true cross-validated risk if true_covar_mat is passed in
   if(is.null(true_cov_mat)) {
