@@ -1,3 +1,7 @@
+# cvCovEst 0.0.13 (2020-09-28)
+
+* Changing loss function computation so that it is more computationally efficient.
+
 # cvCovEst 0.0.12 (2020-09-26)
 
 * Removing coop::covar due to strange parallelization issue on Linux machines. Hopefully we can use it again one day.
