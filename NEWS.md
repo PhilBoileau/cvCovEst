@@ -1,7 +1,11 @@
-# cvCovEst 0.0.13 (2020-09-29)
+# cvCovEst 0.0.14 (2020-09-29)
 
 * Replacing stats::cov with coop::covar since Nima identified what was causing the issue on Linux machines.
 * Removed calculation of spurious risk ratios from cvCovEst and cvFrobeniusLoss when the true covariance matrix is passed in.
+
+# cvCovEst 0.0.13 (2020-09-28)
+
+* Changing loss function computation so that it is more computationally efficient.
 
 # cvCovEst 0.0.12 (2020-09-26)
 
