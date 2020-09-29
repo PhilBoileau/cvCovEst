@@ -30,6 +30,7 @@
 #' @importFrom Rdpack reprompt
 #' @importFrom tibble tibble
 #' @importFrom rlang eval_tidy !!! exec
+#' @importFrom matrixStats sum2
 #'
 #' @return A \code{\link[tibble]{tibble}} providing information on estimators,
 #'  their hyperparameters (if any), and their scaled Frobenius loss evaluated
@@ -112,7 +113,6 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
           loss = 1/nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
             est_square,
           true_loss = trueFrobeniusLoss(est_mat, true_cov_mat),
-          true_full_risk = trueFrobeniusLoss(est_mat_full, true_cov_mat),
           fold = origami::fold_index(fold = fold)
         )
       }
@@ -172,7 +172,6 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
               loss = 1/nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
                 est_square,
               true_loss = trueFrobeniusLoss(est_mat, true_cov_mat),
-              true_full_risk = trueFrobeniusLoss(est_mat_full, true_cov_mat),
               fold = origami::fold_index(fold = fold)
             )
           }
@@ -207,30 +206,28 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
 #' @return The true average Frobenius loss over the validation dataset of
 #'   \code{estimate} as a \code{numeric}.
 #'
-#' @import Matrix
+#' @importFrom matrixStats sum2
 #'
 #' @keywords internal
 trueFrobeniusLoss <- function(estimate, true_covar) {
 
   # compute the matrix of the cross products of variances
   diag_true_covar <- diag(true_covar)
-  cross_prod_mat <- Matrix::tcrossprod(diag_true_covar, diag_true_covar)
+  cross_prod_mat <- matrixStats::sum2(base::tcrossprod(diag_true_covar,
+                                                       diag_true_covar))
 
   # compute the element-wise square of the true covariance matrix
-  elem_square_true <- true_covar^2
+  elem_square_true <- matrixStats::sum2(true_covar^2)
 
   # compute the element wise multiplication of the estimate and true covariance
-  elem_mult <- estimate * true_covar
+  elem_mult <- matrixStats::sum2(estimate * true_covar)
 
   # compute the element-wise square of the estimate
-  elem_square_est <- estimate^2
+  elem_square_est <- matrixStats::sum2(estimate^2)
 
   # combine all loss entries
-  combo_mat <- cross_prod_mat + 2*elem_square_true -
+  loss <- cross_prod_mat + 2*elem_square_true -
     2*elem_mult + elem_square_est
-
-  # compute the true loss
-  loss <- matrixStats::sum2(combo_mat)
 
   return(loss)
 }
