@@ -2,7 +2,7 @@
 test_that("linear shrinkage estimator with no shrinkage is S_n", {
   expect_identical(
     linearShrinkEst(mtcars, alpha = 1),
-    stats::cov(mtcars)
+    coop::covar(mtcars)
   )
 })
 
@@ -37,7 +37,7 @@ test_that("LW LS estimator runs without issue", {
 test_that("simple thresholing estimator without thresholding is S_n", {
   expect_identical(
     thresholdingEst(mtcars, gamma = 0),
-    stats::cov(mtcars)
+    coop::covar(mtcars)
   )
 })
 
@@ -52,14 +52,14 @@ test_that("simple thresholing estimator with large threshold is 0 matrix", {
 test_that("banding estimator with k = 0 is diagonal of S_n", {
   expect_identical(
     bandingEst(mtcars, k = 0L) %>% unname(),
-    diag( diag( stats::cov(mtcars) ) )
+    diag( diag( coop::covar(mtcars) ) )
   )
 })
 
 test_that("banding estimator with k >> 0 is S_n", {
   expect_identical(
     bandingEst(mtcars, k = 1000000L),
-    stats::cov(mtcars)
+    coop::covar(mtcars)
   )
 })
 
@@ -67,28 +67,28 @@ test_that("banding estimator with k >> 0 is S_n", {
 test_that("tapering estimator with k = 0 is diagonal of S_n", {
   expect_identical(
     taperingEst(mtcars, k = 0L) %>% unname(),
-    diag(diag( stats::cov(mtcars)))
+    diag(diag( coop::covar(mtcars)))
   )
 })
 
 test_that("tapering estimator with k = 2*p-2 is S_n", {
   expect_identical(
     taperingEst(mtcars, k = 20L) %>% unname(),
-    stats::cov(mtcars) %>% unname()
+    coop::covar(mtcars) %>% unname()
   )
 })
 
 test_that("tapering estimator with k = 2*p-4 is not S_n", {
   expect_false(identical(
     taperingEst(mtcars, k = 18L) %>% unname(),
-    stats::cov(mtcars) %>% unname()
+    coop::covar(mtcars) %>% unname()
   ))
 })
 
 test_that("tapering estimator with k >> 0 is S_n", {
   expect_identical(
     taperingEst(mtcars, k = 1000000L) %>% unname(),
-    stats::cov(mtcars) %>% unname()
+    coop::covar(mtcars) %>% unname()
   )
 })
 
@@ -144,7 +144,7 @@ test_that("Verify POET estimator's results", {
 
   # compute the rank-1 approx
   dat <- scale(mtcars, center = TRUE, scale = TRUE)
-  sample_cov_mat <- stats::cov(dat)
+  sample_cov_mat <- coop::covar(dat)
   eig_decomp <- RSpectra::eigs_sym(sample_cov_mat, 1)
   rank_one_sample_cov <- eig_decomp$values *
     eig_decomp$vectors %*% t(eig_decomp$vectors)
@@ -166,14 +166,14 @@ test_that("Verify POET estimator's results", {
 test_that("adaptive Lasso estimator with no penalty is Sn", {
   expect_identical(
     adaptiveLassoEst(mtcars, lambda = 0, n = 0) %>% unname(),
-    stats::cov(mtcars) %>% unname()
+    coop::covar(mtcars) %>% unname()
   )
 })
 
 test_that("adaptive Lasso estimator with no penalty and non-zero n is Sn", {
   expect_identical(
     adaptiveLassoEst(mtcars, lambda = 0, n = 1) %>% unname(),
-    stats::cov(mtcars) %>% unname()
+    coop::covar(mtcars) %>% unname()
   )
 })
 

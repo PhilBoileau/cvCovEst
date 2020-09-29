@@ -13,7 +13,7 @@
 #'  of the sample covariance matrix and the identity. \code{alpha = 1} returns
 #'  the sample covariance matrix, and \code{alpha = 0} returns the identity.
 #'
-#' @importFrom stats cov
+#' @importFrom coop covar
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
@@ -22,7 +22,7 @@
 linearShrinkEst <- function(dat, alpha) {
 
   # compute the sample covariance matrix
-  sample_cov_mat <- stats::cov(dat)
+  sample_cov_mat <- coop::covar(dat)
 
   # define the identity
   idn_pn <- diag(ncol(dat))
@@ -61,7 +61,7 @@ linearShrinkLWEst <- function(dat) {
   n <- nrow(dat)
 
   # compute the sample covariance matrix
-  sample_cov_mat <- stats::cov(dat)
+  sample_cov_mat <- coop::covar(dat)
 
   # define the identity
   idn_pn <- diag(p_n)
@@ -99,7 +99,7 @@ linearShrinkLWEst <- function(dat) {
 #' @param gamma A non-negative \code{numeric} defining the amount of hard
 #' thresholding applied to each element of \code{dat}'s sample covariance matrix.
 #'
-#' @importFrom stats cov
+#' @importFrom coop covar
 #'
 #' @references
 #'   \insertAllCited{}
@@ -110,7 +110,7 @@ linearShrinkLWEst <- function(dat) {
 #' @export
 thresholdingEst <- function(dat, gamma) {
   # compute the sample covariance matrix
-  sample_cov_mat <- stats::cov(dat)
+  sample_cov_mat <- coop::covar(dat)
 
   # apply threshold by removing all elements smaller than gamma
   return(replace(sample_cov_mat, abs(sample_cov_mat) < gamma, 0))
@@ -125,7 +125,7 @@ thresholdingEst <- function(dat, gamma) {
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
-#' @importFrom stats cov
+#' @importFrom coop covar
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'   matrix.
@@ -133,7 +133,7 @@ thresholdingEst <- function(dat, gamma) {
 #' @export
 sampleCovEst <- function(dat) {
   # compute the sample covariance matrix
-  return(stats::cov(dat))
+  return(coop::covar(dat))
 }
 
 
@@ -151,7 +151,7 @@ sampleCovEst <- function(dat) {
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param k A non-negative, numeric integer
 #'
-#' @importFrom stats cov
+#' @importFrom coop covar
 #' @importFrom dplyr bind_cols
 #'
 #' @references
@@ -164,7 +164,7 @@ sampleCovEst <- function(dat) {
 bandingEst <- function(dat, k) {
 
   # compute the sample covariance matrix
-  sam_cov <- stats::cov(dat)
+  sam_cov <- coop::covar(dat)
 
   n <- ncol(sam_cov)
 
@@ -218,7 +218,7 @@ bandingEst <- function(dat, k) {
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param k A non-negative, even \code{numeric} integer.
 #'
-#' @importFrom stats cov
+#' @importFrom coop covar
 #' @importFrom dplyr bind_cols
 #'
 #' @references
@@ -231,7 +231,7 @@ bandingEst <- function(dat, k) {
 taperingEst <- function(dat, k) {
 
   # compute the sample covariance matrix
-  sam_cov <- stats::cov(dat)
+  sam_cov <- coop::covar(dat)
 
   n <- ncol(sam_cov)
 
@@ -298,7 +298,7 @@ taperingEst <- function(dat, k) {
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
-#' @importFrom stats cov
+#' @importFrom coop covar
 #'
 #' @references
 #'   \insertAllCited{}
@@ -314,7 +314,7 @@ nlShrinkLWEst <- function(dat) {
   p <- ncol(dat)
 
   # Compute the Sample Covariance Matrix
-  sam_cov <- stats::cov(dat)
+  sam_cov <- coop::covar(dat)
 
   # Get the sorted eigenvalues and eigenvectors
   sam_eig <- eigen(sam_cov)
@@ -395,7 +395,7 @@ nlShrinkLWEst <- function(dat) {
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
-#' @importFrom stats cov
+#' @importFrom coop covar
 #' @importFrom Matrix triu
 #' @importFrom matrixStats sum2
 #'
@@ -413,7 +413,7 @@ denseLinearShrinkEst <- function(dat) {
   n <- nrow(dat)
 
   # compute the sample covariance matrix
-  sample_cov_mat <- stats::cov(dat)
+  sample_cov_mat <- coop::covar(dat)
 
   # compute elements of the dense target
   mean_var <- mean(diag(sample_cov_mat))
@@ -462,7 +462,7 @@ denseLinearShrinkEst <- function(dat) {
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
 #'
-#' @importFrom stats cov
+#' @importFrom coop covar
 #'
 #' @export
 #'
@@ -471,7 +471,7 @@ denseLinearShrinkEst <- function(dat) {
 scadEst <- function(dat, lambda) {
 
   # compute the sample covariance matrix
-  sample_cov_mat <- stats::cov(dat)
+  sample_cov_mat <- coop::covar(dat)
 
   # apply threshold by removing all elements smaller than gamma
   # TODO: Create a symmertric apply for covariance matrices
@@ -503,7 +503,7 @@ scadEst <- function(dat, lambda) {
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'   matrix.
 #'
-#' @importFrom stats cov
+#' @importFrom coop covar
 #' @importFrom RSpectra eigs_sym
 #'
 #' @export
@@ -513,7 +513,7 @@ scadEst <- function(dat, lambda) {
 poetEst <- function(dat, k, lambda) {
 
   # compute the sample covariance matrix
-  sample_cov_mat <- stats::cov(dat)
+  sample_cov_mat <- coop::covar(dat)
 
   # perform the eigenvalue decomposition
   eig_decomp <- RSpectra::eigs_sym(sample_cov_mat, k)
@@ -564,7 +564,7 @@ poetEst <- function(dat, k, lambda) {
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
 #'
-#' @importFrom stats cov
+#' @importFrom coop covar
 #'
 #' @export
 #'
@@ -573,7 +573,7 @@ poetEst <- function(dat, k, lambda) {
 adaptiveLassoEst <- function(dat, lambda, n) {
 
   # compute the sample covariance matrix
-  sample_cov_mat <- stats::cov(dat)
+  sample_cov_mat <- coop::covar(dat)
 
   # run symmetricApply on samplt_cov_mat
   thresh_mat <- symmetricApply(sample_cov_mat,
