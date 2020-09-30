@@ -317,16 +317,17 @@ nlShrinkLWEst <- function(dat) {
   sam_cov <- coop::covar(dat)
 
   # Get the sorted eigenvalues and eigenvectors
-  sam_eig <- eigen(sam_cov)
-  lambda <- sort(sam_eig$values, decreasing = FALSE, index.return = TRUE)
-  u <- sam_eig$vectors[, lambda$ix]
+  sam_eig <- eigen(sam_cov, symmetric = TRUE)
+  lambda <- sam_eig$values
+  u <- sam_eig$vectors
 
   # Analytical Nonlinear Shrinkage Kernal Formula
-  i <- max(1, p - n + 1)
-  lambda <- lambda$x[i:p]
+  # accept a tolerance of 1e-4
+  eig_nonzero_tol <- sum((round(lambda, digits = 4) > 0))
+  i <- min(p, eig_nonzero_tol)
+  lambda <- lambda[1:i]
   r <- length(lambda)
-  c <- min(n, p)
-  L <- matrix(lambda, nrow = r, ncol = c)
+  L <- matrix(lambda, nrow = r, ncol = eig_nonzero_tol)
 
   # LW Equation 4.9
   h <- n^(-1/3)
@@ -337,7 +338,7 @@ nlShrinkLWEst <- function(dat) {
   s1 <- (3/4)/sqrt(5)
   s2 <- -(3/10)/pi
   pos_x <- (1 - (x^2)/5)
-  pos_x <- replace(pos_x, list = which(pos_x < 0), 0)
+  pos_x <- replace(pos_x, pos_x < 0, 0)
   f_tilde = s1 * rowMeans(pos_x/H)
 
   # LW Equation 4.8
@@ -357,7 +358,7 @@ nlShrinkLWEst <- function(dat) {
 
   } else {
 
-    ones <- rep(1, p-n)
+    ones <- rep(1, p-eig_nonzero_tol)
     log_term <- log((1 + sqrt(5)*h)/(1 - sqrt(5)*h))
     m <- mean(1/lambda)
 
@@ -365,11 +366,11 @@ nlShrinkLWEst <- function(dat) {
     Hf_tilde0 <- (1/pi) * ((3/10)*s4 + (s1/h)*(1 - (1/5)*s4) * log_term) * m
 
     # LW Equation C.5
-    d_tilde0 <- 1/(pi*(p - n))/(n*Hf_tilde0)
+    d_tilde0 <- 1/(pi*(p - n)/n*Hf_tilde0)
 
     # LW Equation C.4
     d_tilde1 <- lambda/((pi^2 * lambda^2)*(f_tilde^2 + H_tilde^2))
-    d_tilde <- c(d_tilde0*ones, d_tilde1)
+    d_tilde <- c(d_tilde1, d_tilde0*ones)
 
   }
 
