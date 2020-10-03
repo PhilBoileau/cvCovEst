@@ -195,23 +195,22 @@ bandingEst <- function(dat, k) {
   return(sam_cov)
 }
 
-
-################################################################################
+###############################################################################
 
 #' Tapering Estimator
 #'
 #' @description \code{taperingEst} estimates the covariance matrix of a
 #'  \code{data.frame}-like object with ordered variables by gradually shrinking
 #'  the bands of the sample covariance matrix towards zero. The estimator is
-#'  defined as the hadamard product of the sample covariance matrix and a weight
-#'  matrix. The amount of shrinkage is dictated by the weight matrix, and is
-#'  controlled by a hyperparameter, \code{k}. This estimator is attributed to
-#'  \insertCite{cai2010;textual}{cvCovEst}.
+#'  defined as the hadamard product of the sample covariance matrix and a
+#'  weight matrix. The amount of shrinkage is dictated by the weight matrix,
+#'  and is controlled by a hyperparameter, \code{k}. This estimator is
+#'  attributed to \insertCite{cai2010;textual}{cvCovEst}.
 #'
-#'  The weight matrix is a Toeplitz matrix whose entries are defined as follows:
-#'  Let i and j index the rows and columns of the weight matrix, respectively.
-#'  If \code{abs(i-j) <= k/2}, then entry i,j in the weight matrix is equal to
-#'  1. If \code{k/2 < abs(i-j) < k}, then entry i,j is equal to
+#'  The weight matrix is a Toeplitz matrix with entries defined as follows: Let
+#'  i and j index the rows and columns of the weight matrix, respectively. If
+#'  \code{abs(i-j) <= k/2}, then entry i,j in the weight matrix is equal to 1.
+#'  If \code{k/2 < abs(i-j) < k}, then entry i,j is equal to
 #'  \code{2 - 2*abs(i-j)/k}. Otherwise, entry i,j is equal to 0.
 #'
 #'
@@ -280,8 +279,7 @@ taperingEst <- function(dat, k) {
 
 }
 
-
-################################################################################
+###############################################################################
 
 #' Analytical Non-Linear Shrinkage Estimator
 #'
@@ -332,32 +330,29 @@ nlShrinkLWEst <- function(dat) {
   # LW Equation 4.9
   h <- n^(-1/3)
   H <- h * t(L)
-  x <- (L - t(L))/H
+  x <- (L - t(L)) / H
 
   # LW Equation 4.7
-  s1 <- (3/4)/sqrt(5)
-  s2 <- -(3/10)/pi
+  s1 <- (3 / 4) / sqrt(5)
+  s2 <- -(3 / 10) / pi
   pos_x <- (1 - (x^2)/5)
   pos_x <- replace(pos_x, pos_x < 0, 0)
-  f_tilde = s1 * rowMeans(pos_x/H)
+  f_tilde = s1 * rowMeans(pos_x / H)
 
   # LW Equation 4.8
   log_term <- log(abs((sqrt(5) - x)/(sqrt(5) + x)))
-  Hftemp <- (s2 * x) + (s1/pi) * (1 - (x^2)/5) * log_term
+  Hftemp <- (s2 * x) + (s1 / pi) * (1 - (x^2) / 5) * log_term
   sq5 <- which(abs(x) == sqrt(5))
-  Hftemp[sq5] <- s2*x[sq5]
-  H_tilde <- rowMeans(Hftemp/H)
+  Hftemp[sq5] <- s2 * x[sq5]
+  H_tilde <- rowMeans(Hftemp / H)
 
   # LW Equation 4.3
-  s3 <- pi*(p/n)
-  s4 <- 1/(h^2)
-  if (p <= n) {
-
-    d_tilde <- lambda/((s3 * lambda * f_tilde)^2 +
-                         (1 - (p/n) - s3 *lambda*H_tilde)^2)
-
+  s3 <- pi * (p / n)
+  s4 <- 1 / (h^2)
+  if (p <= eig_nonzero_tol) {
+    d_tilde <- lambda / ((s3 * lambda * f_tilde)^2 +
+                        (1 - (p/n) - s3 * lambda * H_tilde)^2)
   } else {
-
     ones <- rep(1, p-eig_nonzero_tol)
     log_term <- log((1 + sqrt(5)*h)/(1 - sqrt(5)*h))
     m <- mean(1/lambda)
@@ -369,19 +364,16 @@ nlShrinkLWEst <- function(dat) {
     d_tilde0 <- 1/(pi*(p - n)/n*Hf_tilde0)
 
     # LW Equation C.4
-    d_tilde1 <- lambda/((pi^2 * lambda^2)*(f_tilde^2 + H_tilde^2))
-    d_tilde <- c(d_tilde1, d_tilde0*ones)
-
+    d_tilde1 <- lambda/((pi^2 * lambda^2) * (f_tilde^2 + H_tilde^2))
+    d_tilde <- c(d_tilde1, d_tilde0 * ones)
   }
 
   # LW Equation 4.4
   sigma_tilde <- u %*% diag(d_tilde) %*% t(u)
-
   return(sigma_tilde)
 }
 
-
-################################################################################
+###############################################################################
 
 #' Linear Shrinakge Estimator, Dense Target
 #'
@@ -390,8 +382,8 @@ nlShrinkLWEst <- function(dat) {
 #'  matrix. This target matrix's diagonal elements are equal to the average
 #'  of the sample covariance matrix estimate's diagonal elements, and its
 #'  off-diagonal elements are equal to the average of the sample covariance
-#'  matrix estimate's off-diagonal elements. For information on this estimator's
-#'  derivation, see \insertCite{Ledoit2020b;textual}{cvCovEst} and
+#'  matrix estimate's off-diagonal elements. For information on this
+#'  estimator's derivation, see \insertCite{Ledoit2020b;textual}{cvCovEst} and
 #'  \insertCite{shafer2005;textual}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
@@ -442,7 +434,7 @@ denseLinearShrinkEst <- function(dat) {
   return(gamma_hat * f_mat + (1 - gamma_hat) * sample_cov_mat)
 }
 
-################################################################################
+###############################################################################
 
 #' Smoothly Clipped Absolute Deviation Estimator
 #'
@@ -480,7 +472,7 @@ scadEst <- function(dat, lambda) {
                lambda = lambda, a = 3.7))
 }
 
-################################################################################
+###############################################################################
 
 #' POET Estimator
 #'
@@ -543,16 +535,16 @@ poetEst <- function(dat, k, lambda) {
 
 }
 
-################################################################################
+###############################################################################
 
 #' Adaptive LASSO Estimator
 #'
 #' @description The \code{adaptiveLassoEst} function is a modification of
 #'   the similarly named penalized regression introduced by
-#'   \insertCite{zou2006;textual}{cvCovEst}. The thresholding function assigns a
-#'   weight to each entry of the sample covariance matrix based on its initial
-#'   value. This weight then determines the relative size of the penalty
-#'   resulting in larger values being penalized less and reducing bias
+#'   \insertCite{zou2006;textual}{cvCovEst}. The thresholding function assigns
+#'   a weight to each entry of the sample covariance matrix based on its
+#'   initial value. This weight then determines the relative size of the
+#'   penalty resulting in larger values being penalized less and reducing bias
 #'   \insertCite{rothman2009}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
@@ -579,6 +571,3 @@ adaptiveLassoEst <- function(dat, lambda, n) {
   return(apply(sample_cov_mat, c(1, 2), adaptiveLassoThreshold,
                lambda = lambda, n = n))
 }
-
-
-

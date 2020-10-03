@@ -1,6 +1,6 @@
 Package: cvCovEst
 Title: Cross-Validated Covariance Matrix Estimation
-Version: 0.0.14
+Version: 0.0.15
 Authors@R: c(
     person("Philippe", "Boileau", email = "philippe_boileau@berkeley.edu",
            role = c("aut", "cre", "cph"),
