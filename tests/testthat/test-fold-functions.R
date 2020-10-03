@@ -57,7 +57,7 @@ test_that("trueFrobeniusLoss computes the correct validation set loss", {
   expect_equal(trueFrobeniusLoss(est, true_cov), 38)
 })
 
-test_that("the true covariance matrix can be passed in",{
+test_that("the true covariance matrix can be passed in", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,
     dat = dat,

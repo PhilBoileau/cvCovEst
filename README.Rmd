@@ -21,8 +21,8 @@ knitr::opts_chunk$set(
 > Cross-Validated Covariance Matrix Estimation
 
 __Authors:__ [Philippe Boileau](https://pboileau.ca),
-[Brian  Colica](https://www.linkedin.com/in/brian-collica-553b0b94), and
-  [Nima Hejazi](https://nimahejazi.org)
+[Brian Collica](https://www.linkedin.com/in/brian-collica-553b0b94), and
+[Nima Hejazi](https://nimahejazi.org)
 
 ---
 

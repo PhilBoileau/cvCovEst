@@ -11,7 +11,7 @@ status](https://travis-ci.com/PhilBoileau/cvCovEst.svg?token=YL3L6rYQtszHibWHgFx
 > Cross-Validated Covariance Matrix Estimation
 
 **Authors:** [Philippe Boileau](https://pboileau.ca), [Brian
-Colica](https://www.linkedin.com/in/brian-collica-553b0b94), and [Nima
+Collica](https://www.linkedin.com/in/brian-collica-553b0b94), and [Nima
 Hejazi](https://nimahejazi.org)
 
 -----
@@ -76,15 +76,15 @@ cv_cov_est_out$risk_df
 #> # Groups:   estimator [5]
 #>   estimator            hyperparameters      empirical_risk
 #>   <chr>                <chr>                         <dbl>
-#> 1 denseLinearShrinkEst hyperparameters = NA          3466.
-#> 2 poetEst              lambda = 0.2, k = 1           3479.
-#> 3 poetEst              lambda = 0.1, k = 1           3479.
-#> 4 poetEst              lambda = 0.2, k = 2           3480.
-#> 5 poetEst              lambda = 0.1, k = 2           3480.
-#> 6 linearShrinkLWEst    hyperparameters = NA          3481.
-#> 7 sampleCovEst         hyperparameters = NA          3482.
-#> 8 thresholdingEst      gamma = 0.2                   3482.
-#> 9 thresholdingEst      gamma = 2                     4087.
+#> 1 denseLinearShrinkEst hyperparameters = NA          3533.
+#> 2 poetEst              lambda = 0.2, k = 1           3542.
+#> 3 poetEst              lambda = 0.1, k = 1           3542.
+#> 4 poetEst              lambda = 0.2, k = 2           3543.
+#> 5 poetEst              lambda = 0.1, k = 2           3543.
+#> 6 linearShrinkLWEst    hyperparameters = NA          3544.
+#> 7 sampleCovEst         hyperparameters = NA          3545.
+#> 8 thresholdingEst      gamma = 0.2                   3545.
+#> 9 thresholdingEst      gamma = 2                     4164.
 ```
 
 -----

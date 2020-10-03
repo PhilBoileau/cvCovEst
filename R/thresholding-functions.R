@@ -12,14 +12,15 @@
 #'
 #' @keywords internal
 scadThreshold <- function(entry, lambda, a) {
-  if(abs(entry) <= 2*lambda) {
+  if (abs(entry) <= 2 * lambda) {
     reg_entry <- abs(entry) - lambda
-    if (reg_entry > 0)
+    if (reg_entry > 0) {
       reg_entry <- sign(entry) * reg_entry
-    else
+    } else {
       reg_entry <- 0
-  } else if (abs(entry) <= a*lambda) {
-    reg_entry <- ((a - 1)*entry - sign(entry)*a*lambda)/(a - 2)
+    }
+  } else if (abs(entry) <= a * lambda) {
+    reg_entry <- ((a - 1) * entry - sign(entry) * a * lambda) / (a - 2)
   } else {
     reg_entry <- entry
   }
@@ -42,10 +43,10 @@ scadThreshold <- function(entry, lambda, a) {
 #'
 #' @keywords internal
 adaptiveLassoThreshold <- function(entry, lambda, n) {
-  s <- abs(entry) - (lambda^(n + 1))*abs(entry)^(-n)
+  s <- abs(entry) - (lambda^(n + 1)) * abs(entry)^(-n)
 
   if (s > 0) {
-    reg_entry <- sign(entry)*s
+    reg_entry <- sign(entry) * s
   } else {
     reg_entry <- 0
   }
@@ -87,7 +88,7 @@ symmetricApply <- function(dat, sym_fun, sym_args) {
     })
 
     # return a new vector corresponding to lower triangular matrix column
-    new_vec <- c(rep(0, i-1), app_vec)
+    new_vec <- c(rep(0, i - 1), app_vec)
 
     return(new_vec)
   })

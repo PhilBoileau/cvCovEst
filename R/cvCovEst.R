@@ -75,21 +75,19 @@
 #'
 #' @export
 cvCovEst <- function(
-  dat,
-  estimators = c(
-   linearShrinkEst, thresholdingEst, sampleCovEst
-  ),
-  estimator_params = list(
-   linearShrinkEst = list(alpha = 0),
-   thresholdingEst = list(gamma = 0)
-  ),
-  cv_scheme = "v_fold", mc_split = 0.5, v_folds = 10L,
-  center = TRUE,
-  scale = FALSE,
-  parallel = FALSE,
-  true_cov_mat = NULL
-)
-{
+                     dat,
+                     estimators = c(
+                       linearShrinkEst, thresholdingEst, sampleCovEst
+                     ),
+                     estimator_params = list(
+                       linearShrinkEst = list(alpha = 0),
+                       thresholdingEst = list(gamma = 0)
+                     ),
+                     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 10L,
+                     center = TRUE,
+                     scale = FALSE,
+                     parallel = FALSE,
+                     true_cov_mat = NULL) {
 
   # grab estimator expression
   estimators <- rlang::enexpr(estimators)
@@ -138,21 +136,21 @@ cvCovEst <- function(
 
   # apply the estimators to each fold
   fold_results <- origami::cross_validate(
-      dat = dat,
-      cv_fun = cvFrobeniusLoss, # might provide other options at a later date
-      folds = folds,
-      estimator_funs = estimators,
-      estimator_params = estimator_params,
-      true_cov_mat = true_cov_mat,
-      use_future = parallel,
-      .combine = FALSE
+    dat = dat,
+    cv_fun = cvFrobeniusLoss, # might provide other options at a later date
+    folds = folds,
+    estimator_funs = estimators,
+    estimator_params = estimator_params,
+    true_cov_mat = true_cov_mat,
+    use_future = parallel,
+    .combine = FALSE
   )
 
   # convert results to tibble
   fold_results_concat <- dplyr::bind_rows(fold_results[[1]])
 
   # compute the true cross-validated risk if true_covar_mat is passed in
-  if(is.null(true_cov_mat)) {
+  if (is.null(true_cov_mat)) {
 
     # compute empirical risk
     cv_results <- fold_results_concat %>%
@@ -166,7 +164,7 @@ cvCovEst <- function(
     if (best_est_hparams != "hyperparameters = NA") {
       best_est_hparams_table <- best_est_hparams %>%
         str_split(pattern = ", ") %>%
-        unlist %>%
+        unlist() %>%
         str_split(pattern = " = ", simplify = TRUE)
       best_hparams_list <- as.list(best_est_hparams_table[, 2])
       names(best_hparams_list) <- best_est_hparams_table[, 1]
@@ -200,8 +198,10 @@ cvCovEst <- function(
     # compute the true cross-validated risk and the cv-estimated risk
     cv_results <- fold_results_concat %>%
       dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
-      dplyr::summarise(true_cv_risk = mean(.data$true_loss),
-                       empirical_risk = mean(.data$loss))  %>%
+      dplyr::summarise(
+        true_cv_risk = mean(.data$true_loss),
+        empirical_risk = mean(.data$loss)
+      ) %>%
       dplyr::arrange(.data$empirical_risk)
 
     # compute the risk distance ratio under the cross-validated risk
@@ -219,7 +219,7 @@ cvCovEst <- function(
     if (best_est_hparams != "hyperparameters = NA") {
       best_est_hparams_table <- best_est_hparams %>%
         str_split(pattern = ", ") %>%
-        unlist %>%
+        unlist() %>%
         str_split(pattern = " = ", simplify = TRUE)
       best_hparams_list <- as.list(best_est_hparams_table[, 2])
       names(best_hparams_list) <- best_est_hparams_table[, 1]
@@ -260,9 +260,9 @@ cvCovEst <- function(
 #'
 #' @keywords internal
 strToNumber <- function(x) {
-
-  if (str_sub(x, start = -1) == "L")
+  if (str_sub(x, start = -1) == "L") {
     as.integer(str_sub(x, end = -2))
-  else
+  } else {
     as.numeric(x)
+  }
 }

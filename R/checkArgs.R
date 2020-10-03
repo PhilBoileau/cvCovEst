@@ -86,11 +86,13 @@ checkArgs <- function(dat,
   # assert that estimators are defined in cvCovEst package
   assertthat::assert_that(
     all(
-      estimators %in% c("linearShrinkEst", "linearShrinkLWEst",
-                        "thresholdingEst", "sampleCovEst", "bandingEst",
-                        "taperingEst", "nlShrinkLWEst",
-                        "denseLinearShrinkEst", "scadEst", "poetEst",
-                        "adaptiveLassoEst") == TRUE
+      estimators %in% c(
+        "linearShrinkEst", "linearShrinkLWEst",
+        "thresholdingEst", "sampleCovEst", "bandingEst",
+        "taperingEst", "nlShrinkLWEst",
+        "denseLinearShrinkEst", "scadEst", "poetEst",
+        "adaptiveLassoEst"
+      ) == TRUE
     ),
     msg = "Only estimators implemented in the cvCovEst package can be used."
   )
@@ -127,7 +129,6 @@ checkArgs <- function(dat,
     assertthat::assert_that(
       nrow(dat) >= 12
     )
-
   }
   if ("scadEst" %in% estimators) {
     assertthat::assert_that(
@@ -170,12 +171,11 @@ checkArgs <- function(dat,
   # when not null, assert that true_cov_matis of the appropriate type and dims
   if (!is.null(true_cov_mat)) {
     assertthat::assert_that(is.matrix(true_cov_mat) ||
-                            is(true_cov_mat, "dgeMatrix") ||
-                            is(true_cov_mat, "dgCMatrix"))
+      is(true_cov_mat, "dgeMatrix") ||
+      is(true_cov_mat, "dgCMatrix"))
     assertthat::assert_that(identical(dim(true_cov_mat)[1], ncol(dat)))
     assertthat::assert_that(identical(dim(true_cov_mat)[2], ncol(dat)))
   } else {
     TRUE
   }
-
 }

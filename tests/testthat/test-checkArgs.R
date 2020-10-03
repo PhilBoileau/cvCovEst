@@ -9,10 +9,12 @@ Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
 dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 
 # define the arguments as they appear inside cvCoveEst
-estimators <- rlang::expr(c(linearShrinkEst, thresholdingEst, sampleCovEst,
-                            linearShrinkLWEst, bandingEst, taperingEst,
-                            nlShrinkLWEst, denseLinearShrinkEst, scadEst,
-                            poetEst, adaptiveLassoEst))
+estimators <- rlang::expr(c(
+  linearShrinkEst, thresholdingEst, sampleCovEst,
+  linearShrinkLWEst, bandingEst, taperingEst,
+  nlShrinkLWEst, denseLinearShrinkEst, scadEst,
+  poetEst, adaptiveLassoEst
+))
 estimator_params <- list(
   linearShrinkEst = list(alpha = c(0.1, 0.9)),
   thresholdingEst = list(gamma = c(0.2, 2)),
@@ -66,57 +68,61 @@ test_that("Only implmented estimators pass checks", {
 })
 
 test_that("Lone estimators without hyperparams aren't permitted", {
-  expect_error(checkArgs(
-    dat = dat,
-    estimators = rlang::expr(c(sampleCovEst)),
-    estimator_params = estimator_params,
-    cv_scheme = cv_scheme,
-    mc_split = mc_split,
-    v_folds = v_folds,
-    center = center,
-    scale = scale,
-    parallel = parallel
-  ),
-  "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
+  expect_error(
+    checkArgs(
+      dat = dat,
+      estimators = rlang::expr(c(sampleCovEst)),
+      estimator_params = estimator_params,
+      cv_scheme = cv_scheme,
+      mc_split = mc_split,
+      v_folds = v_folds,
+      center = center,
+      scale = scale,
+      parallel = parallel
+    ),
+    "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
   )
-  expect_error(checkArgs(
-    dat = dat,
-    estimators = rlang::expr(c(nlShrinkLWEst)),
-    estimator_params = estimator_params,
-    cv_scheme = cv_scheme,
-    mc_split = mc_split,
-    v_folds = v_folds,
-    center = center,
-    scale = scale,
-    parallel = parallel
-  ),
-  "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
+  expect_error(
+    checkArgs(
+      dat = dat,
+      estimators = rlang::expr(c(nlShrinkLWEst)),
+      estimator_params = estimator_params,
+      cv_scheme = cv_scheme,
+      mc_split = mc_split,
+      v_folds = v_folds,
+      center = center,
+      scale = scale,
+      parallel = parallel
+    ),
+    "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
   )
-  expect_error(checkArgs(
-    dat = dat,
-    estimators = rlang::expr(c(linearShrinkLWEst)),
-    estimator_params = estimator_params,
-    cv_scheme = cv_scheme,
-    mc_split = mc_split,
-    v_folds = v_folds,
-    center = center,
-    scale = scale,
-    parallel = parallel
-  ),
-  "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
+  expect_error(
+    checkArgs(
+      dat = dat,
+      estimators = rlang::expr(c(linearShrinkLWEst)),
+      estimator_params = estimator_params,
+      cv_scheme = cv_scheme,
+      mc_split = mc_split,
+      v_folds = v_folds,
+      center = center,
+      scale = scale,
+      parallel = parallel
+    ),
+    "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
   )
-  expect_error(checkArgs(
-    dat = dat,
-    estimators = rlang::expr(c(denseLinearShrinkEst)),
-    estimator_params = estimator_params,
-    cv_scheme = cv_scheme,
-    mc_split = mc_split,
-    v_folds = v_folds,
-    center = center,
-    scale = scale,
-    parallel = parallel
-  ),
-  "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
+  expect_error(
+    checkArgs(
+      dat = dat,
+      estimators = rlang::expr(c(denseLinearShrinkEst)),
+      estimator_params = estimator_params,
+      cv_scheme = cv_scheme,
+      mc_split = mc_split,
+      v_folds = v_folds,
+      center = center,
+      scale = scale,
+      parallel = parallel
+    ),
+    "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
   )
 })
 
@@ -335,7 +341,7 @@ test_that("Only reasonable hyperparameters pass checks", {
     parallel = parallel
   ))
   expect_error(checkArgs(
-    dat = dat[1:11,],
+    dat = dat[1:11, ],
     estimators = estimators,
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -524,7 +530,7 @@ test_that("Only reasonable hyperparameters pass checks", {
   ))
 })
 
-test_that("Only reasonable CV schemes pass checks",{
+test_that("Only reasonable CV schemes pass checks", {
   expect_true(checkArgs(
     dat = dat,
     estimators = estimators,
@@ -665,10 +671,12 @@ test_that("Flag elements work as expected", {
 test_that("checkArgs works well in cvCovEst Function", {
   expect_silent(cvCovEst(
     dat = dat,
-    estimators = c(linearShrinkEst, linearShrinkLWEst,
-                   thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-                   scadEst, poetEst, adaptiveLassoEst),
+    estimators = c(
+      linearShrinkEst, linearShrinkLWEst,
+      thresholdingEst, sampleCovEst, bandingEst,
+      taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+      scadEst, poetEst, adaptiveLassoEst
+    ),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
@@ -683,10 +691,12 @@ test_that("checkArgs works well in cvCovEst Function", {
   ))
   expect_silent(cvCovEst(
     dat = dat,
-    estimators = c(linearShrinkEst, linearShrinkLWEst,
-                   thresholdingEst, sampleCovEst, bandingEst,
-                   taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-                   scadEst, poetEst, adaptiveLassoEst),
+    estimators = c(
+      linearShrinkEst, linearShrinkLWEst,
+      thresholdingEst, sampleCovEst, bandingEst,
+      taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+      scadEst, poetEst, adaptiveLassoEst
+    ),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
       thresholdingEst = list(gamma = c(0.2, 2)),
