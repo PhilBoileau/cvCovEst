@@ -1,4 +1,9 @@
+## R
 .Rproj.user
 .Rhistory
 .RData
+README.html
+vignettes/*.html
+
+## macOS
 .DS_store

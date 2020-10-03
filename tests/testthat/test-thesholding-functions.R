@@ -31,6 +31,3 @@ test_that("Adaptive Lasso Estimator regularizes as intended", {
   expect_equal(adaptiveLassoThreshold(entry = 1, lambda = 0.1, n = 2), 0.999)
   expect_equal(adaptiveLassoThreshold(entry = -1, lambda = 0.1, n = 2), -0.999)
 })
-
-
-

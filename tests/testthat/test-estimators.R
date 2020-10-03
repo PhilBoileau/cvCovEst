@@ -52,7 +52,7 @@ test_that("simple thresholing estimator with large threshold is 0 matrix", {
 test_that("banding estimator with k = 0 is diagonal of S_n", {
   expect_identical(
     bandingEst(mtcars, k = 0L) %>% unname(),
-    diag( diag( coop::covar(mtcars) ) )
+    diag(diag(coop::covar(mtcars)))
   )
 })
 
@@ -67,7 +67,7 @@ test_that("banding estimator with k >> 0 is S_n", {
 test_that("tapering estimator with k = 0 is diagonal of S_n", {
   expect_identical(
     taperingEst(mtcars, k = 0L) %>% unname(),
-    diag(diag( coop::covar(mtcars)))
+    diag(diag(coop::covar(mtcars)))
   )
 })
 
@@ -155,7 +155,7 @@ test_that("Verify POET estimator's results", {
   # remove the diagonal
   diag(rank_one_sample_cov) <- 0
   diag(poet_estimate) <- 0
-  poet_estimate <- poet_estimate %>% unname
+  poet_estimate <- poet_estimate %>% unname()
 
   # compare
   expect_identical(round(rank_one_sample_cov, 10), round(poet_estimate, 10))

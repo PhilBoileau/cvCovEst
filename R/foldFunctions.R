@@ -95,7 +95,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
         out <- tibble::tibble(
           estimator = est_name,
           hyperparameters = estimator_hparam,
-          loss = 1/nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
+          loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
             est_square,
           fold = origami::fold_index(fold = fold)
         )
@@ -110,7 +110,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
         out <- tibble::tibble(
           estimator = est_name,
           hyperparameters = estimator_hparam,
-          loss = 1/nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
+          loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
             est_square,
           true_loss = trueFrobeniusLoss(est_mat, true_cov_mat),
           fold = origami::fold_index(fold = fold)
@@ -118,7 +118,6 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
       }
 
       return(out)
-
     } else {
 
       # Compute the grid of hyperparameters
@@ -131,8 +130,9 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
 
           # fit the covariance matrix estimator on the training set
           estimator_hparam <- paste(hyp_name, "=", hparam_grid[idx, ])
-          if (length(estimator_hparam) > 1)
+          if (length(estimator_hparam) > 1) {
             estimator_hparam <- paste(estimator_hparam, collapse = ", ")
+          }
           est_mat <- rlang::exec(
             est_fun,
             train_data,
@@ -150,7 +150,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
             out <- tibble::tibble(
               estimator = est_name,
               hyperparameters = estimator_hparam,
-              loss = 1/nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
+              loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
                 est_square,
               fold = origami::fold_index(fold = fold)
             )
@@ -169,7 +169,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
             out <- tibble::tibble(
               estimator = est_name,
               hyperparameters = estimator_hparam,
-              loss = 1/nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
+              loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
                 est_square,
               true_loss = trueFrobeniusLoss(est_mat, true_cov_mat),
               fold = origami::fold_index(fold = fold)
@@ -177,7 +177,6 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
           }
 
           return(out)
-
         }
       )
 
@@ -213,8 +212,10 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
 
   # compute the matrix of the cross products of variances
   diag_true_covar <- diag(true_covar)
-  cross_prod_mat <- matrixStats::sum2(base::tcrossprod(diag_true_covar,
-                                                       diag_true_covar))
+  cross_prod_mat <- matrixStats::sum2(base::tcrossprod(
+    diag_true_covar,
+    diag_true_covar
+  ))
 
   # compute the element-wise square of the true covariance matrix
   elem_square_true <- matrixStats::sum2(true_covar^2)
@@ -226,8 +227,8 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
   elem_square_est <- matrixStats::sum2(estimate^2)
 
   # combine all loss entries
-  loss <- cross_prod_mat + 2*elem_square_true -
-    2*elem_mult + elem_square_est
+  loss <- cross_prod_mat + 2 * elem_square_true -
+    2 * elem_mult + elem_square_est
 
   return(loss)
 }
