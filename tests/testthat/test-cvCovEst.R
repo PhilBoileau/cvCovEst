@@ -130,6 +130,21 @@ test_that("cross-validated covariance selector runs silently", {
     center = TRUE, scale = FALSE, parallel = FALSE,
     true_cov_mat = Sigma
   ))
+  expect_silent(cvCovEst(
+    dat = dat,
+    estimators = c(
+      linearShrinkLWEst, thresholdingEst, nlShrinkLWEst, denseLinearShrinkEst,
+      scadEst, adaptiveLassoEst
+    ),
+    estimator_params = list(
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      scadEst = list(lambda = c(0.1, 0.2)),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+    ),
+    cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
+    center = TRUE, scale = FALSE, parallel = FALSE,
+    true_cov_mat = Sigma
+  ))
 })
 
 test_that("cvCovEst automatically centers non-centered data", {
