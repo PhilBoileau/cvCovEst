@@ -1,3 +1,7 @@
+# cvCovEst 0.0.15 (2020-10-16)
+
+* When provided with the true covariance matrix, cvCovEst now outputs the conditional cross-validated risk differences of the cross-validation selection and the oracle selections.
+
 # cvCovEst 0.0.15 (2020-10-03)
 
 * Fixing a minor dimension error in `nlShrinkLWEst` by changing a conditional,

@@ -61,13 +61,12 @@
 #'   If the true covariance matrix is input through \code{true_cov_mat}, then
 #'   three additional elements are returned:
 #'   \itemize{
-#'     \item \code{cv_oracle_riskdiff_ratio} - A \code{numeric} corresponding
-#'       to the conditional cross-validated risk difference ratio of the the
-#'       cvCovEst selection and the cross-validated oracle selection.
-#'     \item \code{full_cv_oracle_riskdiff_ratio} - A \code{numeric}
-#'       corresponding to the risk difference ratio of the cross-validated risk
-#'       difference of the cvCovEst selection over the full dataset risk
-#'       difference of the full dataset oracle selection.
+#'     \item \code{cv_cv_riskdiff} - A \code{numeric} corresponding
+#'       to the conditional cross-validated risk difference of the
+#'       cvCovEst selection.
+#'     \item \code{oracle_cv_riskdiff} - A \code{numeric}
+#'       corresponding to the conditional cross-validated risk difference of the
+#'       oracle selection.
 #'     \item \code{full_oracle_riskdiff_ratio} - A \code{numeric} corresponding
 #'       to the full data risk difference ratio of the the
 #'       cvCovEst selection and the full dataset oracle selection.
@@ -242,6 +241,8 @@ cvCovEst <- function(
       ),
       risk_df = cv_results,
       cv_df = fold_results_concat,
+      cv_cv_riskdiff = cvCovEst_true_cv_risk - min_full_risk,
+      oracle_cv_riskdiff = oracle_true_cv_risk - min_full_risk,
       cv_oracle_riskdiff_ratio = cv_oracle_riskdiff_ratio
     )
   }
