@@ -97,6 +97,16 @@ test_that("LW NLS estimator runs without issue", {
   expect_silent(
     nlShrinkLWEst(mtcars)
   )
+
+  # make sure that nlShrinkLWEst can handle case where n = p
+
+  library(MASS)
+  set.seed(123)
+  Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
+  dat <- mvrnorm(n = 50, mu = rep(0, 50), Sigma = Sigma)
+  expect_false(
+    any(is.na(nlShrinkLWEst(dat)))
+  )
 })
 
 # Dense linear Shrinkage Estimator ####################################
