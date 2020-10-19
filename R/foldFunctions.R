@@ -29,7 +29,7 @@
 #' @importFrom origami training validation fold_index
 #' @importFrom Rdpack reprompt
 #' @importFrom tibble tibble
-#' @importFrom rlang eval_tidy !!! exec
+#' @importFrom rlang eval_tidy !!! exec quo_get_expr
 #' @importFrom matrixStats sum2
 #'
 #' @return A \code{\link[tibble]{tibble}} providing information on estimators,
@@ -65,6 +65,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
   cross_prod <- Reduce(`+`, rank_one_crossp)
 
   # get number of estimators
+  estimator_funs <- rlang::quo_get_expr(estimator_funs)
   num_estimators <- seq(from = 2, to = length(estimator_funs))
 
   # loop through estimator functions
@@ -189,7 +190,6 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
   est_out <- dplyr::bind_rows(est_out)
   return(list(est_out))
 }
-
 ################################################################################
 
 #' True Cross-Validated Frobenius Loss

@@ -42,9 +42,8 @@
 #' @importFrom dplyr arrange summarise group_by "%>%"
 #' @importFrom tibble as_tibble
 #' @importFrom rlang .data
-#' @importFrom rlang enexpr
+#' @importFrom rlang enquo
 #' @importFrom matrixStats colMeans2 sum2
-#' @importFrom Matrix tcrossprod
 #'
 #' @return A \code{list} of results containing the following elements:
 #'   \itemize{
@@ -89,12 +88,12 @@ cvCovEst <- function(
                      true_cov_mat = NULL) {
 
   # grab estimator expression
-  estimators <- rlang::enexpr(estimators)
+  estimators <- rlang::enquo(estimators)
 
   # check inputs
   checkArgs(
     dat,
-    estimators, estimator_params,
+    quo_get_expr(estimators), estimator_params,
     cv_scheme, mc_split, v_folds,
     center, scale, parallel
   )
@@ -191,7 +190,7 @@ cvCovEst <- function(
 
     # compute the minimum Frobenius risk, assuming Gaussian data
     d_true_cov <- diag(true_cov_mat)
-    combo_mat <- Matrix::tcrossprod(d_true_cov, d_true_cov) + true_cov_mat^2
+    combo_mat <- tcrossprod(d_true_cov, d_true_cov) + true_cov_mat^2
     min_full_risk <- matrixStats::sum2(combo_mat)
 
     # compute the true cross-validated risk and the cv-estimated risk
