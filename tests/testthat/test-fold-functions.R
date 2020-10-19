@@ -21,7 +21,7 @@ test_that("linearShrinkEst does not throw error", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,
     dat = dat,
-    estimator_funs = rlang::expr(c(linearShrinkEst)),
+    estimator_funs = rlang::quo(c(linearShrinkEst)),
     estimator_params = list(linearShrinkEst = list(alpha = c(0, 1)))
   ))
 })
@@ -30,7 +30,7 @@ test_that("linearShrinkLWEst does not throw error", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,
     dat = dat,
-    estimator_funs = rlang::expr(c(linearShrinkLWEst)),
+    estimator_funs = rlang::quo(c(linearShrinkLWEst)),
   ))
 })
 
@@ -38,7 +38,7 @@ test_that("thresholdEst does not throw error", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,
     dat = dat,
-    estimator_funs = rlang::expr(c(thresholdingEst)),
+    estimator_funs = rlang::quo(c(thresholdingEst)),
     estimator_params = list(thresholdingEst = list(gamma = c(0, 1)))
   ))
 })
@@ -47,7 +47,7 @@ test_that("sampleCovEst does not throw error", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,
     dat = dat,
-    estimator_funs = rlang::expr(c(sampleCovEst)),
+    estimator_funs = rlang::quo(c(sampleCovEst)),
   ))
 })
 
@@ -61,14 +61,14 @@ test_that("the true covariance matrix can be passed in", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,
     dat = dat,
-    estimator_funs = rlang::expr(c(sampleCovEst, poetEst)),
+    estimator_funs = rlang::quo(c(sampleCovEst, poetEst)),
     estimator_params = list(poetEst = list(k = 5L, lambda = 0.2)),
     true_cov_mat = Sigma
   ))
   output <- cvFrobeniusLoss(
     fold = resub,
     dat = dat,
-    estimator_funs = rlang::expr(c(sampleCovEst, poetEst)),
+    estimator_funs = rlang::quo(c(sampleCovEst, poetEst)),
     estimator_params = list(poetEst = list(k = 5L, lambda = 0.2)),
     true_cov_mat = Sigma
   )[[1]]

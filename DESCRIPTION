@@ -1,6 +1,6 @@
 Package: cvCovEst
 Title: Cross-Validated Covariance Matrix Estimation
-Version: 0.0.16
+Version: 0.0.17
 Authors@R: c(
     person("Philippe", "Boileau", email = "philippe_boileau@berkeley.edu",
            role = c("aut", "cre", "cph"),
@@ -25,6 +25,7 @@ Description: An efficient cross-validated approach for covariance matrix
 Depends: R (>= 3.6.0)
 Imports:
     matrixStats,
+    Matrix,
     origami,
     coop,
     Rdpack,
@@ -32,17 +33,18 @@ Imports:
     tibble,
     assertthat,
     rlang,
-    MASS,
     methods,
     stringr,
     stringi,
-    Matrix,
-    RSpectra
+    RSpectra,
+    future,
+    future.apply
 Suggests:
     testthat,
     knitr,
     rmarkdown,
-    covr
+    covr,
+    MASS
 License: MIT + file LICENSE
 URL: https://github.com/PhilBoileau/cvCovEst
 BugReports: https://github.com/PhilBoileau/cvCovEst/issues
