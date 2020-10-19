@@ -43,7 +43,7 @@
 #' @importFrom tibble as_tibble
 #' @importFrom rlang .data
 #' @importFrom rlang enquo
-#' @importFrom matrixStats colMeans2 sum2
+#' @importFrom matrixStats sum2
 #'
 #' @return A \code{list} of results containing the following elements:
 #'   \itemize{
@@ -100,7 +100,7 @@ cvCovEst <- function(
 
   # center and scale the data, if desired
   if (center == FALSE) {
-    col_means <- matrixStats::colMeans2(dat)
+    col_means <- colMeans(dat)
     abs_diff_zero <- abs(col_means - rep(0, length(col_means)))
     if (any(abs_diff_zero > 1e-10)) {
       message("`dat` argument's columns have been centered automatically")
