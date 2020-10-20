@@ -14,6 +14,9 @@
 #'  hyperparameter(s). These hyperparameters may be in the form of a single
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
+#' @param cv_loss A \code{function} indicating the loss function to use.
+#'  Defaults to the scaled Frobenius loss, \code{cvFrobeniusLoss}.
+#'  The matrix-based version, \code{cvMatroxFrobeniusLoss} is offered as well.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
@@ -39,10 +42,9 @@
 #'  by \code{cvCovEst} are computed relative to the different oracle selectors.
 #'
 #' @importFrom origami cross_validate folds_vfold folds_montecarlo
-#' @importFrom dplyr arrange summarise group_by "%>%"
+#' @importFrom dplyr arrange summarise group_by "%>%" ungroup
 #' @importFrom tibble as_tibble
-#' @importFrom rlang .data
-#' @importFrom rlang enquo
+#' @importFrom rlang .data enquo eval_tidy
 #' @importFrom matrixStats sum2
 #'
 #' @return A \code{list} of results containing the following elements:
@@ -81,6 +83,7 @@ cvCovEst <- function(
                        linearShrinkEst = list(alpha = 0),
                        thresholdingEst = list(gamma = 0)
                      ),
+                     cv_loss = cvFrobeniusLoss,
                      cv_scheme = "v_fold", mc_split = 0.5, v_folds = 10L,
                      center = TRUE,
                      scale = FALSE,
@@ -90,11 +93,15 @@ cvCovEst <- function(
   # grab estimator expression
   estimators <- rlang::enquo(estimators)
 
+  # grab the loss function
+  cv_loss <- rlang::enquo(cv_loss)
+
   # check inputs
   checkArgs(
     dat,
-    quo_get_expr(estimators), estimator_params,
-    cv_scheme, mc_split, v_folds,
+    rlang::quo_get_expr(estimators), estimator_params,
+    rlang::quo_get_expr(cv_loss), cv_scheme,
+    mc_split, v_folds,
     center, scale, parallel
   )
 
@@ -135,7 +142,7 @@ cvCovEst <- function(
   # apply the estimators to each fold
   fold_results <- origami::cross_validate(
     dat = dat,
-    cv_fun = cvFrobeniusLoss, # might provide other options at a later date
+    cv_fun = rlang::eval_tidy(cv_loss),
     folds = folds,
     estimator_funs = estimators,
     estimator_params = estimator_params,
@@ -154,7 +161,8 @@ cvCovEst <- function(
     cv_results <- fold_results_concat %>%
       dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
       dplyr::summarise(empirical_risk = mean(.data$loss)) %>%
-      dplyr::arrange(.data$empirical_risk)
+      dplyr::arrange(.data$empirical_risk) %>%
+      dplyr::ungroup()
 
     # compute the best estimator's estimate
     best_est_fun <- get(cv_results[1, ]$estimator)
@@ -200,7 +208,8 @@ cvCovEst <- function(
         true_cv_risk = mean(.data$true_loss),
         empirical_risk = mean(.data$loss)
       ) %>%
-      dplyr::arrange(.data$empirical_risk)
+      dplyr::arrange(.data$empirical_risk) %>%
+      dplyr::ungroup()
 
     # compute the risk distance ratio under the cross-validated risk
     # of the cross-validated oracle and the cross-validated selection
