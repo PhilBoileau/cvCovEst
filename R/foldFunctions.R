@@ -256,6 +256,7 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
 #'  hyperparameter(s). These hyperparameters may be in the form of a single
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
+#' @param true_cov_mat A \code{NULL} kept here for compatibility reasons.
 #'
 #' @importFrom dplyr bind_rows
 #' @importFrom origami training validation fold_index

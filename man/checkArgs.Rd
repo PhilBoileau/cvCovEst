@@ -8,6 +8,7 @@ checkArgs(
   dat,
   estimators,
   estimator_params,
+  cv_loss,
   cv_scheme,
   mc_split,
   v_folds,
@@ -31,6 +32,10 @@ a named \code{list}, with the names corresponding to a given estimators'
 hyperparameter(s). These hyperparameters may be in the form of a single
 \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 for a given estimator, then the estimator need not be listed.}
+
+\item{cv_loss}{A \code{function} indicating the loss function to use.
+Defaults to the scaled Frobenius loss, \code{cvFrobeniusLoss}.
+The matrix-based version, \code{cvMatroxFrobeniusLoss} is offered as well.}
 
 \item{cv_scheme}{A \code{character} indicating the cross-validation scheme
 to be employed. There are two options: (1) V-fold cross-validation, via
