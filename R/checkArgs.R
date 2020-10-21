@@ -14,6 +14,9 @@
 #'  hyperparameter(s). These hyperparameters may be in the form of a single
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
+#' @param cv_loss A \code{function} indicating the loss function to use.
+#'  Defaults to the scaled Frobenius loss, \code{cvFrobeniusLoss}.
+#'  The matrix-based version, \code{cvMatroxFrobeniusLoss} is offered as well.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
@@ -38,7 +41,6 @@
 #'  by \code{cvCovEst} is computed relative to the cross-validated oracle
 #'  selector.
 #'
-#'
 #' @importFrom assertthat assert_that is.flag
 #' @importFrom methods is
 #' @importFrom dplyr case_when "%>%"
@@ -51,9 +53,9 @@
 #' @keywords internal
 checkArgs <- function(dat,
                       estimators, estimator_params,
-                      cv_scheme, mc_split, v_folds,
-                      center, scale,
-                      parallel, true_cov_mat = NULL) {
+                      cv_loss, cv_scheme, mc_split, v_folds,
+                      center, scale, parallel,
+                      true_cov_mat = NULL) {
 
   # turn list of estimator functions to a vector of strings
   estimators <- estimators %>%
@@ -97,8 +99,12 @@ checkArgs <- function(dat,
     msg = "Only estimators implemented in the cvCovEst package can be used."
   )
 
-  # assert that estimator hyperparameters are well defined
+  # assert that the loss is well defined
+  assertthat::assert_that(
+    as.character(cv_loss) %in% c("cvFrobeniusLoss", "cvMatrixFrobeniusLoss")
+  )
 
+  # assert that estimator hyperparameters are well defined
   if ("linearShrinkEst" %in% estimators) {
     assertthat::assert_that(
       all(rlang::is_bare_numeric(estimator_params$linearShrinkEst$alpha)) == TRUE,

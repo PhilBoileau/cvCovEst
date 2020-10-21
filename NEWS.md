@@ -1,3 +1,8 @@
+# cvCovEst 0.0.18 (2020-10-19)
+
+* cvCovEst now accepts cvMatrixFrobeniusLoss as a loss function. This loss function is a matrix-based alternative to the standard loss function. Through Proposition 1 of the method's manuscript the resulting selections of each loss are identical for any fixed cross-validation scheme. However, the matrix-based loss is more computationally efficient.
+* Other minor tweaks to testing procedures.
+
 # cvCovEst 0.0.17 (2020-10-19)
 
 * cvCovEst can now be run in parallel using future.

@@ -24,6 +24,7 @@ estimator_params <- list(
   poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
   adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
 )
+cv_loss <- rlang::expr(cvFrobeniusLoss)
 cv_scheme <- "mc"
 mc_split <- 0.5
 v_folds <- 10
@@ -36,6 +37,7 @@ test_that("Only implmented estimators pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -47,6 +49,7 @@ test_that("Only implmented estimators pass checks", {
     dat = dat,
     estimators = rlang::expr(c(linearShrinkEst)),
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -58,6 +61,7 @@ test_that("Only implmented estimators pass checks", {
     dat = dat,
     estimators = rlang::expr(c(linearShrinkEst, newEstimator)),
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -73,6 +77,7 @@ test_that("Lone estimators without hyperparams aren't permitted", {
       dat = dat,
       estimators = rlang::expr(c(sampleCovEst)),
       estimator_params = estimator_params,
+      cv_loss = cv_loss,
       cv_scheme = cv_scheme,
       mc_split = mc_split,
       v_folds = v_folds,
@@ -87,6 +92,7 @@ test_that("Lone estimators without hyperparams aren't permitted", {
       dat = dat,
       estimators = rlang::expr(c(nlShrinkLWEst)),
       estimator_params = estimator_params,
+      cv_loss = cv_loss,
       cv_scheme = cv_scheme,
       mc_split = mc_split,
       v_folds = v_folds,
@@ -101,6 +107,7 @@ test_that("Lone estimators without hyperparams aren't permitted", {
       dat = dat,
       estimators = rlang::expr(c(linearShrinkLWEst)),
       estimator_params = estimator_params,
+      cv_loss = cv_loss,
       cv_scheme = cv_scheme,
       mc_split = mc_split,
       v_folds = v_folds,
@@ -115,6 +122,7 @@ test_that("Lone estimators without hyperparams aren't permitted", {
       dat = dat,
       estimators = rlang::expr(c(denseLinearShrinkEst)),
       estimator_params = estimator_params,
+      cv_loss = cv_loss,
       cv_scheme = cv_scheme,
       mc_split = mc_split,
       v_folds = v_folds,
@@ -131,6 +139,7 @@ test_that("Only reasonable hyperparameters pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -142,6 +151,7 @@ test_that("Only reasonable hyperparameters pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -162,6 +172,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -181,6 +192,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -200,6 +212,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -219,6 +232,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -238,6 +252,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -257,6 +272,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -276,6 +292,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -295,6 +312,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -314,6 +332,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -333,6 +352,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -352,6 +372,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -371,6 +392,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -390,6 +412,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -409,6 +432,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = -0.1, k = c(1L, 2L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -428,6 +452,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = 0.1, k = c(1.1, 2)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -447,6 +472,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = 0.1, k = c(1, 2)),
       adaptiveLassoEst = list(lambda = -0.1, n = 0)
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -466,6 +492,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = 0.1, k = c(1, 2)),
       adaptiveLassoEst = list(lambda = 1, n = -0.1)
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -485,6 +512,7 @@ test_that("Only reasonable hyperparameters pass checks", {
       poetEst = list(lambda = 0.1, k = c(1, 2)),
       adaptiveLassoEst = list(lambda = "a", n = 0)
     ),
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -496,6 +524,7 @@ test_that("Only reasonable hyperparameters pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -508,6 +537,7 @@ test_that("Only reasonable hyperparameters pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -520,6 +550,7 @@ test_that("Only reasonable hyperparameters pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
@@ -535,6 +566,7 @@ test_that("Only reasonable CV schemes pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = v_folds,
@@ -546,6 +578,7 @@ test_that("Only reasonable CV schemes pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "loo",
     mc_split = mc_split,
     v_folds = v_folds,
@@ -557,6 +590,7 @@ test_that("Only reasonable CV schemes pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "mc",
     mc_split = 0,
     v_folds = v_folds,
@@ -568,6 +602,7 @@ test_that("Only reasonable CV schemes pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "mc",
     mc_split = 1,
     v_folds = v_folds,
@@ -579,6 +614,7 @@ test_that("Only reasonable CV schemes pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "mc",
     mc_split = -0.1,
     v_folds = v_folds,
@@ -590,6 +626,7 @@ test_that("Only reasonable CV schemes pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "mc",
     mc_split = 1.2,
     v_folds = v_folds,
@@ -601,6 +638,7 @@ test_that("Only reasonable CV schemes pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = 1,
@@ -612,6 +650,7 @@ test_that("Only reasonable CV schemes pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = nrow(dat),
@@ -623,6 +662,7 @@ test_that("Only reasonable CV schemes pass checks", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = v_folds,
@@ -637,6 +677,7 @@ test_that("Flag elements work as expected", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = v_folds,
@@ -648,6 +689,7 @@ test_that("Flag elements work as expected", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = v_folds,
@@ -659,12 +701,40 @@ test_that("Flag elements work as expected", {
     dat = dat,
     estimators = estimators,
     estimator_params = estimator_params,
+    cv_loss = cv_loss,
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = v_folds,
     center = "TRUE",
     scale = "TRUE",
     parallel = "TRUE"
+  ))
+})
+
+test_that("checkArgs only allows pre-defined loss functions", {
+  expect_true(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = estimator_params,
+    cv_loss = rlang::expr(cvMatrixFrobeniusLoss),
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = estimator_params,
+    cv_loss = rlang::expr(cvOperatorNorm),
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
   ))
 })
 
@@ -686,7 +756,8 @@ test_that("checkArgs works well in cvCovEst Function", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
-    cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
+    cv_loss = cvFrobeniusLoss, cv_scheme = "v_fold",
+    mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
   ))
   expect_silent(cvCovEst(
@@ -706,7 +777,8 @@ test_that("checkArgs works well in cvCovEst Function", {
       poetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
-    cv_scheme = "mc", mc_split = 0.5, v_folds = 5,
+    cv_loss = cvMatrixFrobeniusLoss, cv_scheme = "mc",
+    mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
   ))
 })

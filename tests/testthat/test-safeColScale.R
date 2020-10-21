@@ -2,6 +2,7 @@ context("Test routines for safe column scaling")
 
 # initialization of inputs for testing function
 library(MASS)
+library(Matrix)
 set.seed(123)
 
 # sample 200 observations from multivariate normal with mean = 0, var = Sigma
@@ -29,6 +30,12 @@ test_that("`safeColScale` avoid NA in its output even when `scale` fails to", {
   # check that safeColScale avoids NAs
   dat_safeColScaled <- safeColScale(dat, center, scale)
   expect_true(sum(colSums(is.na(dat_safeColScaled))) == 0)
+})
+
+test_that("`safeColScale` ouputs a matrix object", {
+  expect_equal(class(safeColScale(dat, center, scale)), c("matrix", "array"))
+  expect_equal(class(safeColScale(as(dat, "dgCMatrix"), center, scale)),
+               c("matrix", "array"))
 })
 
 # `safeColScale` is faster than `scale`
