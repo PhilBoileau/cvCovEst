@@ -315,8 +315,8 @@ nlShrinkLWEst <- function(dat) {
   u <- sam_eig$vectors
 
   # Analytical Nonlinear Shrinkage Kernal Formula
-  # accept a tolerance of 1e-1
-  eig_nonzero_tol <- sum((round(lambda, digits = 1) > 0))
+  # accept a tolerance of 1e-2
+  eig_nonzero_tol <- sum(lambda > 0.01)
   i <- min(p, eig_nonzero_tol)
   lambda <- lambda[1:i]
   r <- length(lambda)
