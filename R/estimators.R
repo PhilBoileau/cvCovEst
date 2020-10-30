@@ -533,6 +533,106 @@ poetEst <- function(dat, k, lambda) {
 
 ###############################################################################
 
+#' Robust POET Estimator for Elliptical Distributions
+#'
+#' @description \code{robustPoetEst} implements the Principal Orthogonal complEment
+#'   Thresholding (POET) estimator, a nonparametric, unobserved-factor-based
+#'   estimator of the covariance matrix \insertCite{fan2018}{cvCovEst}. The
+#'   estimator is defined as the sum of the sample covariance matrix'
+#'   rank-\code{k} approximation and its thresholded principal orthogonal
+#'   complement. Rank-\code{k} approximation is constructed from the sample 
+#'   covariance matrix, its leading eigenvalues, and leading eigenvectors, 
+#'   first two estimated by M-estimation and marginal Kendall's tau estimator
+#'   while the last one estimated by spatial Kendall's tau estimator. The hard
+#'   thresholding function is used here, though others could be used instead.
+#'
+#' @param Y A numeric \code{data.frame}, \code{matrix}, or similar object.
+#' @param k An \code{integer} indicating the number of unobserved latent
+#'   factors. Empirical evidence suggests that the POET estimator is robust to
+#'   overestimations of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+#'   practice, it is therefore preferable to use larger values.
+#' @param lambda A non-negative \code{numeric} defining the amount of
+#'   thresholding applied to each element of sample covariance matrix's
+#'   orthogonal complement.
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'   matrix.
+#'
+#' @importFrom RSpectra eigs_sym
+#' @importFrom MASS huber
+#'
+#' @export
+#'
+#' @references
+#'   \insertAllCited{}
+
+robustPoetEst <- function(Y, k, lambda = 0.3) {
+  
+  # get the dimensions of the data
+  n <- nrow(Y)
+  p <- ncol(Y)
+  
+  # use M-estimator and Huber loss to robustly estimate mean and variance
+  mest = function(x) { 
+    results = MASS::huber(x, k = 3)
+    return(unlist(results))
+  }
+  mu_est = apply(Y, 2, mest)[1,]
+  var_est = apply(Y, 2, mest)[2,]
+  
+  # calculate the estimator of D
+  D_est = diag(var_est ** 0.5)
+  
+  # construct a p by (n^2) matrix where each row consists of pair-wise differences of all observations 
+  # for a random variable
+  diff_mat = function(x) {
+    return(sign(outer(x, x, FUN = "-")))
+  }
+  Diff = t(apply(Y, 2, diff_mat))
+  
+  # calculate marginal Kendall's tau estimator
+  Tau_est = Diff %*% t(Diff) / (n**2 - n)
+  
+  # calculate the estimator of R
+  R_est = sin(Tau_est * pi / 2)
+  
+  # calculate the first estimator for covariance matrix
+  Sigma_est1 = D_est %*% R_est %*% D_est
+  
+  # calculate the estimator of leading eigenvalues
+  Lambda_est = diag(RSpectra::eigs_sym(Sigma_est1, k)$values)
+  
+  # construct spatial Kendall's tau estimator
+  kernel = function(x) { 
+    yi = Y[x[1], ]
+    yj = Y[x[2], ]
+    temp = yi - yj
+    if(all(temp == 0)){ 
+      return(0)
+    }
+    return(outer(temp, temp, FUN = "*") / sum(temp^2))
+  }
+  comb = combn(n, 2, v=1:n, set=TRUE, repeats.allowed=FALSE)
+  K = matrix(rowSums(apply(comb, 2, kernel)), p, p)
+  
+  # calculate the second estimator for covariance matrix
+  Sigma_est2  = 2 / (n * (n - 1)) * K
+  
+  # calculate the estimator for leading eigenvectors
+  Gamma_est = RSpectra::eigs_sym(Sigma_est2, k)$vectors
+  
+  # calculate the low rank structure
+  Low_rank_est = Gamma_est %*% Lambda_est %*% t(Gamma_est)
+  
+  # regularize the principal orthogonal component
+  Sigma_estu = Sigma_est1 - Low_rank_est
+  Sigma_estu_T = replace(Sigma_estu, abs(Sigma_estu) < lambda, 0)
+  
+  return(Sigma_estu_T + Low_rank_est)
+}
+
+###############################################################################
+
 #' Adaptive LASSO Estimator
 #'
 #' @description The \code{adaptiveLassoEst} function is a modification of
