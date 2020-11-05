@@ -315,12 +315,12 @@ nlShrinkLWEst <- function(dat) {
   u <- sam_eig$vectors
 
   # Analytical Nonlinear Shrinkage Kernal Formula
-  # accept a tolerance of 1e-4
-  eig_nonzero_tol <- sum((round(lambda, digits = 4) > 0))
+  # accept a tolerance of 1e-2
+  eig_nonzero_tol <- sum(lambda > 0.01)
   i <- min(p, eig_nonzero_tol)
   lambda <- lambda[1:i]
   r <- length(lambda)
-  L <- matrix(lambda, nrow = r, ncol = eig_nonzero_tol)
+  L <- matrix(lambda, nrow = r, ncol = i)
 
   # LW Equation 4.9
   h <- n^(-1 / 3)
@@ -353,7 +353,8 @@ nlShrinkLWEst <- function(dat) {
     m <- mean(1 / lambda)
 
     # LW Equation C.8
-    Hf_tilde0 <- (1 / pi) * ((3 / 10) * s4 + (s1 / h) * (1 - (1 / 5) * s4) * log_term) * m
+    Hf_tilde0 <- (1 / pi) * ((3 / 10) * s4 +
+                               (s1 / h) * (1 - (1 / 5) * s4) * log_term) * m
 
     # LW Equation C.5
     d_tilde0 <- 1 / (pi * (p - eig_nonzero_tol) / eig_nonzero_tol * Hf_tilde0)
