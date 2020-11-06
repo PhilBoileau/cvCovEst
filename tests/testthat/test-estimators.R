@@ -171,6 +171,20 @@ test_that("Verify POET estimator's results", {
   expect_identical(round(rank_one_sample_cov, 10), round(poet_estimate, 10))
 })
 
+# Robust POET Estimator #########################################################
+
+test_that("Verify Robust POET estimator's ranks", {
+  # check that the rank of robust POET equal to k when lambda is large
+  # compute the robust POET estimate with a large lambda
+  dat <- scale(mtcars, center = TRUE, scale = TRUE)
+  k = ceiling(ncol(dat) / 5)
+  robust_poet_estimate <- robustPoetEst(dat, k, lambda = 10, var_estimation = "sample")
+  
+  # compare
+  library(Matrix)
+  expect_equal(Matrix::rankMatrix(robust_poet_estimate)[1], k)
+})
+
 # Adaptive Lasso Estimator #####################################################
 
 test_that("adaptive Lasso estimator with no penalty is Sn", {

@@ -535,9 +535,10 @@ poetEst <- function(dat, k, lambda) {
 
 #' Robust POET Estimator for Elliptical Distributions
 #'
-#' @description \code{robustPoetEst} implements the Principal Orthogonal complEment
-#'   Thresholding (POET) estimator, a nonparametric, unobserved-factor-based
-#'   estimator of the covariance matrix \insertCite{fan2018}{cvCovEst}. The
+#' @description \code{robustPoetEst} implements the robust version of Principal
+#'   Orthogonal complEment Thresholding (POET) estimator, a nonparametric, 
+#'   unobserved-factor-based estimator of the covariance matrix when the
+#'   underlying distribution is ellipitcal\insertCite{fan2018}{cvCovEst}. The
 #'   estimator is defined as the sum of the sample covariance matrix'
 #'   rank-\code{k} approximation and its thresholded principal orthogonal
 #'   complement. Rank-\code{k} approximation is constructed from the sample 
@@ -554,31 +555,61 @@ poetEst <- function(dat, k, lambda) {
 #' @param lambda A non-negative \code{numeric} defining the amount of
 #'   thresholding applied to each element of sample covariance matrix's
 #'   orthogonal complement.
+#' @param var_estimation A optional \code{character} string giving the method of
+#'   variance estimation method. This must be one of the strings "\code{mad}",
+#'   "\code{sample}", "\code{huber}".
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'   matrix.
 #'
 #' @importFrom RSpectra eigs_sym
 #' @importFrom MASS huber
+#' @importFrom geex m_estimate setup_root_control
 #'
 #' @export
 #'
 #' @references
 #'   \insertAllCited{}
 
-robustPoetEst <- function(Y, k, lambda = 0.3) {
+robustPoetEst <- function(Y, k, lambda, var_estimation) {
   
   # get the dimensions of the data
   n <- nrow(Y)
   p <- ncol(Y)
   
   # use M-estimator and Huber loss to robustly estimate mean and variance
-  mest = function(x) { 
-    results = MASS::huber(x, k = 3)
-    return(unlist(results))
+  if (var_estimation == "mad") {
+    var_est = apply(Y, 2,   
+                    function(x) { 
+                      results = MASS::huber(x, k = 3)
+                      return(unlist(results))
+                    })[2,]
+  } else if (var_estimation  == "sample") {
+    var_est = apply(Y, 2, var)
+  } else if (var_estimation  == "huber"){
+    
+    # This method is originally proposed by Fan et.al.but most computationally expensive
+    huber = function(data){
+      data = data[,1]
+      alpha = sqrt(1/(8*max(apply(Y, 2, "var"))))
+      function(theta){
+        if(abs(alpha *(data - theta[1])) <=1 ) {
+          return(alpha *(data - theta[1]))
+        }else{
+          return(sign(alpha *(data - theta[1])))
+        }
+      }
+    }
+    mest = function(x) {
+      results = geex::m_estimate(
+        estFUN = huber,
+        data   = data.frame(x),
+        root_control = geex::setup_root_control(start = mean(x))
+      )
+      return(results@estimates)
+    }
+    var_est = pmax(apply(Y^2, 2, mest) - apply(Y, 2, mest) ** 2, 1e-6)
   }
-  mu_est = apply(Y, 2, mest)[1,]
-  var_est = apply(Y, 2, mest)[2,]
   
   # calculate the estimator of D
   D_est = diag(var_est ** 0.5)
@@ -600,7 +631,11 @@ robustPoetEst <- function(Y, k, lambda = 0.3) {
   Sigma_est1 = D_est %*% R_est %*% D_est
   
   # calculate the estimator of leading eigenvalues
-  Lambda_est = diag(RSpectra::eigs_sym(Sigma_est1, k)$values)
+  if (k == 1) {
+    Lambda_est = as.matrix(RSpectra::eigs_sym(Sigma_est1, k)$values)
+  } else {
+    Lambda_est = diag(RSpectra::eigs_sym(Sigma_est1, k)$values)
+  }
   
   # construct spatial Kendall's tau estimator
   kernel = function(x) { 
