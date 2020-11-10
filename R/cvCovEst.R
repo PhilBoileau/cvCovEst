@@ -68,8 +68,11 @@
 #'     \item \code{oracle_cv_riskdiff} - A \code{numeric}
 #'       corresponding to the conditional cross-validated risk difference of the
 #'       oracle selection.
-#'     \item \code{full_oracle_riskdiff_ratio} - A \code{numeric} corresponding
-#'       to the full data risk difference ratio of the the
+#'     \item \code{cv_oracle_riskdiff_ratio} - A \code{numeric} corresponding
+#'       to the cross-validated risk difference ratio of the
+#'       cvCovEst selection and the cross-validated dataset oracle selection.
+#'     \item \code{full_data_riskdiff_ratio} - A \code{numeric} corresponding
+#'       to the full data risk difference ratio of the
 #'       cvCovEst selection and the full dataset oracle selection.
 #'   }
 #'
@@ -125,7 +128,6 @@ cvCovEst <- function(
   }
 
   # define the folds based on cross-validation scheme
-  n_obs <- nrow(dat)
   if (cv_scheme == "mc") {
     folds <- origami::make_folds(dat,
       fold_fun = origami::folds_montecarlo,
@@ -201,24 +203,34 @@ cvCovEst <- function(
     combo_mat <- tcrossprod(d_true_cov, d_true_cov) + true_cov_mat^2
     min_full_risk <- matrixStats::sum2(combo_mat)
 
-    # compute the true cross-validated risk and the cv-estimated risk
+    # compute the true cross-validated risk, full dataset risk,
+    # and the cv-estimated risk
     cv_results <- fold_results_concat %>%
       dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
       dplyr::summarise(
         true_cv_risk = mean(.data$true_loss),
-        empirical_risk = mean(.data$loss)
+        empirical_risk = mean(.data$loss),
+        full_data_risk = mean(.data$full_mat_loss)
       ) %>%
       dplyr::arrange(.data$empirical_risk) %>%
       dplyr::ungroup()
 
-    # compute the risk distance ratio under the cross-validated risk
+    # compute the risk difference ratio under the cross-validated risk
     # of the cross-validated oracle and the cross-validated selection
     cvCovEst_true_cv_risk <- cv_results$true_cv_risk[1]
+    cvCovEst_true_full_risk <- cv_results$full_data_risk[1]
     oracle_true_cv_risk <- cv_results %>%
       dplyr::arrange(.data$true_cv_risk)
     oracle_true_cv_risk <- oracle_true_cv_risk$true_cv_risk[1]
     cv_oracle_riskdiff_ratio <- (cvCovEst_true_cv_risk - min_full_risk) /
       (oracle_true_cv_risk - min_full_risk)
+
+    # compute the full-dataset risk difference of the oracle selector
+    oracle_true_full_risk <- cv_results %>%
+      dplyr::arrange(.data$full_data_risk)
+    oracle_true_full_risk <- oracle_true_full_risk$full_data_risk[1]
+    full_oracle_riskdiff_ratio <- (cvCovEst_true_full_risk - min_full_risk) /
+      (oracle_true_full_risk - min_full_risk)
 
     # compute the cvCovEst estimator's estimate
     best_est_fun <- get(cv_results[1, ]$estimator)
@@ -251,7 +263,8 @@ cvCovEst <- function(
       cv_df = fold_results_concat,
       cv_cv_riskdiff = cvCovEst_true_cv_risk - min_full_risk,
       oracle_cv_riskdiff = oracle_true_cv_risk - min_full_risk,
-      cv_oracle_riskdiff_ratio = cv_oracle_riskdiff_ratio
+      cv_oracle_riskdiff_ratio = cv_oracle_riskdiff_ratio,
+      full_oracle_riskdiff_ratio = full_oracle_riskdiff_ratio
     )
   }
 
