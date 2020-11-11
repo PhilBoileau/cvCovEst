@@ -23,13 +23,14 @@
 empRiskByClass <- function(dat) {
   empRisk <- dat %>%
     dplyr::group_by(estimator) %>%
-    dplyr::summarise(min_risk = min(empirical_risk),
-                     Q1_risk = quantile(empirical_risk, probs = 0.25),
-                     median_risk = quantile(empirical_risk, probs = 0.5),
-                     mean_risk = mean(empirical_risk),
-                     Q3_risk = quantile(empirical_risk, probs = 0.75),
-                     max_risk = max(empirical_risk),
-                     .groups = "keep") %>%
+    dplyr::summarise(
+      min_risk = min(empirical_risk),
+      Q1_risk = quantile(empirical_risk, probs = 0.25),
+      median_risk = quantile(empirical_risk, probs = 0.5),
+      mean_risk = mean(empirical_risk),
+      Q3_risk = quantile(empirical_risk, probs = 0.75),
+      max_risk = max(empirical_risk),
+      .groups = "keep") %>%
     dplyr::arrange(mean_risk)
 
   return(empRisk)
@@ -55,9 +56,10 @@ empRiskByClass <- function(dat) {
 bestInClass <- function(dat) {
   bestEst <- dat %>%
     dplyr::group_by(estimator) %>%
-    dplyr::summarise(hyperparameter = first(hyperparameters),
-                     empirical_risk = first(empirical_risk),
-                     .groups = "keep") %>%
+    dplyr::summarise(
+      hyperparameter = dplyr::first(hyperparameters),
+      empirical_risk = dplyr::first(empirical_risk),
+      .groups = "keep") %>%
     dplyr::arrange(empirical_risk)
 
   return(bestEst)
@@ -82,11 +84,13 @@ bestInClass <- function(dat) {
 #' @keywords internal
 hyperRisk <- function(dat) {
   # These are the estimators with hyperparameters
-  has_hypers <- c("linearShrinkEst", "thresholdingEst",
-                  "bandingEst", "taperingEst",
-                  "poetEst", "adaptiveLassoEst")
+  has_hypers <- c(
+    "linearShrinkEst", "thresholdingEst",
+    "bandingEst", "taperingEst",
+    "poetEst", "adaptiveLassoEst"
+    )
 
-  estimators <- unique(dat$risk_df$estimators)
+  estimators <- unique(dat$estimator)
 
   if (any(has_hypers %in% estimators)) {
 
@@ -94,32 +98,51 @@ hyperRisk <- function(dat) {
 
     hyperSumm <- lapply(hyper_est, function(est) {
 
-      h <- dat$risk_df %>%
-        dplyr::filter(estimator == est) %>%
-        mutate(empirical_risk = round(empirical_risk))
+      h <- dat %>%
+        dplyr::filter(
+          estimator == est
+          ) %>%
+        dplyr::mutate(
+          empirical_risk = round(empirical_risk)
+          )
 
-      risk_stats <- quantile(h$empirical_risk,
-                             probs = c(0, 0.25, 0.50, 0.75, 1),
-                             type = 3)
+      risk_stats <- quantile(
+        h$empirical_risk,
+        probs = c(0, 0.25, 0.50, 0.75, 1),
+        type = 3
+        )
 
       hyper_risk <- sapply(unname(risk_stats), function(r) {
         # Filter by the quantiles of the empirical risk
         hr <- h %>%
-          dplyr::filter(empirical_risk == r)
+          dplyr::filter(
+            empirical_risk == r
+            )
 
-        vec <- c(dplyr::first(hr$hyperparameters),
-                 dplyr::first(hr$empirical_risk))
+        vec <- c(
+          dplyr::first(hr$hyperparameters),
+          dplyr::first(hr$empirical_risk)
+          )
 
         return(vec)
       })
 
-      df <- data.frame(t(hyper_risk), row.names = names(risk_stats))
-      colnames(df) <- c("hyperparameters", "empirical_risk")
+      df <- data.frame(
+        t(hyper_risk),
+        row.names = names(risk_stats)
+        )
+
+      colnames(df) <- c(
+        "hyperparameters",
+        "empirical_risk"
+        )
 
       return(df)
     })
+
     # Named list of data.frames corresponding to each estimator class
     names(hyperSumm) <- hyper_est
+
   }
   else{
 
@@ -131,4 +154,59 @@ hyperRisk <- function(dat) {
   return(hyperSumm)
 
 }
+
+################################################################################
+#' Summary Function for cvCovEst
+#'
+#' @description The \code{cvSummary} provides summary statistics regarding the
+#' performance of \code{cvCovEst} and can be used for diagnostic plotting.
+#'
+#' @param dat A named \code{list}.  Specifically, this is the standard output of
+#' \code{cvCovEst}.
+#'
+#' @param summary A character vector specifying which summaries to output.  The
+#' default is \code{'all'}.
+#'
+#' @return A named \code{list} where each element corresponds to the output of
+#' of the requested summaries.
+#'
+#' @importFrom rlang exec
+#'
+#' @keywords external
+cvSummary <- function(dat, summary = 'all') {
+
+  risk_dat <- dat$risk_df
+
+  summary_functions <- c(
+    "empRiskByClass",
+    "bestInClass",
+    "hyperRisk"
+  )
+
+  if (summary == 'all') {
+    sums_to_exec <- summary_functions
+  }
+  else{
+    which_sum <- which(
+      summary_functions %in% summary
+    )
+
+    sums_to_exec <- summary_functions[which_sum]
+  }
+
+  out = lapply(
+    sums_to_exec,
+    function(sum_fun) {
+      f <- rlang::exec(sum_fun, risk_dat)
+        return(f)
+      }
+    )
+
+  names(out) <- sums_to_exec
+  return(out)
+
+  }
+
+
+
 
