@@ -63,3 +63,72 @@ bestInClass <- function(dat) {
   return(bestEst)
 }
 
+################################################################################
+#' Summarize Risk by Class with Hyperparameter
+#'
+#' @description The \code{hyperRisk} function groups together estimators of the
+#'  same class and selects the hyperparameter values over quantiles of the risk.
+#'
+#' @param dat The table of empirical risk calculations which is output by
+#' \code{cvCovEst}.
+#'
+#' @return A named \code{list} of data frames.  Each list element corresponds to
+#'  a \code{data.frame} of summary statistics for a specific estimator class.
+#'  If no estimators have hyper-parameters, a message is returned.
+#'
+#' @importFrom dplyr filter mutate first %>%
+#' @importFrom stats quantile
+#'
+#' @keywords internal
+hyperRisk <- function(dat) {
+  # These are the estimators with hyperparameters
+  has_hypers <- c("linearShrinkEst", "thresholdingEst",
+                  "bandingEst", "taperingEst",
+                  "poetEst", "adaptiveLassoEst")
+
+  estimators <- unique(dat$risk_df$estimators)
+
+  if (any(has_hypers %in% estimators)) {
+
+    hyper_est <- estimators[which(estimators %in% has_hypers)]
+
+    hyperSumm <- lapply(hyper_est, function(est) {
+
+      h <- dat$risk_df %>%
+        dplyr::filter(estimator == est) %>%
+        mutate(empirical_risk = round(empirical_risk))
+
+      risk_stats <- quantile(h$empirical_risk,
+                             probs = c(0, 0.25, 0.50, 0.75, 1),
+                             type = 3)
+
+      hyper_risk <- sapply(unname(risk_stats), function(r) {
+        # Filter by the quantiles of the empirical risk
+        hr <- h %>%
+          dplyr::filter(empirical_risk == r)
+
+        vec <- c(dplyr::first(hr$hyperparameters),
+                 dplyr::first(hr$empirical_risk))
+
+        return(vec)
+      })
+
+      df <- data.frame(t(hyper_risk), row.names = names(risk_stats))
+      colnames(df) <- c("hyperparameters", "empirical_risk")
+
+      return(df)
+    })
+    # Named list of data.frames corresponding to each estimator class
+    names(hyperSumm) <- hyper_est
+  }
+  else{
+
+    hyperSumm <- NULL
+    message("No estimators have hyperparameters. hyperRisk = NULL")
+
+  }
+
+  return(hyperSumm)
+
+}
+
