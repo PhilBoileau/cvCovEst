@@ -46,6 +46,9 @@ empRiskByClass <- function(dat) {
 #' @param dat The table of empirical risk calculations which is output by
 #' \code{cvCovEst}.
 #'
+#' @param worst This facilitates the option to choose the worst performing
+#' estimator in each class.  The default is FALSE.
+#'
 #' @return A \code{data.frame} with rows corresponding to estimator classes and
 #'  columns for hyperparameter values and empirical risk for the best estimator
 #'  in that class.
@@ -53,16 +56,32 @@ empRiskByClass <- function(dat) {
 #' @importFrom dplyr group_by summarize arrange first %>%
 #'
 #' @keywords internal
-bestInClass <- function(dat) {
-  bestEst <- dat %>%
-    dplyr::group_by(estimator) %>%
-    dplyr::summarise(
-      hyperparameter = dplyr::first(hyperparameters),
-      empirical_risk = dplyr::first(empirical_risk),
-      .groups = "keep") %>%
-    dplyr::arrange(empirical_risk)
+bestInClass <- function(dat, worst = FALSE) {
 
-  return(bestEst)
+  if (worst) {
+    worstEst <- dat %>%
+      dplyr::group_by(estimator) %>%
+      dplyr::summarise(
+        hyperparameter = dplyr::last(hyperparameters),
+        empirical_risk = dplyr::last(empirical_risk),
+        .groups = "keep") %>%
+      dplyr::arrange(empirical_risk)
+
+    return(worstEst)
+
+  }
+  else{
+    bestEst <- dat %>%
+      dplyr::group_by(estimator) %>%
+      dplyr::summarise(
+        hyperparameter = dplyr::first(hyperparameters),
+        empirical_risk = dplyr::first(empirical_risk),
+        .groups = "keep") %>%
+      dplyr::arrange(empirical_risk)
+
+    return(bestEst)
+
+  }
 }
 
 ################################################################################
@@ -180,6 +199,7 @@ cvSummary <- function(dat, summary = 'all') {
   summary_functions <- c(
     "empRiskByClass",
     "bestInClass",
+    "worstInClass",
     "hyperRisk"
   )
 
@@ -197,15 +217,117 @@ cvSummary <- function(dat, summary = 'all') {
   out = lapply(
     sums_to_exec,
     function(sum_fun) {
-      f <- rlang::exec(sum_fun, risk_dat)
-        return(f)
+      if (sum_fun == 'worstInClass') {
+        f <- rlang::exec(
+          'bestInClass',
+          risk_dat,
+          worst = TRUE
+          )
       }
-    )
-
+      else{
+        f <- rlang::exec(
+          sum_fun,
+          risk_dat
+          )
+      }
+      return(f)
+    }
+  )
   names(out) <- sums_to_exec
   return(out)
 
   }
+
+################################################################################
+#' Single Heat Map Plot
+#'
+#' @description The \code{cvSingleMelt} plots a heat map visualization of a
+#' single estimator for the covariance matrix.
+#'
+#' @param dat A named \code{list}.  Specifically, this is the standard output of
+#' \code{cvCovEst}.
+#'
+#' @param estimator A single string specifying which class of estimator to
+#' visualize.
+#'
+#' @param stat A single specifying the performance of the chosen estimator.  The
+#'  two options are \code{"best"} for the best performing estimator and
+#'  \code{"worst"} for the worst performing estimator.
+#'
+#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{cvCovEst}.
+#'
+#' @return A heat map plot of the desired covariance matrix estimator.
+#'
+#' @importFrom rlang exec
+#' @importFrom ggplot2 ggplot geom_raster
+#'
+#' @keywords external
+cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
+  # add checks here for assuring cvCovEst output
+
+  has_hypers <- c(
+    "linearShrinkEst", "thresholdingEst",
+    "bandingEst", "taperingEst",
+    "poetEst", "adaptiveLassoEst"
+  )
+
+  best_vs_worst <- cvSummary(
+    dat,
+    summary = c(
+      'bestInClass',
+      'worstInClass'
+      )
+    )
+
+  if (stat == 'best') {
+    est <- best_vs_worst$bestInClass %>%
+      dplyr::filter(
+        estimator == estimator
+      )
+  }
+  else{
+    est <- best_vs_worst$worstInClass %>%
+      dplyr::filter(
+        estimator == estimator
+      )
+  }
+
+  if (estimator %in% has_hypers) {
+    estHypers <- lapply(
+      stringr::str_split(
+        est[1, 2], ", "
+        ),
+      function(s) {
+        h <- stringr::str_split(
+          s, "= "
+          ) %>% unlist()
+
+        return(
+          as.numeric(h[2])
+          )
+        }
+      )
+
+    estArgs <- list(
+      dat = dat_orig,
+      estHypers %>% unlist()
+    )
+
+    estimate <- rlang::exec(
+      estimator,
+      !!!estArgs
+      )
+  }
+  else{
+    estimate <- rlang::exec(
+      estimator
+    )
+  }
+
+  meltEst <- reshape2::melt(estimate)
+  return(meltEst)
+}
 
 
 

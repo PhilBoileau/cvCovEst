@@ -4,11 +4,14 @@
 \alias{bestInClass}
 \title{Showing Best Estimator Within Each Class of Estimators}
 \usage{
-bestInClass(dat)
+bestInClass(dat, worst = FALSE)
 }
 \arguments{
 \item{dat}{The table of empirical risk calculations which is output by
 \code{cvCovEst}.}
+
+\item{worst}{This facilitates the option to choose the worst performing
+estimator in each class.  The default is FALSE.}
 }
 \value{
 A \code{data.frame} with rows corresponding to estimator classes and
