@@ -156,7 +156,7 @@ checkArgs <- function(dat,
         all(rlang::is_integer(estimator_params$robustPoetEst$k)) == TRUE,
         all(estimator_params$robustPoetEst$k >= 1) == TRUE,
         all(rlang::is_bare_numeric(estimator_params$robustPoetEst$lambda)) == TRUE,
-        all(estimator_params$robustPoetEst$lambda >= 0) == TRUE
+        all(estimator_params$robustPoetEst$lambda >= 0) == TRUE)
     } else {
       assertthat::assert_that(
         all(rlang::is_integer(estimator_params$robustPoetEst$k)) == TRUE,
@@ -166,7 +166,7 @@ checkArgs <- function(dat,
         all(
           estimator_params$robustPoetEst$var_estimation %in% c(
             "sample", "mad", "huber"
-          ) == TRUE)
+          ) == TRUE))
     }
   }
   if ("adaptiveLassoEst" %in% estimators) {

@@ -38,7 +38,8 @@ Imports:
     stringi,
     RSpectra,
     future,
-    future.apply
+    future.apply,
+    geex
 Suggests:
     testthat,
     knitr,

@@ -555,7 +555,7 @@ poetEst <- function(dat, k, lambda) {
 #' @param lambda A non-negative \code{numeric} defining the amount of
 #'   thresholding applied to each element of sample covariance matrix's
 #'   orthogonal complement.
-#' @param var_estimation A optional \code{character} string giving the method of
+#' @param var_estimation A \code{character} string giving the method of
 #'   variance estimation method. This must be one of the strings "\code{mad}",
 #'   "\code{sample}", "\code{huber}".
 #'
@@ -572,24 +572,23 @@ poetEst <- function(dat, k, lambda) {
 #'   \insertAllCited{}
 
 robustPoetEst <- function(Y, k, lambda, var_estimation) {
-  
   # get the dimensions of the data
   n <- nrow(Y)
   p <- ncol(Y)
   
-  # use M-estimator and Huber loss to robustly estimate mean and variance
+  # use M-estimator and Huber loss to robustly estimate variance
   if (var_estimation == "mad") {
-    var_est = apply(Y, 2,   
-                    function(x) { 
-                      results = MASS::huber(x, k = 3)
-                      return(unlist(results))
-                    })[2,]
+    D_est <- apply(Y, 2,   
+                   function(x) { 
+                     results = MASS::huber(x, k = 3)
+                     return(unlist(results))
+                   })[2,]
+    D_est <- diag(D_est)
   } else if (var_estimation  == "sample") {
-    var_est = apply(Y, 2, var)
+    D_est <- diag(apply(Y, 2, sd))
   } else if (var_estimation  == "huber"){
-    
     # This method is originally proposed by Fan et.al.but most computationally expensive
-    huber = function(data){
+    huber <- function(data){
       data = data[,1]
       alpha = sqrt(1/(8*max(apply(Y, 2, "var"))))
       function(theta){
@@ -600,7 +599,7 @@ robustPoetEst <- function(Y, k, lambda, var_estimation) {
         }
       }
     }
-    mest = function(x) {
+    mest <- function(x) {
       results = geex::m_estimate(
         estFUN = huber,
         data   = data.frame(x),
@@ -608,37 +607,25 @@ robustPoetEst <- function(Y, k, lambda, var_estimation) {
       )
       return(results@estimates)
     }
-    var_est = pmax(apply(Y^2, 2, mest) - apply(Y, 2, mest) ** 2, 1e-6)
+    var_est <- pmax(apply(Y^2, 2, mest) - apply(Y, 2, mest) ** 2, 1e-6)
+    D_est <- diag(var_est ** 0.5)
   }
   
-  # calculate the estimator of D
-  D_est = diag(var_est ** 0.5)
-  
-  # construct a p by (n^2) matrix where each row consists of pair-wise differences of all observations 
-  # for a random variable
-  diff_mat = function(x) {
-    return(sign(outer(x, x, FUN = "-")))
-  }
-  Diff = t(apply(Y, 2, diff_mat))
-  
-  # calculate marginal Kendall's tau estimator
-  Tau_est = Diff %*% t(Diff) / (n**2 - n)
-  
-  # calculate the estimator of R
-  R_est = sin(Tau_est * pi / 2)
+  # calculate marginal Kendall's tau estimator and the estimator of R
+  R_est <- sin(cor(Y, method = "kendall") * pi / 2)
   
   # calculate the first estimator for covariance matrix
-  Sigma_est1 = D_est %*% R_est %*% D_est
+  Sigma_est1 <- D_est %*% R_est %*% D_est
   
   # calculate the estimator of leading eigenvalues
   if (k == 1) {
-    Lambda_est = as.matrix(RSpectra::eigs_sym(Sigma_est1, k)$values)
+    Lambda_est <- as.matrix(RSpectra::eigs_sym(Sigma_est1, k)$values)
   } else {
-    Lambda_est = diag(RSpectra::eigs_sym(Sigma_est1, k)$values)
+    Lambda_est <- diag(RSpectra::eigs_sym(Sigma_est1, k)$values)
   }
   
   # construct spatial Kendall's tau estimator
-  kernel = function(x) { 
+  kernel <- function(x) { 
     yi = Y[x[1], ]
     yj = Y[x[2], ]
     temp = yi - yj
@@ -647,23 +634,22 @@ robustPoetEst <- function(Y, k, lambda, var_estimation) {
     }
     return(outer(temp, temp, FUN = "*") / sum(temp^2))
   }
-  comb = combn(n, 2, v=1:n, set=TRUE, repeats.allowed=FALSE)
-  K = matrix(rowSums(apply(comb, 2, kernel)), p, p)
+  comb <- combn(n, 2, v=1:n, set=TRUE, repeats.allowed=FALSE)
   
   # calculate the second estimator for covariance matrix
-  Sigma_est2  = 2 / (n * (n - 1)) * K
+  Sigma_est2  <- 2 / (n * (n - 1)) * matrix(rowSums(apply(comb, 2, kernel)), p, p)
   
   # calculate the estimator for leading eigenvectors
-  Gamma_est = RSpectra::eigs_sym(Sigma_est2, k)$vectors
+  Gamma_est <- RSpectra::eigs_sym(Sigma_est2, k)$vectors
   
   # calculate the low rank structure
-  Low_rank_est = Gamma_est %*% Lambda_est %*% t(Gamma_est)
+  Low_rank_est <- Gamma_est %*% Lambda_est %*% t(Gamma_est)
   
   # regularize the principal orthogonal component
-  Sigma_estu = Sigma_est1 - Low_rank_est
-  Sigma_estu_T = replace(Sigma_estu, abs(Sigma_estu) < lambda, 0)
+  Sigma_estu <- Sigma_est1 - Low_rank_est
+  Sigma_estu <- replace(Sigma_estu, abs(Sigma_estu) < lambda, 0)
   
-  return(Sigma_estu_T + Low_rank_est)
+  return(Sigma_estu + Low_rank_est)
 }
 
 ###############################################################################
