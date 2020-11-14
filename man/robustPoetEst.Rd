@@ -18,7 +18,7 @@ practice, it is therefore preferable to use larger values.}
 thresholding applied to each element of sample covariance matrix's
 orthogonal complement.}
 
-\item{var_estimation}{A optional \code{character} string giving the method of
+\item{var_estimation}{A \code{character} string giving the method of
 variance estimation method. This must be one of the strings "\code{mad}",
 "\code{sample}", "\code{huber}".}
 }

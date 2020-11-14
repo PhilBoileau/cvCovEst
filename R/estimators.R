@@ -565,6 +565,8 @@ poetEst <- function(dat, k, lambda) {
 #' @importFrom RSpectra eigs_sym
 #' @importFrom MASS huber
 #' @importFrom geex m_estimate setup_root_control
+#' @importFrom stats cor sd
+#' @importFrom utils combn
 #'
 #' @export
 #'
@@ -585,7 +587,7 @@ robustPoetEst <- function(Y, k, lambda, var_estimation) {
                    })[2,]
     D_est <- diag(D_est)
   } else if (var_estimation  == "sample") {
-    D_est <- diag(apply(Y, 2, sd))
+    D_est <- diag(apply(Y, 2, stats::sd))
   } else if (var_estimation  == "huber"){
     # This method is originally proposed by Fan et.al.but most computationally expensive
     huber <- function(data){
@@ -612,7 +614,7 @@ robustPoetEst <- function(Y, k, lambda, var_estimation) {
   }
   
   # calculate marginal Kendall's tau estimator and the estimator of R
-  R_est <- sin(cor(Y, method = "kendall") * pi / 2)
+  R_est <- sin(stats::cor(Y, method = "kendall") * pi / 2)
   
   # calculate the first estimator for covariance matrix
   Sigma_est1 <- D_est %*% R_est %*% D_est
@@ -634,7 +636,7 @@ robustPoetEst <- function(Y, k, lambda, var_estimation) {
     }
     return(outer(temp, temp, FUN = "*") / sum(temp^2))
   }
-  comb <- combn(n, 2, v=1:n, set=TRUE, repeats.allowed=FALSE)
+  comb <- utils::combn(n, 2, v=1:n, set=TRUE, repeats.allowed=FALSE)
   
   # calculate the second estimator for covariance matrix
   Sigma_est2  <- 2 / (n * (n - 1)) * matrix(rowSums(apply(comb, 2, kernel)), p, p)

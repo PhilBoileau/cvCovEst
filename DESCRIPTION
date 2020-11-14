@@ -39,13 +39,15 @@ Imports:
     RSpectra,
     future,
     future.apply,
-    geex
+    geex,
+    MASS,
+    stats,
+    utils
 Suggests:
     testthat,
     knitr,
     rmarkdown,
-    covr,
-    MASS
+    covr
 License: MIT + file LICENSE
 URL: https://github.com/PhilBoileau/cvCovEst
 BugReports: https://github.com/PhilBoileau/cvCovEst/issues
