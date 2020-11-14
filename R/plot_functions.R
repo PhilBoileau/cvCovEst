@@ -203,7 +203,7 @@ cvSummary <- function(dat, summary = 'all') {
     "hyperRisk"
   )
 
-  if (summary == 'all') {
+  if ('all' %in% summary) {
     sums_to_exec <- summary_functions
   }
   else{
@@ -260,7 +260,10 @@ cvSummary <- function(dat, summary = 'all') {
 #' @return A heat map plot of the desired covariance matrix estimator.
 #'
 #' @importFrom rlang exec
-#' @importFrom ggplot2 ggplot geom_raster
+#' @importFrom reshape2 melt
+#' @importFrom stringr str_split
+#' @importFrom dplyr filter %>%
+#' @import ggplot2
 #'
 #' @keywords external
 cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
@@ -321,13 +324,32 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
   }
   else{
     estimate <- rlang::exec(
-      estimator
+      estimator,
+      dat_orig
     )
   }
 
-  meltEst <- reshape2::melt(estimate)
-  return(meltEst)
+  meltEst <- abs(
+    reshape2::melt(estimate)
+    )
+
+  meltEst$Var1 <- rev(meltEst$Var1)
+
+  plot <- ggplot2::ggplot(
+    meltEst,
+    aes(x = Var1, y = Var2)
+    ) +
+    ggplot2::geom_raster(
+      aes(fill = value)) +
+    ggplot2::scale_fill_gradient(
+      low = "black",
+      high = "white",
+      limits = c(0,1))
+
+  return(plot)
+
 }
+
 
 
 
