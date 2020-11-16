@@ -24,12 +24,12 @@ empRiskByClass <- function(dat) {
   empRisk <- dat %>%
     dplyr::group_by(estimator) %>%
     dplyr::summarise(
-      min_risk = min(empirical_risk),
-      Q1_risk = quantile(empirical_risk, probs = 0.25),
-      median_risk = quantile(empirical_risk, probs = 0.5),
+      min = min(empirical_risk),
+      Q1 = quantile(empirical_risk, probs = 0.25, type = 3),
+      Q2 = quantile(empirical_risk, probs = 0.5, type = 3),
+      Q3 = quantile(empirical_risk, probs = 0.75, type = 3),
+      max = max(empirical_risk),
       mean_risk = mean(empirical_risk),
-      Q3_risk = quantile(empirical_risk, probs = 0.75),
-      max_risk = max(empirical_risk),
       .groups = "keep") %>%
     dplyr::arrange(mean_risk)
 
@@ -250,9 +250,9 @@ cvSummary <- function(dat, summary = 'all') {
 #' @param estimator A single string specifying which class of estimator to
 #' visualize.
 #'
-#' @param stat A single specifying the performance of the chosen estimator.  The
-#'  two options are \code{"best"} for the best performing estimator and
-#'  \code{"worst"} for the worst performing estimator.
+#' @param stat A single string specifying the performance of the chosen
+#' estimator.  The two options are \code{"best"} for the best performing
+#' estimator and \code{"worst"} for the worst performing estimator.
 #'
 #' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{cvCovEst}.
@@ -347,6 +347,109 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
       limits = c(0,1))
 
   return(plot)
+
+}
+
+################################################################################
+#' Multiple Heat Map Plot
+#'
+#' @description The \code{cvMultiMelt} compares the structure of two or more
+#'  covariance matrix estimators through a grid of heat maps, where each heat map
+#'  corresponds to a different estimator.
+#'
+#' @param dat A named \code{list}.  Specifically, this is the standard output of
+#' \code{cvCovEst}.
+#'
+#' @param estimator A character vector specifying one or more classes of
+#' estimators to compare.
+#'
+#' @param single_stat A \code{logical} indicating whether to compare estimators
+#' based on one summary statistic, such as the best performing estimator.  The
+#' default is \code{TRUE}.  If set to \code{FALSE}, then multiple comparisons
+#' are allowed.  See Details.
+#'
+#' @param stat A string specifying the single summary statistic to use when
+#'  comparing two or more estimators.  See Details.
+#'
+#' @param multi_stat A character indicating the type of comparison method to use.
+#'
+#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{cvCovEst}.
+#'
+#' @return A grid of heat map plots comparing the desired covariance matrix
+#' estimators.
+#'
+#' @importFrom rlang exec
+#' @importFrom reshape2 melt
+#' @importFrom stringr str_split
+#' @importFrom dplyr filter %>%
+#' @import ggplot2
+#' @import assertthat
+#'
+#' @keywords external
+cvMultiMelt <- function(dat,
+                        estimator,
+                        single_stat = TRUE,
+                        stat = 'best',
+                        multi_stat = "1",
+                        dat_orig) {
+  # Check for class cvCovEst
+  # Check for correct estimator names
+
+  single_choices <- c(
+    "min",
+    "Q1",
+    "Q2",
+    "Q3",
+    "max",
+    "mean"
+  )
+
+  multi_choices <- c(
+    "1",
+    "2",
+    "3"
+  )
+
+  has_hypers <- c(
+    "linearShrinkEst", "thresholdingEst",
+    "bandingEst", "taperingEst",
+    "poetEst", "adaptiveLassoEst"
+  )
+
+  # Perform checks
+  if (single_stat){
+    assertthat::assert_that(
+      length(stat) == 1,
+      stat %in% single_choices,
+      msg = paste(
+        "Please choose a single summary statistic from: ",
+        single_choices
+      )
+    )
+    assertthat::assert_that(
+      length(estimator) > 1,
+      msg = "Use cvSingleMelt for single heat map plots."
+    )
+  }
+  else{
+    assertthat::assert_that(
+      multi_stat %in% multi_choices,
+      msg = paste(
+        "Please choose a stat from: ",
+        multi_choices
+        )
+    )
+  }
+
+  # Call cvSummary
+  cv_sum <- cvSummary(dat)
+
+  # Single Stat Option
+  if (single_stat){
+
+  }
+
 
 }
 

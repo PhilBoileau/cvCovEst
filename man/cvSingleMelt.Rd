@@ -13,9 +13,9 @@ cvSingleMelt(dat, estimator, stat, dat_orig)
 \item{estimator}{A single string specifying which class of estimator to
 visualize.}
 
-\item{stat}{A single specifying the performance of the chosen estimator.  The
-two options are \code{"best"} for the best performing estimator and
-\code{"worst"} for the worst performing estimator.}
+\item{stat}{A single string specifying the performance of the chosen
+estimator.  The two options are \code{"best"} for the best performing
+estimator and \code{"worst"} for the worst performing estimator.}
 
 \item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
 object originally passed to \code{cvCovEst}.}
