@@ -369,7 +369,8 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
 #' are allowed.  See Details.
 #'
 #' @param stat A string specifying the single summary statistic to use when
-#'  comparing two or more estimators.  See Details.
+#'  comparing two or more estimators.  Default is \code{'min'} for minimum
+#'  empirical risk.
 #'
 #' @param multi_stat A character indicating the type of comparison method to use.
 #'
@@ -390,7 +391,7 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
 cvMultiMelt <- function(dat,
                         estimator,
                         single_stat = TRUE,
-                        stat = 'best',
+                        stat = 'min',
                         multi_stat = "1",
                         dat_orig) {
   # Check for class cvCovEst
@@ -447,6 +448,18 @@ cvMultiMelt <- function(dat,
 
   # Single Stat Option
   if (single_stat){
+
+    stat_melts <- lapply(
+      estimator,
+      function(est) {
+        if (est %in% has_hypers){
+          est_subset <- cv_sum$hyperRisk[[est]]
+          # Select out the appropriate hyper-parameters
+
+        }
+      }
+    )
+
 
   }
 
