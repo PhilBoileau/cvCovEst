@@ -303,24 +303,31 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
   }
 
   if (estimator %in% has_hypers) {
-    estHypers <- lapply(
+
+    hyper_list <- as.list(
       stringr::str_split(
         est[1, 2], ", "
-        ),
+      ) %>% unlist()
+    )
+
+    estHypers <- lapply(
+      hyper_list,
       function(s) {
-        h <- stringr::str_split(
+        hyper <- stringr::str_split(
           s, "= "
           ) %>% unlist()
 
-        return(
-          as.numeric(h[2])
-          )
+        hyper_value <- as.numeric(hyper[2])
+
+        return(hyper_value)
         }
       )
 
-    estArgs <- list(
-      dat = dat_orig,
-      estHypers %>% unlist()
+    dat = list(dat_orig)
+
+    estArgs <- append(
+      dat,
+      estHypers
     )
 
     estimate <- rlang::exec(
