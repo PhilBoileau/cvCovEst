@@ -106,7 +106,8 @@ hyperRisk <- function(dat) {
   has_hypers <- c(
     "linearShrinkEst", "thresholdingEst",
     "bandingEst", "taperingEst",
-    "poetEst", "adaptiveLassoEst"
+    "scadEst", "poetEst",
+    "adaptiveLassoEst"
     )
 
   estimators <- unique(dat$estimator)
@@ -148,7 +149,11 @@ hyperRisk <- function(dat) {
 
       df <- data.frame(
         t(hyper_risk),
-        row.names = names(risk_stats)
+        row.names = c(
+          "min",
+          "Q1", "Q2","Q3",
+          "max"
+          )
         )
 
       colnames(df) <- c(
@@ -272,7 +277,8 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
   has_hypers <- c(
     "linearShrinkEst", "thresholdingEst",
     "bandingEst", "taperingEst",
-    "poetEst", "adaptiveLassoEst"
+    "scadEst", "poetEst",
+    "adaptiveLassoEst"
   )
 
   best_vs_worst <- cvSummary(
@@ -402,8 +408,7 @@ cvMultiMelt <- function(dat,
     "Q1",
     "Q2",
     "Q3",
-    "max",
-    "mean"
+    "max"
   )
 
   multi_choices <- c(
@@ -415,7 +420,8 @@ cvMultiMelt <- function(dat,
   has_hypers <- c(
     "linearShrinkEst", "thresholdingEst",
     "bandingEst", "taperingEst",
-    "poetEst", "adaptiveLassoEst"
+    "scadEst", "poetEst",
+    "adaptiveLassoEst"
   )
 
   # Perform checks
@@ -452,16 +458,90 @@ cvMultiMelt <- function(dat,
     stat_melts <- lapply(
       estimator,
       function(est) {
+        # For Estimators With Hyper-parameters
         if (est %in% has_hypers){
           est_subset <- cv_sum$hyperRisk[[est]]
-          # Select out the appropriate hyper-parameters
 
+          # Get The Associated Hyper-parameters
+          hyper_list <- as.list(
+            stringr::str_split(
+              est_subset[stat, 1], ", "
+              ) %>% unlist()
+            )
+
+          estHypers <- lapply(
+            hyper_list,
+            function(s) {
+              hyper <- stringr::str_split(
+                s, "= "
+              ) %>% unlist()
+
+              return(
+                as.numeric(hyper[2])
+              )
+            })
+
+          # Run The Associated Estimator
+          dat = list(dat_orig)
+
+          estArgs <- append(
+            dat,
+            estHypers
+            )
+
+          estimate <- rlang::exec(
+            est,
+            !!!estArgs
+          )
         }
-      }
-    )
+        # If No Hyper-parameters
+        else{
+          estimate <- rlang::exec(
+            est,
+            dat_orig
+          )
+        }
+
+        # Create Melted Data Frame
+        meltEst <- abs(
+          reshape2::melt(estimate)
+        )
+
+        # Label by Estimator
+        est_name <- rep(
+          est,
+          nrow(meltEst)
+          )
+
+        meltEst$Var1 <- rev(meltEst$Var1)
+        meltEst$estimator <- est_name
+
+        return(meltEst)
+
+        })
+
+    stat_melts <- dplyr::bind_rows(stat_melts)
+
+    plot <- ggplot2::ggplot(
+      stat_melts,
+      aes(x = Var1, y = Var2)) +
+      ggplot2::geom_raster(
+        aes(fill = value)) +
+      ggplot2::facet_wrap(
+        facets = vars(estimator)) +
+      ggplot2::scale_fill_gradient(
+        low = "white",
+        high = "black",
+        limits = c(0,1))
+
+    return(plot)
+
+
+
 
 
   }
+
 
 
 }

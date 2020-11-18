@@ -8,7 +8,7 @@ cvMultiMelt(
   dat,
   estimator,
   single_stat = TRUE,
-  stat = "best",
+  stat = "min",
   multi_stat = "1",
   dat_orig
 )
@@ -26,7 +26,8 @@ default is \code{TRUE}.  If set to \code{FALSE}, then multiple comparisons
 are allowed.  See Details.}
 
 \item{stat}{A string specifying the single summary statistic to use when
-comparing two or more estimators.  See Details.}
+comparing two or more estimators.  Default is \code{'min'} for minimum
+empirical risk.}
 
 \item{multi_stat}{A character indicating the type of comparison method to use.}
 
