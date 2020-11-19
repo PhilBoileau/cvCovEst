@@ -579,6 +579,9 @@ poetEst <- function(dat, k, lambda) {
 robustPoetEst <- function(Y, k, lambda,
   var_estimation = c("mad", "sample", "huber")) {
 
+  # cehck the var_estimation choice
+  var_estimation <- match.arg(var_estimation)
+
   # get the dimensions of the data
   n <- nrow(Y)
   p <- ncol(Y)
