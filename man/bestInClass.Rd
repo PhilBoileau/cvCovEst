@@ -21,6 +21,6 @@ in that class.
 \description{
 The \code{bestInClass} function finds the best performing
 estimator within each class of estimator passed to \code{cvCovEst} and
-finds the associated hyperparameters if applicable.
+finds the associated hyper-parameters if applicable.
 }
 \keyword{internal}

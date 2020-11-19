@@ -41,7 +41,7 @@ empRiskByClass <- function(dat) {
 #'
 #' @description The \code{bestInClass} function finds the best performing
 #'  estimator within each class of estimator passed to \code{cvCovEst} and
-#'  finds the associated hyperparameters if applicable.
+#'  finds the associated hyper-parameters if applicable.
 #'
 #' @param dat The table of empirical risk calculations which is output by
 #' \code{cvCovEst}.
