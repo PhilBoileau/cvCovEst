@@ -536,16 +536,19 @@ poetEst <- function(dat, k, lambda) {
 #' Robust POET Estimator for Elliptical Distributions
 #'
 #' @description \code{robustPoetEst} implements the robust version of Principal
-#'   Orthogonal complEment Thresholding (POET) estimator, a nonparametric, 
+#'   Orthogonal complEment Thresholding (POET) estimator, a nonparametric,
 #'   unobserved-factor-based estimator of the covariance matrix when the
-#'   underlying distribution is ellipitcal\insertCite{fan2018}{cvCovEst}. The
+#'   underlying distribution is ellipitcal \insertCite{fan2018}{cvCovEst}. The
 #'   estimator is defined as the sum of the sample covariance matrix'
 #'   rank-\code{k} approximation and its thresholded principal orthogonal
-#'   complement. Rank-\code{k} approximation is constructed from the sample 
-#'   covariance matrix, its leading eigenvalues, and leading eigenvectors, 
-#'   first two estimated by M-estimation and marginal Kendall's tau estimator
-#'   while the last one estimated by spatial Kendall's tau estimator. The hard
-#'   thresholding function is used here, though others could be used instead.
+#'   complement. The rank-\code{k} approximation is constructed from the sample
+#'   covariance matrix, its leading eigenvalues, and leading eigenvectors.
+#'   The sample covariance matrix and leading eigenvalues are initially
+#'   estimated via M-estimation and the marginal Kendall's tau estimator.
+#'   The leading eigenvectors are estimated using spatial Kendall's tau
+#'   estimator. The hard thresholding function is used to regularize the
+#'   idiosyncratic errors' estimated covariance matrix, though other
+#'   regularization schemes could beused instead.
 #'
 #' @param Y A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param k An \code{integer} indicating the number of unobserved latent
@@ -555,9 +558,9 @@ poetEst <- function(dat, k, lambda) {
 #' @param lambda A non-negative \code{numeric} defining the amount of
 #'   thresholding applied to each element of sample covariance matrix's
 #'   orthogonal complement.
-#' @param var_estimation A \code{character} string giving the method of
-#'   variance estimation method. This must be one of the strings "\code{mad}",
-#'   "\code{sample}", "\code{huber}".
+#' @param var_estimation A \code{character} string dictating which initial
+#'   covariance matrix estimator to use. This must be one of the strings
+#'   "\code{mad}", "\code{sample}", or "\code{huber}".
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'   matrix.
@@ -573,31 +576,34 @@ poetEst <- function(dat, k, lambda) {
 #' @references
 #'   \insertAllCited{}
 
-robustPoetEst <- function(Y, k, lambda, var_estimation) {
+robustPoetEst <- function(Y, k, lambda,
+  var_estimation = c("mad", "sample", "huber")) {
+
   # get the dimensions of the data
   n <- nrow(Y)
   p <- ncol(Y)
-  
+
   # use M-estimator and Huber loss to robustly estimate variance
   if (var_estimation == "mad") {
-    D_est <- apply(Y, 2,   
-                   function(x) { 
-                     results = MASS::huber(x, k = 3)
-                     return(unlist(results))
-                   })[2,]
+    D_est <- apply(Y, 2,
+      function(x) {
+        results <- MASS::huber(x, k = 3)
+        return(unlist(results))
+      })[2, ]
     D_est <- diag(D_est)
   } else if (var_estimation  == "sample") {
     D_est <- diag(apply(Y, 2, stats::sd))
-  } else if (var_estimation  == "huber"){
-    # This method is originally proposed by Fan et.al.but most computationally expensive
-    huber <- function(data){
-      data = data[,1]
-      alpha = sqrt(1/(8*max(apply(Y, 2, "var"))))
-      function(theta){
-        if(abs(alpha *(data - theta[1])) <=1 ) {
-          return(alpha *(data - theta[1]))
+  } else if (var_estimation  == "huber") {
+    # This method is originally proposed by Fan et. al. but most computationally
+    # expensive
+    huber <- function(data) {
+      data = data[, 1]
+      alpha = sqrt(1 / (8 * max(apply(Y, 2, "var"))))
+      function(theta) {
+        if (abs(alpha * (data - theta[1])) <= 1) {
+          return(alpha * (data - theta[1]))
         }else{
-          return(sign(alpha *(data - theta[1])))
+          return(sign(alpha * (data - theta[1])))
         }
       }
     }
@@ -612,45 +618,47 @@ robustPoetEst <- function(Y, k, lambda, var_estimation) {
     var_est <- pmax(apply(Y^2, 2, mest) - apply(Y, 2, mest) ** 2, 1e-6)
     D_est <- diag(var_est ** 0.5)
   }
-  
+
   # calculate marginal Kendall's tau estimator and the estimator of R
   R_est <- sin(stats::cor(Y, method = "kendall") * pi / 2)
-  
+
   # calculate the first estimator for covariance matrix
   Sigma_est1 <- D_est %*% R_est %*% D_est
-  
+
   # calculate the estimator of leading eigenvalues
   if (k == 1) {
     Lambda_est <- as.matrix(RSpectra::eigs_sym(Sigma_est1, k)$values)
   } else {
     Lambda_est <- diag(RSpectra::eigs_sym(Sigma_est1, k)$values)
   }
-  
+
   # construct spatial Kendall's tau estimator
-  kernel <- function(x) { 
-    yi = Y[x[1], ]
-    yj = Y[x[2], ]
-    temp = yi - yj
-    if(all(temp == 0)){ 
+  kernel <- function(x) {
+    yi <- Y[x[1], ]
+    yj <- Y[x[2], ]
+    temp <- yi - yj
+    if (all(temp == 0)) {
       return(0)
     }
     return(outer(temp, temp, FUN = "*") / sum(temp^2))
   }
-  comb <- utils::combn(n, 2, v=1:n, set=TRUE, repeats.allowed=FALSE)
-  
+  comb <- utils::combn(n, 2, v = seq_len(n), set = TRUE,
+                       repeats.allowed = FALSE)
+
   # calculate the second estimator for covariance matrix
-  Sigma_est2  <- 2 / (n * (n - 1)) * matrix(rowSums(apply(comb, 2, kernel)), p, p)
-  
+  Sigma_est2  <- 2 / (n * (n - 1)) *
+    matrix(rowSums(apply(comb, 2, kernel)), p, p)
+
   # calculate the estimator for leading eigenvectors
   Gamma_est <- RSpectra::eigs_sym(Sigma_est2, k)$vectors
-  
+
   # calculate the low rank structure
   Low_rank_est <- Gamma_est %*% Lambda_est %*% t(Gamma_est)
-  
+
   # regularize the principal orthogonal component
   Sigma_estu <- Sigma_est1 - Low_rank_est
   Sigma_estu <- replace(Sigma_estu, abs(Sigma_estu) < lambda, 0)
-  
+
   return(Sigma_estu + Low_rank_est)
 }
 
