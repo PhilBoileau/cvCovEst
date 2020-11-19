@@ -47,7 +47,9 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    covr
+    covr,
+    MASS,
+    spelling
 License: MIT + file LICENSE
 URL: https://github.com/PhilBoileau/cvCovEst
 BugReports: https://github.com/PhilBoileau/cvCovEst/issues
