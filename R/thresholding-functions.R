@@ -56,7 +56,7 @@ adaptiveLassoThreshold <- function(entry, lambda, n) {
 
 ################################################################################
 
-#' Symmetric Apply Function for Covariance Matricies
+#' Symmetric Apply Function for Covariance Matrices
 #'
 #' @description \code{symmetricApply} implements a version of \code{apply}
 #'   expressly made for looping over symmetric matrices.

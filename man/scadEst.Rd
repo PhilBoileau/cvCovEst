@@ -19,7 +19,7 @@ matrix.
 }
 \description{
 The Smoothly Clipped Absolute Deviation (SCAD) covariance matrix
-estimator applies the SCAD threholding function of
+estimator applies the SCAD thresholding function of
 \insertCite{fan2001;textual}{cvCovEst} to each entry of the sample
 covariance matrix. This penalized estimator constitutes a compromise
 between hard and soft thresholding of the sample covariance matrix: it is

@@ -56,7 +56,7 @@
 #'     \item \code{risk_df} - A \code{\link[tibble]{tibble}} providing the
 #'       cross-validated risk estimates of each estimator.
 #'     \item \code{cv_df} - A \code{\link[tibble]{tibble}} providing
-#'       each estimators' loss over the various folds of the cross-validatied
+#'       each estimators' loss over the various folds of the cross-validated
 #'       procedure.
 #'   }
 #'   If the true covariance matrix is input through \code{true_cov_mat}, then

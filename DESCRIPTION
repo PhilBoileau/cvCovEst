@@ -44,7 +44,8 @@ Suggests:
     knitr,
     rmarkdown,
     covr,
-    MASS
+    MASS,
+    spelling
 License: MIT + file LICENSE
 URL: https://github.com/PhilBoileau/cvCovEst
 BugReports: https://github.com/PhilBoileau/cvCovEst/issues
@@ -54,3 +55,4 @@ VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 RdMacros: Rdpack
+Language: en-US

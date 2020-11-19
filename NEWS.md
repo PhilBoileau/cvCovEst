@@ -1,3 +1,8 @@
+# cvCovEst 0.1.0 (2020-11-19)
+
+* cvCovEst version 0.1.0 is used in the accompanying manuscript to generate all results.
+* It is stored as a separate branch called 'preprint'.
+
 # cvCovEst 0.0.18 (2020-10-19)
 
 * cvCovEst now accepts cvMatrixFrobeniusLoss as a loss function. This loss function is a matrix-based alternative to the standard loss function. Through Proposition 1 of the method's manuscript the resulting selections of each loss are identical for any fixed cross-validation scheme. However, the matrix-based loss is more computationally efficient.
@@ -50,7 +55,7 @@
 * Added adaptive LASSO estimator.
 * Users now have the option to include the true covariance matrix of their
   multivariate Gaussian data, allowing them to compare cvCovEst's selection
-  versus that of the cross-valdidated oracle.
+  versus that of the cross-validated oracle.
 
 # cvCovEst 0.0.9 (2020-09-13)
 
