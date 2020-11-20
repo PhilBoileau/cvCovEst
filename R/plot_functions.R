@@ -543,12 +543,95 @@ cvMultiMelt <- function(dat,
         limits = c(0,1))
 
     return(plot)
-
-
-
-
-
   }
+
+  # Multi-Stat Option
+  else{
+    if (length(estimator) == 1) {
+      assertthat::assert_that(
+        estimator %in% has_hypers,
+        msg = "The chosen estimator has no hyper-parameters.
+        All plots will be the same."
+      )
+
+      estimatorStats <- cv_sum$hyperRisk[[estimator]]
+
+      stat_melts <- lapply(
+        stat,
+        function(stat_est) {
+
+        # Get The Associated Hyper-parameters
+        hyper_list <- as.list(
+          stringr::str_split(
+            estimatorStats[stat_est, 1], ", "
+          ) %>% unlist()
+        )
+
+        estHypers <- lapply(
+          hyper_list,
+          function(s) {
+            hyper <- stringr::str_split(
+              s, "= "
+            ) %>% unlist()
+
+            return(
+              as.numeric(hyper[2])
+            )
+          })
+
+        # Run The Associated Estimator
+        dat = list(dat_orig)
+
+        estArgs <- append(
+          dat,
+          estHypers
+        )
+
+        estimate <- rlang::exec(
+          estimator,
+          !!!estArgs
+        )
+
+        # Create Melted Data Frame
+        meltEst <- abs(
+          reshape2::melt(estimate)
+        )
+
+        # Label by Stat
+        stat_name <- rep(
+          stat_est,
+          nrow(meltEst)
+        )
+
+        meltEst$Var1 <- rev(meltEst$Var1)
+        meltEst$stat <- stat_name
+
+        return(meltEst)
+
+      })
+
+      stat_melts <- dplyr::bind_rows(stat_melts)
+
+      plot <- ggplot2::ggplot(
+        stat_melts,
+        aes(x = Var1, y = Var2)) +
+        ggplot2::geom_raster(
+          aes(fill = value)) +
+        ggplot2::facet_wrap(
+          facets = vars(stat)) +
+        ggplot2::scale_fill_gradient(
+          low = "white",
+          high = "black",
+          limits = c(0,1))
+
+      return(plot)
+    }
+
+    }
+
+
+
+
 
 
 
