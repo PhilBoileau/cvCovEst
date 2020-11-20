@@ -274,6 +274,7 @@ cvSummary <- function(dat, summary = 'all') {
 cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
   # add checks here for assuring cvCovEst output
 
+  est_name <- estimator
   has_hypers <- c(
     "linearShrinkEst", "thresholdingEst",
     "bandingEst", "taperingEst",
@@ -292,13 +293,13 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
   if (stat == 'best') {
     est <- best_vs_worst$bestInClass %>%
       dplyr::filter(
-        estimator == estimator
+        estimator == est_name
       )
   }
   else{
     est <- best_vs_worst$worstInClass %>%
       dplyr::filter(
-        estimator == estimator
+        estimator == est_name
       )
   }
 

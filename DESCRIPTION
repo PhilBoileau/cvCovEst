@@ -38,7 +38,9 @@ Imports:
     stringi,
     RSpectra,
     future,
-    future.apply
+    future.apply,
+    reshape2,
+    ggplot2
 Suggests:
     testthat,
     knitr,
