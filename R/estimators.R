@@ -580,8 +580,8 @@ poetEst <- function(dat, k, lambda) {
 #'   \insertAllCited{}
 
 robustPoetEst <- function(dat, lambda, k,
-                          var_estimation = c("mad", "sample", "huber")) {
-  
+  var_estimation = c("mad", "sample", "huber")) {
+
   # get the dimensions of the data
   n <- nrow(dat)
   p <- ncol(dat)
@@ -620,7 +620,7 @@ robustPoetEst <- function(dat, lambda, k,
       )
       results@estimates
     }
-    var_est <- pmax(apply(dat^2, 2, mest) - apply(dat, 2, mest) ** 2, 1e-6)
+    var_est <- pmax(apply(dat^2, 2, mest) - apply(dat, 2, mest)^2, 1e-6)
     D_est <- diag(var_est ** 0.5)
   }
   
