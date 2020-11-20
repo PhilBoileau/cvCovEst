@@ -533,6 +533,140 @@ poetEst <- function(dat, k, lambda) {
 
 ###############################################################################
 
+#' Robust POET Estimator for Elliptical Distributions
+#'
+#' @description \code{robustPoetEst} implements the robust version of Principal
+#'   Orthogonal complEment Thresholding (POET) estimator, a nonparametric,
+#'   unobserved-factor-based estimator of the covariance matrix when the
+#'   underlying distribution is ellipitcal \insertCite{fan2018}{cvCovEst}. The
+#'   estimator is defined as the sum of the sample covariance matrix'
+#'   rank-\code{k} approximation and its thresholded principal orthogonal
+#'   complement. The rank-\code{k} approximation is constructed from the sample
+#'   covariance matrix, its leading eigenvalues, and leading eigenvectors.
+#'   The sample covariance matrix and leading eigenvalues are initially
+#'   estimated via M-estimation and the marginal Kendall's tau estimator.
+#'   The leading eigenvectors are estimated using spatial Kendall's tau
+#'   estimator. The hard thresholding function is used to regularize the
+#'   idiosyncratic errors' estimated covariance matrix, though other
+#'   regularization schemes could beused instead.
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#' @param k An \code{integer} indicating the number of unobserved latent
+#'   factors. Empirical evidence suggests that the POET estimator is robust to
+#'   overestimations of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+#'   practice, it is therefore preferable to use larger values.
+#' @param lambda A non-negative \code{numeric} defining the amount of
+#'   thresholding applied to each element of sample covariance matrix's
+#'   orthogonal complement.
+#' @param var_estimation A \code{character} string dictating which
+#'   variance estimator to use. This must be one of the strings
+#'   "\code{mad}", "\code{sample}", or "\code{huber}".  "\code{mad}" estimates
+#'   variances via median absolute deviation; "\code{sample}" uses sample 
+#'   variances; "\code{huber}" uses M-estimator for variance under Huber loss.
+#'   Defaults to "\code{sample}".
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'   matrix.
+#'
+#' @importFrom RSpectra eigs_sym
+#' @importFrom MASS huber
+#' @importFrom geex m_estimate setup_root_control
+#' @importFrom stats cor sd
+#' @importFrom utils combn
+#'
+#' @export
+#'
+#' @references
+#'   \insertAllCited{}
+
+robustPoetEst <- function(dat, lambda, k,
+  var_estimation = c("mad", "sample", "huber")) {
+
+  # get the dimensions of the data
+  n <- nrow(dat)
+  p <- ncol(dat)
+  
+  # check the var_estimation choice
+  var_estimation <- match.arg(var_estimation)
+  
+  # use M-estimator and Huber loss to robustly estimate variance
+  if (var_estimation == "mad") {
+    D_est <- apply(dat, 2,
+                   function(x) {
+                     results <- MASS::huber(x, k = 3)
+                     unlist(results)
+                   })[2, ]
+    D_est <- diag(D_est)
+  } else if (var_estimation  == "sample") {
+    D_est <- diag(apply(dat, 2, stats::sd))
+  } else if (var_estimation  == "huber") {
+    # This method is proposed by Fan et. al. but most computationally expensive
+    huber <- function(data) {
+      data = data[, 1]
+      alpha = sqrt(1 / (8 * max(apply(dat, 2, "var"))))
+      function(theta) {
+        if (abs(alpha * (data - theta[1])) <= 1) {
+          return(alpha * (data - theta[1]))
+        }else{
+          return(sign(alpha * (data - theta[1])))
+        }
+      }
+    }
+    mest <- function(x) {
+      results = geex::m_estimate(
+        estFUN = huber,
+        data   = data.frame(x),
+        root_control = geex::setup_root_control(start = mean(x))
+      )
+      results@estimates
+    }
+    var_est <- pmax(apply(dat^2, 2, mest) - apply(dat, 2, mest)^2, 1e-6)
+    D_est <- diag(var_est ** 0.5)
+  }
+  
+  # Marginal Kendall's tau estimator can be vectorized as the multiplication of
+  # the matrix of signs of elementwise differences for each variable 
+  # with its transpose. 
+  diff_mat <- function(x) {
+    diff = outer(x, x, FUN = "-")
+    diff = diff[lower.tri(diff)]
+    diff
+  }
+  Diff <- apply(dat, 2, diff_mat)
+  Tau_est <- t(sign(Diff)) %*% sign(Diff) * (2 / (n * (n - 1)))
+  
+  # calculate the estimator of R
+  R_est <- sin(Tau_est * pi / 2)
+  
+  # calculate the first estimator for covariance matrix
+  Sigma_est1 <- D_est %*% R_est %*% D_est
+  
+  # calculate the estimator of leading eigenvalues
+  if (k == 1) {
+    Lambda_est <- as.matrix(RSpectra::eigs_sym(Sigma_est1, k)$values)
+  } else {
+    Lambda_est <- diag(RSpectra::eigs_sym(Sigma_est1, k)$values)
+  }
+  
+  # calculate spatial Kendall's tau estimator
+  Diff <- Diff / apply(Diff, 1, function(x) {sqrt(sum(x^2))})
+  Sigma_est2 <- t(Diff) %*% Diff * (2 / (n * (n - 1)))
+  
+  # calculate the estimator for leading eigenvectors
+  Gamma_est <- RSpectra::eigs_sym(Sigma_est2, k)$vectors
+  
+  # calculate the low rank structure
+  Low_rank_est <- Gamma_est %*% Lambda_est %*% t(Gamma_est)
+  
+  # regularize the principal orthogonal component
+  Sigma_estu <- Sigma_est1 - Low_rank_est
+  Sigma_estu <- replace(Sigma_estu, abs(Sigma_estu) < lambda, 0)
+  
+  return(Sigma_estu + Low_rank_est)
+}
+
+###############################################################################
+
 #' Adaptive LASSO Estimator
 #'
 #' @description The \code{adaptiveLassoEst} function is a modification of
