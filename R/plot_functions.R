@@ -377,16 +377,9 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
 #' @param estimator A character vector specifying one or more classes of
 #' estimators to compare.
 #'
-#' @param single_stat A \code{logical} indicating whether to compare estimators
-#' based on one summary statistic, such as the best performing estimator.  The
-#' default is \code{TRUE}.  If set to \code{FALSE}, then multiple comparisons
-#' are allowed.  See Details.
-#'
-#' @param stat A string specifying the single summary statistic to use when
+#' @param stat A string specifying which summary statistics to use when
 #'  comparing two or more estimators.  Default is \code{'min'} for minimum
 #'  empirical risk.
-#'
-#' @param multi_stat A character indicating the type of comparison method to use.
 #'
 #' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{cvCovEst}.
@@ -404,25 +397,17 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
 #' @keywords external
 cvMultiMelt <- function(dat,
                         estimator,
-                        single_stat = TRUE,
                         stat = 'min',
-                        multi_stat = "1",
                         dat_orig) {
   # Check for class cvCovEst
   # Check for correct estimator names
 
-  single_choices <- c(
+  stat_choices <- c(
     "min",
     "Q1",
     "Q2",
     "Q3",
     "max"
-  )
-
-  multi_choices <- c(
-    "1",
-    "2",
-    "3"
   )
 
   has_hypers <- c(
@@ -432,28 +417,31 @@ cvMultiMelt <- function(dat,
     "adaptiveLassoEst"
   )
 
+  single_stat <- ifelse(
+    length(stat) == 1,
+    TRUE,
+    FALSE
+  )
+
+  single_est <- ifelse(
+    length(estimator) == 1,
+    TRUE,
+    FALSE
+  )
+
   # Perform checks
-  if (single_stat){
-    assertthat::assert_that(
-      length(stat) == 1,
-      stat %in% single_choices,
-      msg = paste(
-        "Please choose a single summary statistic from: ",
-        single_choices
-      )
+  assertthat::assert_that(
+    all(stat %in% stat_choices) == TRUE,
+    msg = paste(
+      "Only the following summary statistics are currently supported: ",
+      stat_choices
     )
+  )
+
+  if (single_stat){
     assertthat::assert_that(
       length(estimator) > 1,
       msg = "Use cvSingleMelt for single heat map plots."
-    )
-  }
-  else{
-    assertthat::assert_that(
-      multi_stat %in% multi_choices,
-      msg = paste(
-        "Please choose a stat from: ",
-        multi_choices
-        )
     )
   }
 
@@ -528,7 +516,12 @@ cvMultiMelt <- function(dat,
 
         })
 
+    # Combine and Re-factor
     stat_melts <- dplyr::bind_rows(stat_melts)
+    stat_melts$estimator <- factor(
+      stat_melts$estimator,
+      levels = cv_sum$bestInClass$estimator
+    )
 
     plot <- ggplot2::ggplot(
       stat_melts,
@@ -547,7 +540,8 @@ cvMultiMelt <- function(dat,
 
   # Multi-Stat Option
   else{
-    if (length(estimator) == 1) {
+    # Multi-Stat for Single Estimator
+    if (single_est) {
       assertthat::assert_that(
         estimator %in% has_hypers,
         msg = "The chosen estimator has no hyper-parameters.
@@ -604,13 +598,18 @@ cvMultiMelt <- function(dat,
         )
 
         meltEst$Var1 <- rev(meltEst$Var1)
-        meltEst$stat <- stat_name
+        meltEst$summary_stat <- stat_name
 
         return(meltEst)
 
       })
 
+      # Combine and Re-factor
       stat_melts <- dplyr::bind_rows(stat_melts)
+      stat_melts$summary_stat <- factor(
+        stat_melts$summary_stat,
+        levels = stat_choices
+      )
 
       plot <- ggplot2::ggplot(
         stat_melts,
@@ -618,7 +617,8 @@ cvMultiMelt <- function(dat,
         ggplot2::geom_raster(
           aes(fill = value)) +
         ggplot2::facet_wrap(
-          facets = vars(stat)) +
+          facets = vars(summary_stat),
+          nrow = 1) +
         ggplot2::scale_fill_gradient(
           low = "white",
           high = "black",
@@ -626,16 +626,108 @@ cvMultiMelt <- function(dat,
 
       return(plot)
     }
+    else{
+      # Multi-Stat for Several Estimators
+      multi_melts <- lapply(
+        estimator,
+        function(est) {
+          estimatorStats <- cv_sum$hyperRisk[[est]]
 
+          stat_melts <- lapply(
+            stat,
+            function(stat_est) {
+
+              # Get The Associated Hyper-parameters
+              hyper_list <- as.list(
+                stringr::str_split(
+                  estimatorStats[stat_est, 1], ", "
+                ) %>% unlist()
+              )
+
+              estHypers <- lapply(
+                hyper_list,
+                function(s) {
+                  hyper <- stringr::str_split(
+                    s, "= "
+                  ) %>% unlist()
+
+                  return(
+                    as.numeric(hyper[2])
+                  )
+                })
+
+              # Run The Associated Estimator
+              dat = list(dat_orig)
+
+              estArgs <- append(
+                dat,
+                estHypers
+              )
+
+              estimate <- rlang::exec(
+                est,
+                !!!estArgs
+              )
+
+              # Create Melted Data Frame
+              meltEst <- abs(
+                reshape2::melt(estimate)
+              )
+
+              # Label by Stat
+              stat_name <- rep(
+                stat_est,
+                nrow(meltEst)
+              )
+
+              # Label by Estimator
+              est_name <- rep(
+                est,
+                nrow(meltEst)
+              )
+
+              meltEst$Var1 <- rev(meltEst$Var1)
+              meltEst$summary_stat <- stat_name
+              meltEst$estimator <- est_name
+
+              return(meltEst)
+            })
+
+          stat_melts <- dplyr::bind_rows(stat_melts)
+
+          return(stat_melts)
+          })
+
+      # Combine and Re-factor
+      multi_melts <- dplyr::bind_rows(multi_melts)
+      multi_melts$summary_stat <- factor(
+        multi_melts$summary_stat,
+        levels = stat_choices
+        )
+
+      multi_melts$estimator <- factor(
+        multi_melts$estimator,
+        levels = cv_sum$bestInClass$estimator
+      )
+
+      plot <- ggplot2::ggplot(
+        multi_melts,
+        aes(x = Var1, y = Var2)) +
+        ggplot2::geom_raster(
+          aes(fill = value)) +
+        ggplot2::facet_grid(
+          rows = vars(estimator),
+          cols = vars(summary_stat)) +
+        ggplot2::scale_fill_gradient(
+          low = "white",
+          high = "black",
+          limits = c(0,1))
+
+      return(plot)
     }
-
-
-
-
-
-
-
+  }
 }
+
 
 
 

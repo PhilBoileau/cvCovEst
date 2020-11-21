@@ -4,14 +4,7 @@
 \alias{cvMultiMelt}
 \title{Multiple Heat Map Plot}
 \usage{
-cvMultiMelt(
-  dat,
-  estimator,
-  single_stat = TRUE,
-  stat = "min",
-  multi_stat = "1",
-  dat_orig
-)
+cvMultiMelt(dat, estimator, stat = "min", dat_orig)
 }
 \arguments{
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
@@ -20,16 +13,9 @@ cvMultiMelt(
 \item{estimator}{A character vector specifying one or more classes of
 estimators to compare.}
 
-\item{single_stat}{A \code{logical} indicating whether to compare estimators
-based on one summary statistic, such as the best performing estimator.  The
-default is \code{TRUE}.  If set to \code{FALSE}, then multiple comparisons
-are allowed.  See Details.}
-
-\item{stat}{A string specifying the single summary statistic to use when
+\item{stat}{A string specifying which summary statistics to use when
 comparing two or more estimators.  Default is \code{'min'} for minimum
 empirical risk.}
-
-\item{multi_stat}{A character indicating the type of comparison method to use.}
 
 \item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
 object originally passed to \code{cvCovEst}.}
