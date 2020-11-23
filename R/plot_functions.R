@@ -324,12 +324,26 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
         }
       )
 
+    hyperNames <- lapply(
+      hyper_list,
+      function(s) {
+        hyper <- stringr::str_split(
+          s, "= "
+        ) %>% unlist()
+
+        return(
+          stringr::str_squish(hyper[1])
+        )
+      }) %>% unlist()
+
     dat = list(dat_orig)
+    arg_names <- c('dat', hyperNames)
 
     estArgs <- append(
       dat,
       estHypers
     )
+    names(estArgs) <- arg_names
 
     estimate <- rlang::exec(
       estimator,
@@ -356,8 +370,8 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
     ggplot2::geom_raster(
       aes(fill = value)) +
     ggplot2::scale_fill_gradient(
-      low = "black",
-      high = "white",
+      low = "white",
+      high = "black",
       limits = c(0,1))
 
   return(plot)
@@ -477,13 +491,27 @@ cvMultiMelt <- function(dat,
               )
             })
 
+          hyperNames <- lapply(
+            hyper_list,
+            function(s) {
+              hyper <- stringr::str_split(
+                s, "= "
+              ) %>% unlist()
+
+              return(
+                stringr::str_squish(hyper[1])
+              )
+            }) %>% unlist()
+
           # Run The Associated Estimator
           dat = list(dat_orig)
+          arg_names <- c('dat', hyperNames)
 
           estArgs <- append(
             dat,
             estHypers
             )
+          names(estArgs) <- arg_names
 
           estimate <- rlang::exec(
             est,
@@ -573,13 +601,27 @@ cvMultiMelt <- function(dat,
             )
           })
 
+        hyperNames <- lapply(
+          hyper_list,
+          function(s) {
+            hyper <- stringr::str_split(
+              s, "= "
+            ) %>% unlist()
+
+            return(
+              stringr::str_squish(hyper[1])
+            )
+          }) %>% unlist()
+
         # Run The Associated Estimator
         dat = list(dat_orig)
+        arg_names <- c('dat', hyperNames)
 
         estArgs <- append(
           dat,
           estHypers
         )
+        names(estArgs) <- arg_names
 
         estimate <- rlang::exec(
           estimator,
@@ -656,13 +698,27 @@ cvMultiMelt <- function(dat,
                   )
                 })
 
+              hyperNames <- lapply(
+                hyper_list,
+                function(s) {
+                  hyper <- stringr::str_split(
+                    s, "= "
+                  ) %>% unlist()
+
+                  return(
+                    stringr::str_squish(hyper[1])
+                  )
+                }) %>% unlist()
+
               # Run The Associated Estimator
               dat = list(dat_orig)
+              arg_names <- c('dat', hyperNames)
 
               estArgs <- append(
                 dat,
                 estHypers
               )
+              names(estArgs) <- arg_names
 
               estimate <- rlang::exec(
                 est,
