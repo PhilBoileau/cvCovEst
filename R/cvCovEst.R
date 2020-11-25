@@ -58,6 +58,9 @@
 #'     \item \code{cv_df} - A \code{\link[tibble]{tibble}} providing
 #'       each estimators' loss over the various folds of the cross-validatied
 #'       procedure.
+#'     \item \code{args} - A named \code{list} containing arguments passed to
+#'       \code{cvCovEst}.
+#'
 #'   }
 #'   If the true covariance matrix is input through \code{true_cov_mat}, then
 #'   three additional elements are returned:
@@ -106,6 +109,18 @@ cvCovEst <- function(
     rlang::quo_get_expr(cv_loss), cv_scheme,
     mc_split, v_folds,
     center, scale, parallel
+  )
+
+  # create arguments list
+  args <- list(
+    cv_loss = cv_loss,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel,
+    true_cov_mat = true_cov_mat
   )
 
   # center and scale the data, if desired
@@ -194,7 +209,8 @@ cvCovEst <- function(
         cv_results[1, ]$hyperparameters
       ),
       risk_df = cv_results,
-      cv_df = fold_results_concat
+      cv_df = fold_results_concat,
+      args = args
     )
   } else {
 
@@ -254,20 +270,22 @@ cvCovEst <- function(
 
     # prep output and return
     out <- list(
-      estimate = estimate,
-      estimator = paste0(
-        cv_results[1, ]$estimator, ", ",
-        cv_results[1, ]$hyperparameters
-      ),
-      risk_df = cv_results,
-      cv_df = fold_results_concat,
-      cv_cv_riskdiff = cvCovEst_true_cv_risk - min_full_risk,
-      oracle_cv_riskdiff = oracle_true_cv_risk - min_full_risk,
-      cv_oracle_riskdiff_ratio = cv_oracle_riskdiff_ratio,
-      full_oracle_riskdiff_ratio = full_oracle_riskdiff_ratio
+        estimate = estimate,
+        estimator = paste0(
+          cv_results[1, ]$estimator, ", ",
+          cv_results[1, ]$hyperparameters
+          ),
+        risk_df = cv_results,
+        cv_df = fold_results_concat,
+        args = args,
+        cv_cv_riskdiff = cvCovEst_true_cv_risk - min_full_risk,
+        oracle_cv_riskdiff = oracle_true_cv_risk - min_full_risk,
+        cv_oracle_riskdiff_ratio = cv_oracle_riskdiff_ratio,
+        full_oracle_riskdiff_ratio = full_oracle_riskdiff_ratio
     )
   }
 
+  class(out) <- "cvCovEst"
   return(out)
 }
 

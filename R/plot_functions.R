@@ -1,6 +1,21 @@
 ################################################################################
 # Plotting Functions for cvCovEst
 
+################################################################################
+#' Check for cvCovEst Class
+#'
+#' @description \code{is.cvCovEst} provides a generic method for checking if
+#' input is of class \code{cvCovEst}.
+#'
+#' @param x The specific object to test.
+#'
+#' @return A \code{logical} indicating \code{TRUE} if \code{x} inherits from
+#' class \code{cvCovEst}.
+#'
+#' @keywords external
+is.cvCovEst <- function(x) {
+  inherits(x, "cvCovEst")
+}
 
 ################################################################################
 #' Summary Statistics of Empirical Risk by Estimator Class
@@ -182,11 +197,10 @@ hyperRisk <- function(dat) {
 ################################################################################
 #' Summary Function for cvCovEst
 #'
-#' @description The \code{cvSummary} provides summary statistics regarding the
-#' performance of \code{cvCovEst} and can be used for diagnostic plotting.
+#' @description The \code{summary} method provides summary statistics regarding
+#' the performance of \code{cvCovEst} and can be used for diagnostic plotting.
 #'
-#' @param dat A named \code{list}.  Specifically, this is the standard output of
-#' \code{cvCovEst}.
+#' @param dat A named \code{list} of class \code{"cvCovEst"}.
 #'
 #' @param summary A character vector specifying which summaries to output.  The
 #' default is \code{'all'}.
@@ -197,7 +211,12 @@ hyperRisk <- function(dat) {
 #' @importFrom rlang exec
 #'
 #' @keywords external
-cvSummary <- function(dat, summary = 'all') {
+summary.cvCovEst <- function(dat, summary = 'all') {
+
+  assertthat::assert_that(
+    is.cvCovEst(dat) == TRUE,
+    msg = "Function only applicable to objects of class 'cvCovEst.'"
+  )
 
   risk_dat <- dat$risk_df
 
@@ -341,7 +360,7 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
     "adaptiveLassoEst"
   )
 
-  best_vs_worst <- cvSummary(
+  best_vs_worst <- summary.cvCovEst(
     dat,
     summary = c(
       'bestInClass',
@@ -472,7 +491,7 @@ cvMultiMelt <- function(dat,
                         estimator,
                         stat = 'min',
                         dat_orig) {
-  # Check for class cvCovEst
+
 
   stat_choices <- c(
     "min",
@@ -525,7 +544,7 @@ cvMultiMelt <- function(dat,
   )
 
   # Call cvSummary
-  cv_sum <- cvSummary(dat)
+  cv_sum <- summary.cvCovEst(dat)
 
   # Single Stat Option
   if (single_stat){
