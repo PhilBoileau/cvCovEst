@@ -213,22 +213,36 @@ hyperRisk <- function(dat) {
 #' @keywords external
 summary.cvCovEst <- function(dat, summary = 'all') {
 
-  assertthat::assert_that(
-    is.cvCovEst(dat) == TRUE,
-    msg = "Function only applicable to objects of class 'cvCovEst.'"
-  )
-
-  risk_dat <- dat$risk_df
+  cv_names <- c(
+    "estimate",
+    "estimator",
+    "risk_df",
+    "cv_df",
+    "args")
 
   summary_functions <- c(
+    'all',
     "empRiskByClass",
     "bestInClass",
     "worstInClass",
     "hyperRisk"
   )
 
+  if (is.cvCovEst(dat)) {
+    assertthat::assert_that(
+      all(cv_names %in% names(dat)) == TRUE,
+      msg = "cvCovEst object is missing data."
+      )
+    assertthat::assert_that(
+      all(summary %in% summary_functions) == TRUE,
+      msg = "Must provide a valid summary function."
+    )
+  }
+
+  risk_dat <- dat$risk_df
+
   if ('all' %in% summary) {
-    sums_to_exec <- summary_functions
+    sums_to_exec <- summary_functions[-1]
   }
   else{
     which_sum <- which(
@@ -529,18 +543,13 @@ cvMultiMelt <- function(dat,
     )
   )
 
-  # Only cvCovEst Estimators
+  # Only estimators called to cvCovEst can be used
+  cv_estimators <- unique(dat$risk_df$estimator)
   assertthat::assert_that(
     all(
-      estimators %in% c(
-        "linearShrinkEst", "linearShrinkLWEst",
-        "thresholdingEst", "sampleCovEst", "bandingEst",
-        "taperingEst", "nlShrinkLWEst",
-        "denseLinearShrinkEst", "scadEst", "poetEst",
-        "adaptiveLassoEst"
-      ) == TRUE
+      estimator %in% cv_estimators == TRUE
     ),
-    msg = "Only estimators implemented in the cvCovEst package can be used."
+    msg = "Only estimators passed to cvCovEst can be plotted."
   )
 
   # Call cvSummary
