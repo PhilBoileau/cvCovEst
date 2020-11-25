@@ -241,7 +241,66 @@ cvSummary <- function(dat, summary = 'all') {
   names(out) <- sums_to_exec
   return(out)
 
-  }
+}
+
+################################################################################
+#' Hyperparameter Retrieval Function
+#'
+#' @description The \code{getHypers} retrieves the names and values of all
+#' hyperparameters associated with an estimator passed to \code{cvCovEst}.
+#'
+#' @param dat A \code{data.frame} of estimators and their hyperparameter values.
+#' Specifically, this is one of the outputs of \code{cvSummary}.
+#'
+#' @param summ_stat A character vector specifying the summary statistic of
+#' interest.
+#'
+#' @return A named \code{list} containing the names of all hyperparameters and
+#' their associated values.
+#'
+#' @importFrom rlang exec
+#' @importFrom stringr str_split
+#'
+#' @keywords internal
+getHypers <- function(dat, summ_stat) {
+
+  hyperList <- as.list(
+    stringr::str_split(
+      dat[summ_stat, 1], ", "
+    ) %>% unlist()
+  )
+
+  hyperValues <- lapply(
+    hyperList,
+    function(s) {
+      hyper <- stringr::str_split(
+        s, "= "
+      ) %>% unlist()
+
+      return(
+        as.numeric(hyper[2])
+      )
+    })
+
+  hyperNames <- lapply(
+    hyperList,
+    function(s) {
+      hyper <- stringr::str_split(
+        s, "= "
+      ) %>% unlist()
+
+      return(
+        stringr::str_squish(hyper[1])
+      )
+    }) %>% unlist()
+
+  hypers <- list(
+    hyperNames = hyperNames,
+    hyperValues = hyperValues
+  )
+
+  return(hypers)
+}
 
 ################################################################################
 #' Single Heat Map Plot
@@ -414,7 +473,6 @@ cvMultiMelt <- function(dat,
                         stat = 'min',
                         dat_orig) {
   # Check for class cvCovEst
-  # Check for correct estimator names
 
   stat_choices <- c(
     "min",
@@ -443,7 +501,7 @@ cvMultiMelt <- function(dat,
     FALSE
   )
 
-  # Perform checks
+  # Only Certain Summary Stats Supported
   assertthat::assert_that(
     all(stat %in% stat_choices) == TRUE,
     msg = paste(
@@ -452,12 +510,19 @@ cvMultiMelt <- function(dat,
     )
   )
 
-  if (single_stat){
-    assertthat::assert_that(
-      length(estimator) > 1,
-      msg = "Use cvSingleMelt for single heat map plots."
-    )
-  }
+  # Only cvCovEst Estimators
+  assertthat::assert_that(
+    all(
+      estimators %in% c(
+        "linearShrinkEst", "linearShrinkLWEst",
+        "thresholdingEst", "sampleCovEst", "bandingEst",
+        "taperingEst", "nlShrinkLWEst",
+        "denseLinearShrinkEst", "scadEst", "poetEst",
+        "adaptiveLassoEst"
+      ) == TRUE
+    ),
+    msg = "Only estimators implemented in the cvCovEst package can be used."
+  )
 
   # Call cvSummary
   cv_sum <- cvSummary(dat)
@@ -470,46 +535,21 @@ cvMultiMelt <- function(dat,
       function(est) {
         # For Estimators With Hyper-parameters
         if (est %in% has_hypers){
-          est_subset <- cv_sum$hyperRisk[[est]]
+          estimatorStats <- cv_sum$hyperRisk[[est]]
 
           # Get The Associated Hyper-parameters
-          hyper_list <- as.list(
-            stringr::str_split(
-              est_subset[stat, 1], ", "
-              ) %>% unlist()
-            )
-
-          estHypers <- lapply(
-            hyper_list,
-            function(s) {
-              hyper <- stringr::str_split(
-                s, "= "
-              ) %>% unlist()
-
-              return(
-                as.numeric(hyper[2])
-              )
-            })
-
-          hyperNames <- lapply(
-            hyper_list,
-            function(s) {
-              hyper <- stringr::str_split(
-                s, "= "
-              ) %>% unlist()
-
-              return(
-                stringr::str_squish(hyper[1])
-              )
-            }) %>% unlist()
+          estHypers <- getHypers(
+            dat = estimatorStats,
+            summ_stat = stat
+          )
 
           # Run The Associated Estimator
           dat = list(dat_orig)
-          arg_names <- c('dat', hyperNames)
+          arg_names <- c('dat', estHypers$hyperNames)
 
           estArgs <- append(
             dat,
-            estHypers
+            estHypers$hyperValues
             )
           names(estArgs) <- arg_names
 
@@ -541,7 +581,6 @@ cvMultiMelt <- function(dat,
         meltEst$estimator <- est_name
 
         return(meltEst)
-
         })
 
     # Combine and Re-factor
@@ -581,70 +620,43 @@ cvMultiMelt <- function(dat,
       stat_melts <- lapply(
         stat,
         function(stat_est) {
-
         # Get The Associated Hyper-parameters
-        hyper_list <- as.list(
-          stringr::str_split(
-            estimatorStats[stat_est, 1], ", "
-          ) %>% unlist()
-        )
+          estHypers <- getHypers(
+            dat = estimatorStats,
+            summ_stat = stat_est
+          )
 
-        estHypers <- lapply(
-          hyper_list,
-          function(s) {
-            hyper <- stringr::str_split(
-              s, "= "
-            ) %>% unlist()
+          # Run The Associated Estimator
+          dat = list(dat_orig)
+          arg_names <- c('dat', estHypers$hyperNames)
 
-            return(
-              as.numeric(hyper[2])
-            )
+          estArgs <- append(
+            dat,
+            estHypers$hyperValues
+          )
+          names(estArgs) <- arg_names
+
+          estimate <- rlang::exec(
+            estimator,
+            !!!estArgs
+          )
+
+          # Create Melted Data Frame
+          meltEst <- abs(
+            reshape2::melt(estimate)
+          )
+
+          # Label by Stat
+          stat_name <- rep(
+            stat_est,
+            nrow(meltEst)
+          )
+
+          meltEst$Var1 <- rev(meltEst$Var1)
+          meltEst$summary_stat <- stat_name
+
+          return(meltEst)
           })
-
-        hyperNames <- lapply(
-          hyper_list,
-          function(s) {
-            hyper <- stringr::str_split(
-              s, "= "
-            ) %>% unlist()
-
-            return(
-              stringr::str_squish(hyper[1])
-            )
-          }) %>% unlist()
-
-        # Run The Associated Estimator
-        dat = list(dat_orig)
-        arg_names <- c('dat', hyperNames)
-
-        estArgs <- append(
-          dat,
-          estHypers
-        )
-        names(estArgs) <- arg_names
-
-        estimate <- rlang::exec(
-          estimator,
-          !!!estArgs
-        )
-
-        # Create Melted Data Frame
-        meltEst <- abs(
-          reshape2::melt(estimate)
-        )
-
-        # Label by Stat
-        stat_name <- rep(
-          stat_est,
-          nrow(meltEst)
-        )
-
-        meltEst$Var1 <- rev(meltEst$Var1)
-        meltEst$summary_stat <- stat_name
-
-        return(meltEst)
-
-      })
 
       # Combine and Re-factor
       stat_melts <- dplyr::bind_rows(stat_melts)
@@ -680,43 +692,18 @@ cvMultiMelt <- function(dat,
             function(stat_est) {
 
               # Get The Associated Hyper-parameters
-              hyper_list <- as.list(
-                stringr::str_split(
-                  estimatorStats[stat_est, 1], ", "
-                ) %>% unlist()
+              estHypers <- getHypers(
+                dat = estimatorStats,
+                summ_stat = stat_est
               )
-
-              estHypers <- lapply(
-                hyper_list,
-                function(s) {
-                  hyper <- stringr::str_split(
-                    s, "= "
-                  ) %>% unlist()
-
-                  return(
-                    as.numeric(hyper[2])
-                  )
-                })
-
-              hyperNames <- lapply(
-                hyper_list,
-                function(s) {
-                  hyper <- stringr::str_split(
-                    s, "= "
-                  ) %>% unlist()
-
-                  return(
-                    stringr::str_squish(hyper[1])
-                  )
-                }) %>% unlist()
 
               # Run The Associated Estimator
               dat = list(dat_orig)
-              arg_names <- c('dat', hyperNames)
+              arg_names <- c('dat', estHypers$hyperNames)
 
               estArgs <- append(
                 dat,
-                estHypers
+                estHypers$hyperValues
               )
               names(estArgs) <- arg_names
 
@@ -783,6 +770,11 @@ cvMultiMelt <- function(dat,
     }
   }
 }
+
+
+
+
+
 
 
 
