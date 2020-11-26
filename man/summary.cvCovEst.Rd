@@ -4,13 +4,15 @@
 \alias{summary.cvCovEst}
 \title{Summary Function for cvCovEst}
 \usage{
-\method{summary}{cvCovEst}(dat, summary = "all")
+\method{summary}{cvCovEst}(
+  dat,
+  summ_fun = c("empRiskByClass", "bestInClass", "worstInClass", "hyperRisk")
+)
 }
 \arguments{
 \item{dat}{A named \code{list} of class \code{"cvCovEst"}.}
 
-\item{summary}{A character vector specifying which summaries to output.  The
-default is \code{'all'}.}
+\item{summ_fun}{A character vector specifying which summaries to output.}
 }
 \value{
 A named \code{list} where each element corresponds to the output of

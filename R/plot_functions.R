@@ -202,8 +202,7 @@ hyperRisk <- function(dat) {
 #'
 #' @param dat A named \code{list} of class \code{"cvCovEst"}.
 #'
-#' @param summary A character vector specifying which summaries to output.  The
-#' default is \code{'all'}.
+#' @param summ_fun A character vector specifying which summaries to output.
 #'
 #' @return A named \code{list} where each element corresponds to the output of
 #' of the requested summaries.
@@ -211,7 +210,12 @@ hyperRisk <- function(dat) {
 #' @importFrom rlang exec
 #'
 #' @keywords external
-summary.cvCovEst <- function(dat, summary = 'all') {
+summary.cvCovEst <- function(
+  dat,
+  summ_fun = c("empRiskByClass",
+               "bestInClass",
+               "worstInClass",
+               "hyperRisk")) {
 
   cv_names <- c(
     "estimate",
@@ -221,36 +225,27 @@ summary.cvCovEst <- function(dat, summary = 'all') {
     "args")
 
   summary_functions <- c(
-    'all',
     "empRiskByClass",
     "bestInClass",
     "worstInClass",
     "hyperRisk"
   )
 
-  if (is.cvCovEst(dat)) {
+  if (is.cvCovEst(dat) == TRUE) {
     assertthat::assert_that(
       all(cv_names %in% names(dat)) == TRUE,
       msg = "cvCovEst object is missing data."
       )
     assertthat::assert_that(
-      all(summary %in% summary_functions) == TRUE,
+      all(summ_fun %in% summary_functions) == TRUE,
       msg = "Must provide a valid summary function."
     )
   }
 
   risk_dat <- dat$risk_df
 
-  if ('all' %in% summary) {
-    sums_to_exec <- summary_functions[-1]
-  }
-  else{
-    which_sum <- which(
-      summary_functions %in% summary
-    )
-
-    sums_to_exec <- summary_functions[which_sum]
-  }
+  sums_to_exec <- summary_functions[which(
+    summary_functions %in% summ_fun)]
 
   out = lapply(
     sums_to_exec,
@@ -644,11 +639,10 @@ cvMultiMelt <- function(dat,
       )
 
       estimatorStats <- cv_sum$hyperRisk[[estimator]]
-
       stat_melts <- lapply(
         stat,
         function(stat_est) {
-        # Get The Associated Hyper-parameters
+          # Get The Associated Hyper-parameters
           estHypers <- getHypers(
             dat = estimatorStats,
             summ_stat = stat_est
@@ -674,10 +668,12 @@ cvMultiMelt <- function(dat,
             reshape2::melt(estimate)
           )
 
+          n <- nrow(meltEst)
+
           # Label by Stat
           stat_name <- rep(
             stat_est,
-            nrow(meltEst)
+            n
           )
 
           meltEst$Var1 <- rev(meltEst$Var1)
@@ -702,9 +698,36 @@ cvMultiMelt <- function(dat,
           facets = vars(summary_stat),
           nrow = 1) +
         ggplot2::scale_fill_gradient(
+          name = 'Absolute Value',
           low = "white",
-          high = "black",
-          limits = c(0,1))
+          high = "darkred",
+          na.value = 'black',
+          limits = c(0,1),
+          labels = c('0', '0.25', '0.5', '0.75', '1')) +
+        theme(legend.position = 'bottom',
+              legend.key.width = unit(10, 'mm'),
+              legend.title = element_text(
+                size = 10,
+                face = 'bold',
+                vjust = 0.75
+              ),
+              legend.text = element_text(
+                size = 8,
+                face = 'bold'),
+              strip.background.x = element_rect(
+                fill = alpha('darkred', alpha = 0.5),
+                color = 'darkred',
+                size = 0.5
+              ),
+              strip.text.x = element_text(
+                size = 10,
+                face = 'bold'),
+              panel.background = element_blank(),
+              axis.ticks = element_blank(),
+              axis.text = element_blank(),
+              axis.title = element_blank())
+
+
 
       return(plot)
     }
