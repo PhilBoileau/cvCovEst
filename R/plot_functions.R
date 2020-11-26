@@ -231,7 +231,7 @@ summary.cvCovEst <- function(
     "hyperRisk"
   )
 
-  if (is.cvCovEst(dat) == TRUE) {
+  if (is.cvCovEst(dat)) {
     assertthat::assert_that(
       all(cv_names %in% names(dat)) == TRUE,
       msg = "cvCovEst object is missing data."
