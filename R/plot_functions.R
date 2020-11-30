@@ -529,6 +529,13 @@ cvMultiMelt <- function(dat,
     FALSE
   )
 
+  # Center and Scale Original Data to Match Call to cvCovEst
+  dat_orig <- cvCovEst::safeColScale(
+    dat_orig,
+    center = dat$args$center,
+    scale = dat$args$scale
+    )
+
   # Only Certain Summary Stats Supported
   assertthat::assert_that(
     all(stat %in% stat_choices) == TRUE,
@@ -817,11 +824,255 @@ cvMultiMelt <- function(dat,
           high = "black",
           limits = c(0,1))
 
+
       return(plot)
     }
   }
 }
 
+################################################################################
+#' Eigenvalue Plot
+#'
+#' @description \code{cvEigenPlot} plots the eigenvalues of one or more
+#' estimators produced by \code{cvCovEst}.
+#'
+#' @param dat A named \code{list}.  Specifically, this is the standard output of
+#' \code{cvCovEst}.
+#'
+#' @param estimator A character vector specifying one or more classes of
+#' estimators to compare.
+#'
+#' @param stat A string specifying a single summary statistic to use when
+#'  comparing two or more estimators.  Default is \code{'min'} for minimum
+#'  empirical risk.  Several stats can be used when only plotting one class of
+#'  estimator.
+#'
+#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{cvCovEst}.
+#'
+#' @return A plot of the leading eigenvalues for each estimator specified.
+#'
+#' @import ggplot2
+#'
+#' @keywords external
+cvEigenPlot <- function(dat, estimator, stat = 'min', dat_orig) {
+
+  stat_choices <- c(
+    "min",
+    "Q1",
+    "Q2",
+    "Q3",
+    "max"
+  )
+
+  has_hypers <- c(
+    "linearShrinkEst", "thresholdingEst",
+    "bandingEst", "taperingEst",
+    "scadEst", "poetEst",
+    "adaptiveLassoEst"
+  )
+
+  single_stat <- ifelse(
+    length(stat) == 1,
+    TRUE,
+    FALSE
+  )
+
+  single_est <- ifelse(
+    length(estimator) == 1,
+    TRUE,
+    FALSE
+  )
+
+  # Center and Scale Original Data to Match Call to cvCovEst
+  dat_orig <- cvCovEst::safeColScale(
+    dat_orig,
+    center = dat$args$center,
+    scale = dat$args$scale
+  )
+
+  # Only Certain Summary Stats Supported
+  assertthat::assert_that(
+    all(stat %in% stat_choices) == TRUE,
+    msg = paste(
+      "Only the following summary statistics are currently supported: ",
+      stat_choices
+    )
+  )
+
+  # Only estimators called to cvCovEst can be used
+  cv_estimators <- unique(dat$risk_df$estimator)
+  assertthat::assert_that(
+    all(
+      estimator %in% cv_estimators == TRUE
+    ),
+    msg = "Only estimators passed to cvCovEst can be plotted."
+  )
+
+  # Call cvSummary
+  cv_sum <- summary.cvCovEst(dat)
+
+  # Single Estimator Option
+  if (single_est){
+    if (estimator %in% has_hypers) {
+      estimatorStats <- cv_sum$hyperRisk[[estimator]]
+
+      stat_eigs <- lapply(
+        stat,
+        function(stat_est) {
+          # Get The Associated Hyper-parameters
+          estHypers <- getHypers(
+            dat = estimatorStats,
+            summ_stat = stat_est
+          )
+
+          # Run The Associated Estimator
+          dat = list(dat_orig)
+          arg_names <- c('dat', estHypers$hyperNames)
+
+          estArgs <- append(
+            dat,
+            estHypers$hyperValues
+          )
+          names(estArgs) <- arg_names
+
+          estimate <- rlang::exec(
+            estimator,
+            !!!estArgs
+          )
+
+          # Get the eigenvalues
+          n <- nrow(estimate)
+          k <- floor(0.95*n)
+
+          estEigs <- data.frame(
+            index = (n - k + 1):n,
+            eigenvalues = RSpectra::eigs_sym(
+              estimate,
+              k = k,
+              which = "SA")$values,
+            stat = rep(
+              stat_est,
+              k
+            )
+          )
+
+          return(estEigs)
+        })
+
+      stat_eigs <- dplyr::bind_rows(
+        stat_eigs
+        )
+    }
+    # If No Hyperparameters
+    else{
+      if (!single_est) {
+        message(
+          "Estimator has no hyperparameters.  All stats yield same estimate."
+        )
+      }
+      estimate <- rlang::exec(
+        estimator,
+        dat_orig
+      )
+
+      n <- nrow(estimate)
+      k <- floor(0.95*n)
+
+      stat_eigs <- data.frame(
+        index = (n - k + 1):n,
+        eigenvalues = RSpectra::eigs_sym(
+          estimate,
+          k = k,
+          which = "SA")$values,
+        stat = rep(
+          'min',
+          k
+        )
+      )
+    }
+
+    plot <- ggplot2::ggplot(
+      stat_eigs,
+      aes(x = index,
+          y = eigenvalues,
+          color = stat)) +
+      geom_path(size = 0.5)
+    return(plot)
+  }
+  # Multiple Estimators
+  else{
+    assertthat::assert_that(
+      single_stat == TRUE,
+      msg = "Only one stat can be used when comparing multiple estimators."
+    )
+
+    est_eigs <- lapply(
+      estimator,
+      function(est) {
+        if (est %in% has_hypers){
+          estimatorStats <- cv_sum$hyperRisk[[est]]
+
+          estHypers <- getHypers(
+            dat = estimatorStats,
+            summ_stat = stat
+          )
+
+          # Run The Associated Estimator
+          dat = list(dat_orig)
+          arg_names <- c('dat', estHypers$hyperNames)
+
+          estArgs <- append(
+            dat,
+            estHypers$hyperValues
+          )
+          names(estArgs) <- arg_names
+
+          estimate <- rlang::exec(
+            est,
+            !!!estArgs
+          )
+        }
+        else{
+          estimate <- rlang::exec(
+            est,
+            dat_orig
+          )
+        }
+
+        n <- nrow(estimate)
+        k <- floor(0.95*n)
+
+        eigs_df <- data.frame(
+          index = (n - k + 1):n,
+          eigenvalues = RSpectra::eigs_sym(
+            estimate,
+            k = k,
+            which = "SA")$values,
+          stat = rep(
+            stat,
+            k
+          ),
+          estimator = rep(
+            est,
+            k
+          )
+        )
+
+        return(eigs_df)
+        })
+
+    est_eigs <- dplyr::bind_rows(est_eigs)
+
+    plot <- ggplot2::ggplot(
+      est_eigs,
+      aes(x = index,
+          y = eigenvalues,
+          color = estimator)) +
+      geom_path(size = 0.5)
+    return(plot)
+  }
+}
 
 
 
