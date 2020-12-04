@@ -25,12 +25,13 @@
 #'  cross-validated Frobenius loss in addition to the cross-validated Frobenius
 #'  loss estimate for the given \code{fold}.
 #'
-#' @importFrom dplyr bind_rows
+#' @importFrom dplyr bind_rows slice
 #' @importFrom origami training validation fold_index
 #' @importFrom Rdpack reprompt
 #' @importFrom tibble tibble
 #' @importFrom rlang eval_tidy !!! exec quo_get_expr
 #' @importFrom matrixStats sum2
+#' @importFrom purrr flatten
 #'
 #' @return A \code{\link[tibble]{tibble}} providing information on estimators,
 #'  their hyperparameters (if any), and their scaled Frobenius loss evaluated
@@ -72,7 +73,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
   est_out <- lapply(num_estimators, function(x) {
 
     # extract estimator function and name
-    est_fun <- eval_tidy(estimator_funs[[x]])
+    est_fun <- rlang::eval_tidy(estimator_funs[[x]])
     est_name <- as.character(estimator_funs[[x]])
 
     # check if a hyperparameter is needed
@@ -122,7 +123,8 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
     } else {
 
       # Compute the grid of hyperparameters
-      hparam_grid <- expand.grid(estimator_params[[est_name]])
+      hparam_grid <- expand.grid(estimator_params[[est_name]],
+                                 stringsAsFactors = FALSE)
 
       # loop through the estimator hyperparameters
       param_out <- lapply(
@@ -137,7 +139,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
           est_mat <- rlang::exec(
             est_fun,
             train_data,
-            !!!as.list(unlist(hparam_grid[idx, ]))
+            !!!purrr::flatten(dplyr::slice(hparam_grid, idx))
           )
 
           # get the hadamard product and sum
@@ -157,14 +159,15 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
             )
           } else {
 
-            # fit the covariance matrix estimator on the full dataset
-            # NOTE: this is located here out of convenience... not computationally
+            # fit the covariance matrix estimator on the full dataset NOTE:
+            # this is located here out of convenience... not computationally
             # efficient, but not all that important since only for simulations,
             # and this will not be released in the main package.
+
             est_mat_full <- rlang::exec(
               est_fun,
               dat,
-              !!!as.list(unlist(hparam_grid[idx, ]))
+              !!!purrr::flatten(dplyr::slice(hparam_grid, idx))
             )
 
             out <- tibble::tibble(
@@ -258,11 +261,12 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
 #'  for a given estimator, then the estimator need not be listed.
 #' @param true_cov_mat A \code{NULL} kept here for compatibility reasons.
 #'
-#' @importFrom dplyr bind_rows
+#' @importFrom dplyr bind_rows slice
 #' @importFrom origami training validation fold_index
 #' @importFrom tibble tibble
 #' @importFrom rlang eval_tidy !!! exec quo_get_expr
 #' @importFrom matrixStats sum2
+#' @importFrom purrr flatten
 #'
 #' @return A \code{\link[tibble]{tibble}} providing information on estimators,
 #'  their hyperparameters (if any), and their scaled Matrix Frobenius loss
@@ -314,7 +318,8 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
     } else {
 
       # Compute the grid of hyperparameters
-      hparam_grid <- expand.grid(estimator_params[[est_name]])
+      hparam_grid <- expand.grid(estimator_params[[est_name]],
+                                 stringsAsFactors = FALSE)
 
       # loop through the estimator hyperparameters
       param_out <- lapply(
@@ -329,7 +334,7 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
           est_mat <- rlang::exec(
             est_fun,
             train_data,
-            !!!as.list(unlist(hparam_grid[idx, ]))
+            !!!purrr::flatten(dplyr::slice(hparam_grid, idx))
           )
 
           # return the results from the fold
