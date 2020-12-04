@@ -4,7 +4,7 @@
 \alias{robustPoetEst}
 \title{Robust POET Estimator for Elliptical Distributions}
 \usage{
-robustPoetEst(dat, k, lambda)
+robustPoetEst(dat, k, lambda, varEst)
 }
 \arguments{
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
@@ -18,12 +18,11 @@ practice, it is therefore preferable to use larger values.}
 thresholding applied to each element of sample covariance matrix's
 orthogonal complement.}
 
-\item{var_estimation}{A \code{character} string dictating which
+\item{varEst}{An \code{integer} dictating which
 variance estimator to use. This must be one of the strings
-"\code{mad}", "\code{sample}", or "\code{huber}".  "\code{mad}" estimates
-variances via median absolute deviation; "\code{sample}" uses sample
-variances; "\code{huber}" uses M-estimator for variance under Huber loss.
-Defaults to "\code{sample}".}
+"\code{0L}", "\code{1L}", or "\code{2L}". "\code{sample}" uses sample
+variances; "\code{mad}" estimates variances via median absolute deviation;
+"\code{huber}" uses M-estimator for variance under Huber loss.}
 }
 \value{
 A \code{matrix} corresponding to the estimate of the covariance
@@ -34,16 +33,16 @@ matrix.
 Orthogonal complEment Thresholding (POET) estimator, a nonparametric,
 unobserved-factor-based estimator of the covariance matrix when the
 underlying distribution is ellipitcal \insertCite{fan2018}{cvCovEst}. The
-estimator is defined as the sum of the sample covariance matrix'
+estimator is defined as the sum of the sample covariance matrix's
 rank-\code{k} approximation and its thresholded principal orthogonal
 complement. The rank-\code{k} approximation is constructed from the sample
 covariance matrix, its leading eigenvalues, and leading eigenvectors.
 The sample covariance matrix and leading eigenvalues are initially
-estimated via M-estimation and the marginal Kendall's tau estimator.
-The leading eigenvectors are estimated using spatial Kendall's tau
-estimator. The hard thresholding function is used to regularize the
+estimated via an M-estimation procedure and the marginal Kendall's tau
+estimator. The leading eigenvectors are estimated using spatial Kendall's
+tau estimator. The hard thresholding function is used to regularize the
 idiosyncratic errors' estimated covariance matrix, though other
-regularization schemes could beused instead.
+regularization schemes could be used.
 }
 \references{
 \insertAllCited{}
