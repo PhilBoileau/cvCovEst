@@ -558,11 +558,12 @@ poetEst <- function(dat, k, lambda) {
 #' @param lambda A non-negative \code{numeric} defining the amount of
 #'   thresholding applied to each element of sample covariance matrix's
 #'   orthogonal complement.
-#' @param varEst An \code{integer} dictating which
+#' @param var_est An \code{character} dictating which
 #'   variance estimator to use. This must be one of the strings
-#'   "\code{0L}", "\code{1L}", or "\code{2L}". "\code{sample}" uses sample
-#'   variances; "\code{mad}" estimates variances via median absolute deviation;
-#'   "\code{huber}" uses M-estimator for variance under Huber loss.
+#'   \code{"sample"}, \code{"mad"}, or \code{"huber"}. \code{"sample"} uses
+#'   sample variances; \code{"mad"} estimates variances via median absolute
+#'   deviation; \code{"huber"} uses an M-estimator for variance under the
+#'   Huber loss.
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'   matrix.
@@ -575,17 +576,17 @@ poetEst <- function(dat, k, lambda) {
 #'
 #' @references
 #'   \insertAllCited{}
-robustPoetEst <- function(dat, k, lambda, varEst) {
+robustPoetEst <- function(dat, k, lambda, var_est) {
 
   # get the dimensions of the data
   n <- nrow(dat)
 
   # use M-estimator and Huber loss to robustly estimate variance
-  if (varEst == 0) {
+  if (var_est == "sample") {
     D_est <- diag(apply(dat, 2, stats::sd))
-  } else if (varEst  == 1) {
+  } else if (var_est  == "mad") {
     D_est <- diag(apply(dat, 2, stats::mad))
-  } else if (varEst == 2) {
+  } else if (var_est == "huber") {
     # This method is proposed by Fan et. al. but most computationally expensive
     alpha <- sqrt(1 / (8 * max(apply(dat, 2, "var"))))
     huber <- function(data) {
@@ -606,8 +607,8 @@ robustPoetEst <- function(dat, k, lambda, varEst) {
       )
       results@estimates
     }
-    var_est <- pmax(apply(dat^2, 2, mest) - apply(dat, 2, mest)^2, 1e-6)
-    D_est <- diag(sqrt(var_est))
+    var_estimate <- pmax(apply(dat^2, 2, mest) - apply(dat, 2, mest)^2, 1e-6)
+    D_est <- diag(sqrt(var_estimate))
   }
 
   # Marginal Kendall's tau estimator can be vectorized as the multiplication of

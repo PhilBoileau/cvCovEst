@@ -179,7 +179,7 @@ test_that("Verify Robust POET estimator's ranks", {
   dat <- scale(mtcars, center = TRUE, scale = TRUE)
   k <- ceiling(ncol(dat) / 5)
   robust_poet_estimate <- robustPoetEst(dat, k, lambda = 10,
-                                        varEst = 0L)
+                                        var_est = "sample")
 
   # compare
   library(Matrix)
@@ -194,9 +194,9 @@ test_that("Verify Robust POET estimator's results", {
   est <- matrix(rep(13L, 25), 5, 5)
   est_mad <- matrix(rep((3 * 1.4826) ** 2, 25), 5, 5)
   robust_poet_estimate <- robustPoetEst(Y, 1, lambda = 10,
-                                        varEst = 0L)
+                                        var_est = "sample")
   robust_poet_estimate_mad <- robustPoetEst(Y, 1, lambda = 10,
-                                            varEst = 1L)
+                                            var_est = "mad")
   # compare
   expect_equal(est, robust_poet_estimate)
   expect_equal(est_mad, robust_poet_estimate_mad)
