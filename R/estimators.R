@@ -45,7 +45,7 @@ linearShrinkEst <- function(dat, alpha) {
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
-#' @return A \code{matrix} corresponding to the Ledoit-Wolf linear shrinkgage
+#' @return A \code{matrix} corresponding to the Ledoit-Wolf linear shrinkage
 #'  estimate of the covariance matrix.
 #'
 #' @references
@@ -141,7 +141,7 @@ sampleCovEst <- function(dat) {
 #'
 #' @description \code{bandingEst} estimates the covariance matrix of a data frame
 #'   with ordered variables by forcing off-diagonal entries to be zero for
-#'   indicies that are far removed from one another.  The i, j - entry of the
+#'   indices that are far removed from one another.  The i, j - entry of the
 #'   estimated covariance matrix will be zero if the absolute value of i - j is
 #'   greater than some non-negative constant, \code{k}. This estimator was
 #'   put forth by \insertCite{bickel2008_banding;textual}{cvCovEst}.
@@ -166,7 +166,7 @@ bandingEst <- function(dat, k) {
 
   n <- ncol(sam_cov)
 
-  # loop over different indicies to create an indicator matrix
+  # loop over different indices to create an indicator matrix
   indicator_list <- lapply(1:n, function(i) {
     # only consider the lower triangular matrix entries
     j <- i:n
@@ -199,7 +199,7 @@ bandingEst <- function(dat, k) {
 #' @description \code{taperingEst} estimates the covariance matrix of a
 #'  \code{data.frame}-like object with ordered variables by gradually shrinking
 #'  the bands of the sample covariance matrix towards zero. The estimator is
-#'  defined as the hadamard product of the sample covariance matrix and a
+#'  defined as the Hadamard product of the sample covariance matrix and a
 #'  weight matrix. The amount of shrinkage is dictated by the weight matrix,
 #'  and is controlled by a hyperparameter, \code{k}. This estimator is
 #'  attributed to \insertCite{cai2010;textual}{cvCovEst}.
@@ -233,12 +233,12 @@ taperingEst <- function(dat, k) {
 
   k_h <- k / 2
 
-  # loop over different indicies to create weight vectors
+  # loop over different indices to create weight vectors
   weight_list <- lapply(1:n, function(i) {
     # only consider the lower triangular matrix entries
     j <- i:n
 
-    # calculate the difference in indicies
+    # calculate the difference in indices
     di <- abs(i - j)
 
     # loop over elements in the difference vector and assign weights
@@ -371,7 +371,7 @@ nlShrinkLWEst <- function(dat) {
 
 ###############################################################################
 
-#' Linear Shrinakge Estimator, Dense Target
+#' Linear Shrinkage Estimator, Dense Target
 #'
 #' @description \code{denseLinearShrinkEst} computes the asymptotically optimal
 #'  convex combination of the sample covariance matrix and a dense, target
@@ -435,7 +435,7 @@ denseLinearShrinkEst <- function(dat) {
 #' Smoothly Clipped Absolute Deviation Estimator
 #'
 #' @description The Smoothly Clipped Absolute Deviation (SCAD) covariance matrix
-#'   estimator applies the SCAD threholding function of
+#'   estimator applies the SCAD thresholding function of
 #'   \insertCite{fan2001;textual}{cvCovEst} to each entry of the sample
 #'   covariance matrix. This penalized estimator constitutes a compromise
 #'   between hard and soft thresholding of the sample covariance matrix: it is
@@ -473,7 +473,7 @@ scadEst <- function(dat, lambda) {
 
 #' POET Estimator
 #'
-#' @description \code{poetEst} implements the Principal Orthogonal complEment
+#' @description \code{poetEst} implements the Principal Orthogonal complement
 #'   Thresholding (POET) estimator, a nonparametric, unobserved-factor-based
 #'   estimator of the covariance matrix \insertCite{fan2013}{cvCovEst}. The
 #'   estimator is defined as the sum of the sample covariance matrix'

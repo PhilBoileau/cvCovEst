@@ -1,6 +1,6 @@
 Package: cvCovEst
 Title: Cross-Validated Covariance Matrix Estimation
-Version: 0.1.1
+Version: 0.1.0
 Authors@R: c(
     person("Philippe", "Boileau", email = "philippe_boileau@berkeley.edu",
            role = c("aut", "cre", "cph"),
@@ -59,3 +59,4 @@ VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 RdMacros: Rdpack
+Language: en-US

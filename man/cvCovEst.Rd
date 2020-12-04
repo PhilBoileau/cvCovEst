@@ -78,7 +78,7 @@ estimator and corresponding hyperparameters, if any.
 \item \code{risk_df} - A \code{\link[tibble]{tibble}} providing the
 cross-validated risk estimates of each estimator.
 \item \code{cv_df} - A \code{\link[tibble]{tibble}} providing
-each estimators' loss over the various folds of the cross-validatied
+each estimators' loss over the various folds of the cross-validated
 procedure.
 }
 If the true covariance matrix is input through \code{true_cov_mat}, then
@@ -90,8 +90,11 @@ cvCovEst selection.
 \item \code{oracle_cv_riskdiff} - A \code{numeric}
 corresponding to the conditional cross-validated risk difference of the
 oracle selection.
-\item \code{full_oracle_riskdiff_ratio} - A \code{numeric} corresponding
-to the full data risk difference ratio of the the
+\item \code{cv_oracle_riskdiff_ratio} - A \code{numeric} corresponding
+to the cross-validated risk difference ratio of the
+cvCovEst selection and the cross-validated dataset oracle selection.
+\item \code{full_data_riskdiff_ratio} - A \code{numeric} corresponding
+to the full data risk difference ratio of the
 cvCovEst selection and the full dataset oracle selection.
 }
 }
