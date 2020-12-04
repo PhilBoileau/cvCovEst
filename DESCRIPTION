@@ -40,7 +40,6 @@ Imports:
     future,
     future.apply,
     stats,
-    utils,
     MASS,
     purrr
 Suggests:
