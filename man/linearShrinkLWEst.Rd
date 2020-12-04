@@ -10,7 +10,7 @@ linearShrinkLWEst(dat)
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 }
 \value{
-A \code{matrix} corresponding to the Ledoit-Wolf linear shrinkgage
+A \code{matrix} corresponding to the Ledoit-Wolf linear shrinkage
 estimate of the covariance matrix.
 }
 \description{

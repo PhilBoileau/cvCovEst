@@ -2,7 +2,7 @@
 % Please edit documentation in R/thresholding-functions.R
 \name{symmetricApply}
 \alias{symmetricApply}
-\title{Symmetric Apply Function for Covariance Matricies}
+\title{Symmetric Apply Function for Covariance Matrices}
 \usage{
 symmetricApply(dat, sym_fun, sym_args)
 }

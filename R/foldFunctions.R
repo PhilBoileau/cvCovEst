@@ -115,6 +115,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
           loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
             est_square,
           true_loss = trueFrobeniusLoss(est_mat, true_cov_mat),
+          full_mat_loss = trueFrobeniusLoss(est_mat_full, true_cov_mat),
           fold = origami::fold_index(fold = fold)
         )
       }
@@ -176,6 +177,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
               loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
                 est_square,
               true_loss = trueFrobeniusLoss(est_mat, true_cov_mat),
+              full_mat_loss = trueFrobeniusLoss(est_mat_full, true_cov_mat),
               fold = origami::fold_index(fold = fold)
             )
           }

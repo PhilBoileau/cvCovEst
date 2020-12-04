@@ -61,6 +61,6 @@ test_that("the true covariance matrix can be passed in", {
     true_cov_mat = Sigma
   )[[1]]
   expect_equal(nrow(output), 2)
-  expect_equal(ncol(output), 5)
+  expect_equal(ncol(output), 6)
   expect_true(!is.null(output$true_loss))
 })
