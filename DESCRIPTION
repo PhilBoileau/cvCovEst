@@ -41,7 +41,8 @@ Imports:
     future.apply,
     geex,
     stats,
-    utils
+    utils,
+    purrr
 Suggests:
     testthat,
     knitr,

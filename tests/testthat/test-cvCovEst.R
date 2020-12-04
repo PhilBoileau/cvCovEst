@@ -138,7 +138,7 @@ test_that("cross-validated covariance selector runs silently", {
     estimators = c(robustPoetEst),
     estimator_params = list(
       robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                           var_est = c("sample"))
+                           var_est = "sample")
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE

@@ -2,7 +2,7 @@
 % Please edit documentation in R/cvCovEst.R
 \name{strToNumber}
 \alias{strToNumber}
-\title{Convert String to Numeric or Integer}
+\title{Convert String to Numeric or Integer When Needed}
 \usage{
 strToNumber(x)
 }
@@ -13,6 +13,6 @@ strToNumber(x)
 \code{x} converted to the appropriate type.
 }
 \description{
-Convert String to Numeric or Integer
+Convert String to Numeric or Integer When Needed
 }
 \keyword{internal}
