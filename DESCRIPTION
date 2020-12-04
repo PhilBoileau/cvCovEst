@@ -48,7 +48,6 @@ Suggests:
     knitr,
     rmarkdown,
     covr,
-    MASS,
     spelling
 License: MIT + file LICENSE
 URL: https://github.com/PhilBoileau/cvCovEst

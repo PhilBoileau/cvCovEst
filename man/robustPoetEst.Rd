@@ -4,7 +4,7 @@
 \alias{robustPoetEst}
 \title{Robust POET Estimator for Elliptical Distributions}
 \usage{
-robustPoetEst(dat, k, lambda)
+robustPoetEst(dat, k, lambda, varEst)
 }
 \arguments{
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
@@ -18,12 +18,11 @@ practice, it is therefore preferable to use larger values.}
 thresholding applied to each element of sample covariance matrix's
 orthogonal complement.}
 
-\item{var_estimation}{A \code{character} string dictating which
+\item{varEst}{An \code{integer} dictating which
 variance estimator to use. This must be one of the strings
-"\code{mad}", "\code{sample}", or "\code{huber}".  "\code{mad}" estimates
-variances via median absolute deviation; "\code{sample}" uses sample
-variances; "\code{huber}" uses M-estimator for variance under Huber loss.
-Defaults to "\code{sample}".}
+"\code{0L}", "\code{1L}", or "\code{2L}". "\code{sample}" uses sample
+variances; "\code{mad}" estimates variances via median absolute deviation;
+"\code{huber}" uses M-estimator for variance under Huber loss.}
 }
 \value{
 A \code{matrix} corresponding to the estimate of the covariance
