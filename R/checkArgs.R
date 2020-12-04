@@ -151,23 +151,13 @@ checkArgs <- function(dat,
     )
   }
   if ("robustPoetEst" %in% estimators) {
-    if (is.null(estimator_params$robustPoetEst$var_estimation)) {
-      assertthat::assert_that(
-        all(rlang::is_integer(estimator_params$robustPoetEst$k)) == TRUE,
-        all(estimator_params$robustPoetEst$k >= 1) == TRUE,
-        all(rlang::is_bare_numeric(estimator_params$robustPoetEst$lambda)) == TRUE,
-        all(estimator_params$robustPoetEst$lambda >= 0) == TRUE)
-    } else {
-      assertthat::assert_that(
-        all(rlang::is_integer(estimator_params$robustPoetEst$k)) == TRUE,
-        all(estimator_params$robustPoetEst$k >= 1) == TRUE,
-        all(rlang::is_bare_numeric(estimator_params$robustPoetEst$lambda)) == TRUE,
-        all(estimator_params$robustPoetEst$lambda >= 0) == TRUE,
-        all(
-          estimator_params$robustPoetEst$var_estimation %in% c(
-            "sample", "mad", "huber"
-          ) == TRUE))
-    }
+    assertthat::assert_that(
+      all(rlang::is_integer(estimator_params$robustPoetEst$k)) == TRUE,
+      all(estimator_params$robustPoetEst$k >= 1) == TRUE,
+      all(rlang::is_bare_numeric(estimator_params$robustPoetEst$lambda)) == TRUE,
+      all(estimator_params$robustPoetEst$lambda >= 0) == TRUE,
+      all(estimator_params$robustPoetEst$varEst %in% c(
+          0L, 1L, 2L) == TRUE))
   }
   if ("adaptiveLassoEst" %in% estimators) {
     assertthat::assert_that(

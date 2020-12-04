@@ -558,52 +558,43 @@ poetEst <- function(dat, k, lambda) {
 #' @param lambda A non-negative \code{numeric} defining the amount of
 #'   thresholding applied to each element of sample covariance matrix's
 #'   orthogonal complement.
-#' @param var_estimation A \code{character} string dictating which
+#' @param varEst An \code{integer} dictating which
 #'   variance estimator to use. This must be one of the strings
-#'   "\code{mad}", "\code{sample}", or "\code{huber}".  "\code{mad}" estimates
-#'   variances via median absolute deviation; "\code{sample}" uses sample 
-#'   variances; "\code{huber}" uses M-estimator for variance under Huber loss.
-#'   Defaults to "\code{sample}".
+#'   "\code{0L}", "\code{1L}", or "\code{2L}". "\code{sample}" uses sample 
+#'   variances; "\code{mad}" estimates variances via median absolute deviation; 
+#'   "\code{huber}" uses M-estimator for variance under Huber loss.
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'   matrix.
 #'
 #' @importFrom RSpectra eigs_sym
-#' @importFrom MASS huber
 #' @importFrom geex m_estimate setup_root_control
-#' @importFrom stats cor sd
-#' @importFrom utils combn
+#' @importFrom stats sd mad
 #'
 #' @export
 #'
 #' @references
 #'   \insertAllCited{}
-
-robustPoetEst <- function(dat, lambda, k,
-  var_estimation = c("mad", "sample", "huber")) {
-
+robustPoetEst <- function(dat, k, lambda, varEst) {
+  
   # get the dimensions of the data
   n <- nrow(dat)
   p <- ncol(dat)
   
   # check the var_estimation choice
-  var_estimation <- match.arg(var_estimation)
+  # var_estimation <- match.arg(var_estimation)
+  # var_estimation = "sample"
   
   # use M-estimator and Huber loss to robustly estimate variance
-  if (var_estimation == "mad") {
-    D_est <- apply(dat, 2,
-                   function(x) {
-                     results <- MASS::huber(x, k = 3)
-                     unlist(results)
-                   })[2, ]
-    D_est <- diag(D_est)
-  } else if (var_estimation  == "sample") {
+  if (varEst == 0) {
     D_est <- diag(apply(dat, 2, stats::sd))
-  } else if (var_estimation  == "huber") {
+  } else if (varEst  == 1) {
+    D_est <- diag(apply(dat, 2, stats::mad))
+  } else if (varEst == 2) {
     # This method is proposed by Fan et. al. but most computationally expensive
+    alpha = sqrt(1 / (8 * max(apply(dat, 2, "var"))))
     huber <- function(data) {
       data = data[, 1]
-      alpha = sqrt(1 / (8 * max(apply(dat, 2, "var"))))
       function(theta) {
         if (abs(alpha * (data - theta[1])) <= 1) {
           return(alpha * (data - theta[1]))
@@ -621,22 +612,19 @@ robustPoetEst <- function(dat, lambda, k,
       results@estimates
     }
     var_est <- pmax(apply(dat^2, 2, mest) - apply(dat, 2, mest)^2, 1e-6)
-    D_est <- diag(var_est ** 0.5)
+    D_est <- diag(sqrt(var_est))
   }
   
   # Marginal Kendall's tau estimator can be vectorized as the multiplication of
   # the matrix of signs of elementwise differences for each variable 
   # with its transpose. 
   diff_mat <- function(x) {
-    diff = outer(x, x, FUN = "-")
-    diff = diff[lower.tri(diff)]
-    diff
+    outer(x, x, FUN = "-")[lower.tri(sign(outer(x, x, FUN = "-")))]
   }
   Diff <- apply(dat, 2, diff_mat)
-  Tau_est <- t(sign(Diff)) %*% sign(Diff) * (2 / (n * (n - 1)))
   
   # calculate the estimator of R
-  R_est <- sin(Tau_est * pi / 2)
+  R_est <-  sin(crossprod(sign(Diff)) * (pi / (n * (n - 1))))
   
   # calculate the first estimator for covariance matrix
   Sigma_est1 <- D_est %*% R_est %*% D_est
@@ -649,8 +637,8 @@ robustPoetEst <- function(dat, lambda, k,
   }
   
   # calculate spatial Kendall's tau estimator
-  Diff <- Diff / apply(Diff, 1, function(x) {sqrt(sum(x^2))})
-  Sigma_est2 <- t(Diff) %*% Diff * (2 / (n * (n - 1)))
+  Sigma_est2 <- (2 / (n * (n - 1))) * crossprod(Diff / apply(Diff, 1, 
+                                                             function(x) {sqrt(sum(x^2))}))
   
   # calculate the estimator for leading eigenvectors
   Gamma_est <- RSpectra::eigs_sym(Sigma_est2, k)$vectors
