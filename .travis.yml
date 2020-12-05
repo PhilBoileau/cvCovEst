@@ -23,12 +23,15 @@ r_packages:
   - origami
   - Rdpack
   - dplyr
+  - purrr
+  - stringr
   - tibble
   - assertthat
   - rlang
   - MASS
   - testthat
   - RSpectra
+  - spelling
 
 r_github_packages:
   - r-lib/sessioninfo

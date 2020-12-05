@@ -81,7 +81,8 @@ checkArgs <- function(dat,
     assertthat::assert_that(
       estimators != "linearShrinkLWEst", estimators != "sampleCovEst",
       estimators != "nlShrinkLWEst", estimators != "denseLinearShrinkEst",
-      msg = "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
+      msg = paste("This estimator doesn't possess any hyperparameters. Run it",
+                   "without using cvCovEst.")
     )
   }
 
@@ -107,14 +108,16 @@ checkArgs <- function(dat,
   # assert that estimator hyperparameters are well defined
   if ("linearShrinkEst" %in% estimators) {
     assertthat::assert_that(
-      all(rlang::is_bare_numeric(estimator_params$linearShrinkEst$alpha)) == TRUE,
+      all(rlang::is_bare_numeric(estimator_params$linearShrinkEst$alpha))
+        == TRUE,
       all(estimator_params$linearShrinkEst$alpha >= 0) == TRUE,
       all(estimator_params$linearShrinkEst$alpha <= 1) == TRUE
     )
   }
   if ("thresholdingEst" %in% estimators) {
     assertthat::assert_that(
-      all(rlang::is_bare_numeric(estimator_params$thresholdingEst$gamma)) == TRUE,
+      all(rlang::is_bare_numeric(estimator_params$thresholdingEst$gamma))
+        == TRUE,
       all(estimator_params$thresholdingEst$gamma >= 0) == TRUE
     )
   }
@@ -151,28 +154,20 @@ checkArgs <- function(dat,
     )
   }
   if ("robustPoetEst" %in% estimators) {
-    if (is.null(estimator_params$robustPoetEst$var_estimation)) {
-      assertthat::assert_that(
-        all(rlang::is_integer(estimator_params$robustPoetEst$k)) == TRUE,
-        all(estimator_params$robustPoetEst$k >= 1) == TRUE,
-        all(rlang::is_bare_numeric(estimator_params$robustPoetEst$lambda)) == TRUE,
-        all(estimator_params$robustPoetEst$lambda >= 0) == TRUE)
-    } else {
-      assertthat::assert_that(
-        all(rlang::is_integer(estimator_params$robustPoetEst$k)) == TRUE,
-        all(estimator_params$robustPoetEst$k >= 1) == TRUE,
-        all(rlang::is_bare_numeric(estimator_params$robustPoetEst$lambda)) == TRUE,
-        all(estimator_params$robustPoetEst$lambda >= 0) == TRUE,
-        all(
-          estimator_params$robustPoetEst$var_estimation %in% c(
-            "sample", "mad", "huber"
-          ) == TRUE))
-    }
+    assertthat::assert_that(
+      all(rlang::is_integer(estimator_params$robustPoetEst$k)) == TRUE,
+      all(estimator_params$robustPoetEst$k >= 1) == TRUE,
+      all(rlang::is_bare_numeric(estimator_params$robustPoetEst$lambda))
+        == TRUE,
+      all(estimator_params$robustPoetEst$lambda >= 0) == TRUE,
+      all(estimator_params$robustPoetEst$var_est %in% c(
+          "sample", "mad", "huber") == TRUE))
   }
   if ("adaptiveLassoEst" %in% estimators) {
     assertthat::assert_that(
       all(estimator_params$adaptiveLassoEst$lambda >= 0) == TRUE,
-      all(rlang::is_bare_numeric(estimator_params$adaptiveLassoEst$lambda)) == TRUE,
+      all(rlang::is_bare_numeric(estimator_params$adaptiveLassoEst$lambda))
+        == TRUE,
       all(estimator_params$adaptiveLassoEst$n >= 0) == TRUE,
       all(rlang::is_bare_numeric(estimator_params$adaptiveLassoEst$n)) == TRUE
     )

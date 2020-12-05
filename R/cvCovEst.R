@@ -46,6 +46,7 @@
 #' @importFrom tibble as_tibble
 #' @importFrom rlang .data enquo eval_tidy
 #' @importFrom matrixStats sum2
+#' @importFrom purrr flatten
 #'
 #' @return A \code{list} of results containing the following elements:
 #'   \itemize{
@@ -172,12 +173,12 @@ cvCovEst <- function(
     if (best_est_hparams != "hyperparameters = NA") {
       best_est_hparams_table <- best_est_hparams %>%
         str_split(pattern = ", ") %>%
-        unlist() %>%
+        purrr::flatten() %>%
         str_split(pattern = " = ", simplify = TRUE)
       best_hparams_list <- as.list(best_est_hparams_table[, 2])
       names(best_hparams_list) <- best_est_hparams_table[, 1]
       best_hparams_list <- lapply(best_hparams_list, strToNumber)
-      estimate <- exec(
+      estimate <- rlang::exec(
         best_est_fun,
         dat,
         !!!best_hparams_list
@@ -238,12 +239,12 @@ cvCovEst <- function(
     if (best_est_hparams != "hyperparameters = NA") {
       best_est_hparams_table <- best_est_hparams %>%
         str_split(pattern = ", ") %>%
-        unlist() %>%
+        purrr::flatten() %>%
         str_split(pattern = " = ", simplify = TRUE)
       best_hparams_list <- as.list(best_est_hparams_table[, 2])
       names(best_hparams_list) <- best_est_hparams_table[, 1]
       best_hparams_list <- lapply(best_hparams_list, strToNumber)
-      estimate <- exec(
+      estimate <- rlang::exec(
         best_est_fun,
         dat,
         !!!best_hparams_list
@@ -274,16 +275,20 @@ cvCovEst <- function(
 
 ################################################################################
 
-#' Convert String to Numeric or Integer
+#' Convert String to Numeric or Integer When Needed
 #'
 #' @param x A \code{character} representing a number or an integer.
 #'
 #' @return \code{x} converted to the appropriate type.
 #'
+#' @importFrom stringr str_sub
+#'
 #' @keywords internal
 strToNumber <- function(x) {
-  if (str_sub(x, start = -1) == "L") {
-    as.integer(str_sub(x, end = -2))
+  if (stringr::str_sub(x, start = -1) == "L") {
+    as.integer(stringr::str_sub(x, end = -2))
+  } else if (!grepl("^[[:digit:]]", x)) {
+    x
   } else {
     as.numeric(x)
   }

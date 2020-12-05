@@ -26,8 +26,8 @@ test_that("cross-validated covariance selector runs silently", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
-      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L), 
-                           var_estimation = c("mad", "sample")),
+      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
@@ -48,8 +48,8 @@ test_that("cross-validated covariance selector runs silently", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
-      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L), 
-                           var_estimation = c("mad", "sample")),
+      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_scheme = "mc", mc_split = 0.5, v_folds = 5,
@@ -70,8 +70,8 @@ test_that("cross-validated covariance selector runs silently", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
-      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L), 
-                           var_estimation = c("mad", "sample")),
+      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cvMatrixFrobeniusLoss, cv_scheme = "v_fold",
@@ -93,8 +93,8 @@ test_that("cross-validated covariance selector runs silently", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
-      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L), 
-                           var_estimation = c("mad", "sample")),
+      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cvMatrixFrobeniusLoss, cv_scheme = "mc",
@@ -116,8 +116,8 @@ test_that("cross-validated covariance selector runs silently", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
-      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L), 
-                           var_estimation = c("mad", "sample")),
+      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
@@ -138,7 +138,7 @@ test_that("cross-validated covariance selector runs silently", {
     estimators = c(robustPoetEst),
     estimator_params = list(
       robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                           var_estimation = c("mad", "sample"))
+                           var_est = "sample")
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
@@ -187,7 +187,7 @@ test_that("cvCovEst automatically centers non-centered data", {
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
       robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                           var_estimation = c("mad", "sample")),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
@@ -210,7 +210,7 @@ test_that("cvCovEst automatically centers non-centered data", {
         scadEst = list(lambda = c(0.1, 0.2)),
         poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
         robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                             var_estimation = c("mad", "sample")),
+                             var_est = c("sample")),
         adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
       ),
       cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
@@ -237,7 +237,7 @@ test_that("cvCovEst's outputs are of the correct dimensions", {
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
       robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                           var_estimation = c("mad", "sample")),
+                           var_est = c("sample", "mad")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
@@ -272,7 +272,7 @@ test_that("cvCovEst's outputs are of the correct dimensions", {
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
       robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                           var_estimation = c("mad", "sample")),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
@@ -301,7 +301,7 @@ test_that("cross-validated covariance selector handles sparse, true cov mat", {
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
       robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                           var_estimation = c("mad", "sample")),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
@@ -324,7 +324,7 @@ test_that("cross-validated covariance selector handles sparse, true cov mat", {
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
       robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                           var_estimation = c("mad", "sample")),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cvFrobeniusLoss, cv_scheme = "v_fold",
@@ -352,7 +352,7 @@ test_that("Parallelization works", {
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
       robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                           var_estimation = c("mad", "sample")),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
@@ -374,7 +374,7 @@ test_that("Parallelization works", {
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
       robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                           var_estimation = c("mad", "sample")),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_scheme = "mc", mc_split = 0.5, v_folds = 5,
@@ -396,7 +396,7 @@ test_that("Parallelization works", {
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
       robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                           var_estimation = c("mad", "sample")),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cvFrobeniusLoss, cv_scheme = "v_fold",
@@ -419,7 +419,7 @@ test_that("Parallelization works", {
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
       robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L),
-                           var_estimation = c("mad", "sample")),
+                           var_est = c("sample")),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cvFrobeniusLoss, cv_scheme = "mc",
