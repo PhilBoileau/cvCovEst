@@ -81,8 +81,10 @@ checkArgs <- function(dat,
     assertthat::assert_that(
       estimators != "linearShrinkLWEst", estimators != "sampleCovEst",
       estimators != "nlShrinkLWEst", estimators != "denseLinearShrinkEst",
-      msg = paste("This estimator doesn't possess any hyperparameters. Run it",
-                   "without using cvCovEst.")
+      msg = paste(
+        "This estimator doesn't possess any hyperparameters. Run it",
+        "without using cvCovEst."
+      )
     )
   }
 
@@ -109,7 +111,7 @@ checkArgs <- function(dat,
   if ("linearShrinkEst" %in% estimators) {
     assertthat::assert_that(
       all(rlang::is_bare_numeric(estimator_params$linearShrinkEst$alpha))
-        == TRUE,
+      == TRUE,
       all(estimator_params$linearShrinkEst$alpha >= 0) == TRUE,
       all(estimator_params$linearShrinkEst$alpha <= 1) == TRUE
     )
@@ -117,7 +119,7 @@ checkArgs <- function(dat,
   if ("thresholdingEst" %in% estimators) {
     assertthat::assert_that(
       all(rlang::is_bare_numeric(estimator_params$thresholdingEst$gamma))
-        == TRUE,
+      == TRUE,
       all(estimator_params$thresholdingEst$gamma >= 0) == TRUE
     )
   }
@@ -158,16 +160,18 @@ checkArgs <- function(dat,
       all(rlang::is_integer(estimator_params$robustPoetEst$k)) == TRUE,
       all(estimator_params$robustPoetEst$k >= 1) == TRUE,
       all(rlang::is_bare_numeric(estimator_params$robustPoetEst$lambda))
-        == TRUE,
+      == TRUE,
       all(estimator_params$robustPoetEst$lambda >= 0) == TRUE,
       all(estimator_params$robustPoetEst$var_est %in% c(
-          "sample", "mad", "huber") == TRUE))
+        "sample", "mad", "huber"
+      ) == TRUE)
+    )
   }
   if ("adaptiveLassoEst" %in% estimators) {
     assertthat::assert_that(
       all(estimator_params$adaptiveLassoEst$lambda >= 0) == TRUE,
       all(rlang::is_bare_numeric(estimator_params$adaptiveLassoEst$lambda))
-        == TRUE,
+      == TRUE,
       all(estimator_params$adaptiveLassoEst$n >= 0) == TRUE,
       all(rlang::is_bare_numeric(estimator_params$adaptiveLassoEst$n)) == TRUE
     )

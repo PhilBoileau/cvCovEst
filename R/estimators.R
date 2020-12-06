@@ -114,7 +114,7 @@ thresholdingEst <- function(dat, gamma) {
   sample_cov_mat <- coop::covar(dat)
 
   # apply threshold by removing all elements smaller than gamma
-  estimate <-replace(sample_cov_mat, abs(sample_cov_mat) < gamma, 0)
+  estimate <- replace(sample_cov_mat, abs(sample_cov_mat) < gamma, 0)
   return(estimate)
 }
 
@@ -348,7 +348,7 @@ nlShrinkLWEst <- function(dat) {
 
     # LW Equation C.8
     Hf_tilde0 <- (1 / pi) * ((3 / 10) * s4 +
-                               (s1 / h) * (1 - (1 / 5) * s4) * log_term) * m
+      (s1 / h) * (1 - (1 / 5) * s4) * log_term) * m
 
     # LW Equation C.5
     d_tilde0 <- 1 / (pi * (p - eig_nonzero_tol) / eig_nonzero_tol * Hf_tilde0)
@@ -459,7 +459,8 @@ scadEst <- function(dat, lambda) {
   # apply threshold by removing all elements smaller than gamma
   # TODO: Create a symmertric apply for covariance matrices
   estimate <- apply(sample_cov_mat, c(1, 2), scadThreshold,
-                    lambda = lambda, a = 3.7)
+    lambda = lambda, a = 3.7
+  )
   return(estimate)
 }
 
@@ -581,9 +582,9 @@ robustPoetEst <- function(dat, k, lambda,
   # use M-estimator and Huber loss to robustly estimate variance
   if (var_est == "sample") {
     D_est <- diag(matrixStats::colSds(dat))
-  } else if (var_est  == "mad") {
+  } else if (var_est == "mad") {
     D_est <- diag(matrixStats::colMads(dat))
-  } else if (var_est  == "huber") {
+  } else if (var_est == "huber") {
     # This method is proposed by Fan et al but most computationally expensive
     alpha <- sqrt(1 / (8 * max(matrixStats::colVars(dat))))
     huber <- function(x, alpha) {
@@ -599,7 +600,7 @@ robustPoetEst <- function(dat, k, lambda,
       }, alpha = alpha, lower = min(y), upper = max(y))$minimum
     }
     D_est <- diag(sqrt(pmax(apply(dat^2, 2, mest) -
-                            apply(dat, 2, mest)^2, 1e-6)))
+      apply(dat, 2, mest)^2, 1e-6)))
   }
 
   # Marginal Kendall's tau estimator can be vectorized as the multiplication of
@@ -611,7 +612,7 @@ robustPoetEst <- function(dat, k, lambda,
   Diff <- apply(dat, 2, diff_mat)
 
   # calculate the estimator of R
-  R_est <-  sin(crossprod(sign(Diff)) * (pi / (n * (n - 1))))
+  R_est <- sin(crossprod(sign(Diff)) * (pi / (n * (n - 1))))
 
   # calculate the first estimator for covariance matrix
   # NOTE: D_est %*% R_est %*% D_est is equivalent but (slightly) slower than

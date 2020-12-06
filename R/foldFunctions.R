@@ -125,7 +125,8 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
 
       # Compute the grid of hyperparameters
       hparam_grid <- expand.grid(estimator_params[[est_name]],
-                                 stringsAsFactors = FALSE)
+        stringsAsFactors = FALSE
+      )
 
       # loop through the estimator hyperparameters
       param_out <- lapply(
@@ -321,7 +322,8 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
 
       # Compute the grid of hyperparameters
       hparam_grid <- expand.grid(estimator_params[[est_name]],
-                                 stringsAsFactors = FALSE)
+        stringsAsFactors = FALSE
+      )
 
       # loop through the estimator hyperparameters
       param_out <- lapply(

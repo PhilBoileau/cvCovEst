@@ -22,8 +22,10 @@ estimator_params <- list(
   taperingEst = list(k = c(2L, 6L)),
   scadEst = list(lambda = c(0.1, 0.2)),
   poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-  robustPoetEst = list(lambda = c(0.1, 0.2), k = c(1L, 3L),
-                       var_est = "sample"),
+  robustPoetEst = list(
+    lambda = c(0.1, 0.2), k = c(1L, 3L),
+    var_est = "sample"
+  ),
   adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
 )
 cv_loss <- rlang::expr(cvFrobeniusLoss)
@@ -512,8 +514,10 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = 0.1),
       poetEst = list(lambda = 0.1, k = c(1, 2)),
-      robustPoetEst = list(lambda = 0.1, k = c(1L, 2L),
-                           var_est = c("samp", "huber")),
+      robustPoetEst = list(
+        lambda = 0.1, k = c(1L, 2L),
+        var_est = c("samp", "huber")
+      ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cv_loss,
@@ -534,8 +538,10 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = 0.1),
       poetEst = list(lambda = 0.1, k = c(1, 2)),
-      robustPoetEst = list(lambda = "a", k = c(1L, 2L),
-                           var_est = c("mad", "huber")),
+      robustPoetEst = list(
+        lambda = "a", k = c(1L, 2L),
+        var_est = c("mad", "huber")
+      ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cv_loss,
@@ -556,8 +562,10 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = 0.1),
       poetEst = list(lambda = 0.1, k = c(1, 2)),
-      robustPoetEst = list(lambda = 0.1, k = c(1.1, 2L),
-                           var_est = c("mad", "huber")),
+      robustPoetEst = list(
+        lambda = 0.1, k = c(1.1, 2L),
+        var_est = c("mad", "huber")
+      ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cv_loss,
@@ -822,8 +830,10 @@ test_that("checkArgs works well in cvCovEst Function", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L)),
-      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L),
-                           var_est = c("sample", "mad")),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(3L, 4L),
+        var_est = c("sample", "mad")
+      ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cvFrobeniusLoss, cv_scheme = "v_fold",
@@ -845,8 +855,10 @@ test_that("checkArgs works well in cvCovEst Function", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L)),
-      robustPoetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L),
-                           var_est = c("sample", "mad")),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(3L, 4L),
+        var_est = c("sample", "mad")
+      ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cvMatrixFrobeniusLoss, cv_scheme = "mc",
