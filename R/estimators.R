@@ -184,7 +184,8 @@ bandingEst <- function(dat, k) {
   indicator_matrix <- do.call(cbind, indicator_list)
 
   # flip the matrix
-  indicator_matrix <- indicator_matrix + t(indicator_matrix) - diag(1, n)
+  indicator_matrix <- indicator_matrix + t(indicator_matrix) - 
+    diag(1, ncol_sampcov)
 
   # replace the sample covariance matrix
   sam_cov <- replace(sam_cov, which(indicator_matrix == 0), 0)

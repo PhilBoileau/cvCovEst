@@ -16,7 +16,7 @@
 #'  for a given estimator, then the estimator need not be listed.
 #' @param cv_loss A \code{function} indicating the loss function to use.
 #'  Defaults to the scaled Frobenius loss, \code{\link{cvFrobeniusLoss}}. The
-#'  matrix-based version, \code{\link{cvMatroxFrobeniusLoss}} is offered too.
+#'  matrix-based version, \code{\link{cvMatrixFrobeniusLoss}} is offered too.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
