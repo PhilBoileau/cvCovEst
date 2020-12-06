@@ -15,8 +15,8 @@
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
 #' @param cv_loss A \code{function} indicating the loss function to use.
-#'  Defaults to the scaled Frobenius loss, \code{cvFrobeniusLoss}.
-#'  The matrix-based version, \code{cvMatroxFrobeniusLoss} is offered as well.
+#'  Defaults to the scaled Frobenius loss, \code{\link{cvFrobeniusLoss}}. The
+#'  matrix-based version, \code{\link{cvMatroxFrobeniusLoss}} is offered too.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
@@ -39,7 +39,8 @@
 #'  be Gaussian. This parameter is intended for use only in simulation studies,
 #'  and defaults to a value of \code{NULL}. If not \code{NULL}, various
 #'  conditional risk difference ratios of the estimator selected
-#'  by \code{cvCovEst} are computed relative to the different oracle selectors.
+#'  by \code{\link{cvCovEst}} are computed relative to the different oracle
+#'  selectors.
 #'
 #' @importFrom origami cross_validate folds_vfold folds_montecarlo
 #' @importFrom dplyr arrange summarise group_by "%>%" ungroup
@@ -47,6 +48,7 @@
 #' @importFrom rlang .data enquo eval_tidy
 #' @importFrom matrixStats sum2
 #' @importFrom purrr flatten
+#' @importFrom stringr str_split
 #'
 #' @return A \code{list} of results containing the following elements:
 #'   \itemize{
@@ -67,8 +69,8 @@
 #'       to the conditional cross-validated risk difference of the
 #'       cvCovEst selection.
 #'     \item \code{oracle_cv_riskdiff} - A \code{numeric}
-#'       corresponding to the conditional cross-validated risk difference of the
-#'       oracle selection.
+#'       corresponding to the conditional cross-validated risk difference of
+#'       the oracle selection.
 #'     \item \code{cv_oracle_riskdiff_ratio} - A \code{numeric} corresponding
 #'       to the cross-validated risk difference ratio of the
 #'       cvCovEst selection and the cross-validated dataset oracle selection.
@@ -172,9 +174,9 @@ cvCovEst <- function(
     best_est_hparams <- cv_results[1, ]$hyperparameters
     if (best_est_hparams != "hyperparameters = NA") {
       best_est_hparams_table <- best_est_hparams %>%
-        str_split(pattern = ", ") %>%
+        stringr::str_split(pattern = ", ") %>%
         purrr::flatten() %>%
-        str_split(pattern = " = ", simplify = TRUE)
+        stringr::str_split(pattern = " = ", simplify = TRUE)
       best_hparams_list <- as.list(best_est_hparams_table[, 2])
       names(best_hparams_list) <- best_est_hparams_table[, 1]
       best_hparams_list <- lapply(best_hparams_list, strToNumber)
@@ -238,9 +240,9 @@ cvCovEst <- function(
     best_est_hparams <- cv_results[1, ]$hyperparameters
     if (best_est_hparams != "hyperparameters = NA") {
       best_est_hparams_table <- best_est_hparams %>%
-        str_split(pattern = ", ") %>%
+        stringr::str_split(pattern = ", ") %>%
         purrr::flatten() %>%
-        str_split(pattern = " = ", simplify = TRUE)
+        stringr::str_split(pattern = " = ", simplify = TRUE)
       best_hparams_list <- as.list(best_est_hparams_table[, 2])
       names(best_hparams_list) <- best_est_hparams_table[, 1]
       best_hparams_list <- lapply(best_hparams_list, strToNumber)
@@ -273,7 +275,7 @@ cvCovEst <- function(
 }
 
 
-################################################################################
+###############################################################################
 
 #' Convert String to Numeric or Integer When Needed
 #'

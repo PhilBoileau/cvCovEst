@@ -2,11 +2,11 @@
 #'
 #' @param entry A \code{numeric} entry in a covariance matrix estimate.
 #' @param lambda A non-negative \code{numeric} defining the amount of
-#'   thresholding applied to each element of \code{dat}'s sample covariance
-#'   matrix.
-#' @param a A \code{numeric} larger than or equal to \code{2} defining the point
-#'   at which the SCAD thresholding functions becomes equal to the hard
-#'   thresholding function.
+#'  thresholding applied to each element of \code{dat}'s sample covariance
+#'  matrix.
+#' @param a A \code{numeric} larger than or equal to \code{2} defining the
+#'  point at which the SCAD thresholding functions becomes equal to the hard
+#'  thresholding function.
 #'
 #' @return A regularized \code{numeric}.
 #'
@@ -24,20 +24,19 @@ scadThreshold <- function(entry, lambda, a) {
   } else {
     reg_entry <- entry
   }
-
   return(reg_entry)
 }
 
-################################################################################
+###############################################################################
 
 #' Adaptive LASSO Thresholding Function
 #'
 #' @param entry A \code{numeric} entry in a covariance matrix estimate.
 #' @param lambda A non-negative \code{numeric} defining the amount of
-#'   thresholding applied to each element of \code{dat}'s sample covariance
-#'   matrix.
+#'  thresholding applied to each element of \code{dat}'s sample covariance
+#'  matrix.
 #' @param n A non-negative \code{numeric} defining the adaptive weight
-#'   applied to each element of \code{dat}'s sample covariance matrix.
+#'  applied to each element of \code{dat}'s sample covariance matrix.
 #'
 #' @return A regularized \code{numeric}.
 #'
@@ -50,25 +49,24 @@ adaptiveLassoThreshold <- function(entry, lambda, n) {
   } else {
     reg_entry <- 0
   }
-
   return(reg_entry)
 }
 
-################################################################################
+###############################################################################
 
 #' Symmetric Apply Function for Covariance Matrices
 #'
 #' @description \code{symmetricApply} implements a version of \code{apply}
-#'   expressly made for looping over symmetric matrices.
+#'  expressly made for looping over symmetric matrices.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param sym_fun a function to apply to each element of the covariance matrix.
 #' @param sym_args a named vector or \code{list} of arguments to be passed to
-#'   \code{sym_fun}.
-#'
-#' @return A \code{matrix}.
+#'  \code{sym_fun}.
 #'
 #' @importFrom rlang exec
+#'
+#' @return A \code{matrix}.
 #'
 #' @keywords internal
 symmetricApply <- function(dat, sym_fun, sym_args) {
@@ -77,7 +75,7 @@ symmetricApply <- function(dat, sym_fun, sym_args) {
   n <- ncol(dat)
 
   # loop over different columns in dat
-  lower_matrix <- sapply(1:n, function(i) {
+  lower_matrix <- sapply(seq_len(n), function(i) {
     # extract upper triangular entries of dat
     lt_vec <- dat[i, i:n]
 
@@ -94,8 +92,7 @@ symmetricApply <- function(dat, sym_fun, sym_args) {
   })
 
   # combine vectors
-  sym_matrix <- suppressMessages(dplyr::bind_cols(lower_matrix))
-  sym_matrix <- as.matrix(sym_matrix)
+  sym_matrix <- do.call(cbind, lower_matrix)
 
   # flip the matrix
   sym_matrix <- sym_matrix + t(sym_matrix) - diag(diag(sym_matrix))
