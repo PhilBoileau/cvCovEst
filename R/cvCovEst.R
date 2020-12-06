@@ -15,8 +15,8 @@
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
 #' @param cv_loss A \code{function} indicating the loss function to use.
-#'  Defaults to the scaled Frobenius loss, \code{cvFrobeniusLoss}.
-#'  The matrix-based version, \code{cvMatroxFrobeniusLoss} is offered as well.
+#'  Defaults to the scaled Frobenius loss, \code{\link{cvFrobeniusLoss}}. The
+#'  matrix-based version, \code{\link{cvMatrixFrobeniusLoss}} is offered too.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
@@ -39,13 +39,16 @@
 #'  be Gaussian. This parameter is intended for use only in simulation studies,
 #'  and defaults to a value of \code{NULL}. If not \code{NULL}, various
 #'  conditional risk difference ratios of the estimator selected
-#'  by \code{cvCovEst} are computed relative to the different oracle selectors.
+#'  by \code{\link{cvCovEst}} are computed relative to the different oracle
+#'  selectors.
 #'
 #' @importFrom origami cross_validate folds_vfold folds_montecarlo
 #' @importFrom dplyr arrange summarise group_by "%>%" ungroup
 #' @importFrom tibble as_tibble
 #' @importFrom rlang .data enquo eval_tidy
 #' @importFrom matrixStats sum2
+#' @importFrom purrr flatten
+#' @importFrom stringr str_split
 #'
 #' @return A \code{list} of results containing the following elements:
 #'   \itemize{
@@ -66,8 +69,8 @@
 #'       to the conditional cross-validated risk difference of the
 #'       cvCovEst selection.
 #'     \item \code{oracle_cv_riskdiff} - A \code{numeric}
-#'       corresponding to the conditional cross-validated risk difference of the
-#'       oracle selection.
+#'       corresponding to the conditional cross-validated risk difference of
+#'       the oracle selection.
 #'     \item \code{cv_oracle_riskdiff_ratio} - A \code{numeric} corresponding
 #'       to the cross-validated risk difference ratio of the
 #'       cvCovEst selection and the cross-validated dataset oracle selection.
@@ -171,13 +174,13 @@ cvCovEst <- function(
     best_est_hparams <- cv_results[1, ]$hyperparameters
     if (best_est_hparams != "hyperparameters = NA") {
       best_est_hparams_table <- best_est_hparams %>%
-        str_split(pattern = ", ") %>%
-        unlist() %>%
-        str_split(pattern = " = ", simplify = TRUE)
+        stringr::str_split(pattern = ", ") %>%
+        purrr::flatten() %>%
+        stringr::str_split(pattern = " = ", simplify = TRUE)
       best_hparams_list <- as.list(best_est_hparams_table[, 2])
       names(best_hparams_list) <- best_est_hparams_table[, 1]
       best_hparams_list <- lapply(best_hparams_list, strToNumber)
-      estimate <- exec(
+      estimate <- rlang::exec(
         best_est_fun,
         dat,
         !!!best_hparams_list
@@ -237,13 +240,13 @@ cvCovEst <- function(
     best_est_hparams <- cv_results[1, ]$hyperparameters
     if (best_est_hparams != "hyperparameters = NA") {
       best_est_hparams_table <- best_est_hparams %>%
-        str_split(pattern = ", ") %>%
-        unlist() %>%
-        str_split(pattern = " = ", simplify = TRUE)
+        stringr::str_split(pattern = ", ") %>%
+        purrr::flatten() %>%
+        stringr::str_split(pattern = " = ", simplify = TRUE)
       best_hparams_list <- as.list(best_est_hparams_table[, 2])
       names(best_hparams_list) <- best_est_hparams_table[, 1]
       best_hparams_list <- lapply(best_hparams_list, strToNumber)
-      estimate <- exec(
+      estimate <- rlang::exec(
         best_est_fun,
         dat,
         !!!best_hparams_list
@@ -272,18 +275,22 @@ cvCovEst <- function(
 }
 
 
-################################################################################
+###############################################################################
 
-#' Convert String to Numeric or Integer
+#' Convert String to Numeric or Integer When Needed
 #'
 #' @param x A \code{character} representing a number or an integer.
 #'
 #' @return \code{x} converted to the appropriate type.
 #'
+#' @importFrom stringr str_sub
+#'
 #' @keywords internal
 strToNumber <- function(x) {
-  if (str_sub(x, start = -1) == "L") {
-    as.integer(str_sub(x, end = -2))
+  if (stringr::str_sub(x, start = -1) == "L") {
+    as.integer(stringr::str_sub(x, end = -2))
+  } else if (!grepl("^[[:digit:]]", x)) {
+    x
   } else {
     as.numeric(x)
   }

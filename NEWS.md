@@ -1,3 +1,7 @@
+# cvCovEst 0.1.1 (2020-12-06)
+
++ `robustPoetEst` has been added to the library of candidate estimators.
+
 # cvCovEst 0.1.0 (2020-11-19)
 
 * cvCovEst version 0.1.0 is used in the accompanying manuscript to generate all results.
