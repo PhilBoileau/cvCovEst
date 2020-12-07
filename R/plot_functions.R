@@ -121,7 +121,7 @@ hyperRisk <- function(dat) {
   has_hypers <- c(
     "linearShrinkEst", "thresholdingEst",
     "bandingEst", "taperingEst",
-    "scadEst", "poetEst",
+    "scadEst", "poetEst", "robustPoetEst",
     "adaptiveLassoEst"
     )
 
@@ -305,9 +305,13 @@ getHypers <- function(dat, summ_stat) {
         s, "= "
       ) %>% unlist()
 
-      return(
-        as.numeric(hyper[2])
-      )
+      if (hyper[2] %in% c('mad', 'sample', 'huber')){
+        return(hyper[2])
+      }
+      else{
+        return(
+          as.numeric(hyper[2])
+        )}
     })
 
   hyperNames <- lapply(
@@ -365,7 +369,7 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
   has_hypers <- c(
     "linearShrinkEst", "thresholdingEst",
     "bandingEst", "taperingEst",
-    "scadEst", "poetEst",
+    "scadEst", "poetEst", "robustPoetEst",
     "adaptiveLassoEst"
   )
 
@@ -513,7 +517,7 @@ cvMultiMelt <- function(dat,
   has_hypers <- c(
     "linearShrinkEst", "thresholdingEst",
     "bandingEst", "taperingEst",
-    "scadEst", "poetEst",
+    "scadEst", "poetEst", "robustPoetEst",
     "adaptiveLassoEst"
   )
 
@@ -868,7 +872,7 @@ cvEigenPlot <- function(dat, estimator, stat = 'min', dat_orig) {
   has_hypers <- c(
     "linearShrinkEst", "thresholdingEst",
     "bandingEst", "taperingEst",
-    "scadEst", "poetEst",
+    "scadEst", "poetEst", "robustPoetEst",
     "adaptiveLassoEst"
   )
 
