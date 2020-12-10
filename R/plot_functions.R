@@ -601,9 +601,10 @@ cvMultiMelt <- function(dat,
         }
 
         # Create Melted Data Frame
-        meltEst <- abs(
-          reshape2::melt(estimate)
+        meltEst <- reshape2::melt(
+          abs(estimate)
         )
+
 
         # Label by Estimator
         est_name <- rep(
@@ -675,9 +676,10 @@ cvMultiMelt <- function(dat,
           )
 
           # Create Melted Data Frame
-          meltEst <- abs(
-            reshape2::melt(estimate)
-          )
+          meltEst <- reshape2::melt(
+            abs(estimate)
+            )
+
 
           n <- nrow(meltEst)
 
@@ -711,7 +713,7 @@ cvMultiMelt <- function(dat,
         ggplot2::scale_fill_gradient(
           name = 'Absolute Value',
           low = "white",
-          high = "darkred",
+          high = "black",
           na.value = 'black',
           limits = c(0,1),
           labels = c('0', '0.25', '0.5', '0.75', '1')) +
@@ -775,9 +777,10 @@ cvMultiMelt <- function(dat,
               )
 
               # Create Melted Data Frame
-              meltEst <- abs(
-                reshape2::melt(estimate)
-              )
+              meltEst <- reshape2::melt(
+                abs(estimate)
+                )
+
 
               # Label by Stat
               stat_name <- rep(
@@ -826,7 +829,29 @@ cvMultiMelt <- function(dat,
         ggplot2::scale_fill_gradient(
           low = "white",
           high = "black",
-          limits = c(0,1))
+          limits = c(0,1)) +
+        theme(legend.position = 'bottom',
+              legend.key.width = unit(10, 'mm'),
+              legend.title = element_text(
+                size = 10,
+                face = 'bold',
+                vjust = 0.75
+              ),
+              legend.text = element_text(
+                size = 8,
+                face = 'bold'),
+              strip.background = element_rect(
+                fill = alpha('darkred', alpha = 0.5),
+                color = 'darkred',
+                size = 0.5
+              ),
+              strip.text = element_text(
+                size = 10,
+                face = 'bold'),
+              panel.background = element_blank(),
+              axis.ticks = element_blank(),
+              axis.text = element_blank(),
+              axis.title = element_blank())
 
 
       return(plot)
