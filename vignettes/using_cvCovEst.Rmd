@@ -58,14 +58,44 @@ below. Lists and brief descriptions of implemented candidate estimators, loss
 functions, and cross-validation schemes are provided in the sequel.
 
 ```{r brief-example}
-print("TODO: Brief example.")
+library(MASS)
+library(cvCovEst)
+set.seed(1584)
+
+# generate a 50x50 covariance matrix with unit variances and off-diagonal
+# elements equal to 0.5
+Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
+
+# sample 200 observations from multivariate normal with mean = 0, var = Sigma
+dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
+
+# run CV-selector
+cv_cov_est_out <- cvCovEst(
+    dat = dat,
+    estimators = c(linearShrinkLWEst, denseLinearShrinkEst,
+                   thresholdingEst, poetEst, sampleCovEst),
+    estimator_params = list(
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L))
+    ),
+    cv_loss = cvMatrixFrobeniusLoss,
+    cv_scheme = "v_fold", v_folds = 5,
+  )
+
+# print the table of risk estimates
+cv_cov_est_out$risk_df
+
+# print a subset of the selected estimator's estimate
+head(cv_cov_est_out$estimate[, 1:5])
 ```
 
 ## Candidate Estimators
 
 Covariance matrix estimators implemented in the `cvCovEst` package are
 catalogued in the following table. These estimators are fed to the `cvCovEst`
-function. Depeding on your assumptions -- or lack thereof -- about the true
+function through the `estimators` argument as a vector. If these estimators
+rely on hyperparameters, then they must be passed to the `estimator_params` as
+a list. Depeding on your assumptions -- or lack thereof -- about the true
 covariance matrix, you may choose to use a subset of these estimators, or all
 of them. They may also be used as standalone functions.
 
@@ -103,8 +133,9 @@ package currently implements three loss functions:
 | Variance-scaled matrix-based Frobenius | `cvScaledMatrixFrobeniusLoss` | A scaled version of the matrix-based Frobenius loss, where weights are the inverse of products from the sample covariance matrix's diagonal. Appropriate when the features of the dataset are of different magnitudes. |
 | Observation-based Frobenius | `cvFrobeniusLoss` | Based on the Frobenius norm and the rank-1, observation-level estimates of the sample covariance matrix. Its selections are equivalent to that of the matrix-based Frobenius, though less computationally efficient. However, the optimality results of @boileau2021 rely on it. | 
 
-Like the candidate estimators, `cvCovEst` only supports loss functions
-implemented in this package. Please submit suggestions to
+The choice of loss function is set trough the `cv_loss` argument. Like the
+candidate estimators, `cvCovEst` only supports loss functions implemented in
+this package. Please submit suggestions to
 [issue](https://github.com/PhilBoileau/cvCovEst/issues).
 
 ## Supported Cross-Validation Schemes
@@ -116,7 +147,7 @@ like us to consider implementing another, let us know by filing an
 | Scheme | Details |
 |--------|----------------|
 | V-fold | To use V-fold cross-validation, set the `cv_scheme` argument in `cvCovEst` to `"v_fold"`, and set the number of folds through the `v_folds` argument. `cvCovEst` defaults to 5-fold cross-validation. |
-| Monte-Carlo | To perform Monte-Carlo cross-validation, set the `cv_scheme` argument to `"mc"`, and set the proprotion of data to be used in each validation set using the `mc_split` argument. |
+| Monte-Carlo | To perform Monte-Carlo cross-validation, set the `cv_scheme` argument to `"mc"`. Set the proprotion of data to be used in each validation set using the `mc_split` argument, and the number of iterations to perform with the `v_folds` argument. |
 
 
 # Diagnostic Tools
