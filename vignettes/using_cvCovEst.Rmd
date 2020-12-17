@@ -53,9 +53,13 @@ framework.
 Given a library of candidate estimators, a loss function, and a choice of
 cross-validation scheme, `cvCovEst` will identify the asymptotically optimal
 estimator of the covariance matrix from among all candidates. It subsequently
-estimates this parameter using the selected candidate. Lists and brief
-descriptions of implemented candidate estimators, loss functions, and
-cross-validation schemes are provided in the sequel.
+estimates this parameter using the selected candidate. An example is provided
+below. Lists and brief descriptions of implemented candidate estimators, loss
+functions, and cross-validation schemes are provided in the sequel.
+
+```{r brief-example}
+print("TODO: Brief example.")
+```
 
 ## Candidate Estimators
 
@@ -65,7 +69,7 @@ function. Depeding on your assumptions -- or lack thereof -- about the true
 covariance matrix, you may choose to use a subset of these estimators, or all
 of them. They may also be used as standalone functions.
 
-|Estimator | Function | Description |
+|Estimator | Implementation | Description |
 |----------|----------|-------------|
 | Sample covariance matrix | `sampleCovEst` | The sample covariance matrix. |
 | Hard thresholding [@Bickel2008_thresh] | `thresholdingEst` | Applies a hard thresholding operator to the entries of the sample covariance matrix |
@@ -87,24 +91,45 @@ you'd like to request a new one, please submit an
 
 ## Loss Functions
 
-TODO
+Given a collection of candidate estimators, `cvCovEst` compares theirs
+conditional cross-validated risks to identify the optimal selection. The loss
+function used to compute these risks should reflect both aspects of the
+data-generating distribtion, and the goal of the estimation procedure. This
+package currently implements three loss functions:
+
+| Loss | Implementation | Description |
+|------|----------------|-------------|
+| Matrix-based Frobenius | `cvMatrixFrobeniusLoss` | The default, Bbased on the Frobenius norm. Appropriate when the dataset's features are of similar magnitudes. |
+| Variance-scaled matrix-based Frobenius | `cvScaledMatrixFrobeniusLoss` | A scaled version of the matrix-based Frobenius loss, where weights are the inverse of products from the sample covariance matrix's diagonal. Appropriate when the features of the dataset are of different magnitudes. |
+| Observation-based Frobenius | `cvFrobeniusLoss` | Based on the Frobenius norm and the rank-1, observation-level estimates of the sample covariance matrix. Its selections are equivalent to that of the matrix-based Frobenius, though less computationally efficient. However, the optimality results of @boileau2021 rely on it. | 
+
+Like the candidate estimators, `cvCovEst` only supports loss functions
+implemented in this package. Please submit suggestions to
+[issue](https://github.com/PhilBoileau/cvCovEst/issues).
 
 ## Supported Cross-Validation Schemes
 
-TODO
+Two cross-validation schemes are currently supported by `cvCovEst`. If you'd
+like us to consider implementing another, let us know by filing an
+[issue](https://github.com/PhilBoileau/cvCovEst/issues).
+
+| Scheme | Details |
+|--------|----------------|
+| V-fold | To use V-fold cross-validation, set the `cv_scheme` argument in `cvCovEst` to `"v_fold"`, and set the number of folds through the `v_folds` argument. `cvCovEst` defaults to 5-fold cross-validation. |
+| Monte-Carlo | To perform Monte-Carlo cross-validation, set the `cv_scheme` argument to `"mc"`, and set the proprotion of data to be used in each validation set using the `mc_split` argument. |
 
 
 # Diagnostic Tools
 
 TODO
 
-# Data Analysis Examples
+<!-- # Data Analysis Examples
 
 TODO
 
 ## Simulated Data
 
-## Single Cell Transcriptomic Data
+## Single Cell Transcriptomic Data -->
 
 ## References
 
