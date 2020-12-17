@@ -1,6 +1,6 @@
 ---
 title: "`cvCovEst`: Cross-Validated Covariance Matrix Estimation"
-author: "[Philippe Boileau](https://pboileau.ca) and [Nima
+author: "[Philippe Boileau](https://pboileau.ca), Brian Collica, [Nima
   Hejazi](https://nimahejazi.org)"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -13,18 +13,19 @@ vignette: >
 
 # Background and Motivation
 
-When the number of observations in a dataset far exceeds the number of features,
-the estimator of choice for the covariance matrix is the sample covariance
-matrix: it is an efficient estimator under minimal regularity assumptions on the
-data generating distribution. In high-dimensional regimes, however, it leaves
-much to be desired. In this setting, the sample covariance matrix is either
-singular, numerically unstable, or both, thereby amplifying estimation error.
+When the number of observations in a dataset far exceeds the number of
+features, the estimator of choice for the covariance matrix is the sample
+covariance matrix. It is an efficient estimator under minimal regularity
+assumptions on the data generating distribution. In high-dimensional regimes,
+however, this estimator leaves much to be desired. In this setting, the sample
+covariance matrix is either singular, numerically unstable, or both, thereby
+amplifying estimation error.
 
-As high-dimensional data became increasingly widespread, researchers derived
+As high-dimensional data has become widespread, researchers have derived
 many novel covariance matrix estimators to remediate the sample covariance
 matrix’s deficiencies. These estimators come in many flavours, though most
-are constructed by regularizing the sample covariance matrix, or estimating
-latent factors. A comprehensive review is provided by [@fan:2016].
+are constructed by regularizing the sample covariance matrix, or throught the
+estimation of latent factors. A comprehensive review is provided by @fan:2016.
 
 This variety brings challenges, however. Identifying an "optimal" estimator
 from among a collection of candidates is a non-trivial task.
@@ -33,19 +34,77 @@ certain classes have been derived, the question of selecting an
 estimator from among a diverse collection of candidates remains unaddressed.
 
 We therefore offer just that: a general, cross-validation-based framework for
-covariance matrix estimator selection in high dimensions. This is accomplished
-by adapting the seminal work of @laan-dudoit:2003, @dudoit2005, and @dudoit2006
-on data-adaptive estimator selection to high-dimensional covariance matrix
+covariance matrix estimator selection in high dimensions. The
+(high-dimensional) asymptotic optimality of selections are guaranteeed by
+adapting the seminal work of @laan-dudoit:2003, @dudoit2005, and @dudoit2006 on
+data-adaptive estimator selection to high-dimensional covariance matrix
 estimation [@boileau2021]. The interested reader is invited to review
-theoretical underpinnings of the method provided in @boileau2021.
+theoretical underpinnings of the method provided in @boileau2021 .
+
 
 # Cross-validated Covariance Matrix Estimation
 
+Let there be a high-dimensional dataset comprising $n$ realizations of *i.i.d*
+$p$-length random vectors with possibly nonparametric data-generating
+distribution. Our goal is to estimate these random vectors' covariance matrix,
+which may be accomplished using our general cross-validated estimator selection
+framework.
+
+Given a library of candidate estimators, a loss function, and a choice of
+cross-validation scheme, `cvCovEst` will identify the asymptotically optimal
+estimator of the covariance matrix from among all candidates. It subsequently
+estimates this parameter using the selected candidate. Lists and brief
+descriptions of implemented candidate estimators, loss functions, and
+cross-validation schemes are provided in the sequel.
+
+## Candidate Estimators
+
+Covariance matrix estimators implemented in the `cvCovEst` package are
+catalogued in the following table. These estimators are fed to the `cvCovEst`
+function. Depeding on your assumptions -- or lack thereof -- about the true
+covariance matrix, you may choose to use a subset of these estimators, or all
+of them. They may also be used as standalone functions.
+
+|Estimator | Function | Description |
+|----------|----------|-------------|
+| Sample covariance matrix | `sampleCovEst` | The sample covariance matrix. |
+| Hard thresholding [@Bickel2008_thresh] | `thresholdingEst` | Applies a hard thresholding operator to the entries of the sample covariance matrix |
+| SCAD thresholding [@rothman2009;@fan2001] | `scadEst` | Applies the SCAD thresholding operator to the entries of the sample covariance matrix.|
+| Adaptive LASSO [@rothman2009] | `adaptiveLassoEst` | Applies the adaptive LASSO thresholding operator to the entries of the sample covariance matrix |
+| Banding [@bickel2008_banding] | `bandingEst` | Replaces the sample covariance matrix's off-diagonal bands by zeros. |
+| Tapering [@cai2010] | `taperingEst` | Tapers the sample covariance matrix's off-diagonal bands, eventually replacing them by zeros. |
+| Optimal Linear Shrinkage [@Ledoit2004] | `linearShrinkLWEst` | Asymptotically optimal shrinkage of the sample covariance matrix towards the identity. |
+| Linear Shrinkage [@Ledoit2004] | `linearShrinkEst` | Shrinkage of the sample covariance matrix towards the identity, but the shrinkage is controlled by a hyperparameter. |
+| Dense Linear Shrinkage [@shafer2005] | `denseLinearShrinkEst` | Asymptotically optimal shrinkage of the sample covariance matrix towards a dense matrix whose diagonal elements are the mean of the sample covariance matrix's diagonal, and whose off-diagonal elements are the mean of the sample covariance matrix's off-diagnoal elements. |
+| Nonlinear Shrinkage [@Ledoit2020] | `nlShrinkLWEst` | Analytical estimator for the nonlinear shrinkage of the sample covariance matrix. |
+| POET [@fan2013] | `poetEst` | An estimator based on latent variable estimation and thresholding. |
+| Robust POET [@fan2018] | `robustPoetEst` | A robust (and more computationally taxing) take on the POET estimator. |
+
+
+Note that `cvCovEst` only functions with estimators native to this package. If
+you'd like to request a new one, please submit an
+[issue](https://github.com/PhilBoileau/cvCovEst/issues).
+
+## Loss Functions
+
 TODO
 
-# Data Analysis Example
+## Supported Cross-Validation Schemes
 
 TODO
+
+
+# Diagnostic Tools
+
+TODO
+
+# Data Analysis Examples
+
+TODO
+
+## Simulated Data
+
+## Single Cell Transcriptomic Data
 
 ## References
 
