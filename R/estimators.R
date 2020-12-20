@@ -189,7 +189,7 @@ bandingEst <- function(dat, k) {
   # replace the sample covariance matrix
   sam_cov <- replace(sam_cov, which(indicator_matrix == 0), 0)
 
-  return(sam_cov)
+  return(unname(sam_cov))
 }
 
 ###############################################################################

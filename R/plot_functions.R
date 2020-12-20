@@ -806,7 +806,6 @@ cvMultiMelt <- function(dat,
                 abs(estimate)
                 )
 
-
               # Label by Stat
               stat_name <- rep(
                 stat_est,
