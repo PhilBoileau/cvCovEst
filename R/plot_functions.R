@@ -209,7 +209,7 @@ hyperRisk <- function(dat) {
 #'
 #' @importFrom rlang exec
 #'
-#' @keywords external
+#' @export
 summary.cvCovEst <- function(
   dat,
   summ_fun = c("empRiskByClass",
@@ -499,7 +499,7 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
 #' @import ggplot2
 #' @import assertthat
 #'
-#' @keywords external
+#' @keywords internal
 cvMultiMelt <- function(dat,
                         estimator,
                         stat = 'min',
@@ -910,7 +910,7 @@ cvMultiMelt <- function(dat,
 #'
 #' @import ggplot2
 #'
-#' @keywords external
+#' @keywords internal
 cvEigenPlot <- function(dat, estimator, stat = 'min', dat_orig) {
 
   stat_choices <- c(
