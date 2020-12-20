@@ -27,7 +27,7 @@
 #'
 #' @note This is an un-exported function borrowed directly from \pkg{scPCA}.
 #'
-#' @keywords internal
+#' @export
 safeColScale <- function(X,
                          center = TRUE,
                          scale = TRUE,
