@@ -271,7 +271,7 @@ taperingEst <- function(dat, k) {
   weight_matrix <- as.matrix(weight_matrix)
 
   # return the new weight matrix
-  return(weight_matrix)
+  return(unname(weight_matrix))
 }
 
 ###############################################################################
