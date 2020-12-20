@@ -633,9 +633,34 @@ cvMultiMelt <- function(dat,
       ggplot2::facet_wrap(
         facets = vars(estimator)) +
       ggplot2::scale_fill_gradient(
+        name = 'Absolute Value',
         low = "white",
         high = "black",
-        limits = c(0,1))
+        na.value = 'black',
+        limits = c(0,1),
+        labels = c('0', '0.25', '0.5', '0.75', '1')) +
+      theme(legend.position = 'bottom',
+            legend.key.width = unit(10, 'mm'),
+            legend.title = element_text(
+              size = 10,
+              face = 'bold',
+              vjust = 0.75
+            ),
+            legend.text = element_text(
+              size = 8,
+              face = 'bold'),
+            strip.background = element_rect(
+              fill = alpha('darkred', alpha = 0.5),
+              color = 'darkred',
+              size = 0.5
+            ),
+            strip.text = element_text(
+              size = 10,
+              face = 'bold'),
+            panel.background = element_blank(),
+            axis.ticks = element_blank(),
+            axis.text = element_blank(),
+            axis.title = element_blank())
 
     return(plot)
   }
@@ -727,12 +752,12 @@ cvMultiMelt <- function(dat,
               legend.text = element_text(
                 size = 8,
                 face = 'bold'),
-              strip.background.x = element_rect(
+              strip.background = element_rect(
                 fill = alpha('darkred', alpha = 0.5),
                 color = 'darkred',
                 size = 0.5
               ),
-              strip.text.x = element_text(
+              strip.text = element_text(
                 size = 10,
                 face = 'bold'),
               panel.background = element_blank(),
@@ -827,9 +852,12 @@ cvMultiMelt <- function(dat,
           rows = vars(estimator),
           cols = vars(summary_stat)) +
         ggplot2::scale_fill_gradient(
+          name = 'Absolute Value',
           low = "white",
           high = "black",
-          limits = c(0,1)) +
+          na.value = 'black',
+          limits = c(0,1),
+          labels = c('0', '0.25', '0.5', '0.75', '1')) +
         theme(legend.position = 'bottom',
               legend.key.width = unit(10, 'mm'),
               legend.title = element_text(
