@@ -561,6 +561,7 @@ cvMultiMelt <- function(dat,
 
   # Call cvSummary
   cv_sum <- summary.cvCovEst(dat)
+  blues <- brewer.pal(n = 9, name = "Blues")
 
   # Single Stat Option
   if (single_stat){
@@ -606,7 +607,6 @@ cvMultiMelt <- function(dat,
           abs(estimate)
         )
 
-
         # Label by Estimator
         est_name <- rep(
           est,
@@ -633,13 +633,9 @@ cvMultiMelt <- function(dat,
         aes(fill = value)) +
       ggplot2::facet_wrap(
         facets = vars(estimator)) +
-      ggplot2::scale_fill_gradient(
-        name = 'Absolute Value',
-        low = "white",
-        high = "black",
-        na.value = 'black',
-        limits = c(0,1),
-        labels = c('0', '0.25', '0.5', '0.75', '1')) +
+      scale_fill_viridis(
+        option = 'cividis'
+      ) +
       theme(legend.position = 'bottom',
             legend.key.width = unit(10, 'mm'),
             legend.title = element_text(
@@ -651,13 +647,14 @@ cvMultiMelt <- function(dat,
               size = 8,
               face = 'bold'),
             strip.background = element_rect(
-              fill = alpha('darkred', alpha = 0.5),
-              color = 'darkred',
+              fill = alpha(blues[4], alpha = 0.5),
+              color = blues[9],
               size = 0.5
             ),
             strip.text = element_text(
               size = 10,
-              face = 'bold'),
+              face = 'bold',
+              colour = blues[9]),
             panel.background = element_blank(),
             axis.ticks = element_blank(),
             axis.text = element_blank(),
@@ -736,13 +733,9 @@ cvMultiMelt <- function(dat,
         ggplot2::facet_wrap(
           facets = vars(summary_stat),
           nrow = 1) +
-        ggplot2::scale_fill_gradient(
-          name = 'Absolute Value',
-          low = "white",
-          high = "black",
-          na.value = 'black',
-          limits = c(0,1),
-          labels = c('0', '0.25', '0.5', '0.75', '1')) +
+        scale_fill_viridis(
+          option = 'cividis'
+        ) +
         theme(legend.position = 'bottom',
               legend.key.width = unit(10, 'mm'),
               legend.title = element_text(
@@ -754,13 +747,14 @@ cvMultiMelt <- function(dat,
                 size = 8,
                 face = 'bold'),
               strip.background = element_rect(
-                fill = alpha('darkred', alpha = 0.5),
-                color = 'darkred',
+                fill = alpha(blues[4], alpha = 0.5),
+                color = blues[9],
                 size = 0.5
               ),
               strip.text = element_text(
                 size = 10,
-                face = 'bold'),
+                face = 'bold',
+                colour = blues[9]),
               panel.background = element_blank(),
               axis.ticks = element_blank(),
               axis.text = element_blank(),
@@ -851,13 +845,9 @@ cvMultiMelt <- function(dat,
         ggplot2::facet_grid(
           rows = vars(estimator),
           cols = vars(summary_stat)) +
-        ggplot2::scale_fill_gradient(
-          name = 'Absolute Value',
-          low = "white",
-          high = "black",
-          na.value = 'black',
-          limits = c(0,1),
-          labels = c('0', '0.25', '0.5', '0.75', '1')) +
+        scale_fill_viridis(
+          option = 'cividis'
+        ) +
         theme(legend.position = 'bottom',
               legend.key.width = unit(10, 'mm'),
               legend.title = element_text(
@@ -869,13 +859,14 @@ cvMultiMelt <- function(dat,
                 size = 8,
                 face = 'bold'),
               strip.background = element_rect(
-                fill = alpha('darkred', alpha = 0.5),
-                color = 'darkred',
+                fill = alpha(blues[4], alpha = 0.5),
+                color = blues[9],
                 size = 0.5
               ),
               strip.text = element_text(
                 size = 10,
-                face = 'bold'),
+                face = 'bold',
+                colour = blues[9]),
               panel.background = element_blank(),
               axis.ticks = element_blank(),
               axis.text = element_blank(),

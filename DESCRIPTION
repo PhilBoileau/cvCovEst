@@ -43,6 +43,7 @@ Imports:
     ggplot2,
     viridis,
     viridisLite,
+    RColorBrewer,
     gridExtra
 Suggests:
     testthat,
