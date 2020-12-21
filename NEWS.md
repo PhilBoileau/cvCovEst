@@ -1,3 +1,7 @@
+# cvCovEst 0.1.2 (2020-12-21)
+
++ Completed vignette.
+
 # cvCovEst 0.1.1 (2020-12-06)
 
 + `robustPoetEst` has been added to the library of candidate estimators.
