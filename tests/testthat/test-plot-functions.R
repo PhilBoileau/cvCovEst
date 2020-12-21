@@ -64,10 +64,10 @@ test_that("Objects of other known classes throw an error", {
 
 test_that("Only current implemented summary functions are allowed", {
   expect_silent(
-    summary(cvTest, summary = 'bestInClass')
+    summary(cvTest, summ_fun = 'bestInClass')
   )
   expect_error(
-    summary(cvTest, summary = 'other')
+    summary(cvTest, summ_fun = 'other')
   )
 })
 

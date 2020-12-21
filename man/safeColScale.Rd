@@ -44,4 +44,3 @@ on \pkg{matrixStats} for a key internal computation.
 \note{
 This is an un-exported function borrowed directly from \pkg{scPCA}.
 }
-\keyword{internal}

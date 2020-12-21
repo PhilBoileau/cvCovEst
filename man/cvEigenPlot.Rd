@@ -4,7 +4,7 @@
 \alias{cvEigenPlot}
 \title{Eigenvalue Plot}
 \usage{
-cvEigenPlot(dat, estimator, stat = "min", dat_orig)
+cvEigenPlot(dat, estimator, stat = "min", dat_orig, k, leading = TRUE)
 }
 \arguments{
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
@@ -20,12 +20,21 @@ estimator.}
 
 \item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
 object originally passed to \code{cvCovEst}.}
+
+\item{k}{The number of eigenvalues to plot.  Must be less than or equal to
+the number of columns of the original data matrix.}
+
+\item{leading}{A \code{logical} indicating if the leading eigenvalues should
+be used.  Defautlt is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
+will be used instead.}
 }
 \value{
-A plot of the leading eigenvalues for each estimator specified.
+A plot, or grid of plots, showing the k leading or trailing
+eigenvalues of the specified estimators and associated summary statistics of
+the empirical risk.
 }
 \description{
 \code{cvEigenPlot} plots the eigenvalues of one or more
 estimators produced by \code{cvCovEst}.
 }
-\keyword{external}
+\keyword{internal}

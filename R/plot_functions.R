@@ -498,6 +498,7 @@ cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
 #' @importFrom dplyr filter %>%
 #' @import ggplot2
 #' @import assertthat
+#' @import viridis
 #'
 #' @keywords internal
 cvMultiMelt <- function(dat,
@@ -906,20 +907,25 @@ cvMultiMelt <- function(dat,
 #' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{cvCovEst}.
 #'
-#' @return A plot of the leading eigenvalues for each estimator specified.
+#' @param k The number of eigenvalues to plot.  Must be less than or equal to
+#'  the number of columns of the original data matrix.
+#'
+#' @param leading A \code{logical} indicating if the leading eigenvalues should
+#'  be used.  Defautlt is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
+#'  will be used instead.
+#'
+#' @return A plot, or grid of plots, showing the k leading or trailing
+#'  eigenvalues of the specified estimators and associated summary statistics of
+#'  the empirical risk.
 #'
 #' @import ggplot2
+#' @importFrom RSpectra eigs_sym
 #'
 #' @keywords internal
-cvEigenPlot <- function(dat, estimator, stat = 'min', dat_orig) {
+cvEigenPlot <- function(
+  dat, estimator, stat = 'min', dat_orig, k, leading = TRUE) {
 
-  stat_choices <- c(
-    "min",
-    "Q1",
-    "Q2",
-    "Q3",
-    "max"
-  )
+  stat_choices <- c("min", "Q1", "Q2", "Q3", "max")
 
   has_hypers <- c(
     "linearShrinkEst", "thresholdingEst",
@@ -965,11 +971,28 @@ cvEigenPlot <- function(dat, estimator, stat = 'min', dat_orig) {
     msg = "Only estimators passed to cvCovEst can be plotted."
   )
 
-  # Call cvSummary
+  # Check for appropriate k value
+  p <- ncol(dat_orig)
+  assertthat::assert_that(
+    k <= p,
+    msg = 'k must be less than or equal to the number of columns of dat_orig.'
+  )
+
+  # Determine leading/trailing and set index accordingly
+  eig_type <- ifelse(leading, "LA", "SA")
+  if (leading) {
+    index <- seq(k)
+  }
+  else{
+    index <- seq(p - k + 1, p)
+  }
+
+  # Get Summary Output
   cv_sum <- summary.cvCovEst(dat)
 
   # Single Estimator Option
   if (single_est){
+    # Has Hypers
     if (estimator %in% has_hypers) {
       estimatorStats <- cv_sum$hyperRisk[[estimator]]
 
@@ -998,15 +1021,13 @@ cvEigenPlot <- function(dat, estimator, stat = 'min', dat_orig) {
           )
 
           # Get the eigenvalues
-          n <- nrow(estimate)
-          k <- floor(0.95*n)
-
           estEigs <- data.frame(
-            index = (n - k + 1):n,
-            eigenvalues = RSpectra::eigs_sym(
-              estimate,
-              k = k,
-              which = "SA")$values,
+            index = index,
+            eigenvalues = suppressWarnings(
+              RSpectra::eigs_sym(
+                estimate,
+                k = k,
+                which = eig_type)$values),
             stat = rep(
               stat_est,
               k
@@ -1016,13 +1037,12 @@ cvEigenPlot <- function(dat, estimator, stat = 'min', dat_orig) {
           return(estEigs)
         })
 
-      stat_eigs <- dplyr::bind_rows(
-        stat_eigs
-        )
+      # Combine and Re-factor
+      stat_eigs <- dplyr::bind_rows(stat_eigs)
     }
-    # If No Hyperparameters
+    # No Hypers
     else{
-      if (!single_est) {
+      if (!single_stat) {
         message(
           "Estimator has no hyperparameters.  All stats yield same estimate."
         )
@@ -1031,101 +1051,108 @@ cvEigenPlot <- function(dat, estimator, stat = 'min', dat_orig) {
         estimator,
         dat_orig
       )
-
-      n <- nrow(estimate)
-      k <- floor(0.95*n)
-
+      # Create Data Frame
       stat_eigs <- data.frame(
-        index = (n - k + 1):n,
-        eigenvalues = RSpectra::eigs_sym(
-          estimate,
-          k = k,
-          which = "SA")$values,
+        index = index,
+        eigenvalues = suppressWarnings(
+          RSpectra::eigs_sym(
+            estimate,
+            k = k,
+            which = eig_type)$values),
         stat = rep(
-          'min',
+          stat_est,
           k
         )
       )
     }
-
+    # Re-factor
+    stat_eigs$stat <- factor(
+      stat_eigs$stat,
+      levels = stat_choices
+    )
+    # Generate Plot
     plot <- ggplot2::ggplot(
       stat_eigs,
       aes(x = index,
           y = eigenvalues,
           color = stat)) +
-      geom_path(size = 0.5)
+      geom_path()
+
     return(plot)
   }
   # Multiple Estimators
   else{
-    assertthat::assert_that(
-      single_stat == TRUE,
-      msg = "Only one stat can be used when comparing multiple estimators."
+    stat_eigs <- lapply(
+      stat,
+      function(stat_est) {
+
+      est_eigs <- lapply(
+        estimator,
+        function(est) {
+          # Has Hypers
+          if (est %in% has_hypers){
+            estimatorStats <- cv_sum$hyperRisk[[est]]
+
+            estHypers <- getHypers(
+              dat = estimatorStats,
+              summ_stat = stat_est
+            )
+
+            # Run The Associated Estimator
+            dat = list(dat_orig)
+            arg_names <- c('dat', estHypers$hyperNames)
+
+            estArgs <- append(
+              dat,
+              estHypers$hyperValues
+            )
+            names(estArgs) <- arg_names
+
+            estimate <- rlang::exec(
+              est,
+              !!!estArgs
+            )
+          }
+          # No Hypers
+          else{
+            estimate <- rlang::exec(
+              est,
+              dat_orig
+            )
+          }
+          # Create Data Frame
+          eigs_df <- data.frame(
+            index = index,
+            eigenvalues = suppressWarnings(
+              RSpectra::eigs_sym(estimate, k = k, which = eig_type)$values
+              ),
+            stat = rep(stat_est, k),
+            estimator = rep(est, k)
+          )
+
+          return(eigs_df)
+          })
+      return(est_eigs)
+      })
+
+    # Combine and Re-factor
+    stat_eigs <- dplyr::bind_rows(stat_eigs)
+    stat_eigs$stat <- factor(
+      stat_eigs$stat,
+      levels = stat_choices
     )
-
-    est_eigs <- lapply(
-      estimator,
-      function(est) {
-        if (est %in% has_hypers){
-          estimatorStats <- cv_sum$hyperRisk[[est]]
-
-          estHypers <- getHypers(
-            dat = estimatorStats,
-            summ_stat = stat
-          )
-
-          # Run The Associated Estimator
-          dat = list(dat_orig)
-          arg_names <- c('dat', estHypers$hyperNames)
-
-          estArgs <- append(
-            dat,
-            estHypers$hyperValues
-          )
-          names(estArgs) <- arg_names
-
-          estimate <- rlang::exec(
-            est,
-            !!!estArgs
-          )
-        }
-        else{
-          estimate <- rlang::exec(
-            est,
-            dat_orig
-          )
-        }
-
-        n <- nrow(estimate)
-        k <- floor(0.95*n)
-
-        eigs_df <- data.frame(
-          index = (n - k + 1):n,
-          eigenvalues = RSpectra::eigs_sym(
-            estimate,
-            k = k,
-            which = "SA")$values,
-          stat = rep(
-            stat,
-            k
-          ),
-          estimator = rep(
-            est,
-            k
-          )
-        )
-
-        return(eigs_df)
-        })
-
-    est_eigs <- dplyr::bind_rows(est_eigs)
-
+    stat_eigs$estimator <- factor(
+      stat_eigs$estimator,
+      levels = cv_sum$bestInClass$estimator
+    )
+    # Generate Plot
     plot <- ggplot2::ggplot(
-      est_eigs,
+      stat_eigs,
       aes(x = index,
           y = eigenvalues,
           color = estimator)) +
-      geom_path(size = 0.5)
+      geom_path() +
+      facet_wrap(facets = vars(stat), nrow = 1)
     return(plot)
   }
 }

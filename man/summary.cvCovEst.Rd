@@ -22,4 +22,3 @@ of the requested summaries.
 The \code{summary} method provides summary statistics regarding
 the performance of \code{cvCovEst} and can be used for diagnostic plotting.
 }
-\keyword{external}

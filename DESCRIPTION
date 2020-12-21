@@ -40,7 +40,10 @@ Imports:
     future,
     future.apply,
     reshape2,
-    ggplot2
+    ggplot2,
+    viridis,
+    viridisLite,
+    gridExtra
 Suggests:
     testthat,
     knitr,

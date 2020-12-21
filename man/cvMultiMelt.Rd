@@ -29,4 +29,4 @@ The \code{cvMultiMelt} compares the structure of two or more
 covariance matrix estimators through a grid of heat maps, where each heat map
 corresponds to a different estimator.
 }
-\keyword{external}
+\keyword{internal}
