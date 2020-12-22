@@ -17,4 +17,3 @@ class \code{cvCovEst}.
 \code{is.cvCovEst} provides a generic method for checking if
 input is of class \code{cvCovEst}.
 }
-\keyword{external}

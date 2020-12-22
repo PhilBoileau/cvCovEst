@@ -334,140 +334,6 @@ getHypers <- function(dat, summ_stat) {
   return(hypers)
 }
 
-################################################################################
-#' Single Heat Map Plot
-#'
-#' @description The \code{cvSingleMelt} plots a heat map visualization of a
-#' single estimator for the covariance matrix.
-#'
-#' @param dat A named \code{list}.  Specifically, this is the standard output of
-#' \code{cvCovEst}.
-#'
-#' @param estimator A single string specifying which class of estimator to
-#' visualize.
-#'
-#' @param stat A single string specifying the performance of the chosen
-#' estimator.  The two options are \code{"best"} for the best performing
-#' estimator and \code{"worst"} for the worst performing estimator.
-#'
-#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
-#'  object originally passed to \code{cvCovEst}.
-#'
-#' @return A heat map plot of the desired covariance matrix estimator.
-#'
-#' @importFrom rlang exec
-#' @importFrom reshape2 melt
-#' @importFrom stringr str_split
-#' @importFrom dplyr filter %>%
-#' @import ggplot2
-#'
-#' @keywords external
-cvSingleMelt <- function(dat, estimator, stat, dat_orig) {
-  # add checks here for assuring cvCovEst output
-
-  est_name <- estimator
-  has_hypers <- c(
-    "linearShrinkEst", "thresholdingEst",
-    "bandingEst", "taperingEst",
-    "scadEst", "poetEst", "robustPoetEst",
-    "adaptiveLassoEst"
-  )
-
-  best_vs_worst <- summary.cvCovEst(
-    dat,
-    summary = c(
-      'bestInClass',
-      'worstInClass'
-      )
-    )
-
-  if (stat == 'best') {
-    est <- best_vs_worst$bestInClass %>%
-      dplyr::filter(
-        estimator == est_name
-      )
-  }
-  else{
-    est <- best_vs_worst$worstInClass %>%
-      dplyr::filter(
-        estimator == est_name
-      )
-  }
-
-  if (estimator %in% has_hypers) {
-
-    hyper_list <- as.list(
-      stringr::str_split(
-        est[1, 2], ", "
-      ) %>% unlist()
-    )
-
-    estHypers <- lapply(
-      hyper_list,
-      function(s) {
-        hyper <- stringr::str_split(
-          s, "= "
-          ) %>% unlist()
-
-        hyper_value <- as.numeric(hyper[2])
-
-        return(hyper_value)
-        }
-      )
-
-    hyperNames <- lapply(
-      hyper_list,
-      function(s) {
-        hyper <- stringr::str_split(
-          s, "= "
-        ) %>% unlist()
-
-        return(
-          stringr::str_squish(hyper[1])
-        )
-      }) %>% unlist()
-
-    dat = list(dat_orig)
-    arg_names <- c('dat', hyperNames)
-
-    estArgs <- append(
-      dat,
-      estHypers
-    )
-    names(estArgs) <- arg_names
-
-    estimate <- rlang::exec(
-      estimator,
-      !!!estArgs
-      )
-  }
-  else{
-    estimate <- rlang::exec(
-      estimator,
-      dat_orig
-    )
-  }
-
-  meltEst <- abs(
-    reshape2::melt(estimate)
-    )
-
-  meltEst$Var1 <- rev(meltEst$Var1)
-
-  plot <- ggplot2::ggplot(
-    meltEst,
-    aes(x = Var1, y = Var2)
-    ) +
-    ggplot2::geom_raster(
-      aes(fill = value)) +
-    ggplot2::scale_fill_gradient(
-      low = "white",
-      high = "black",
-      limits = c(0,1))
-
-  return(plot)
-
-}
 
 ################################################################################
 #' Multiple Heat Map Plot
@@ -1160,18 +1026,179 @@ cvEigenPlot <- function(
 #' @param estimator A character vector specifying one or more classes of
 #' estimators to compare.
 #'
+#' @param conf A \code{logical} indicating whether confidence intervals should
+#'  be displayed for line plots.  Default is \code{FALSE}.
+#'
 #' @return A single plot or grid of plots for each estimator specified.
 #'
 #' @importFrom reshape2 melt
 #' @importFrom stringr str_split
-#' @importFrom dplyr filter %>%
+#' @importFrom dplyr group_by filter %>%
 #' @import ggplot2
 #' @import assertthat
 #' @import viridis
 #'
 #' @keywords internal
-cvRiskPlot <- function(dat, estimator) {
+cvRiskPlot <- function(dat, est, conf = FALSE) {
 
+  # Exclude estimators with 2+ hyperparameters for now
+  invalid_est <- c('poetEst',
+                          'adaptiveLassoEst',
+                          'robustPoetEst')
+
+  est <- est[which(est %in% invalid_est == FALSE)]
+
+  blues <- RColorBrewer::brewer.pal(9, 'Blues')
+  pretty_args <- list(
+    mc = 'Monte Carlo CV',
+    v_fold = "V-fold CV",
+    cvMatrixFrobeniusLoss = "Matrix Frobenius Loss",
+    cvFrobeniusLoss = "Scaled Frobenius Loss"
+
+  )
+
+  if (dat$args$cv_scheme == 'mc'){
+    scheme <- paste(
+      pretty_args$mc, "split", dat$args$mc_split, sep = " "
+      )
+  }
+  else{
+    scheme <- pretty_args$v_fold
+  }
+
+  folds <- paste(dat$args$v_fold, "folds", sep = " ")
+  loss <- pretty_args[[rlang::as_label(dat$args$cv_loss)]]
+
+  cv_details <- paste(scheme, folds, loss, sep = "  ||  ")
+
+
+  # For Confidence Intervals
+  if (conf) {
+    # Check for enough fold observations -- Can change to warning/change min folds
+    assert_that(
+      dat$args$v_folds >= 20,
+      msg = 'v_folds must be >= 20 for reliable confidence intervals.')
+
+    risk <- dat$cv_df %>%
+      filter(estimator %in% est) %>%
+      group_by(estimator, hyperparameters) %>%
+      summarise(empirical_risk = mean(loss),
+                lower = t.test(loss)$conf.int[1],
+                upper = t.test(loss)$conf.int[2],
+                .groups = 'keep')
+
+    hyperVals <- lapply(
+      risk$hyperparameters,
+      function(h) {
+        h_split <- stringr::str_split(
+          h, "= ") %>% unlist()
+
+        return(as.numeric(h_split[2]))
+
+    }) %>% unlist()
+
+    risk$hyperparameters <- hyperVals
+    risk <- risk %>%
+      group_by(estimator) %>%
+      arrange(hyperparameters, .by_group = TRUE)
+
+    plot <- ggplot(risk) +
+      geom_path(aes(x = hyperparameters, y = empirical_risk)) +
+      geom_path(aes(x = hyperparameters, y = lower),
+                color = alpha(blues[8], 0.5)) +
+      geom_path(aes(x = hyperparameters, y = upper),
+                color = alpha(blues[8], 0.5)) +
+      facet_wrap(facets = vars(estimator),
+                 scales = "free_x") +
+      labs(title = 'cvCovEst Empirical Risk',
+           caption = cv_details) +
+      xlab("Hyperparameter") +
+      ylab("Risk") +
+      theme(strip.background = element_rect(
+              fill = alpha(blues[4], alpha = 0.5),
+              color = blues[9],
+              size = 0.5
+            ),
+            strip.text = element_text(
+              size = 10,
+              face = 'bold',
+              colour = blues[9]),
+            axis.title = element_text(
+              size = 12),
+            axis.text = element_text(
+              size = 10),
+            plot.title = element_text(
+              hjust = 0.5,
+              size = 14
+            ),
+            plot.caption = element_text(
+              hjust = 0,
+              size = 10,
+              face = 'italic'
+            ),
+            panel.background = element_blank(),
+            panel.border = element_rect(fill = NA),
+            panel.grid = element_line(color = alpha(blues[3], 0.75)))
+
+    return(plot)
+
+  }
+  # No Confidence Intervals
+  else{
+    risk <- dat$risk_df %>%
+      filter(estimator %in% est)
+
+    hyperVals <- lapply(
+      risk$hyperparameters,
+      function(h) {
+        h_split <- stringr::str_split(
+          h, "= ") %>% unlist()
+
+        return(as.numeric(h_split[2]))
+
+      }) %>% unlist()
+
+    risk$hyperparameters <- hyperVals
+    risk <- risk %>%
+      group_by(estimator) %>%
+      arrange(hyperparameters, .by_group = TRUE)
+
+    plot <- ggplot(risk) +
+      geom_path(aes(x = hyperparameters, y = empirical_risk)) +
+      facet_wrap(facets = vars(estimator),
+                 scales = "free_x") +
+      labs(title = 'cvCovEst Empirical Risk',
+           caption = cv_details) +
+      xlab("Hyperparameter") +
+      ylab("Risk") +
+      theme(strip.background = element_rect(
+        fill = alpha(blues[4], alpha = 0.5),
+        color = blues[9],
+        size = 0.5
+      ),
+      strip.text = element_text(
+        size = 10,
+        face = 'bold',
+        colour = blues[9]),
+      axis.title = element_text(
+        size = 12),
+      axis.text = element_text(
+        size = 10),
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 14
+      ),
+      plot.caption = element_text(
+        hjust = 0,
+        size = 10,
+        face = 'italic'
+      ),
+      panel.background = element_blank(),
+      panel.border = element_rect(fill = NA),
+      panel.grid = element_line(color = alpha(blues[3], 0.75)))
+
+    return(plot)
+  }
 }
 
 
