@@ -12,7 +12,7 @@
 #' @return A \code{logical} indicating \code{TRUE} if \code{x} inherits from
 #' class \code{cvCovEst}.
 #'
-#' @keywords external
+#' @export
 is.cvCovEst <- function(x) {
   inherits(x, "cvCovEst")
 }
@@ -1148,7 +1148,31 @@ cvEigenPlot <- function(
   }
 }
 
+################################################################################
+#' Empirical Risk Plot
+#'
+#' @description \code{cvRiskPlot} plots the empirical risk for a given estimator,
+#'  or set of estimators, as a function of the hyperparameters.
+#'
+#' @param dat A named \code{list}.  Specifically, this is the standard output of
+#' \code{cvCovEst}.
+#'
+#' @param estimator A character vector specifying one or more classes of
+#' estimators to compare.
+#'
+#' @return A single plot or grid of plots for each estimator specified.
+#'
+#' @importFrom reshape2 melt
+#' @importFrom stringr str_split
+#' @importFrom dplyr filter %>%
+#' @import ggplot2
+#' @import assertthat
+#' @import viridis
+#'
+#' @keywords internal
+cvRiskPlot <- function(dat, estimator) {
 
+}
 
 
 
