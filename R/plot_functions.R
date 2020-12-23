@@ -825,7 +825,11 @@ cvMultiMelt <- function(dat,
 #'  the empirical risk.
 #'
 #' @import ggplot2
+#' @import viridis
+#' @importFrom RColorBrewer brewer.pal
 #' @importFrom RSpectra eigs_sym
+#' @importFrom rlang exec
+#'
 #'
 #' @keywords internal
 cvEigenPlot <- function(
@@ -895,6 +899,7 @@ cvEigenPlot <- function(
 
   # Get Summary Output
   cv_sum <- summary.cvCovEst(dat)
+  blues <- RColorBrewer::brewer.pal(9, "Blues")
 
   # Single Estimator Option
   if (single_est){
