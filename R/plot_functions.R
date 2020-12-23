@@ -546,6 +546,7 @@ cvMultiMelt <- function(dat,
       ggplot2::facet_wrap(
         facets = vars(estimator)) +
       scale_fill_viridis(
+        name = "Covariance (abs. value)",
         option = 'cividis'
       ) +
       theme(legend.position = 'bottom',
@@ -646,6 +647,7 @@ cvMultiMelt <- function(dat,
           facets = vars(summary_stat),
           nrow = 1) +
         scale_fill_viridis(
+          name = "Covariance (abs. value)",
           option = 'cividis'
         ) +
         theme(legend.position = 'bottom',
@@ -758,6 +760,7 @@ cvMultiMelt <- function(dat,
           rows = vars(estimator),
           cols = vars(summary_stat)) +
         scale_fill_viridis(
+          name = "Covariance (abs. value)",
           option = 'cividis'
         ) +
         theme(legend.position = 'bottom',
@@ -979,7 +982,47 @@ cvEigenPlot <- function(
       aes(x = index,
           y = eigenvalues,
           color = stat)) +
-      geom_path()
+      geom_path() +
+      scale_color_viridis_d() +
+      xlab("Eigenvalue Index") +
+      ylab("Eigenvalue") +
+      theme(
+        legend.key = element_blank(),
+        legend.box.background = element_rect(
+          fill = NA,
+          size = 0.75
+        ),
+        legend.title = element_text(
+          size = 10,
+          face = 'bold',
+          vjust = 0.75
+        ),
+        legend.text = element_text(
+          size = 10),
+        strip.background = element_rect(
+          fill = alpha(blues[4], alpha = 0.5),
+          color = blues[9],
+          size = 0.5),
+        strip.text = element_text(
+          size = 10,
+          face = 'bold',
+          colour = blues[9]),
+        axis.title = element_text(
+          size = 12),
+        axis.text = element_text(
+          size = 10),
+        plot.title = element_text(
+          hjust = 0.5,
+          size = 14),
+        plot.caption = element_text(
+          hjust = 0,
+          size = 10,
+          face = 'italic'),
+        panel.background = element_blank(),
+        panel.border = element_rect(
+          fill = NA),
+        panel.grid = element_line(
+          color = alpha(blues[3], 0.75)))
 
     return(plot)
   }
@@ -1053,9 +1096,51 @@ cvEigenPlot <- function(
       stat_eigs,
       aes(x = index,
           y = eigenvalues,
-          color = estimator)) +
+          color = stat)) +
       geom_path() +
-      facet_wrap(facets = vars(stat), nrow = 1)
+      facet_wrap(facets = vars(estimator)) +
+      scale_color_viridis_d(
+        name = 'Risk Stats'
+      ) +
+      xlab("Eigenvalue Index") +
+      ylab("Eigenvalue") +
+      theme(
+        legend.key = element_blank(),
+        legend.box.background = element_rect(
+          fill = NA,
+          size = 0.75
+        ),
+        legend.title = element_text(
+          size = 10,
+          face = 'bold',
+          vjust = 0.75
+        ),
+        legend.text = element_text(
+          size = 10),
+        strip.background = element_rect(
+          fill = alpha(blues[4], alpha = 0.5),
+          color = blues[9],
+          size = 0.5),
+        strip.text = element_text(
+          size = 10,
+          face = 'bold',
+          colour = blues[9]),
+        axis.title = element_text(
+          size = 12),
+        axis.text = element_text(
+          size = 10),
+        plot.title = element_text(
+          hjust = 0.5,
+          size = 14),
+        plot.caption = element_text(
+          hjust = 0,
+          size = 10,
+          face = 'italic'),
+        panel.background = element_blank(),
+        panel.border = element_rect(
+          fill = NA),
+        panel.grid = element_line(
+          color = alpha(blues[3], 0.75)))
     return(plot)
   }
 }
@@ -1151,10 +1236,8 @@ cvRiskPlot <- function(dat, est, conf = FALSE) {
 
     plot <- ggplot(risk) +
       geom_path(aes(x = hyperparameters, y = empirical_risk)) +
-      geom_path(aes(x = hyperparameters, y = lower),
-                color = alpha(blues[8], 0.5)) +
-      geom_path(aes(x = hyperparameters, y = upper),
-                color = alpha(blues[8], 0.5)) +
+      geom_ribbon(aes(x = hyperparameters, ymin = lower, ymax = upper),
+                  fill = alpha(blues[8], 0.25)) +
       facet_wrap(facets = vars(estimator),
                  scales = "free_x") +
       labs(title = 'cvCovEst Empirical Risk',
