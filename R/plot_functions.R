@@ -275,22 +275,66 @@ summary.cvCovEst <- function(
 #' Hyperparameter Retrieval Function
 #'
 #' @description The \code{getHypers} retrieves the names and values of all
-#' hyperparameters associated with an estimator passed to \code{cvCovEst}.
+#'  hyperparameters associated with an estimator passed to \code{cvCovEst}.
 #'
 #' @param dat A \code{data.frame} of estimators and their hyperparameter values.
-#' Specifically, this is one of the outputs of \code{cvSummary}.
+#'  Specifically, this is one of the outputs of \code{summary.cvCovEst} or
+#'  \code{cvCovEst}.
 #'
 #' @param summ_stat A character vector specifying the summary statistic of
-#' interest.
+#'  interest.
+#'
+#' @param new_df A \code{logical} indicating whether a new \code{data.frame}
+#'  should be returned with columns for individual hyperparameters.  Default is
+#'  \code{FALSE}.
 #'
 #' @return A named \code{list} containing the names of all hyperparameters and
-#' their associated values.
+#'  their associated values, or a new wider \code{data.frame}.
 #'
 #' @importFrom rlang exec
 #' @importFrom stringr str_split
 #'
 #' @keywords internal
-getHypers <- function(dat, summ_stat) {
+getHypers <- function(dat, summ_stat, new_df = FALSE) {
+
+  if (new_df){
+
+    hypers <- lapply(
+      dat$hyperparameters,
+      function(h){
+        h_split <- stringr::str_split(
+          h, ", "
+        ) %>% unlist()
+
+        n <- length(h_split)
+
+        hyperNames <- rep(" ", n)
+        hyperVals <- rep(0, n)
+
+        for (i in 1:n) {
+          h_split2 <- stringr::str_split(
+            h_split[i], "= "
+            ) %>% unlist()
+
+          hyperNames[i] <- stringr::str_squish(h_split2[1])
+          if (h_split2[2] %in% c('mad', 'sample', 'huber')){
+            hyperVals[i] <- stringr::str_squish(h_split2[2])
+          }
+          else{
+            hyperVals[i] <- as.numeric(h_split2[2])
+          }
+        }
+
+        hyperList <- as.list(hyperVals)
+        names(hyperList) <- hyperNames
+
+        return(hyperList)
+      })
+
+    hypers <- data.table::rbindlist(hypers)
+    hypers <- cbind(dat[,1], hypers, dat[,3])
+  }
+  else{
 
   hyperList <- as.list(
     stringr::str_split(
@@ -330,6 +374,7 @@ getHypers <- function(dat, summ_stat) {
     hyperNames = hyperNames,
     hyperValues = hyperValues
   )
+  }
 
   return(hypers)
 }
@@ -365,6 +410,7 @@ getHypers <- function(dat, summ_stat) {
 #' @import ggplot2
 #' @import assertthat
 #' @import viridis
+#' @import RColorBrewer
 #'
 #' @keywords internal
 cvMultiMelt <- function(dat,
@@ -427,7 +473,7 @@ cvMultiMelt <- function(dat,
 
   # Call cvSummary
   cv_sum <- summary.cvCovEst(dat)
-  blues <- brewer.pal(n = 9, name = "Blues")
+  blues <- RColorBrewer::brewer.pal(n = 9, name = "Blues")
 
   # Single Stat Option
   if (single_stat){
@@ -1031,20 +1077,21 @@ cvEigenPlot <- function(
 #'
 #' @return A single plot or grid of plots for each estimator specified.
 #'
-#' @importFrom reshape2 melt
 #' @importFrom stringr str_split
 #' @importFrom dplyr group_by filter %>%
+#' @importFrom stats t.test
 #' @import ggplot2
 #' @import assertthat
 #' @import viridis
+#' @importFrom RColorBrewer brewer.pal
 #'
 #' @keywords internal
 cvRiskPlot <- function(dat, est, conf = FALSE) {
 
   # Exclude estimators with 2+ hyperparameters for now
   invalid_est <- c('poetEst',
-                          'adaptiveLassoEst',
-                          'robustPoetEst')
+                   'adaptiveLassoEst',
+                   'robustPoetEst')
 
   est <- est[which(est %in% invalid_est == FALSE)]
 
