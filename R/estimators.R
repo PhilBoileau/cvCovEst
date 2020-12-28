@@ -1,12 +1,12 @@
 #' Linear Shrinkage Estimator
 #'
 #' @description \code{linearShrinkEst} computes the linear shrinkage estimate
-#'   of the covariance matrix for a given value of \code{alpha}. The linear
-#'   shrinkage estimator is defined as the convex combination of the sample
-#'   covariance matrix and the identity matrix. The choice of \code{alpha}
-#'   determines the bias-variance tradeoff of the estimators in this class:
-#'   values near 1 are more likely to exhibit high variance but low bias, and
-#'   values near 0 are more likely to be be very biased but have low variance.
+#'  of the covariance matrix for a given value of \code{alpha}. The linear
+#'  shrinkage estimator is defined as the convex combination of the sample
+#'  covariance matrix and the identity matrix. The choice of \code{alpha}
+#'  determines the bias-variance tradeoff of the estimators in this class:
+#'  values near 1 are more likely to exhibit high variance but low bias, and
+#'  values near 0 are more likely to be be very biased but have low variance.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param alpha A \code{numeric} between 0 and 1 defining convex combinations
@@ -31,7 +31,7 @@ linearShrinkEst <- function(dat, alpha) {
   return(alpha * sample_cov_mat + (1 - alpha) * idn_pn)
 }
 
-################################################################################
+###############################################################################
 
 #' Ledoit-Wolf Linear Shrinkage Estimator
 #'
@@ -45,13 +45,13 @@ linearShrinkEst <- function(dat, alpha) {
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
-#' @return A \code{matrix} corresponding to the Ledoit-Wolf linear shrinkgage
+#' @importFrom matrixStats sum2
+#'
+#' @return A \code{matrix} corresponding to the Ledoit-Wolf linear shrinkage
 #'  estimate of the covariance matrix.
 #'
 #' @references
-#'   \insertAllCited{}
-#'
-#' @importFrom matrixStats sum2
+#'  \insertAllCited{}
 #'
 #' @export
 linearShrinkLWEst <- function(dat) {
@@ -80,10 +80,12 @@ linearShrinkLWEst <- function(dat) {
   b_n_2 <- min(b_bar_n_2, d_n_2)
 
   # compute the estimator
-  return(b_n_2 / d_n_2 * m_n * idn_pn + (d_n_2 - b_n_2) / d_n_2 * sample_cov_mat)
+  estimate <- (b_n_2 / d_n_2) * m_n * idn_pn +
+    (d_n_2 - b_n_2) / d_n_2 * sample_cov_mat
+  return(estimate)
 }
 
-################################################################################
+###############################################################################
 
 #' Hard Thresholding Estimator
 #'
@@ -95,15 +97,16 @@ linearShrinkLWEst <- function(dat) {
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param gamma A non-negative \code{numeric} defining the amount of hard
-#' thresholding applied to each element of \code{dat}'s sample covariance matrix.
+#'  thresholding applied to each element of \code{dat}'s sample covariance
+#'  matrix.
 #'
 #' @importFrom coop covar
 #'
-#' @references
-#'   \insertAllCited{}
-#'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'   matrix.
+#'
+#' @references
+#'   \insertAllCited{}
 #'
 #' @export
 thresholdingEst <- function(dat, gamma) {
@@ -111,22 +114,23 @@ thresholdingEst <- function(dat, gamma) {
   sample_cov_mat <- coop::covar(dat)
 
   # apply threshold by removing all elements smaller than gamma
-  return(replace(sample_cov_mat, abs(sample_cov_mat) < gamma, 0))
+  estimate <- replace(sample_cov_mat, abs(sample_cov_mat) < gamma, 0)
+  return(estimate)
 }
 
-################################################################################
+###############################################################################
 
 #' Sample Covariance Matrix
 #'
 #' @description \code{sampleCovEst} computes the sample covariance matrix. This
-#'   function is a simple wrapper around \code{\link[stats]{cov}}.
+#'  function is a simple wrapper around \code{\link[stats]{cov}}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
 #' @importFrom coop covar
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
-#'   matrix.
+#'  matrix.
 #'
 #' @export
 sampleCovEst <- function(dat) {
@@ -134,61 +138,57 @@ sampleCovEst <- function(dat) {
   return(coop::covar(dat))
 }
 
-
-################################################################################
+###############################################################################
 
 #' Banding Estimator
 #'
-#' @description \code{bandingEst} estimates the covariance matrix of a data frame
-#'   with ordered variables by forcing off-diagonal entries to be zero for
-#'   indicies that are far removed from one another.  The i, j - entry of the
-#'   estimated covariance matrix will be zero if the absolute value of i - j is
-#'   greater than some non-negative constant, \code{k}. This estimator was
-#'   put forth by \insertCite{bickel2008_banding;textual}{cvCovEst}.
+#' @description \code{bandingEst} estimates the covariance matrix of data with
+#'  ordered variables by forcing off-diagonal entries to be zero for indices
+#'  that are far removed from one another. The {i,j} entry of the estimated
+#'  covariance matrix will be zero if the absolute value of {i - j} is
+#'  greater than some non-negative constant, \code{k}. This estimator was
+#'  proposed by \insertCite{bickel2008_banding;textual}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param k A non-negative, numeric integer
 #'
 #' @importFrom coop covar
-#' @importFrom dplyr bind_cols
-#'
-#' @references
-#'   \insertAllCited{}
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
-#'   matrix.
+#'  matrix.
+#'
+#' @references
+#'  \insertAllCited{}
 #'
 #' @export
 bandingEst <- function(dat, k) {
 
   # compute the sample covariance matrix
   sam_cov <- coop::covar(dat)
+  ncol_sampcov <- ncol(sam_cov)
 
-  n <- ncol(sam_cov)
-
-  # loop over different indicies to create an indicator matrix
-  indicator_list <- lapply(1:n, function(i) {
+  # loop over different indices to create an indicator matrix
+  indicator_list <- lapply(seq_len(ncol_sampcov), function(i) {
     # only consider the lower triangular matrix entries
-    j <- i:n
+    j <- seq(i, ncol_sampcov)
 
     # calculate/indicate any differences greater than k
     di <- ifelse(abs(i - j) > k, 0, 1)
 
     # create a new vector corresponding to lower triangular matrix
     di <- c(rep(0, i - 1), di)
-
     return(di)
   })
 
   # combine vectors
-  indicator_matrix <- suppressMessages(dplyr::bind_cols(indicator_list))
+  indicator_matrix <- do.call(cbind, indicator_list)
 
   # flip the matrix
-  indicator_matrix <- indicator_matrix + t(indicator_matrix) - diag(1, n)
+  indicator_matrix <- indicator_matrix + t(indicator_matrix) - 
+    diag(1, ncol_sampcov)
 
   # replace the sample covariance matrix
   sam_cov <- replace(sam_cov, which(indicator_matrix == 0), 0)
-
   return(sam_cov)
 }
 
@@ -199,7 +199,7 @@ bandingEst <- function(dat, k) {
 #' @description \code{taperingEst} estimates the covariance matrix of a
 #'  \code{data.frame}-like object with ordered variables by gradually shrinking
 #'  the bands of the sample covariance matrix towards zero. The estimator is
-#'  defined as the hadamard product of the sample covariance matrix and a
+#'  defined as the Hadamard product of the sample covariance matrix and a
 #'  weight matrix. The amount of shrinkage is dictated by the weight matrix,
 #'  and is controlled by a hyperparameter, \code{k}. This estimator is
 #'  attributed to \insertCite{cai2010;textual}{cvCovEst}.
@@ -215,30 +215,27 @@ bandingEst <- function(dat, k) {
 #' @param k A non-negative, even \code{numeric} integer.
 #'
 #' @importFrom coop covar
-#' @importFrom dplyr bind_cols
-#'
-#' @references
-#'   \insertAllCited{}
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
+#'
+#' @references
+#'  \insertAllCited{}
 #'
 #' @export
 taperingEst <- function(dat, k) {
 
   # compute the sample covariance matrix
   sam_cov <- coop::covar(dat)
-
-  n <- ncol(sam_cov)
-
+  ncol_sampcov <- ncol(sam_cov)
   k_h <- k / 2
 
-  # loop over different indicies to create weight vectors
-  weight_list <- lapply(1:n, function(i) {
+  # loop over different indices to create weight vectors
+  weight_list <- lapply(seq_len(ncol_sampcov), function(i) {
     # only consider the lower triangular matrix entries
-    j <- i:n
+    j <- seq(i, ncol_sampcov)
 
-    # calculate the difference in indicies
+    # calculate the difference in indices
     di <- abs(i - j)
 
     # loop over elements in the difference vector and assign weights
@@ -259,16 +256,14 @@ taperingEst <- function(dat, k) {
 
     # create a new vector corresponding to lower triangular matrix column
     sam_vec <- c(rep(0, i - 1), sam_vec)
-
     return(sam_vec)
   })
 
   # combine vectors
-  weight_matrix <- suppressMessages(dplyr::bind_cols(weight_list))
+  weight_matrix <- do.call(cbind, weight_list)
 
   # flip the matrix
   weight_matrix <- weight_matrix + t(weight_matrix) - diag(diag(sam_cov))
-  weight_matrix <- as.matrix(weight_matrix)
 
   # return the new weight matrix
   return(weight_matrix)
@@ -293,11 +288,11 @@ taperingEst <- function(dat, k) {
 #'
 #' @importFrom coop covar
 #'
-#' @references
-#'   \insertAllCited{}
-#'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
+#'
+#' @references
+#'   \insertAllCited{}
 #'
 #' @export
 nlShrinkLWEst <- function(dat) {
@@ -354,7 +349,7 @@ nlShrinkLWEst <- function(dat) {
 
     # LW Equation C.8
     Hf_tilde0 <- (1 / pi) * ((3 / 10) * s4 +
-                               (s1 / h) * (1 - (1 / 5) * s4) * log_term) * m
+      (s1 / h) * (1 - (1 / 5) * s4) * log_term) * m
 
     # LW Equation C.5
     d_tilde0 <- 1 / (pi * (p - eig_nonzero_tol) / eig_nonzero_tol * Hf_tilde0)
@@ -371,7 +366,7 @@ nlShrinkLWEst <- function(dat) {
 
 ###############################################################################
 
-#' Linear Shrinakge Estimator, Dense Target
+#' Linear Shrinkage Estimator, Dense Target
 #'
 #' @description \code{denseLinearShrinkEst} computes the asymptotically optimal
 #'  convex combination of the sample covariance matrix and a dense, target
@@ -388,11 +383,11 @@ nlShrinkLWEst <- function(dat) {
 #' @importFrom Matrix triu
 #' @importFrom matrixStats sum2
 #'
-#' @references
-#'   \insertAllCited{}
-#'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
+#'
+#' @references
+#'   \insertAllCited{}
 #'
 #' @export
 denseLinearShrinkEst <- function(dat) {
@@ -434,29 +429,29 @@ denseLinearShrinkEst <- function(dat) {
 
 #' Smoothly Clipped Absolute Deviation Estimator
 #'
-#' @description The Smoothly Clipped Absolute Deviation (SCAD) covariance matrix
-#'   estimator applies the SCAD threholding function of
-#'   \insertCite{fan2001;textual}{cvCovEst} to each entry of the sample
-#'   covariance matrix. This penalized estimator constitutes a compromise
-#'   between hard and soft thresholding of the sample covariance matrix: it is
-#'   a linear interpolation between soft thresholding up to \code{2*lambda} and
-#'   hard thresholding after \code{3.7*lambda}
-#'   \insertCite{rothman2009}{cvCovEst}.
+#' @description The Smoothly Clipped Absolute Deviation (SCAD) covariance
+#'  matrix estimator applies the SCAD thresholding function of
+#'  \insertCite{fan2001;textual}{cvCovEst} to each entry of the sample
+#'  covariance matrix. This penalized estimator constitutes a compromise
+#'  between hard and soft thresholding of the sample covariance matrix: it is
+#'  a linear interpolation between soft thresholding up to \code{2*lambda} and
+#'  hard thresholding after \code{3.7*lambda}
+#'  \insertCite{rothman2009}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param lambda A non-negative \code{numeric} defining the amount of
-#'   thresholding applied to each element of \code{dat}'s sample covariance
-#'   matrix.
-#'
-#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'  thresholding applied to each element of \code{dat}'s sample covariance
 #'  matrix.
 #'
 #' @importFrom coop covar
 #'
-#' @export
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'  matrix.
 #'
 #' @references
 #'   \insertAllCited{}
+#'
+#' @export
 scadEst <- function(dat, lambda) {
 
   # compute the sample covariance matrix
@@ -464,42 +459,43 @@ scadEst <- function(dat, lambda) {
 
   # apply threshold by removing all elements smaller than gamma
   # TODO: Create a symmertric apply for covariance matrices
-  return(apply(sample_cov_mat, c(1, 2), scadThreshold,
+  estimate <- apply(sample_cov_mat, c(1, 2), scadThreshold,
     lambda = lambda, a = 3.7
-  ))
+  )
+  return(estimate)
 }
 
 ###############################################################################
 
 #' POET Estimator
 #'
-#' @description \code{poetEst} implements the Principal Orthogonal complEment
-#'   Thresholding (POET) estimator, a nonparametric, unobserved-factor-based
-#'   estimator of the covariance matrix \insertCite{fan2013}{cvCovEst}. The
-#'   estimator is defined as the sum of the sample covariance matrix'
-#'   rank-\code{k} approximation and its thresholded principal orthogonal
-#'   complement. The hard thresholding function is used here, though others
-#'   could be used instead.
+#' @description \code{poetEst} implements the Principal Orthogonal complement
+#'  Thresholding (POET) estimator, a nonparametric, unobserved-factor-based
+#'  estimator of the covariance matrix \insertCite{fan2013}{cvCovEst}. The
+#'  estimator is defined as the sum of the sample covariance matrix'
+#'  rank-\code{k} approximation and its thresholded principal orthogonal
+#'  complement. The hard thresholding function is used here, though others
+#'  could be used instead.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param k An \code{integer} indicating the number of unobserved latent
-#'   factors. Empirical evidence suggests that the POET estimator is robust to
-#'   overestimations of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
-#'   practice, it is therefore preferable to use larger values.
+#'  factors. Empirical evidence suggests that the POET estimator is robust to
+#'  overestimations of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+#'  practice, it is therefore preferable to use larger values.
 #' @param lambda A non-negative \code{numeric} defining the amount of
-#'   thresholding applied to each element of sample covariance matrix's
-#'   orthogonal complement.
-#'
-#' @return A \code{matrix} corresponding to the estimate of the covariance
-#'   matrix.
+#'  thresholding applied to each element of sample covariance matrix's
+#'  orthogonal complement.
 #'
 #' @importFrom coop covar
 #' @importFrom RSpectra eigs_sym
 #'
-#' @export
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'  matrix.
 #'
 #' @references
-#'   \insertAllCited{}
+#'  \insertAllCited{}
+#'
+#' @export
 poetEst <- function(dat, k, lambda) {
 
   # compute the sample covariance matrix
@@ -512,8 +508,7 @@ poetEst <- function(dat, k, lambda) {
   spectral_decomp <- lapply(
     seq_len(k),
     function(i) {
-      eig_decomp$values[i] *
-        eig_decomp$vectors[, i] %*% t(eig_decomp$vectors[, i])
+      eig_decomp$values[i] * tcrossprod(eig_decomp$vectors[, i])
     }
   )
   spectral_decomp <- Reduce(`+`, spectral_decomp)
@@ -528,7 +523,126 @@ poetEst <- function(dat, k, lambda) {
   poc <- poc - diag(diag(poc)) + poc_diag
 
   # return the estimate
-  return(spectral_decomp + poc)
+  estimate <- spectral_decomp + poc
+  return(estimate)
+}
+
+###############################################################################
+
+#' Robust POET Estimator for Elliptical Distributions
+#'
+#' @description \code{robustPoetEst} implements the robust version of Principal
+#'  Orthogonal complEment Thresholding (POET) estimator, a nonparametric,
+#'  unobserved-factor-based estimator of the covariance matrix when the
+#'  underlying distribution is ellipitcal \insertCite{fan2018}{cvCovEst}. The
+#'  estimator is defined as the sum of the sample covariance matrix's
+#'  rank-\code{k} approximation and its thresholded principal orthogonal
+#'  complement. The rank-\code{k} approximation is constructed from the sample
+#'  covariance matrix, its leading eigenvalues, and leading eigenvectors.
+#'  The sample covariance matrix and leading eigenvalues are initially
+#'  estimated via an M-estimation procedure and the marginal Kendall's tau
+#'  estimator. The leading eigenvectors are estimated using spatial Kendall's
+#'  tau estimator. The hard thresholding function is used to regularize the
+#'  idiosyncratic errors' estimated covariance matrix, though other
+#'  regularization schemes could be used.
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#' @param k An \code{integer} indicating the number of unobserved latent
+#'  factors. Empirical evidence suggests that the POET estimator is robust to
+#'  overestimations of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+#'  practice, it is therefore preferable to use larger values.
+#' @param lambda A non-negative \code{numeric} defining the amount of
+#'  thresholding applied to each element of sample covariance matrix's
+#'  orthogonal complement.
+#' @param var_est An \code{character} dictating which variance estimator to
+#'  use. This must be one of the strings \code{"sample"}, \code{"mad"}, or
+#'  \code{"huber"}. \code{"sample"} uses sample variances; \code{"mad"}
+#'  estimates variances via median absolute deviation; \code{"huber"} uses an
+#'  M-estimator for variance under the Huber loss.
+#'
+#' @importFrom RSpectra eigs_sym
+#' @importFrom matrixStats colSds colMads colVars
+#' @importFrom stats optimize
+#'
+#' @return A \code{matrix} corresponding to the estimate of the covariance
+#'   matrix.
+#'
+#' @references
+#'   \insertAllCited{}
+#'
+#' @export
+robustPoetEst <- function(dat, k, lambda,
+                          var_est = c("sample", "mad", "huber")) {
+
+  # set default base covariance estimator
+  var_est <- match.arg(var_est)
+
+  # get the dimensions of the data
+  n <- nrow(dat)
+
+  # use M-estimator and Huber loss to robustly estimate variance
+  if (var_est == "sample") {
+    D_est <- diag(matrixStats::colSds(dat))
+  } else if (var_est == "mad") {
+    D_est <- diag(matrixStats::colMads(dat))
+  } else if (var_est == "huber") {
+    # This method is proposed by Fan et al but most computationally expensive
+    alpha <- sqrt(1 / (8 * max(matrixStats::colVars(dat))))
+    huber <- function(x, alpha) {
+      if (abs(x) > 1 / alpha) {
+        return(2 / alpha * abs(x) - 1 / alpha^2)
+      } else {
+        return(x^2)
+      }
+    }
+    mest <- function(y) {
+      stats::optimize(f = function(x, alpha) {
+        sum(sapply(x - y, FUN = huber, alpha = alpha))
+      }, alpha = alpha, lower = min(y), upper = max(y))$minimum
+    }
+    D_est <- diag(sqrt(pmax(apply(dat^2, 2, mest) -
+      apply(dat, 2, mest)^2, 1e-6)))
+  }
+
+  # Marginal Kendall's tau estimator can be vectorized as the multiplication of
+  # the matrix of signs of elementwise differences for each variable
+  # with its transpose.
+  diff_mat <- function(x) {
+    outer(x, x, FUN = "-")[lower.tri(sign(outer(x, x, FUN = "-")))]
+  }
+  Diff <- apply(dat, 2, diff_mat)
+
+  # calculate the estimator of R
+  R_est <- sin(crossprod(sign(Diff)) * (pi / (n * (n - 1))))
+
+  # calculate the first estimator for covariance matrix
+  # NOTE: D_est %*% R_est %*% D_est is equivalent but (slightly) slower than
+  Sigma_est1 <- tcrossprod(crossprod(D_est, R_est), D_est)
+
+  # calculate the estimator of leading eigenvalues
+  if (k == 1) {
+    Lambda_est <- as.matrix(RSpectra::eigs_sym(Sigma_est1, k)$values)
+  } else {
+    Lambda_est <- diag(RSpectra::eigs_sym(Sigma_est1, k)$values)
+  }
+
+  # calculate spatial Kendall's tau estimator
+  Sigma_est2 <- (2 / (n * (n - 1))) *
+    crossprod(Diff / apply(Diff, 1, function(x) sqrt(sum(x^2))))
+
+  # calculate the estimator for leading eigenvectors
+  Gamma_est <- RSpectra::eigs_sym(Sigma_est2, k)$vectors
+
+  # calculate the low rank structure
+  # NOTE: tcrossprod is faster than manually computing the transpose, as in
+  #       Gamma_est %*% Lambda_est %*% t(Gamma_est)
+  Low_rank_est <- Gamma_est %*% tcrossprod(Lambda_est, Gamma_est)
+
+  # regularize the principal orthogonal component
+  Sigma_estu <- Sigma_est1 - Low_rank_est
+  Sigma_estu <- replace(Sigma_estu, abs(Sigma_estu) < lambda, 0)
+  estimate <- Sigma_estu + Low_rank_est
+  return(estimate)
 }
 
 ###############################################################################
@@ -536,29 +650,29 @@ poetEst <- function(dat, k, lambda) {
 #' Adaptive LASSO Estimator
 #'
 #' @description The \code{adaptiveLassoEst} function is a modification of
-#'   the similarly named penalized regression introduced by
-#'   \insertCite{zou2006;textual}{cvCovEst}. The thresholding function assigns
-#'   a weight to each entry of the sample covariance matrix based on its
-#'   initial value. This weight then determines the relative size of the
-#'   penalty resulting in larger values being penalized less and reducing bias
-#'   \insertCite{rothman2009}{cvCovEst}.
+#'  the similarly named penalized regression introduced by
+#'  \insertCite{zou2006;textual}{cvCovEst}. The thresholding function assigns
+#'  a weight to each entry of the sample covariance matrix based on its
+#'  initial value. This weight then determines the relative size of the
+#'  penalty resulting in larger values being penalized less and reducing bias
+#'  \insertCite{rothman2009}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param lambda A non-negative \code{numeric} defining the amount of
-#'   thresholding applied to each element of \code{dat}'s sample covariance
-#'   matrix.
+#'  thresholding applied to each element of \code{dat}'s sample covariance
+#'  matrix.
 #' @param n A non-negative \code{numeric} defining the exponent of the adaptive
-#'   weight applied to each element of \code{dat}'s sample covariance matrix.
+#'  weight applied to each element of \code{dat}'s sample covariance matrix.
+#'
+#' @importFrom coop covar
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
 #'
-#' @importFrom coop covar
-#'
-#' @export
-#'
 #' @references
 #'   \insertAllCited{}
+#'
+#' @export
 adaptiveLassoEst <- function(dat, lambda, n) {
 
   # compute the sample covariance matrix

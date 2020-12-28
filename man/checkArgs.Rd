@@ -34,8 +34,8 @@ hyperparameter(s). These hyperparameters may be in the form of a single
 for a given estimator, then the estimator need not be listed.}
 
 \item{cv_loss}{A \code{function} indicating the loss function to use.
-Defaults to the scaled Frobenius loss, \code{cvFrobeniusLoss}.
-The matrix-based version, \code{cvMatroxFrobeniusLoss} is offered as well.}
+Defaults to the scaled Frobenius loss, \code{\link{cvFrobeniusLoss}}.
+The matrix-based version, \code{cvMatrixFrobeniusLoss} is offered as well.}
 
 \item{cv_scheme}{A \code{character} indicating the cross-validation scheme
 to be employed. There are two options: (1) V-fold cross-validation, via
@@ -64,14 +64,14 @@ covariance matrix of the data generating distribution, which is assumed to
 be Gaussian. This parameter is intended for use only in simulation studies,
 and defaults to a value of \code{NULL}. If not \code{NULL}, the
 cross-validated conditional risk difference ratio of the estimator selected
-by \code{cvCovEst} is computed relative to the cross-validated oracle
-selector.}
+by \code{\link{cvCovEst}} is computed relative to the cross-validated
+oracle selector.}
 }
 \value{
 Whether all argument conditions are satisfied
 }
 \description{
-The \code{checkArgs} function verifies that all arguments passed
-to the \code{cvCovEst} function meet its specifications.
+The \code{checkArgs} function verifies that all arguments
+passed to \code{\link{cvCovEst}} function meet its specifications.
 }
 \keyword{internal}

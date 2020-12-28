@@ -1,7 +1,7 @@
 #' Check Arguments Passed to cvCovEst
 #'
-#' @description The \code{checkArgs} function verifies that all arguments passed
-#'  to the \code{cvCovEst} function meet its specifications.
+#' @description The \code{checkArgs} function verifies that all arguments
+#'  passed to \code{\link{cvCovEst}} function meet its specifications.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param estimators A \code{list} of estimator functions to be
@@ -15,8 +15,8 @@
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
 #' @param cv_loss A \code{function} indicating the loss function to use.
-#'  Defaults to the scaled Frobenius loss, \code{cvFrobeniusLoss}.
-#'  The matrix-based version, \code{cvMatroxFrobeniusLoss} is offered as well.
+#'  Defaults to the scaled Frobenius loss, \code{\link{cvFrobeniusLoss}}.
+#'  The matrix-based version, \code{cvMatrixFrobeniusLoss} is offered as well.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
@@ -38,8 +38,8 @@
 #'  be Gaussian. This parameter is intended for use only in simulation studies,
 #'  and defaults to a value of \code{NULL}. If not \code{NULL}, the
 #'  cross-validated conditional risk difference ratio of the estimator selected
-#'  by \code{cvCovEst} is computed relative to the cross-validated oracle
-#'  selector.
+#'  by \code{\link{cvCovEst}} is computed relative to the cross-validated
+#'  oracle selector.
 #'
 #' @importFrom assertthat assert_that is.flag
 #' @importFrom methods is
@@ -81,7 +81,10 @@ checkArgs <- function(dat,
     assertthat::assert_that(
       estimators != "linearShrinkLWEst", estimators != "sampleCovEst",
       estimators != "nlShrinkLWEst", estimators != "denseLinearShrinkEst",
-      msg = "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
+      msg = paste(
+        "This estimator doesn't possess any hyperparameters. Run it",
+        "without using cvCovEst."
+      )
     )
   }
 
@@ -92,7 +95,7 @@ checkArgs <- function(dat,
         "linearShrinkEst", "linearShrinkLWEst",
         "thresholdingEst", "sampleCovEst", "bandingEst",
         "taperingEst", "nlShrinkLWEst",
-        "denseLinearShrinkEst", "scadEst", "poetEst",
+        "denseLinearShrinkEst", "scadEst", "poetEst", "robustPoetEst",
         "adaptiveLassoEst"
       ) == TRUE
     ),
@@ -107,14 +110,16 @@ checkArgs <- function(dat,
   # assert that estimator hyperparameters are well defined
   if ("linearShrinkEst" %in% estimators) {
     assertthat::assert_that(
-      all(rlang::is_bare_numeric(estimator_params$linearShrinkEst$alpha)) == TRUE,
+      all(rlang::is_bare_numeric(estimator_params$linearShrinkEst$alpha))
+      == TRUE,
       all(estimator_params$linearShrinkEst$alpha >= 0) == TRUE,
       all(estimator_params$linearShrinkEst$alpha <= 1) == TRUE
     )
   }
   if ("thresholdingEst" %in% estimators) {
     assertthat::assert_that(
-      all(rlang::is_bare_numeric(estimator_params$thresholdingEst$gamma)) == TRUE,
+      all(rlang::is_bare_numeric(estimator_params$thresholdingEst$gamma))
+      == TRUE,
       all(estimator_params$thresholdingEst$gamma >= 0) == TRUE
     )
   }
@@ -150,10 +155,23 @@ checkArgs <- function(dat,
       all(estimator_params$poetEst$lambda >= 0) == TRUE
     )
   }
+  if ("robustPoetEst" %in% estimators) {
+    assertthat::assert_that(
+      all(rlang::is_integer(estimator_params$robustPoetEst$k)) == TRUE,
+      all(estimator_params$robustPoetEst$k >= 1) == TRUE,
+      all(rlang::is_bare_numeric(estimator_params$robustPoetEst$lambda))
+      == TRUE,
+      all(estimator_params$robustPoetEst$lambda >= 0) == TRUE,
+      all(estimator_params$robustPoetEst$var_est %in% c(
+        "sample", "mad", "huber"
+      ) == TRUE)
+    )
+  }
   if ("adaptiveLassoEst" %in% estimators) {
     assertthat::assert_that(
       all(estimator_params$adaptiveLassoEst$lambda >= 0) == TRUE,
-      all(rlang::is_bare_numeric(estimator_params$adaptiveLassoEst$lambda)) == TRUE,
+      all(rlang::is_bare_numeric(estimator_params$adaptiveLassoEst$lambda))
+      == TRUE,
       all(estimator_params$adaptiveLassoEst$n >= 0) == TRUE,
       all(rlang::is_bare_numeric(estimator_params$adaptiveLassoEst$n)) == TRUE
     )

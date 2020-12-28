@@ -35,8 +35,8 @@ hyperparameter(s). These hyperparameters may be in the form of a single
 for a given estimator, then the estimator need not be listed.}
 
 \item{cv_loss}{A \code{function} indicating the loss function to use.
-Defaults to the scaled Frobenius loss, \code{cvFrobeniusLoss}.
-The matrix-based version, \code{cvMatroxFrobeniusLoss} is offered as well.}
+Defaults to the scaled Frobenius loss, \code{\link{cvFrobeniusLoss}}. The
+matrix-based version, \code{\link{cvMatrixFrobeniusLoss}} is offered too.}
 
 \item{cv_scheme}{A \code{character} indicating the cross-validation scheme
 to be employed. There are two options: (1) V-fold cross-validation, via
@@ -66,7 +66,8 @@ covariance matrix of the data generating distribution, which is assumed to
 be Gaussian. This parameter is intended for use only in simulation studies,
 and defaults to a value of \code{NULL}. If not \code{NULL}, various
 conditional risk difference ratios of the estimator selected
-by \code{cvCovEst} are computed relative to the different oracle selectors.}
+by \code{\link{cvCovEst}} are computed relative to the different oracle
+selectors.}
 }
 \value{
 A \code{list} of results containing the following elements:
@@ -78,7 +79,7 @@ estimator and corresponding hyperparameters, if any.
 \item \code{risk_df} - A \code{\link[tibble]{tibble}} providing the
 cross-validated risk estimates of each estimator.
 \item \code{cv_df} - A \code{\link[tibble]{tibble}} providing
-each estimators' loss over the various folds of the cross-validatied
+each estimators' loss over the various folds of the cross-validated
 procedure.
 }
 If the true covariance matrix is input through \code{true_cov_mat}, then
@@ -88,8 +89,8 @@ three additional elements are returned:
 to the conditional cross-validated risk difference of the
 cvCovEst selection.
 \item \code{oracle_cv_riskdiff} - A \code{numeric}
-corresponding to the conditional cross-validated risk difference of the
-oracle selection.
+corresponding to the conditional cross-validated risk difference of
+the oracle selection.
 \item \code{cv_oracle_riskdiff_ratio} - A \code{numeric} corresponding
 to the cross-validated risk difference ratio of the
 cvCovEst selection and the cross-validated dataset oracle selection.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimators.R
 \name{denseLinearShrinkEst}
 \alias{denseLinearShrinkEst}
-\title{Linear Shrinakge Estimator, Dense Target}
+\title{Linear Shrinkage Estimator, Dense Target}
 \usage{
 denseLinearShrinkEst(dat)
 }

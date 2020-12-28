@@ -19,7 +19,7 @@ matrix.
 \code{taperingEst} estimates the covariance matrix of a
 \code{data.frame}-like object with ordered variables by gradually shrinking
 the bands of the sample covariance matrix towards zero. The estimator is
-defined as the hadamard product of the sample covariance matrix and a
+defined as the Hadamard product of the sample covariance matrix and a
 weight matrix. The amount of shrinkage is dictated by the weight matrix,
 and is controlled by a hyperparameter, \code{k}. This estimator is
 attributed to \insertCite{cai2010;textual}{cvCovEst}.

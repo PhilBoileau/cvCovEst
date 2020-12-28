@@ -34,8 +34,10 @@ test_that("`safeColScale` avoid NA in its output even when `scale` fails to", {
 
 test_that("`safeColScale` ouputs a matrix object", {
   expect_equal(class(safeColScale(dat, center, scale)), c("matrix", "array"))
-  expect_equal(class(safeColScale(as(dat, "dgCMatrix"), center, scale)),
-               c("matrix", "array"))
+  expect_equal(
+    class(safeColScale(as(dat, "dgCMatrix"), center, scale)),
+    c("matrix", "array")
+  )
 })
 
 # `safeColScale` is faster than `scale`
