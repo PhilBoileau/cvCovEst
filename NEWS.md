@@ -1,3 +1,8 @@
+# cvCovEst 0.1.3 (2020-12-29)
+
++ Fixed error with `denseLinearShrinkEst`: the shrinkage parameter was often
+  selected such that the dense target was returned as the estimate.
+
 # cvCovEst 0.1.2 (2020-12-21)
 
 + Completed vignette.
