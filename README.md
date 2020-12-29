@@ -14,7 +14,7 @@ status](https://travis-ci.com/PhilBoileau/cvCovEst.svg?token=YL3L6rYQtszHibWHgFx
 Collica](https://www.linkedin.com/in/brian-collica-553b0b94), and [Nima
 Hejazi](https://nimahejazi.org)
 
------
+------------------------------------------------------------------------
 
 ## What’s `cvCovEst`?
 
@@ -26,7 +26,7 @@ matrix from a pre-specified set of candidate estimators. Also included
 are diagnostic tools for assessing the quality of covariance matrix
 estimators.
 
------
+------------------------------------------------------------------------
 
 ## Installation
 
@@ -37,7 +37,7 @@ via [`remotes`](https://CRAN.R-project.org/package=remotes):
 remotes::install_github("PhilBoileau/cvCovEst")
 ```
 
------
+------------------------------------------------------------------------
 
 ## Example
 
@@ -54,8 +54,8 @@ set.seed(1584)
 # elements equal to 0.5
 Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
 
-# sample 200 observations from multivariate normal with mean = 0, var = Sigma
-dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
+# sample 50 observations from multivariate normal with mean = 0, var = Sigma
+dat <- mvrnorm(n = 50, mu = rep(0, 50), Sigma = Sigma)
 
 # run CV-selector
 cv_cov_est_out <- cvCovEst(
@@ -66,35 +66,36 @@ cv_cov_est_out <- cvCovEst(
       thresholdingEst = list(gamma = c(0.2, 2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L))
     ),
+    cv_loss = cvMatrixFrobeniusLoss,
     cv_scheme = "v_fold", v_folds = 5,
+
   )
 
 # print the table of risk estimates
 # NOTE: the estimated covariance matrix is accessible via the `$estimate` slot
 cv_cov_est_out$risk_df
 #> # A tibble: 9 x 3
-#> # Groups:   estimator [5]
 #>   estimator            hyperparameters      empirical_risk
 #>   <chr>                <chr>                         <dbl>
-#> 1 denseLinearShrinkEst hyperparameters = NA          3533.
-#> 2 poetEst              lambda = 0.2, k = 1           3542.
-#> 3 poetEst              lambda = 0.1, k = 1           3542.
-#> 4 poetEst              lambda = 0.2, k = 2           3543.
-#> 5 poetEst              lambda = 0.1, k = 2           3543.
-#> 6 linearShrinkLWEst    hyperparameters = NA          3544.
-#> 7 sampleCovEst         hyperparameters = NA          3545.
-#> 8 thresholdingEst      gamma = 0.2                   3545.
-#> 9 thresholdingEst      gamma = 2                     4164.
+#> 1 linearShrinkLWEst    hyperparameters = NA           357.
+#> 2 poetEst              lambda = 0.2, k = 1            369.
+#> 3 poetEst              lambda = 0.2, k = 2            372.
+#> 4 poetEst              lambda = 0.1, k = 2            375.
+#> 5 poetEst              lambda = 0.1, k = 1            376.
+#> 6 denseLinearShrinkEst hyperparameters = NA           379.
+#> 7 sampleCovEst         hyperparameters = NA           379.
+#> 8 thresholdingEst      gamma = 0.2                    384.
+#> 9 thresholdingEst      gamma = 2                      826.
 ```
 
------
+------------------------------------------------------------------------
 
 ## Issues
 
 If you encounter any bugs or have any specific feature requests, please
 [file an issue](https://github.com/PhilBoileau/cvCovEst/issues).
 
------
+------------------------------------------------------------------------
 
 ## Contributions
 
@@ -103,7 +104,7 @@ our [contribution
 guidelines](https://github.com/PhilBoileau/cvCovEst/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
 
------
+------------------------------------------------------------------------
 
 ## License
 

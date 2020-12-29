@@ -36,7 +36,7 @@ estimator from among a diverse collection of candidates remains unaddressed.
 We therefore offer just that: a general, cross-validation-based framework for
 covariance matrix estimator selection in high dimensions. The
 (high-dimensional) asymptotic optimality of selections are guaranteed by
-extendending the seminal work of @laan_dudoit:2003, @dudoit2005, and @vaart2006
+extending the seminal work of @laan_dudoit:2003, @dudoit2005, and @vaart2006
 on data-adaptive estimator selection to high-dimensional covariance matrix
 estimation [@boileau2021]. The interested reader is invited to review
 theoretical underpinnings of the method provided in @boileau2021 .
@@ -66,8 +66,8 @@ set.seed(1584)
 # elements equal to 0.5
 sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
 
-# sample 200 observations from multivariate normal with mean = 0, var = Sigma
-dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = sigma)
+# sample 50 observations from multivariate normal with mean = 0, var = Sigma
+dat <- mvrnorm(n = 50, mu = rep(0, 50), Sigma = sigma)
 
 # run CV-selector
 cv_cov_est_out <- cvCovEst(
@@ -98,7 +98,7 @@ Covariance matrix estimators implemented in the `cvCovEst` package are
 catalogued in the following table. These estimators are fed to the `cvCovEst`
 function through the `estimators` argument as a vector. If these estimators
 rely on hyperparameters, then they must be passed to the `estimator_params` as
-a list. Depeding on your assumptions --- or lack thereof --- about the true
+a list. Depending on your assumptions --- or lack thereof --- about the true
 covariance matrix, you may choose to use a subset of these estimators, or all
 of them. They may also be used as standalone functions.
 
@@ -132,7 +132,7 @@ package currently implements three loss functions:
 
 | Loss | Implementation | Description |
 |------|----------------|-------------|
-| Matrix-based Frobenius | `cvMatrixFrobeniusLoss` | The default, Bbased on the Frobenius norm. Appropriate when the dataset's features are of similar magnitudes. |
+| Matrix-based Frobenius | `cvMatrixFrobeniusLoss` | The default, based on the Frobenius norm. Appropriate when the dataset's features are of similar magnitudes. |
 | Variance-scaled matrix-based Frobenius | `cvScaledMatrixFrobeniusLoss` | A scaled version of the matrix-based Frobenius loss, where weights are the inverse of products from the sample covariance matrix's diagonal. Appropriate when the features of the dataset are of different magnitudes. |
 | Observation-based Frobenius | `cvFrobeniusLoss` | Based on the Frobenius norm and the rank-1, observation-level estimates of the sample covariance matrix. Its selections are equivalent to that of the matrix-based Frobenius, though less computationally efficient. However, the optimality results of @boileau2021 rely on it. | 
 
