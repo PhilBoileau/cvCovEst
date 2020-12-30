@@ -17,6 +17,7 @@ is.cvCovEst <- function(x) {
   inherits(x, "cvCovEst")
 }
 
+
 ################################################################################
 #' Summary Statistics of Empirical Risk by Estimator Class
 #'
@@ -900,6 +901,7 @@ cvEigenPlot <- function(
   # Get Summary Output
   cv_sum <- summary.cvCovEst(dat)
   blues <- RColorBrewer::brewer.pal(9, "Blues")
+  b <- ifelse(leading, "1", as.character(p))
 
   # Single Estimator Option
   if (single_est){
@@ -982,12 +984,28 @@ cvEigenPlot <- function(
       levels = stat_choices
     )
     # Generate Plot
-    plot <- ggplot2::ggplot(
-      stat_eigs,
-      aes(x = index,
-          y = eigenvalues,
-          color = stat)) +
-      geom_path() +
+    if (k == 1){
+      plot1 <- ggplot2::ggplot(
+        stat_eigs,
+        aes(x = index,
+            y = eigenvalues,
+            color = stat)) +
+        geom_point() +
+        scale_x_continuous(n.breaks = 3,
+                           labels = c("", b, ""))
+    }
+    else{
+      plot1 <- ggplot2::ggplot(
+        stat_eigs,
+        aes(x = index,
+            y = eigenvalues,
+            color = stat)) +
+        geom_path() +
+        scale_x_continuous(n.breaks = min(10, k))
+
+
+    }
+    plot <- plot1 +
       scale_color_viridis_d() +
       xlab("Eigenvalue Index") +
       ylab("Eigenvalue") +
@@ -1097,12 +1115,27 @@ cvEigenPlot <- function(
       levels = cv_sum$bestInClass$estimator
     )
     # Generate Plot
-    plot <- ggplot2::ggplot(
-      stat_eigs,
-      aes(x = index,
-          y = eigenvalues,
-          color = stat)) +
-      geom_path() +
+    # Generate Plot
+    if (k == 1){
+      plot1 <- ggplot2::ggplot(
+        stat_eigs,
+        aes(x = index,
+            y = eigenvalues,
+            color = stat)) +
+        geom_point() +
+        scale_x_continuous(n.breaks = 3,
+                           labels = c("", b, ""))
+    }
+    else{
+      plot1 <- ggplot2::ggplot(
+        stat_eigs,
+        aes(x = index,
+            y = eigenvalues,
+            color = stat)) +
+        geom_path() +
+        scale_x_continuous(n.breaks = min(10, k))
+    }
+    plot <- plot1 +
       facet_wrap(facets = vars(estimator)) +
       scale_color_viridis_d(
         name = 'Risk Stats'
@@ -1245,6 +1278,7 @@ cvRiskPlot <- function(dat, est, conf = FALSE) {
                   fill = alpha(blues[8], 0.25)) +
       facet_wrap(facets = vars(estimator),
                  scales = "free_x") +
+      scale_x_continuous(n.breaks = 10) +
       labs(title = 'cvCovEst Empirical Risk',
            caption = cv_details) +
       xlab("Hyperparameter") +
@@ -1302,6 +1336,7 @@ cvRiskPlot <- function(dat, est, conf = FALSE) {
       geom_path(aes(x = hyperparameters, y = empirical_risk)) +
       facet_wrap(facets = vars(estimator),
                  scales = "free_x") +
+      scale_x_continuous(n.breaks = 10) +
       labs(title = 'cvCovEst Empirical Risk',
            caption = cv_details) +
       xlab("Hyperparameter") +
