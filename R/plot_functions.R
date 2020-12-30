@@ -1115,7 +1115,6 @@ cvEigenPlot <- function(
       levels = cv_sum$bestInClass$estimator
     )
     # Generate Plot
-    # Generate Plot
     if (k == 1){
       plot1 <- ggplot2::ggplot(
         stat_eigs,
@@ -1370,6 +1369,73 @@ cvRiskPlot <- function(dat, est, conf = FALSE) {
     return(plot)
   }
 }
+
+################################################################################
+#' Summary Plot
+#'
+#' @description \code{cvSummaryPlot} combines plots of the empirical risk,
+#'  eigenvalues, and covariance heat map of a given estimator class together into
+#'  one plot along with a table of summary statistics.
+#'
+#' @param dat A named \code{list}.  Specifically, this is the standard output of
+#' \code{cvCovEst}.
+#'
+#' @param estimator A character vector specifying which class of estimator to
+#'  plot.
+#'
+#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{cvCovEst}.
+#'
+#' @param ... Additional arguments to be passed to \code{cvCovEst} plotting
+#'  functions.
+#'
+#' @return A collection of plots and summary statistics.
+#'
+#' @importFrom stringr str_split
+#' @importFrom dplyr group_by filter %>%
+#' @importFrom stats t.test
+#' @import ggplot2
+#' @import assertthat
+#' @import viridis
+#' @importFrom RColorBrewer brewer.pal
+#'
+#' @keywords internal
+cvSummaryPlot <- function(dat, estimator, dat_orig, ...){
+
+
+
+}
+
+
+################################################################################
+#' cvCovEst Plot Theme
+#'
+#' @description \code{theme_cvCovEst} defines the overall theme of the
+#'  \code{cvCovEst} plotting functions and makes changes depending on which plot
+#'  function is being called.
+#'
+#' @param plot_type A character vector
+#'
+#' @param plot_title
+#'
+#' @param ... Additional arguments to be passed to \code{cvCovEst} plotting
+#'  functions.
+#'
+#' @return A \code{ggplot} theme.
+#'
+#' @importFrom stringr str_split
+#' @importFrom dplyr group_by filter %>%
+#' @importFrom stats t.test
+#' @import ggplot2
+#' @import assertthat
+#' @import viridis
+#' @importFrom RColorBrewer brewer.pal
+#'
+#' @keywords internal
+theme_cvCovEst <- function(plot_type) {
+
+}
+
 
 
 
