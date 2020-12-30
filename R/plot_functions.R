@@ -1272,41 +1272,22 @@ cvRiskPlot <- function(dat, est, conf = FALSE) {
       arrange(hyperparameters, .by_group = TRUE)
 
     plot <- ggplot(risk) +
-      geom_path(aes(x = hyperparameters, y = empirical_risk)) +
-      geom_ribbon(aes(x = hyperparameters, ymin = lower, ymax = upper),
-                  fill = alpha(blues[8], 0.25)) +
-      facet_wrap(facets = vars(estimator),
-                 scales = "free_x") +
-      scale_x_continuous(n.breaks = 10) +
-      labs(title = 'cvCovEst Empirical Risk',
-           caption = cv_details) +
+      geom_path(
+        aes(x = hyperparameters, y = empirical_risk)) +
+      geom_ribbon(
+        aes(x = hyperparameters, ymin = lower, ymax = upper),
+        fill = alpha(blues[8], 0.25)) +
+      facet_wrap(
+        facets = vars(estimator),
+        scales = "free_x") +
+      scale_x_continuous(
+        n.breaks = 10) +
+      labs(
+        title = 'cvCovEst Empirical Risk',
+        caption = cv_details) +
       xlab("Hyperparameter") +
       ylab("Risk") +
-      theme(strip.background = element_rect(
-              fill = alpha(blues[4], alpha = 0.5),
-              color = blues[9],
-              size = 0.5
-            ),
-            strip.text = element_text(
-              size = 10,
-              face = 'bold',
-              colour = blues[9]),
-            axis.title = element_text(
-              size = 12),
-            axis.text = element_text(
-              size = 10),
-            plot.title = element_text(
-              hjust = 0.5,
-              size = 14
-            ),
-            plot.caption = element_text(
-              hjust = 0,
-              size = 10,
-              face = 'italic'
-            ),
-            panel.background = element_blank(),
-            panel.border = element_rect(fill = NA),
-            panel.grid = element_line(color = alpha(blues[3], 0.75)))
+      theme_cvCovEst(plot_type = 'risk')
 
     return(plot)
 
@@ -1332,39 +1313,18 @@ cvRiskPlot <- function(dat, est, conf = FALSE) {
       arrange(hyperparameters, .by_group = TRUE)
 
     plot <- ggplot(risk) +
-      geom_path(aes(x = hyperparameters, y = empirical_risk)) +
-      facet_wrap(facets = vars(estimator),
-                 scales = "free_x") +
-      scale_x_continuous(n.breaks = 10) +
-      labs(title = 'cvCovEst Empirical Risk',
-           caption = cv_details) +
+      geom_path(
+        aes(x = hyperparameters, y = empirical_risk)) +
+      facet_wrap(
+        facets = vars(estimator),
+        scales = "free_x") +
+      labs(
+        title = 'cvCovEst Empirical Risk',
+        caption = cv_details) +
       xlab("Hyperparameter") +
       ylab("Risk") +
-      theme(strip.background = element_rect(
-        fill = alpha(blues[4], alpha = 0.5),
-        color = blues[9],
-        size = 0.5
-      ),
-      strip.text = element_text(
-        size = 10,
-        face = 'bold',
-        colour = blues[9]),
-      axis.title = element_text(
-        size = 12),
-      axis.text = element_text(
-        size = 10),
-      plot.title = element_text(
-        hjust = 0.5,
-        size = 14
-      ),
-      plot.caption = element_text(
-        hjust = 0,
-        size = 10,
-        face = 'italic'
-      ),
-      panel.background = element_blank(),
-      panel.border = element_rect(fill = NA),
-      panel.grid = element_line(color = alpha(blues[3], 0.75)))
+      scale_x_continuous(n.breaks = 10) +
+      theme_cvCovEst(plot_type = 'risk')
 
     return(plot)
   }
