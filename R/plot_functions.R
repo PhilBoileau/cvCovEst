@@ -1434,6 +1434,49 @@ cvSummaryPlot <- function(dat, estimator, dat_orig, ...){
 #' @keywords internal
 theme_cvCovEst <- function(plot_type) {
 
+  blues <- RColorBrewer::brewer.pal(9, "Blues")
+
+  # Base Theme
+  cv_theme <- ggplot2::theme(
+    panel.background = element_blank(),
+    panel.border = element_rect(fill = NA),
+    panel.grid.major = element_line(color = alpha(blues[3], 0.75)),
+    panel.grid.minor = element_line(color = alpha(blues[3], 0.5)),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 12),
+    plot.title = element_text(hjust = 0.5, size = 14),
+    plot.caption = element_text(hjust = 0, size = 10, face = 'italic'),
+    legend.key = element_blank(),
+    legend.box.background = element_rect(fill = NA, size = 0.75),
+    legend.title = element_text(vjust = 0.75, size = 10, face = 'bold'),
+    legend.text = element_text(size = 8, face = 'bold'),
+    strip.background = element_rect(
+      fill = alpha(blues[4], alpha = 0.5), color = blues[9], size = 0.5),
+    strip.text = element_text(size = 10, face = 'bold', colour = blues[9]))
+
+  # Changes for cvMultiMelt
+  if (plot_type == 'heatmap'){
+    cv_theme <- cv_theme +
+      ggplot2::theme(
+        axis.text = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = 'bottom',
+        legend.key.width = unit(10, 'mm'))
+  }
+
+  # Changes for cvSummary
+  if (plot_type == 'summary'){
+    cv_theme <- cv_theme +
+      ggplot2::theme(
+        plot.title = element_blank(),
+        plot.caption = element_blank(),
+        strip.background = element_blank(),
+        strip.text = element_blank())
+  }
+
+  return(cv_theme)
+
 }
 
 
