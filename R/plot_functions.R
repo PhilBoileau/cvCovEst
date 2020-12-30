@@ -548,31 +548,8 @@ cvMultiMelt <- function(dat,
         facets = vars(estimator)) +
       scale_fill_viridis(
         name = "Covariance (abs. value)",
-        option = 'cividis'
-      ) +
-      theme(legend.position = 'bottom',
-            legend.key.width = unit(10, 'mm'),
-            legend.title = element_text(
-              size = 10,
-              face = 'bold',
-              vjust = 0.75
-            ),
-            legend.text = element_text(
-              size = 8,
-              face = 'bold'),
-            strip.background = element_rect(
-              fill = alpha(blues[4], alpha = 0.5),
-              color = blues[9],
-              size = 0.5
-            ),
-            strip.text = element_text(
-              size = 10,
-              face = 'bold',
-              colour = blues[9]),
-            panel.background = element_blank(),
-            axis.ticks = element_blank(),
-            axis.text = element_blank(),
-            axis.title = element_blank())
+        option = 'cividis') +
+      theme_cvCovEst(plot_type = 'heatmap')
 
     return(plot)
   }
@@ -649,33 +626,8 @@ cvMultiMelt <- function(dat,
           nrow = 1) +
         scale_fill_viridis(
           name = "Covariance (abs. value)",
-          option = 'cividis'
-        ) +
-        theme(legend.position = 'bottom',
-              legend.key.width = unit(10, 'mm'),
-              legend.title = element_text(
-                size = 10,
-                face = 'bold',
-                vjust = 0.75
-              ),
-              legend.text = element_text(
-                size = 8,
-                face = 'bold'),
-              strip.background = element_rect(
-                fill = alpha(blues[4], alpha = 0.5),
-                color = blues[9],
-                size = 0.5
-              ),
-              strip.text = element_text(
-                size = 10,
-                face = 'bold',
-                colour = blues[9]),
-              panel.background = element_blank(),
-              axis.ticks = element_blank(),
-              axis.text = element_blank(),
-              axis.title = element_blank())
-
-
+          option = 'cividis') +
+        theme_cvCovEst(plot_type = 'heatmap')
 
       return(plot)
     }
@@ -762,32 +714,8 @@ cvMultiMelt <- function(dat,
           cols = vars(summary_stat)) +
         scale_fill_viridis(
           name = "Covariance (abs. value)",
-          option = 'cividis'
-        ) +
-        theme(legend.position = 'bottom',
-              legend.key.width = unit(10, 'mm'),
-              legend.title = element_text(
-                size = 10,
-                face = 'bold',
-                vjust = 0.75
-              ),
-              legend.text = element_text(
-                size = 8,
-                face = 'bold'),
-              strip.background = element_rect(
-                fill = alpha(blues[4], alpha = 0.5),
-                color = blues[9],
-                size = 0.5
-              ),
-              strip.text = element_text(
-                size = 10,
-                face = 'bold',
-                colour = blues[9]),
-              panel.background = element_blank(),
-              axis.ticks = element_blank(),
-              axis.text = element_blank(),
-              axis.title = element_blank())
-
+          option = 'cividis') +
+        theme_cvCovEst(plot_type = 'heatmap')
 
       return(plot)
     }
@@ -943,8 +871,10 @@ cvEigenPlot <- function(
                 which = eig_type)$values),
             stat = rep(
               stat_est,
-              k
-            )
+              k),
+            estimator = rep(
+              estimator,
+              k)
           )
 
           return(estEigs)
@@ -974,8 +904,10 @@ cvEigenPlot <- function(
             which = eig_type)$values),
         stat = rep(
           stat_est,
-          k
-        )
+          k),
+        estimator = rep(
+          estimator,
+          k)
       )
     }
     # Re-factor
@@ -987,65 +919,27 @@ cvEigenPlot <- function(
     if (k == 1){
       plot1 <- ggplot2::ggplot(
         stat_eigs,
-        aes(x = index,
-            y = eigenvalues,
-            color = stat)) +
+        aes(x = index, y = eigenvalues, color = stat)) +
         geom_point() +
-        scale_x_continuous(n.breaks = 3,
-                           labels = c("", b, ""))
+        scale_x_continuous(
+          n.breaks = 3, labels = c("", b, ""))
     }
     else{
       plot1 <- ggplot2::ggplot(
         stat_eigs,
-        aes(x = index,
-            y = eigenvalues,
-            color = stat)) +
+        aes(x = index, y = eigenvalues, color = stat)) +
         geom_path() +
-        scale_x_continuous(n.breaks = min(10, k))
-
-
+        scale_x_continuous(
+          n.breaks = min(10, k))
     }
+
     plot <- plot1 +
+      facet_wrap(
+        facets = vars(estimator)) +
       scale_color_viridis_d() +
       xlab("Eigenvalue Index") +
       ylab("Eigenvalue") +
-      theme(
-        legend.key = element_blank(),
-        legend.box.background = element_rect(
-          fill = NA,
-          size = 0.75
-        ),
-        legend.title = element_text(
-          size = 10,
-          face = 'bold',
-          vjust = 0.75
-        ),
-        legend.text = element_text(
-          size = 10),
-        strip.background = element_rect(
-          fill = alpha(blues[4], alpha = 0.5),
-          color = blues[9],
-          size = 0.5),
-        strip.text = element_text(
-          size = 10,
-          face = 'bold',
-          colour = blues[9]),
-        axis.title = element_text(
-          size = 12),
-        axis.text = element_text(
-          size = 10),
-        plot.title = element_text(
-          hjust = 0.5,
-          size = 14),
-        plot.caption = element_text(
-          hjust = 0,
-          size = 10,
-          face = 'italic'),
-        panel.background = element_blank(),
-        panel.border = element_rect(
-          fill = NA),
-        panel.grid = element_line(
-          color = alpha(blues[3], 0.75)))
+      theme_cvCovEst(plot_type = 'eigen')
 
     return(plot)
   }
@@ -1141,43 +1035,8 @@ cvEigenPlot <- function(
       ) +
       xlab("Eigenvalue Index") +
       ylab("Eigenvalue") +
-      theme(
-        legend.key = element_blank(),
-        legend.box.background = element_rect(
-          fill = NA,
-          size = 0.75
-        ),
-        legend.title = element_text(
-          size = 10,
-          face = 'bold',
-          vjust = 0.75
-        ),
-        legend.text = element_text(
-          size = 10),
-        strip.background = element_rect(
-          fill = alpha(blues[4], alpha = 0.5),
-          color = blues[9],
-          size = 0.5),
-        strip.text = element_text(
-          size = 10,
-          face = 'bold',
-          colour = blues[9]),
-        axis.title = element_text(
-          size = 12),
-        axis.text = element_text(
-          size = 10),
-        plot.title = element_text(
-          hjust = 0.5,
-          size = 14),
-        plot.caption = element_text(
-          hjust = 0,
-          size = 10,
-          face = 'italic'),
-        panel.background = element_blank(),
-        panel.border = element_rect(
-          fill = NA),
-        panel.grid = element_line(
-          color = alpha(blues[3], 0.75)))
+      theme_cvCovEst(plot_type = 'eigen')
+
     return(plot)
   }
 }
@@ -1407,7 +1266,7 @@ theme_cvCovEst <- function(plot_type) {
     plot.title = element_text(hjust = 0.5, size = 14),
     plot.caption = element_text(hjust = 0, size = 10, face = 'italic'),
     legend.key = element_blank(),
-    legend.box.background = element_rect(fill = NA, size = 0.75),
+    #legend.box.background = element_rect(fill = NA, size = 0.75),
     legend.title = element_text(vjust = 0.75, size = 10, face = 'bold'),
     legend.text = element_text(size = 8, face = 'bold'),
     strip.background = element_rect(
@@ -1418,6 +1277,9 @@ theme_cvCovEst <- function(plot_type) {
   if (plot_type == 'heatmap'){
     cv_theme <- cv_theme +
       ggplot2::theme(
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
         axis.text = element_blank(),
         axis.title = element_blank(),
         axis.ticks = element_blank(),
