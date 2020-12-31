@@ -938,31 +938,52 @@ cvEigenPlot <- function(
     )
     # Generate Plot
     if (k == 1){
-      plot1 <- ggplot2::ggplot(
+      plot <- ggplot2::ggplot(
         stat_eigs,
         aes(x = index, y = eigenvalues, color = stat)) +
         geom_point() +
         scale_x_continuous(
-          n.breaks = 3, labels = c("", b, ""))
+          n.breaks = 3, labels = c("", b, "")) +
+        facet_wrap(
+          facets = vars(estimator)) +
+        scale_color_viridis_d(
+          name = 'Risk'
+        ) +
+        xlab("Eigenvalue Index") +
+        ylab("Eigenvalue") +
+        theme_cvCovEst(plot_type = plot_type)
     }
     else{
-      plot1 <- ggplot2::ggplot(
-        stat_eigs,
-        aes(x = index, y = eigenvalues, color = stat)) +
-        geom_path() +
-        scale_x_continuous(
-          n.breaks = min(10, k))
+      if ('summary' %in% plot_type){
+        plot <- ggplot2::ggplot(
+          stat_eigs,
+          aes(x = index, y = eigenvalues)) +
+          geom_path(color = blues[9]) +
+          scale_x_continuous(
+            n.breaks = min(10, k)) +
+          facet_wrap(
+            facets = vars(estimator)) +
+          xlab("Eigenvalue Index") +
+          ylab("Eigenvalue") +
+          theme_cvCovEst(plot_type = plot_type)
+      }
+      else{
+        plot <- ggplot2::ggplot(
+          stat_eigs,
+          aes(x = index, y = eigenvalues, color = stat)) +
+          geom_path() +
+          scale_x_continuous(
+            n.breaks = min(10, k)) +
+          facet_wrap(
+            facets = vars(estimator)) +
+          scale_color_viridis_d(
+            name = 'Risk'
+          ) +
+          xlab("Eigenvalue Index") +
+          ylab("Eigenvalue") +
+          theme_cvCovEst(plot_type = plot_type)
+      }
     }
-
-    plot <- plot1 +
-      facet_wrap(
-        facets = vars(estimator)) +
-      scale_color_viridis_d(
-        name = 'Risk'
-      ) +
-      xlab("Eigenvalue Index") +
-      ylab("Eigenvalue") +
-      theme_cvCovEst(plot_type = plot_type)
 
     return(plot)
   }
@@ -1264,9 +1285,13 @@ cvSummaryPlot <- function(
   plot_type = 'summary',
   has_hypers){
 
+  # Import Colors
   blues <- RColorBrewer::brewer.pal(9, "Blues")
+
+  # Set Titles
   plot_title <- paste(
     "Summary Plot for ", estimator, sep = "")
+
 
   # Upper Left - Risk Plot
   p1 <- cvRiskPlot(dat = dat,
@@ -1320,11 +1345,13 @@ cvSummaryPlot <- function(
     p4 <- tableGrob(p4$empRiskByClass)
   }
 
+
   plot <- gridExtra::grid.arrange(
-    p1, p2, p4, p3,
+    p1, p2, p3, p4,
     nrow = 2,
-    widths = c(1, 1.25),
-    heights = c(1, 1),
+    ncol = 2,
+    widths = c(1, 1),
+    heights = c(1, 1.1),
     top = plot_title
   )
 
@@ -1388,14 +1415,15 @@ theme_cvCovEst <- function(plot_type) {
     if ('summary' %in% plot_type){
       cv_theme <- cv_theme +
         ggplot2::theme(
-          legend.position = 'right',
-          legend.key.width = unit(5, 'mm'),
+          #legend.position = 'right',
+          legend.key.width = unit(10, 'mm'),
           legend.title = element_text(
             vjust = 0.75, size = 8, face = 'bold'))
     }
   }
 
-  # Changes for cvSummaryPlot Only
+
+  # Changes for cvSummaryPlot
   if ('summary' %in% plot_type){
     cv_theme <- cv_theme +
       ggplot2::theme(
