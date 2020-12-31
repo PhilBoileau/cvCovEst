@@ -4,7 +4,7 @@
 \alias{cvRiskPlot}
 \title{Empirical Risk Plot}
 \usage{
-cvRiskPlot(dat, est, conf = FALSE)
+cvRiskPlot(dat, est, conf = FALSE, plot_type = "risk")
 }
 \arguments{
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
@@ -12,6 +12,9 @@ cvRiskPlot(dat, est, conf = FALSE)
 
 \item{conf}{A \code{logical} indicating whether confidence intervals should
 be displayed for line plots.  Default is \code{FALSE}.}
+
+\item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
+\code{'risk'}}
 
 \item{estimator}{A character vector specifying one or more classes of
 estimators to compare.}

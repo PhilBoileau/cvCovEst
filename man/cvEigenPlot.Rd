@@ -4,7 +4,15 @@
 \alias{cvEigenPlot}
 \title{Eigenvalue Plot}
 \usage{
-cvEigenPlot(dat, estimator, stat = "min", dat_orig, k, leading = TRUE)
+cvEigenPlot(
+  dat,
+  estimator,
+  stat = "min",
+  dat_orig,
+  k,
+  leading = TRUE,
+  plot_type = "eigen"
+)
 }
 \arguments{
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
@@ -27,6 +35,9 @@ the number of columns of the original data matrix.}
 \item{leading}{A \code{logical} indicating if the leading eigenvalues should
 be used.  Defautlt is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
 will be used instead.}
+
+\item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
+\code{'eigen'}}
 }
 \value{
 A plot, or grid of plots, showing the k leading or trailing

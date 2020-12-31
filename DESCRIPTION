@@ -41,10 +41,12 @@ Imports:
     future.apply,
     reshape2,
     ggplot2,
+    ggpubr,
     viridis,
     viridisLite,
     RColorBrewer,
-    gridExtra
+    gridExtra,
+    grid
 Suggests:
     testthat,
     knitr,

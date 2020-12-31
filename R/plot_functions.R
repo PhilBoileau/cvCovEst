@@ -401,6 +401,9 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
 #' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{cvCovEst}.
 #'
+#' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
+#'  \code{'heatmap'}
+#'
 #' @return A grid of heat map plots comparing the desired covariance matrix
 #' estimators.
 #'
@@ -417,7 +420,8 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
 cvMultiMelt <- function(dat,
                         estimator,
                         stat = 'min',
-                        dat_orig) {
+                        dat_orig,
+                        plot_type = 'heatmap') {
 
 
   stat_choices <- c(
@@ -474,7 +478,15 @@ cvMultiMelt <- function(dat,
 
   # Call cvSummary
   cv_sum <- summary.cvCovEst(dat)
+
+  # Setup Values
   blues <- RColorBrewer::brewer.pal(n = 9, name = "Blues")
+  if ('summary' %in% plot_type){
+    legend_title <- "Abs. Value"
+  }
+  else{
+    legend_title <- "Covariance (abs. value)"
+  }
 
   # Single Stat Option
   if (single_stat){
@@ -547,9 +559,9 @@ cvMultiMelt <- function(dat,
       ggplot2::facet_wrap(
         facets = vars(estimator)) +
       scale_fill_viridis(
-        name = "Covariance (abs. value)",
+        name = legend_title,
         option = 'cividis') +
-      theme_cvCovEst(plot_type = 'heatmap')
+      theme_cvCovEst(plot_type = plot_type)
 
     return(plot)
   }
@@ -625,9 +637,9 @@ cvMultiMelt <- function(dat,
           facets = vars(summary_stat),
           nrow = 1) +
         scale_fill_viridis(
-          name = "Covariance (abs. value)",
+          name = legend_title,
           option = 'cividis') +
-        theme_cvCovEst(plot_type = 'heatmap')
+        theme_cvCovEst(plot_type = plot_type)
 
       return(plot)
     }
@@ -713,9 +725,9 @@ cvMultiMelt <- function(dat,
           rows = vars(estimator),
           cols = vars(summary_stat)) +
         scale_fill_viridis(
-          name = "Covariance (abs. value)",
+          name = legend_title,
           option = 'cividis') +
-        theme_cvCovEst(plot_type = 'heatmap')
+        theme_cvCovEst(plot_type = plot_type)
 
       return(plot)
     }
@@ -749,6 +761,9 @@ cvMultiMelt <- function(dat,
 #'  be used.  Defautlt is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
 #'  will be used instead.
 #'
+#' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
+#'  \code{'eigen'}
+#'
 #' @return A plot, or grid of plots, showing the k leading or trailing
 #'  eigenvalues of the specified estimators and associated summary statistics of
 #'  the empirical risk.
@@ -762,7 +777,13 @@ cvMultiMelt <- function(dat,
 #'
 #' @keywords internal
 cvEigenPlot <- function(
-  dat, estimator, stat = 'min', dat_orig, k, leading = TRUE) {
+  dat,
+  estimator,
+  stat = 'min',
+  dat_orig,
+  k,
+  leading = TRUE,
+  plot_type = 'eigen') {
 
   stat_choices <- c("min", "Q1", "Q2", "Q3", "max")
 
@@ -936,10 +957,12 @@ cvEigenPlot <- function(
     plot <- plot1 +
       facet_wrap(
         facets = vars(estimator)) +
-      scale_color_viridis_d() +
+      scale_color_viridis_d(
+        name = 'Risk'
+      ) +
       xlab("Eigenvalue Index") +
       ylab("Eigenvalue") +
-      theme_cvCovEst(plot_type = 'eigen')
+      theme_cvCovEst(plot_type = plot_type)
 
     return(plot)
   }
@@ -1031,11 +1054,11 @@ cvEigenPlot <- function(
     plot <- plot1 +
       facet_wrap(facets = vars(estimator)) +
       scale_color_viridis_d(
-        name = 'Risk Stats'
+        name = 'Risk'
       ) +
       xlab("Eigenvalue Index") +
       ylab("Eigenvalue") +
-      theme_cvCovEst(plot_type = 'eigen')
+      theme_cvCovEst(plot_type = plot_type)
 
     return(plot)
   }
@@ -1056,6 +1079,9 @@ cvEigenPlot <- function(
 #' @param conf A \code{logical} indicating whether confidence intervals should
 #'  be displayed for line plots.  Default is \code{FALSE}.
 #'
+#' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
+#'  \code{'risk'}
+#'
 #' @return A single plot or grid of plots for each estimator specified.
 #'
 #' @importFrom stringr str_split
@@ -1067,7 +1093,11 @@ cvEigenPlot <- function(
 #' @importFrom RColorBrewer brewer.pal
 #'
 #' @keywords internal
-cvRiskPlot <- function(dat, est, conf = FALSE) {
+cvRiskPlot <- function(
+  dat,
+  est,
+  conf = FALSE,
+  plot_type = 'risk') {
 
   # Exclude estimators with 2+ hyperparameters for now
   invalid_est <- c('poetEst',
@@ -1146,7 +1176,7 @@ cvRiskPlot <- function(dat, est, conf = FALSE) {
         caption = cv_details) +
       xlab("Hyperparameter") +
       ylab("Risk") +
-      theme_cvCovEst(plot_type = 'risk')
+      theme_cvCovEst(plot_type = plot_type)
 
     return(plot)
 
@@ -1183,7 +1213,7 @@ cvRiskPlot <- function(dat, est, conf = FALSE) {
       xlab("Hyperparameter") +
       ylab("Risk") +
       scale_x_continuous(n.breaks = 10) +
-      theme_cvCovEst(plot_type = 'risk')
+      theme_cvCovEst(plot_type = plot_type)
 
     return(plot)
   }
@@ -1205,6 +1235,9 @@ cvRiskPlot <- function(dat, est, conf = FALSE) {
 #' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{cvCovEst}.
 #'
+#' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
+#'  \code{'summary'}
+#'
 #' @param ... Additional arguments to be passed to \code{cvCovEst} plotting
 #'  functions.
 #'
@@ -1213,15 +1246,89 @@ cvRiskPlot <- function(dat, est, conf = FALSE) {
 #' @importFrom stringr str_split
 #' @importFrom dplyr group_by filter %>%
 #' @importFrom stats t.test
-#' @import ggplot2
+#' @import gridExtra
+#' @import ggpubr
 #' @import assertthat
 #' @import viridis
 #' @importFrom RColorBrewer brewer.pal
 #'
 #' @keywords internal
-cvSummaryPlot <- function(dat, estimator, dat_orig, ...){
+cvSummaryPlot <- function(
+  dat,
+  estimator,
+  dat_orig,
+  stat,
+  conf,
+  k,
+  leading,
+  plot_type = 'summary',
+  has_hypers){
 
+  blues <- RColorBrewer::brewer.pal(9, "Blues")
+  plot_title <- paste(
+    "Summary Plot for ", estimator, sep = "")
 
+  # Upper Left - Risk Plot
+  p1 <- cvRiskPlot(dat = dat,
+                   est = estimator,
+                   conf = conf,
+                   plot_type = plot_type)
+
+  # Upper Right - Eigenvalue Plot
+  p2 <- cvEigenPlot(dat = dat,
+                    estimator = estimator,
+                    dat_orig = dat_orig,
+                    stat = stat,
+                    k = k,
+                    leading = leading,
+                    plot_type = plot_type)
+
+  # Lower Left - Heatmap
+  p3 <- cvMultiMelt(dat = dat,
+                    estimator = estimator,
+                    stat = stat,
+                    dat_orig = dat_orig,
+                    plot_type = c('summary', 'heatmap'))
+
+  # Lower Right - Summary Table
+  # If Estimator has Hyperparameters:
+  if (has_hypers){
+    p4 <- summary.cvCovEst(
+      dat = dat, summ_fun = 'hyperRisk')
+    # Adjust Table Theme
+    p4 <- ggtexttable(
+      p4$hyperRisk[[estimator]],
+      cols = c('Hyperparameters',"Emp. Risk"),
+      theme = ttheme(
+        rownames.style = rownames_style(
+          fill = alpha(blues[7], alpha = 0.25),
+          hjust = 0, x = 0.25,
+          face = 'bold', color = blues[9],
+          linecolor = blues[9], linewidth = 2),
+        colnames.style = colnames_style(
+          fill = alpha(blues[7], alpha = 0.25),
+          face = 'bold', color = blues[9],
+          linecolor = blues[9], linewidth = 2),
+        tbody.style = tbody_style(
+          linecolor = blues[9])))
+    p4 <- tbody_add_border(
+      p4, from.row = 2, from.column = 1,
+      linecolor = blues[9], linewidth = 2)
+  }
+  else{
+    p4 <- summary.cvCovEst(dat = dat, summ_fun = 'empRiskByClass')
+    p4 <- tableGrob(p4$empRiskByClass)
+  }
+
+  plot <- gridExtra::grid.arrange(
+    p1, p2, p4, p3,
+    nrow = 2,
+    widths = c(1, 1.25),
+    heights = c(1, 1),
+    top = plot_title
+  )
+
+  return(plot)
 
 }
 
@@ -1233,21 +1340,13 @@ cvSummaryPlot <- function(dat, estimator, dat_orig, ...){
 #'  \code{cvCovEst} plotting functions and makes changes depending on which plot
 #'  function is being called.
 #'
-#' @param plot_type A character vector
-#'
-#' @param plot_title
-#'
-#' @param ... Additional arguments to be passed to \code{cvCovEst} plotting
-#'  functions.
+#' @param plot_type A character vector specifying which plot is to be displayed.
+#'   Can contain more than one value in the case of
+#'   \code{plot_type = c('heatmap', 'summary')}.
 #'
 #' @return A \code{ggplot} theme.
 #'
-#' @importFrom stringr str_split
-#' @importFrom dplyr group_by filter %>%
-#' @importFrom stats t.test
 #' @import ggplot2
-#' @import assertthat
-#' @import viridis
 #' @importFrom RColorBrewer brewer.pal
 #'
 #' @keywords internal
@@ -1274,7 +1373,7 @@ theme_cvCovEst <- function(plot_type) {
     strip.text = element_text(size = 10, face = 'bold', colour = blues[9]))
 
   # Changes for cvMultiMelt
-  if (plot_type == 'heatmap'){
+  if ('heatmap' %in% plot_type){
     cv_theme <- cv_theme +
       ggplot2::theme(
         panel.border = element_blank(),
@@ -1285,10 +1384,19 @@ theme_cvCovEst <- function(plot_type) {
         axis.ticks = element_blank(),
         legend.position = 'bottom',
         legend.key.width = unit(10, 'mm'))
+    # If cvMultiMelt & cvSummaryPlot
+    if ('summary' %in% plot_type){
+      cv_theme <- cv_theme +
+        ggplot2::theme(
+          legend.position = 'right',
+          legend.key.width = unit(5, 'mm'),
+          legend.title = element_text(
+            vjust = 0.75, size = 8, face = 'bold'))
+    }
   }
 
-  # Changes for cvSummary
-  if (plot_type == 'summary'){
+  # Changes for cvSummaryPlot Only
+  if ('summary' %in% plot_type){
     cv_theme <- cv_theme +
       ggplot2::theme(
         plot.title = element_blank(),

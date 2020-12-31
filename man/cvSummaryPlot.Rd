@@ -4,7 +4,17 @@
 \alias{cvSummaryPlot}
 \title{Summary Plot}
 \usage{
-cvSummaryPlot(dat, estimator, dat_orig, ...)
+cvSummaryPlot(
+  dat,
+  estimator,
+  dat_orig,
+  stat,
+  conf,
+  k,
+  leading,
+  plot_type = "summary",
+  has_hypers
+)
 }
 \arguments{
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
@@ -15,6 +25,9 @@ plot.}
 
 \item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
 object originally passed to \code{cvCovEst}.}
+
+\item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
+\code{'summary'}}
 
 \item{...}{Additional arguments to be passed to \code{cvCovEst} plotting
 functions.}

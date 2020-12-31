@@ -7,12 +7,9 @@
 theme_cvCovEst(plot_type)
 }
 \arguments{
-\item{plot_type}{A character vector}
-
-\item{plot_title}{}
-
-\item{...}{Additional arguments to be passed to \code{cvCovEst} plotting
-functions.}
+\item{plot_type}{A character vector specifying which plot is to be displayed.
+Can contain more than one value in the case of
+\code{plot_type = c('heatmap', 'summary')}.}
 }
 \value{
 A \code{ggplot} theme.
