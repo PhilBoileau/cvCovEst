@@ -13,6 +13,7 @@ cvSummaryPlot(
   k,
   leading,
   plot_type = "summary",
+  cv_details,
   has_hypers
 )
 }
@@ -27,7 +28,10 @@ plot.}
 object originally passed to \code{cvCovEst}.}
 
 \item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
-\code{'summary'}}
+\code{'summary'}.}
+
+\item{cv_details}{Character vector summarizing key arguments passed to
+\code{cvCovEst}.}
 
 \item{...}{Additional arguments to be passed to \code{cvCovEst} plotting
 functions.}

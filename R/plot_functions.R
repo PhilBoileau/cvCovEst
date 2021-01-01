@@ -544,6 +544,7 @@ cvMultiMelt <- function(dat,
         aes(fill = value)) +
       ggplot2::facet_wrap(
         facets = vars(estimator)) +
+      ylab("Covariance") +
       scale_fill_viridis(
         name = legend_title,
         option = 'cividis') +
@@ -1243,7 +1244,9 @@ cvRiskPlot <- function(
 #'  object originally passed to \code{cvCovEst}.
 #'
 #' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
-#'  \code{'summary'}
+#'  \code{'summary'}.
+#' @param cv_details Character vector summarizing key arguments passed to
+#'  \code{cvCovEst}.
 #'
 #' @param ... Additional arguments to be passed to \code{cvCovEst} plotting
 #'  functions.
@@ -1269,6 +1272,7 @@ cvSummaryPlot <- function(
   k,
   leading,
   plot_type = 'summary',
+  cv_details,
   has_hypers){
 
   # Import Colors
@@ -1277,7 +1281,6 @@ cvSummaryPlot <- function(
   # Set Titles
   plot_title <- paste(
     "Summary Plot for ", estimator, sep = "")
-
 
   # Upper Left - Risk Plot
   p1 <- cvRiskPlot(dat = dat,
@@ -1304,11 +1307,11 @@ cvSummaryPlot <- function(
   # Lower Right - Summary Table
   # If Estimator has Hyperparameters:
   if (has_hypers){
-    p4 <- summary.cvCovEst(
+    p4_a <- summary.cvCovEst(
       dat = dat, summ_fun = 'hyperRisk')
     # Adjust Table Theme
-    p4 <- ggtexttable(
-      p4$hyperRisk[[estimator]],
+    p4_a <- ggtexttable(
+      p4_a$hyperRisk[[estimator]],
       cols = c('Hyperparameters',"Emp. Risk"),
       theme = ttheme(
         rownames.style = rownames_style(
@@ -1322,24 +1325,31 @@ cvSummaryPlot <- function(
           linecolor = blues[9], linewidth = 2),
         tbody.style = tbody_style(
           linecolor = blues[9])))
-    p4 <- tbody_add_border(
-      p4, from.row = 2, from.column = 1,
+    p4_a <- tbody_add_border(
+      p4_a, from.row = 2, from.column = 1,
       linecolor = blues[9], linewidth = 2)
   }
   else{
-    p4 <- summary.cvCovEst(dat = dat, summ_fun = 'empRiskByClass')
-    p4 <- tableGrob(p4$empRiskByClass)
+    p4_a <- summary.cvCovEst(dat = dat, summ_fun = 'empRiskByClass')
+    p4_a <- tableGrob(p4$empRiskByClass)
   }
 
+  p4_b <- ggpubr::ggparagraph(
+    text = cv_details,
+    face = 'italic',
+    size = 11)
 
-  plot <- gridExtra::grid.arrange(
-    p1, p2, p3, p4,
-    nrow = 2,
-    ncol = 2,
-    widths = c(1, 1),
-    heights = c(1, 1.1),
-    top = plot_title
+  p4 <- ggpubr::ggarrange(
+    p4_a, p4_b, ncol = 1, nrow = 2,
+    align = 'v'
+
   )
+
+  plot <- ggpubr::ggarrange(
+    p1, p2, p3, p4,
+    ncol = 2, nrow = 2,
+    heights = c(1, 1.2),
+    align = 'v')
 
   return(plot)
 
@@ -1401,7 +1411,7 @@ theme_cvCovEst <- function(plot_type) {
     if ('summary' %in% plot_type){
       cv_theme <- cv_theme +
         ggplot2::theme(
-          #legend.position = 'right',
+          axis.title.y = element_text(size = 12),
           legend.key.width = unit(10, 'mm'),
           legend.title = element_text(
             vjust = 0.75, size = 8, face = 'bold'))
