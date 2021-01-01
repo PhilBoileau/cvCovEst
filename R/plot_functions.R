@@ -213,35 +213,21 @@ hyperRisk <- function(dat) {
 #' @export
 summary.cvCovEst <- function(
   dat,
-  summ_fun = c("empRiskByClass",
-               "bestInClass",
-               "worstInClass",
-               "hyperRisk")) {
-
-  cv_names <- c(
-    "estimate",
-    "estimator",
-    "risk_df",
-    "cv_df",
-    "args")
-
-  summary_functions <- c(
+  summ_fun = c(
     "empRiskByClass",
     "bestInClass",
     "worstInClass",
-    "hyperRisk"
-  )
+    "hyperRisk")
+  ) {
 
-  if (is.cvCovEst(dat)) {
-    assertthat::assert_that(
-      all(cv_names %in% names(dat)) == TRUE,
-      msg = "cvCovEst object is missing data."
-      )
-    assertthat::assert_that(
-      all(summ_fun %in% summary_functions) == TRUE,
-      msg = "Must provide a valid summary function."
-    )
-  }
+  summary_functions <- c(
+    "empRiskByClass", "bestInClass", "worstInClass", "hyperRisk")
+
+  # Check cvCovEst credentials
+  checkPlotSumArgs(
+    dat,
+    which_fun = 'summary',
+    summ_fun = summ_fun)
 
   risk_dat <- dat$risk_df
 
@@ -1436,6 +1422,213 @@ theme_cvCovEst <- function(plot_type) {
   return(cv_theme)
 
 }
+
+################################################################################
+#' Generic Plot Method for cvCovest
+#'
+#' @description \code{plot.cvCovEst} is a generic plotting method for objects of
+#'  class, "cvCovEst".  The method is designed as a tool for diagnostic and
+#'  exploratory analysis purposes when selecting a covariance matrix estimator.
+#'
+#' @param dat An object of class, "cvCovEst".  Specifically, this is the
+#'  standard output of the function \code{cvCovEst}.
+#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{cvCovEst}.
+#' @param plot_type A character vector specifying one of four choices of
+#'  diagnostic plots.  Default is \code{'summary'}.  See Details for more about
+#'  each plotting choice.
+#' @param estimator A character vector specifying one or more classes of
+#'  estimators to compare.
+#' @param stat A character vector of one or more summary statistics to use when
+#'  comparing estimators.  Default is \code{'min'} for minimum
+#'  empirical risk.  See Details for more options.
+#' @param conf A \code{logical} indicating whether or not to include confidence
+#'  bands in empirical risk plots.  Default is \code{FALSE}.
+#' @param k The number of leading/trailing eigenvalues to plot. If \code{NULL},
+#'  will default to the number of columns in \code{dat_orig}.
+#' @param leading A \code{logical} indicating if the leading eigenvalues should
+#'  be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
+#'  are used instead.
+#'
+#' @importFrom assertthat assert_that
+#'
+#' @return A plot object
+#'
+#' @export
+plot.cvCovEst <- function(
+  dat,
+  dat_orig,
+  estimator,
+  plot_type = c('summary'),
+  stat = c('min'),
+  conf = FALSE,
+  k = NULL,
+  leading = TRUE
+  ) {
+
+  # Check cvCovEst credentials
+  checkPlotSumArgs(
+    dat,
+    dat_orig,
+    which_fun = 'plot',
+    estimator,
+    plot_type,
+    stat,
+    conf,
+    k,
+    leading)
+
+  # Define cv_details
+  pretty_args <- list(
+    mc = 'Monte Carlo CV',
+    v_fold = "V-fold CV",
+    cvMatrixFrobeniusLoss = "Matrix Frobenius Loss",
+    cvFrobeniusLoss = "Scaled Frobenius Loss")
+
+  if (dat$args$cv_scheme == 'mc'){
+    scheme <- paste(pretty_args$mc, "split", dat$args$mc_split, sep = " ")
+  }
+  else{
+    scheme <- pretty_args$v_fold
+  }
+
+  folds <- paste(dat$args$v_fold, "folds", sep = " ")
+  loss <- pretty_args[[rlang::as_label(dat$args$cv_loss)]]
+  cv_details <- paste(scheme, folds, loss, sep = "  ||  ")
+
+  # Define estimators with hyperparameters
+  has_hypers <- c(
+    "linearShrinkEst", "thresholdingEst",
+    "bandingEst", "taperingEst",
+    "scadEst", "poetEst", "robustPoetEst",
+    "adaptiveLassoEst")
+
+
+
+
+
+
+
+
+
+
+}
+
+################################################################################
+#' Check Arguments Passed to plot.cvCovEst and summary.cvCovEst
+#'
+#' @description The \code{checkPlotSumArgs} function verifies that all arguments
+#' passed to the \code{plot.cvCovEst} and \code{summary.cvCovEst} functions meet
+#' their specifications.  Some additional arguments may be checked at the
+#' individual function level.
+#'
+#' @param dat An object of class, "cvCovEst".  Specifically, this is the
+#'  standard output of the function \code{cvCovEst}.
+#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{cvCovEst}.
+#' @param which_fun A choice of \code{'plot'} or \code{'summary'} depending on
+#'  which function is being checked.
+#' @param estimator A character vector specifying one or more classes of
+#'  estimators to compare.
+#' @param plot_type A character vector specifying one of four choices of
+#'  diagnostic plots.  Default is \code{'summary'}.  See Details for more about
+#'  each plotting choice.
+#' @param summ_fun A character vector specifying which summaries to output.
+#' @param stat A character vector of one or more summary statistics to use when
+#'  comparing estimators.  Default is \code{'min'} for minimum
+#'  empirical risk.  See Details for more options.
+#' @param conf A \code{logical} indicating whether or not to include confidence
+#'  bands in empirical risk plots.  Default is \code{FALSE}.
+#' @param k The number of leading/trailing eigenvalues to plot. If \code{NULL},
+#'  will default to the number of columns in \code{dat_orig}.
+#' @param leading A \code{logical} indicating if the leading eigenvalues should
+#'  be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
+#'  are used instead.
+#'
+#' @importFrom assertthat assert_that
+#'
+#' @return Whether all argument conditions are satisfied
+#'
+#' @keywords internal
+checkPlotSumArgs <- function(
+  dat, dat_orig, which_fun,
+  estimator, plot_type, summ_fun,
+  stat, conf, k, leading){
+
+  # Define possible valid arguments for both functions
+  cv_names <- c("estimate", "estimator", "risk_df", "cv_df", "args")
+
+  # Check that names of dat match what is expected of cvCovEst output
+  if (is.cvCovEst(dat)) {
+    assertthat::assert_that(
+      all(cv_names %in% names(dat)) == TRUE,
+      msg = "cvCovEst object is missing data."
+    ) # change output message here?
+  }
+  # For plot functions only:
+  if (which_fun == 'plot'){
+    # Define valid plot arguments
+    plot_types <- c("summary", "risk", "eigen", "heatmap")
+    stat_choices <- c("min", "Q1", "Q2", "Q3", "max")
+    cv_estimators <- unique(dat$risk_df$estimator)
+
+    # Check valid summary stat choices
+    assertthat::assert_that(
+      all(
+        stat %in% stat_choices) == TRUE,
+      msg = "Non-supported summary statistic provided.")
+    # Check valid estimators - estimators must have been passed through cvCovEst
+    assertthat::assert_that(
+      all(
+        estimator %in% cv_estimators) == TRUE,
+      msg = "Can only use estimators passed to the cvCovEst function.")
+    # Check valid k values
+    if (!is.null(k)) {
+      assertthat::assert_that(
+        k <= ncol(dat_orig),
+        msg = 'k cannot exceed the number of columns in dat_orig.'
+      )
+    }
+    # Check valid plot types
+    assertthat::assert_that(
+      all(
+        plot_type %in% plot_types,
+        length(plot_type) == 1) == TRUE,
+      msg = "Must provide a single valid plot type.")
+    # Check valid logicals
+    assertthat::assert_that(
+      all(
+        is.logical(leading),
+        is.logical(conf)
+      ) == TRUE,
+      msg = 'Invalid value for logical argument.'
+    )
+    # Check valid summary plot conditions
+    if (plot_type == 'summary'){
+      # Check only single estimator is provided
+      assertthat::assert_that(
+        length(estimator) == 1,
+        msg = 'summary plot_type can only take one estimator.'
+      )
+      # ADD CONDITION: stat == 'min' and provide warning?
+    }
+  }
+  # For summary functions only (which_fun == 'summary')
+  else{
+    # Define valid summary functions
+    summary_functions <- c(
+      "empRiskByClass", "bestInClass", "worstInClass", "hyperRisk")
+
+    # Check valid summary functions
+    assertthat::assert_that(
+      all(
+        summ_fun %in% summary_functions) == TRUE,
+      msg = "Must provide a valid summary function."
+    )
+  }
+}
+
+
 
 
 
