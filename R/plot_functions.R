@@ -202,6 +202,7 @@ hyperRisk <- function(dat) {
 #'
 #' @param dat A named \code{list} of class \code{"cvCovEst"}.
 #' @param summ_fun A character vector specifying which summaries to output.
+#' @param ... Additional arguments passed to summary method.
 #'
 #' @return A named \code{list} where each element corresponds to the output of
 #' of the requested summaries.
@@ -215,7 +216,8 @@ summary.cvCovEst <- function(
     "empRiskByClass",
     "bestInClass",
     "worstInClass",
-    "hyperRisk")
+    "hyperRisk"),
+  ...
   ) {
 
   summary_functions <- c(

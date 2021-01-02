@@ -6,13 +6,16 @@
 \usage{
 \method{summary}{cvCovEst}(
   dat,
-  summ_fun = c("empRiskByClass", "bestInClass", "worstInClass", "hyperRisk")
+  summ_fun = c("empRiskByClass", "bestInClass", "worstInClass", "hyperRisk"),
+  ...
 )
 }
 \arguments{
 \item{dat}{A named \code{list} of class \code{"cvCovEst"}.}
 
 \item{summ_fun}{A character vector specifying which summaries to output.}
+
+\item{...}{Additional arguments passed to summary method.}
 }
 \value{
 A named \code{list} where each element corresponds to the output of
