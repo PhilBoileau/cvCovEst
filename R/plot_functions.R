@@ -1069,36 +1069,8 @@ cvRiskPlot <- function(
 
   blues <- RColorBrewer::brewer.pal(9, 'Blues')
 
-  #pretty_args <- list(
-  #  mc = 'Monte Carlo CV',
-  #  v_fold = "V-fold CV",
-  #  cvMatrixFrobeniusLoss = "Matrix Frobenius Loss",
-  #  cvFrobeniusLoss = "Scaled Frobenius Loss"
-
-  #)
-
-  #if (dat$args$cv_scheme == 'mc'){
-  #  scheme <- paste(
-  #    pretty_args$mc, "split", dat$args$mc_split, sep = " "
-  #    )
-  #}
-  #else{
-  #  scheme <- pretty_args$v_fold
-  #}
-
-  #folds <- paste(dat$args$v_fold, "folds", sep = " ")
-  #loss <- pretty_args[[rlang::as_label(dat$args$cv_loss)]]
-
-  #cv_details <- paste(scheme, folds, loss, sep = "  ||  ")
-
-
   # For Confidence Intervals
   if (conf) {
-    # Check for enough fold observations -- Can change to warning/change min folds
-    #assert_that(
-    #  dat$args$v_folds >= 20,
-    #  msg = 'v_folds must be >= 20 for reliable confidence intervals.')
-
     risk <- dat$cv_df %>%
       filter(estimator %in% est) %>%
       group_by(estimator, hyperparameters) %>%
@@ -1444,15 +1416,15 @@ plot.cvCovEst <- function(
 
   # Check cvCovEst credentials
   checkPlotSumArgs(
-    dat,
-    dat_orig,
+    dat = dat,
+    dat_orig = dat_orig,
     which_fun = 'plot',
-    estimator,
-    plot_type,
-    stat,
-    conf,
-    k,
-    leading)
+    estimator = estimator,
+    plot_type = plot_type,
+    stat = stat,
+    conf = conf,
+    k = k,
+    leading = leading)
 
   # Define cv_details
   pretty_args <- list(
