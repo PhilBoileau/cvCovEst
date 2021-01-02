@@ -44,9 +44,8 @@ Imports:
     ggpubr,
     viridis,
     viridisLite,
-    RColorBrewer,
-    gridExtra,
-    grid
+    data.table,
+    RColorBrewer
 Suggests:
     testthat,
     knitr,

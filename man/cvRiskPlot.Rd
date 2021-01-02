@@ -4,7 +4,7 @@
 \alias{cvRiskPlot}
 \title{Empirical Risk Plot}
 \usage{
-cvRiskPlot(dat, est, conf = FALSE, plot_type = "risk")
+cvRiskPlot(dat, est, conf = FALSE, plot_type = "risk", cv_details, has_hypers)
 }
 \arguments{
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
@@ -15,6 +15,12 @@ be displayed for line plots.  Default is \code{FALSE}.}
 
 \item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
 \code{'risk'}}
+
+\item{cv_details}{Character vector summarizing key arguments passed to
+\code{cvCovEst}.}
+
+\item{has_hypers}{A character vector containing the names of current
+estimators with hyperparameters.}
 
 \item{estimator}{A character vector specifying one or more classes of
 estimators to compare.}

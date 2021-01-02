@@ -4,7 +4,15 @@
 \alias{cvMultiMelt}
 \title{Multiple Heat Map Plot}
 \usage{
-cvMultiMelt(dat, estimator, stat = "min", dat_orig, plot_type = "heatmap")
+cvMultiMelt(
+  dat,
+  estimator,
+  stat = "min",
+  dat_orig,
+  plot_type = "heatmap",
+  cv_details,
+  has_hypers
+)
 }
 \arguments{
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
@@ -21,7 +29,13 @@ empirical risk.}
 object originally passed to \code{cvCovEst}.}
 
 \item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
-\code{'heatmap'}}
+\code{'heatmap'}.}
+
+\item{cv_details}{Character vector summarizing key arguments passed to
+\code{cvCovEst}.}
+
+\item{has_hypers}{A character vector containing the names of current
+estimators with hyperparameters.}
 }
 \value{
 A grid of heat map plots comparing the desired covariance matrix

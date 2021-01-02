@@ -33,8 +33,8 @@ object originally passed to \code{cvCovEst}.}
 \item{cv_details}{Character vector summarizing key arguments passed to
 \code{cvCovEst}.}
 
-\item{...}{Additional arguments to be passed to \code{cvCovEst} plotting
-functions.}
+\item{has_hypers}{A character vector containing the names of current
+estimators with hyperparameters.}
 }
 \value{
 A collection of plots and summary statistics.

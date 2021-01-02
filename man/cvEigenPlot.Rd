@@ -11,7 +11,9 @@ cvEigenPlot(
   dat_orig,
   k,
   leading = TRUE,
-  plot_type = "eigen"
+  plot_type = "eigen",
+  cv_details,
+  has_hypers
 )
 }
 \arguments{
@@ -37,7 +39,13 @@ be used.  Defautlt is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
 will be used instead.}
 
 \item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
-\code{'eigen'}}
+\code{'eigen'}.}
+
+\item{cv_details}{Character vector summarizing key arguments passed to
+\code{cvCovEst}.}
+
+\item{has_hypers}{A character vector containing the names of current
+estimators with hyperparameters.}
 }
 \value{
 A plot, or grid of plots, showing the k leading or trailing
