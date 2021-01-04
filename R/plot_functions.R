@@ -424,11 +424,12 @@ cvMultiMelt <- function(dat,
   )
 
   # Center and Scale Original Data to Match Call to cvCovEst
-  dat_orig <- cvCovEst::safeColScale(
+  dat_orig <- unname(cvCovEst::safeColScale(
     dat_orig,
     center = dat$args$center,
     scale = dat$args$scale
-    )
+    ))
+
 
   # Only Certain Summary Stats Supported
   #assertthat::assert_that(
