@@ -62,8 +62,8 @@ set.seed(1584)
 # elements equal to 0.5
 Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
 
-# sample 200 observations from multivariate normal with mean = 0, var = Sigma
-dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
+# sample 50 observations from multivariate normal with mean = 0, var = Sigma
+dat <- mvrnorm(n = 50, mu = rep(0, 50), Sigma = Sigma)
 
 # run CV-selector
 cv_cov_est_out <- cvCovEst(
@@ -74,7 +74,9 @@ cv_cov_est_out <- cvCovEst(
       thresholdingEst = list(gamma = c(0.2, 2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L))
     ),
+    cv_loss = cvMatrixFrobeniusLoss,
     cv_scheme = "v_fold", v_folds = 5,
+
   )
 
 # print the table of risk estimates
