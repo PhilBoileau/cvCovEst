@@ -5,13 +5,13 @@
 \title{Summary Function for cvCovEst}
 \usage{
 \method{summary}{cvCovEst}(
-  dat,
+  object,
   summ_fun = c("empRiskByClass", "bestInClass", "worstInClass", "hyperRisk"),
   ...
 )
 }
 \arguments{
-\item{dat}{A named \code{list} of class \code{"cvCovEst"}.}
+\item{object}{A named \code{list} of class \code{"cvCovEst"}.}
 
 \item{summ_fun}{A character vector specifying which summaries to output.}
 

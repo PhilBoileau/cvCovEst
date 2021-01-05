@@ -5,18 +5,19 @@
 \title{Generic Plot Method for cvCovest}
 \usage{
 \method{plot}{cvCovEst}(
-  dat,
+  x,
   dat_orig,
   estimator,
   plot_type = c("summary"),
   stat = c("min"),
   conf = FALSE,
   k = NULL,
-  leading = TRUE
+  leading = TRUE,
+  ...
 )
 }
 \arguments{
-\item{dat}{An object of class, "cvCovEst".  Specifically, this is the
+\item{x}{An object of class, "cvCovEst".  Specifically, this is the
 standard output of the function \code{cvCovEst}.}
 
 \item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
@@ -42,6 +43,8 @@ will default to the number of columns in \code{dat_orig}.}
 \item{leading}{A \code{logical} indicating if the leading eigenvalues should
 be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
 are used instead.}
+
+\item{...}{Additional arguments}
 }
 \value{
 A plot object

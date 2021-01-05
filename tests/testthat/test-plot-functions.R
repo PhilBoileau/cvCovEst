@@ -36,6 +36,12 @@ cvTest <- cvCovEst(
   scale = FALSE
 )
 
+has_hypers <- c(
+  "linearShrinkEst", "thresholdingEst",
+  "bandingEst", "taperingEst",
+  "scadEst", "poetEst", "robustPoetEst",
+  "adaptiveLassoEst")
+
 # Class Test
 test_that("Objects of other known classes throw an error", {
   # cvCovest class
@@ -77,14 +83,18 @@ test_that("Only supported summary statistics are allowed for plotting", {
       dat = cvTest,
       estimator = c('poetEst'),
       stat = c('min'),
-      dat_orig = dat)
+      dat_orig = dat,
+      cv_details = "",
+      has_hypers = has_hypers)
     )
   expect_error(
     cvMultiMelt(
       dat = cvTest,
       estimator = c('poetEst'),
       stat = c('mean'),
-      dat_orig = dat)
+      dat_orig = dat,
+      cv_details = "",
+      has_hypers = has_hypers)
   )
 
 } )
@@ -98,7 +108,9 @@ test_that("Valid estimator arguments are passed to plotting functions",  {
         'linearShrinkEst',
         'other'),
       stat = c('min'),
-      dat_orig = dat)
+      dat_orig = dat,
+      cv_details = "",
+      has_hypers = has_hypers)
   )
   # Estimator not originally called to cvCovEst()
   expect_error(
@@ -107,7 +119,9 @@ test_that("Valid estimator arguments are passed to plotting functions",  {
       estimator = c('poetEst',
                     'scadEst'),
       stat = c('min'),
-      dat_orig = dat)
+      dat_orig = dat,
+      cv_details = "",
+      has_hypers = has_hypers)
   )
   # Multiple plots of the same estimator
   expect_error(
@@ -115,7 +129,9 @@ test_that("Valid estimator arguments are passed to plotting functions",  {
       dat = cvTest,
       estimator = c('nlShrinkLWEst'),
       stat = c('min', 'max'),
-      dat_orig = dat)
+      dat_orig = dat,
+      cv_details = "",
+      has_hypers = has_hypers)
   )
 })
 

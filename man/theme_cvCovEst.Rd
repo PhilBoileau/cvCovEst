@@ -4,7 +4,7 @@
 \alias{theme_cvCovEst}
 \title{cvCovEst Plot Theme}
 \usage{
-theme_cvCovEst(plot_type)
+theme_cvCovEst(plot_type, ...)
 }
 \arguments{
 \item{plot_type}{A character vector specifying which plot is to be displayed.

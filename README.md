@@ -73,7 +73,6 @@ cv_cov_est_out <- cvCovEst(
 # NOTE: the estimated covariance matrix is accessible via the `$estimate` slot
 cv_cov_est_out$risk_df
 #> # A tibble: 9 x 3
-#> # Groups:   estimator [5]
 #>   estimator            hyperparameters      empirical_risk
 #>   <chr>                <chr>                         <dbl>
 #> 1 denseLinearShrinkEst hyperparameters = NA          3533.
