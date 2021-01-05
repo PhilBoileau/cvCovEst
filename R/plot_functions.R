@@ -284,6 +284,7 @@ summary.cvCovEst <- function(
 getHypers <- function(dat, summ_stat, new_df = FALSE) {
 
   if (new_df){
+    n <- as.integer(ncol(dat))
 
     hypers <- lapply(
       dat$hyperparameters,
@@ -318,7 +319,7 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
       })
 
     hypers <- data.table::rbindlist(hypers)
-    hypers <- cbind(dat[,1], hypers, dat[,3])
+    hypers <- cbind(dat[,1], hypers, dat[,(3:n)])
   }
   else{
 
@@ -1461,7 +1462,7 @@ plot.cvCovEst <- function(
     scheme <- pretty_args$v_fold
   }
 
-  folds <- paste(dat$args$v_fold, "folds", sep = " ")
+  folds <- paste(x$args$v_fold, "folds", sep = " ")
   loss <- pretty_args[[rlang::as_label(x$args$cv_loss)]]
   cv_details <- paste(scheme, folds, loss, sep = "  ||  ")
 
