@@ -564,7 +564,7 @@ adaptiveLassoEst <- function(dat, lambda, n) {
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
-  return(apply(sample_cov_mat, c(1, 2), adaptiveLassoThreshold,
+  return(apply(sample_cov_mat, 2, adaptiveLassoThreshold,
     lambda = lambda, n = n
   ))
 }

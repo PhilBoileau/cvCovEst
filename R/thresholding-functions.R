@@ -45,13 +45,10 @@ scadThreshold <- function(entry, lambda, a) {
 adaptiveLassoThreshold <- function(entry, lambda, n) {
   s <- abs(entry) - (lambda^(n + 1)) * abs(entry)^(-n)
 
-  if (s > 0) {
-    reg_entry <- sign(entry) * s
-  } else {
-    reg_entry <- 0
-  }
+  s[s < 0] <- 0
+  s[s > 0] <- sign(entry[s > 0]) * s[s > 0]
 
-  return(reg_entry)
+  return(s)
 }
 
 ################################################################################
