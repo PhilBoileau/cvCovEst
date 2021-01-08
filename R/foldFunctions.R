@@ -396,7 +396,7 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
 #' @importFrom origami training validation fold_index
 #' @importFrom tibble tibble
 #' @importFrom rlang eval_tidy !!! exec quo_get_expr
-#' @importFrom matrixStats sum2
+#' @importFrom matrixStats sum2 colVars
 #' @importFrom purrr flatten
 #'
 #' @return A \code{\link[tibble]{tibble}} providing information on estimators,

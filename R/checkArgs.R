@@ -16,7 +16,8 @@
 #'  for a given estimator, then the estimator need not be listed.
 #' @param cv_loss A \code{function} indicating the loss function to use.
 #'  Defaults to the scaled Frobenius loss, \code{\link{cvFrobeniusLoss}}.
-#'  The matrix-based version, \code{cvMatrixFrobeniusLoss} is offered as well.
+#'  (Scaled) matrix-based versions, \code{cvMatrixFrobeniusLoss} and
+#'  \code{cvScaledMatrixFrobeniusLoss}, are offered as well.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
@@ -104,7 +105,8 @@ checkArgs <- function(dat,
 
   # assert that the loss is well defined
   assertthat::assert_that(
-    as.character(cv_loss) %in% c("cvFrobeniusLoss", "cvMatrixFrobeniusLoss")
+    as.character(cv_loss) %in% c("cvFrobeniusLoss", "cvMatrixFrobeniusLoss",
+                                 "cvScaledMatrixFrobeniusLoss")
   )
 
   # assert that estimator hyperparameters are well defined
