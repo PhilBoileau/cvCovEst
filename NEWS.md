@@ -1,5 +1,15 @@
 # cvCovEst 0.1.3 (2020-12-29)
 
++ Added `cvScaledMatrixFrobeniusLoss`, a new matrix-based loss function that
+  scales squared error calculations associated with each entry of a covariance
+  matrix estimate by the sample variances of the entry's row and column
+  variables. This is particularly useful if the features of your dataset are of
+  different magnitude. It's approximately equivalent to estimating the
+  correlation matrix, but without the need to re-scale the estimated
+  correlation matrix to be an estimated covariance matrix.
+
+# cvCovEst 0.1.3 (2020-12-29)
+
 + Fixed error with `denseLinearShrinkEst`: the shrinkage parameter was often
   selected such that the dense target was returned as the estimate.
 

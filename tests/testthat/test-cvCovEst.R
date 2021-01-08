@@ -130,6 +130,56 @@ test_that("cross-validated covariance selector runs silently", {
       ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cvScaledMatrixFrobeniusLoss, cv_scheme = "v_fold",
+    mc_split = 0.5, v_folds = 5,
+    center = TRUE, scale = FALSE, parallel = FALSE
+  ))
+  expect_silent(cvCovEst(
+    dat = dat,
+    estimators = c(
+      linearShrinkEst, linearShrinkLWEst,
+      thresholdingEst, sampleCovEst, bandingEst,
+      taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+      scadEst, poetEst, robustPoetEst, adaptiveLassoEst
+    ),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2)),
+      poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 2L),
+        var_est = c("sample")
+      ),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+    ),
+    cv_loss = cvScaledMatrixFrobeniusLoss, cv_scheme = "mc",
+    mc_split = 0.5, v_folds = 5,
+    center = TRUE, scale = FALSE, parallel = FALSE
+  ))
+  expect_silent(cvCovEst(
+    dat = dat,
+    estimators = c(
+      linearShrinkEst, linearShrinkLWEst,
+      thresholdingEst, sampleCovEst, bandingEst,
+      taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+      scadEst, poetEst, robustPoetEst, adaptiveLassoEst
+    ),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2)),
+      poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 2L),
+        var_est = c("sample")
+      ),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+    ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE,
     true_cov_mat = Sigma
@@ -455,6 +505,31 @@ test_that("Parallelization works", {
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cvFrobeniusLoss, cv_scheme = "mc",
+    mc_split = 0.5, v_folds = 5,
+    center = TRUE, scale = FALSE, parallel = TRUE
+  ))
+    expect_silent(cvCovEst(
+    dat = dat,
+    estimators = c(
+      linearShrinkEst, linearShrinkLWEst,
+      thresholdingEst, sampleCovEst, bandingEst,
+      taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+      scadEst, poetEst, robustPoetEst, adaptiveLassoEst
+    ),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2)),
+      poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 2L),
+        var_est = c("sample")
+      ),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+    ),
+    cv_loss = cvScaledMatrixFrobeniusLoss, cv_scheme = "mc",
     mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = TRUE
   ))
