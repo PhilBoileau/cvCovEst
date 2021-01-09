@@ -10,9 +10,11 @@
   estimator,
   plot_type = c("summary"),
   stat = c("min"),
-  conf = FALSE,
   k = NULL,
   leading = TRUE,
+  abs_v = TRUE,
+  switch_vars = FALSE,
+  min_max = FALSE,
   ...
 )
 }
@@ -34,15 +36,23 @@ each plotting choice.}
 comparing estimators.  Default is \code{'min'} for minimum
 empirical risk.  See Details for more options.}
 
-\item{conf}{A \code{logical} indicating whether or not to include confidence
-bands in empirical risk plots.  Default is \code{FALSE}.}
-
 \item{k}{The number of leading/trailing eigenvalues to plot. If \code{NULL},
 will default to the number of columns in \code{dat_orig}.}
 
 \item{leading}{A \code{logical} indicating if the leading eigenvalues should
 be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
 are used instead.}
+
+\item{abs_v}{A code{logical} determining if the absolute value of the matrix
+entries should be used for plotting the matrix heatmap.  Default is \code{TRUE}.}
+
+\item{switch_vars}{Default is \code{FALSE}. If \code{TRUE}, the hyperparameters
+used for the x-axis and factor variables are switched.  Only applies to
+estimators with more than one hyperparameter.}
+
+\item{min_max}{Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
+maximum values of the factor hyperparameter will be used.  Only applies to
+estimators with more than one hyperparameter.}
 
 \item{...}{Additional arguments}
 }

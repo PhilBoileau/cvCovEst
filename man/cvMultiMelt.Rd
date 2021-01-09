@@ -11,7 +11,8 @@ cvMultiMelt(
   dat_orig,
   plot_type = "heatmap",
   cv_details,
-  has_hypers
+  has_hypers,
+  abs_v = TRUE
 )
 }
 \arguments{
@@ -36,6 +37,9 @@ object originally passed to \code{cvCovEst}.}
 
 \item{has_hypers}{A character vector containing the names of current
 estimators with hyperparameters.}
+
+\item{abs_v}{A code{logical} determining if the absolute value of the matrix
+entries should be displayed versus the signed value.  Default is \code{TRUE}.}
 }
 \value{
 A grid of heat map plots comparing the desired covariance matrix

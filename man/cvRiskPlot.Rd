@@ -4,14 +4,19 @@
 \alias{cvRiskPlot}
 \title{Empirical Risk Plot}
 \usage{
-cvRiskPlot(dat, est, conf = FALSE, plot_type = "risk", cv_details, has_hypers)
+cvRiskPlot(
+  dat,
+  est,
+  plot_type = "risk",
+  cv_details,
+  has_hypers,
+  switch_vars = FALSE,
+  min_max = FALSE
+)
 }
 \arguments{
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
 \code{cvCovEst}.}
-
-\item{conf}{A \code{logical} indicating whether confidence intervals should
-be displayed for line plots.  Default is \code{FALSE}.}
 
 \item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
 \code{'risk'}}
@@ -21,6 +26,14 @@ be displayed for line plots.  Default is \code{FALSE}.}
 
 \item{has_hypers}{A character vector containing the names of current
 estimators with hyperparameters.}
+
+\item{switch_vars}{Default is \code{FALSE}. If \code{TRUE}, the hyperparameters
+used for the x-axis and factor variables are switched.  Only applies to
+estimators with more than one hyperparameter.}
+
+\item{min_max}{Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
+maximum values of the factor hyperparameter will be used.  Only applies to
+estimators with more than one hyperparameter.}
 
 \item{estimator}{A character vector specifying one or more classes of
 estimators to compare.}

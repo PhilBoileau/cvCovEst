@@ -9,12 +9,14 @@ cvSummaryPlot(
   estimator,
   dat_orig,
   stat,
-  conf,
   k,
   leading,
   plot_type = "summary",
   cv_details,
-  has_hypers
+  has_hypers,
+  abs_v,
+  switch_vars,
+  min_max
 )
 }
 \arguments{
@@ -35,6 +37,17 @@ object originally passed to \code{cvCovEst}.}
 
 \item{has_hypers}{A character vector containing the names of current
 estimators with hyperparameters.}
+
+\item{abs_v}{A code{logical} determining if the absolute value of the matrix
+entries should be used for plotting the matrix heatmap.  Default is \code{TRUE}.}
+
+\item{switch_vars}{Default is \code{FALSE}. If \code{TRUE}, the hyperparameters
+used for the x-axis and factor variables are switched.  Only applies to
+estimators with more than one hyperparameter.}
+
+\item{min_max}{Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
+maximum values of the factor hyperparameter will be used.  Only applies to
+estimators with more than one hyperparameter.}
 }
 \value{
 A collection of plots and summary statistics.
