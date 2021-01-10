@@ -1392,7 +1392,7 @@ cvSummaryPlot <- function(
       text = "Risk Summary By Class",
       face = 'bold',
       size = 10,
-      hjust = -0.2,
+      hjust = -1,
       padding = unit(2, 'line')
     )
   }
