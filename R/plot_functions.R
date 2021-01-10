@@ -1448,61 +1448,6 @@ cvSummaryPlot <- function(
     fig.lab.face = 'italic'
   )
 
-  # If Estimator has Hyperparameters:
-  #if (estimator %in% has_hypers){
-  #  p4_a <- summary.cvCovEst(
-  #    object = dat, summ_fun = 'hyperRisk')
-    # Adjust Table Theme
-  #  p4_a <- ggtexttable(
-  #    p4_a$hyperRisk[[estimator]],
-  #    cols = c('Hyperparameters',"Emp. Risk"),
-  #    theme = ttheme(
-  #      rownames.style = rownames_style(
-  #        fill = alpha(blues[7], alpha = 0.25),
-  #        hjust = 0, x = 0.25,
-  #        face = 'bold', color = blues[9],
-  #        linecolor = blues[9], linewidth = 2),
-  #      colnames.style = colnames_style(
-  #        fill = alpha(blues[7], alpha = 0.25),
-  #        face = 'bold', color = blues[9],
-  #        linecolor = blues[9], linewidth = 2),
-  #      tbody.style = tbody_style(
-  #        linecolor = blues[9])))
-  #  p4_a <- tbody_add_border(
-  #    p4_a, from.row = 2, from.column = 1,
-  #    linecolor = blues[9], linewidth = 2)
-  #}
-  #else{
-  #  p4_a <- summary.cvCovEst(dat = dat, summ_fun = 'empRiskByClass')
-  #  p4_a <- ggtexttable(
-  #    p4_a$empRiskByClass,
-  #    theme = ttheme(
-  #      rownames.style = rownames_style(
-  #        fill = alpha(blues[7], alpha = 0.25),
-  #        hjust = 0, x = 0.25,
-  #        face = 'bold', color = blues[9],
-  #        linecolor = blues[9], linewidth = 2),
-  #      colnames.style = colnames_style(
-  #        fill = alpha(blues[7], alpha = 0.25),
-  #        face = 'bold', color = blues[9],
-  #        linecolor = blues[9], linewidth = 2),
-  #      tbody.style = tbody_style(
-  #        linecolor = blues[9])))
-  #  p4_a <- tbody_add_border(
-  #    p4_a, from.row = 2, from.column = 1,
-  #    linecolor = blues[9], linewidth = 2)
-  #}
-
-  #p4_b <- ggparagraph(
-  #  text = cv_details,
-  #  face = 'italic',
-  #  size = 9)
-
-  #p4 <- ggarrange(
-  #  p4_a, p4_b, ncol = 1, nrow = 2,
-  #  align = 'v',
-  #  heights = c(4,1))
-
   plot <- ggarrange(
     p1, p2, p3, p4,
     ncol = 2, nrow = 2,
