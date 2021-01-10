@@ -11,7 +11,7 @@ bestInClass(dat, worst = FALSE)
 \code{cvCovEst}.}
 
 \item{worst}{This facilitates the option to choose the worst performing
-estimator in each class.  The default is FALSE.}
+estimator in each class.  Default is \code{FALSE}.}
 }
 \value{
 A \code{data.frame} with rows corresponding to estimator classes and

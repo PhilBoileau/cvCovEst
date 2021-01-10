@@ -17,6 +17,6 @@ If no estimators have hyper-parameters, a message is returned.
 }
 \description{
 The \code{hyperRisk} function groups together estimators of the
-same class and selects the hyperparameter values over quantiles of the risk.
+same class and parses the hyperparameter values over quantiles of the risk.
 }
 \keyword{internal}

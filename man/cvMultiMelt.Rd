@@ -20,10 +20,11 @@ cvMultiMelt(
 \code{cvCovEst}.}
 
 \item{estimator}{A character vector specifying one or more classes of
-estimators to compare.}
+estimators to visualize and compare.}
 
-\item{stat}{A string specifying which summary statistics to use when
-comparing two or more estimators.  Default is \code{'min'} for minimum
+\item{stat}{A character vector containing the names of various empirical risk
+summary statistics. Estimators corresponding to each statistics will be
+visualized with a different heatmap. Default is \code{'min'} for minimum
 empirical risk.}
 
 \item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
@@ -38,7 +39,7 @@ object originally passed to \code{cvCovEst}.}
 \item{has_hypers}{A character vector containing the names of current
 estimators with hyperparameters.}
 
-\item{abs_v}{A code{logical} determining if the absolute value of the matrix
+\item{abs_v}{A \code{logical} determining if the absolute value of the matrix
 entries should be displayed versus the signed value.  Default is \code{TRUE}.}
 }
 \value{
@@ -46,8 +47,8 @@ A grid of heat map plots comparing the desired covariance matrix
 estimators.
 }
 \description{
-The \code{cvMultiMelt} compares the structure of two or more
-covariance matrix estimators through a grid of heat maps, where each heat map
-corresponds to a different estimator.
+\code{cvMultiMelt} visualizes the structure of one or more
+covariance matrix estimators through a grid of heat maps, where each heat
+map corresponds to a different estimator.
 }
 \keyword{internal}

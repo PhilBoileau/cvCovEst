@@ -18,7 +18,7 @@ checkPlotSumArgs(
 )
 }
 \arguments{
-\item{dat}{An object of class, "cvCovEst".  Specifically, this is the
+\item{dat}{An object of class, \code{"cvCovEst"}.  Specifically, this is the
 standard output of the function \code{cvCovEst}.}
 
 \item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
@@ -31,24 +31,20 @@ which function is being checked.}
 estimators to compare.}
 
 \item{plot_type}{A character vector specifying one of four choices of
-diagnostic plots.  Default is \code{'summary'}.  See Details for more about
-each plotting choice.}
+diagnostic plots.}
 
 \item{summ_fun}{A character vector specifying which summaries to output.}
 
 \item{stat}{A character vector of one or more summary statistics to use when
-comparing estimators.  Default is \code{'min'} for minimum
-empirical risk.  See Details for more options.}
+comparing estimators.}
 
-\item{k}{The number of leading/trailing eigenvalues to plot. If \code{NULL},
-will default to the number of columns in \code{dat_orig}.}
+\item{k}{The number of leading/trailing eigenvalues to plot.}
 
 \item{leading}{A \code{logical} indicating if the leading eigenvalues should
-be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
-are used instead.}
+be used.}
 
-\item{abs_v}{A code{logical} determining if the absolute value of the matrix
-entries should be used for plotting the matrix heatmap.  Default is \code{TRUE}.}
+\item{abs_v}{A \code{logical} determining if the absolute value of the matrix
+entries should be used for plotting the matrix heatmap.}
 }
 \value{
 Whether all argument conditions are satisfied

@@ -7,7 +7,7 @@
 \method{plot}{cvCovEst}(
   x,
   dat_orig,
-  estimator,
+  estimator = NULL,
   plot_type = c("summary"),
   stat = c("min"),
   k = NULL,
@@ -19,14 +19,15 @@
 )
 }
 \arguments{
-\item{x}{An object of class, "cvCovEst".  Specifically, this is the
+\item{x}{An object of class, \code{"cvCovEst"}.  Specifically, this is the
 standard output of the function \code{cvCovEst}.}
 
 \item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
 object originally passed to \code{cvCovEst}.}
 
 \item{estimator}{A character vector specifying one or more classes of
-estimators to compare.}
+estimators to compare.  If \code{NULL}, the class of estimator associated
+with optimal \code{cvCovEst} selection is used.}
 
 \item{plot_type}{A character vector specifying one of four choices of
 diagnostic plots.  Default is \code{'summary'}.  See Details for more about
@@ -43,16 +44,18 @@ will default to the number of columns in \code{dat_orig}.}
 be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
 are used instead.}
 
-\item{abs_v}{A code{logical} determining if the absolute value of the matrix
-entries should be used for plotting the matrix heatmap.  Default is \code{TRUE}.}
+\item{abs_v}{A \code{logical} determining if the absolute value of the matrix
+entries should be used for plotting the matrix heatmap.  Default is
+\code{TRUE}.}
 
-\item{switch_vars}{Default is \code{FALSE}. If \code{TRUE}, the hyperparameters
-used for the x-axis and factor variables are switched.  Only applies to
-estimators with more than one hyperparameter.}
+\item{switch_vars}{A \code{logical}. If \code{TRUE}, the hyperparameters used
+for the x-axis and factor variables are switched in the plot of the empirical
+risk.  Only applies to estimators with more than one hyperparameter. Default
+is \code{FALSE}.}
 
-\item{min_max}{Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
+\item{min_max}{A \code{logical}.  If \code{TRUE}, only the minimum and
 maximum values of the factor hyperparameter will be used.  Only applies to
-estimators with more than one hyperparameter.}
+estimators with more than one hyperparameter. Default is \code{FALSE}.}
 
 \item{...}{Additional arguments}
 }
@@ -61,6 +64,7 @@ A plot object
 }
 \description{
 \code{plot.cvCovEst} is a generic plotting method for objects of
-class, "cvCovEst".  The method is designed as a tool for diagnostic and
-exploratory analysis purposes when selecting a covariance matrix estimator.
+class, \code{"cvCovEst"}.  The method is designed as a tool for diagnostic
+and exploratory analysis purposes when selecting a covariance matrix
+estimator using \code{cvCovEst}.
 }

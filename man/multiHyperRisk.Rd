@@ -29,12 +29,15 @@ variables should be switched.  Default is \code{FALSE}.}
 maximum values of the factor hyperparameter will be used.}
 }
 \value{
-A plot of the empirical risk for the specified estimator
+A named \code{list} of plots.
 }
 \description{
 \code{multiHyperRisk} produces plots of the empirical risk for
 estimators with more than one hyperparameter.  The function transforms one
 of the hyperparameters into a factor and uses it to distinguish between the
-risk of various estimators.
+risk of various estimators.  If one of the hyperparameters has only one
+unique value, that hyperparameter is used as the factor variable.  If all
+hyperparameters have only one unique value, a plot is not generated for that
+estimator class.
 }
 \keyword{internal}

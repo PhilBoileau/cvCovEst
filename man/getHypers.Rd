@@ -23,7 +23,7 @@ A named \code{list} containing the names of all hyperparameters and
 their associated values, or a new wider \code{data.frame}.
 }
 \description{
-The \code{getHypers} retrieves the names and values of all
+\code{getHypers} retrieves the names and values of all
 hyperparameters associated with an estimator passed to \code{cvCovEst}.
 }
 \keyword{internal}

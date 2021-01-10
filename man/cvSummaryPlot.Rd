@@ -39,22 +39,26 @@ object originally passed to \code{cvCovEst}.}
 estimators with hyperparameters.}
 
 \item{abs_v}{A code{logical} determining if the absolute value of the matrix
-entries should be used for plotting the matrix heatmap.  Default is \code{TRUE}.}
+entries should be used for plotting the matrix heatmap.  Default is
+\code{TRUE}.}
 
-\item{switch_vars}{Default is \code{FALSE}. If \code{TRUE}, the hyperparameters
-used for the x-axis and factor variables are switched.  Only applies to
-estimators with more than one hyperparameter.}
+\item{switch_vars}{Default is \code{FALSE}. If \code{TRUE}, the
+hyperparameters used for the x-axis and factor variables are switched.  Only
+applies to estimators with more than one hyperparameter.}
 
 \item{min_max}{Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
 maximum values of the factor hyperparameter will be used.  Only applies to
 estimators with more than one hyperparameter.}
 }
 \value{
-A collection of plots and summary statistics.
+A collection of plots and summary statistics for the optimal
+estimator selected by \code{cvCovEst}.
 }
 \description{
-\code{cvSummaryPlot} combines plots of the empirical risk,
-eigenvalues, and covariance heat map of a given estimator class together into
-one plot along with a table of summary statistics.
+\code{cvSummaryPlot} combines plots of the eigenvalues and the
+covariance heatmap for the optimal estimator selected by \code{cvCovEst},
+and also provides a table showing the best estimator within each class.  A
+plot the risk of the optimal estimator's class is also provided if
+applicable.
 }
 \keyword{internal}

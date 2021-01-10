@@ -23,10 +23,9 @@ cvEigenPlot(
 \item{estimator}{A character vector specifying one or more classes of
 estimators to compare.}
 
-\item{stat}{A string specifying a single summary statistic to use when
-comparing two or more estimators.  Default is \code{'min'} for minimum
-empirical risk.  Several stats can be used when only plotting one class of
-estimator.}
+\item{stat}{A character vector containing the names of various empirical risk
+summary statistics.  Within each class of estimator, eigenvalues will be
+plot for the estimators corresponding to each stat.}
 
 \item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
 object originally passed to \code{cvCovEst}.}
@@ -35,8 +34,8 @@ object originally passed to \code{cvCovEst}.}
 the number of columns of the original data matrix.}
 
 \item{leading}{A \code{logical} indicating if the leading eigenvalues should
-be used.  Defautlt is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
-will be used instead.}
+be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing
+eigenvalues will be used instead.}
 
 \item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
 \code{'eigen'}.}

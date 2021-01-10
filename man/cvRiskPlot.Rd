@@ -27,9 +27,9 @@ cvRiskPlot(
 \item{has_hypers}{A character vector containing the names of current
 estimators with hyperparameters.}
 
-\item{switch_vars}{Default is \code{FALSE}. If \code{TRUE}, the hyperparameters
-used for the x-axis and factor variables are switched.  Only applies to
-estimators with more than one hyperparameter.}
+\item{switch_vars}{Default is \code{FALSE}. If \code{TRUE},
+the hyperparameters used for the x-axis and factor variables are switched.
+Only applies to estimators with more than one hyperparameter.}
 
 \item{min_max}{Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
 maximum values of the factor hyperparameter will be used.  Only applies to

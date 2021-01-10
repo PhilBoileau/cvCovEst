@@ -10,30 +10,50 @@ Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
 dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 
 estimator_params <- list(
-  poetEst = list( # 5 x 5 different indexed hyperparameters
-    lambda = seq(0.2, 1, by = 0.2),
-    k = as.integer(seq(1, 5, by = 1))),
+  poetEst = list( # 3 x 3 different indexed hyperparameters
+    lambda = c(0.01, 0.05, 0.1),
+    k = c(1L, 3L, 5L)),
+  adaptiveLassoEst = list( # 2 x 1 indexed hyperparameters
+    lambda = c(0.01, 0.1),
+    n = c(2L, 3L)),
   linearShrinkEst = list( # 2 different indexed hyperparameters
-    alpha = seq(0, 1, by = 0.5)),
+    alpha = c(0.1, 0.9)),
   bandingEst = list( # 1 indexed hyperparameter
     k = 2L)
 )
 
-cvTest <- cvCovEst(
+# All with hypers
+cvTestH <- cvCovEst(
   dat = dat,
   estimators = c(
     poetEst,
+    adaptiveLassoEst,
     linearShrinkEst,
-    bandingEst,
-    nlShrinkLWEst # No hyperparameters
+    bandingEst
     ),
   estimator_params = estimator_params,
   cv_scheme = "v_fold",
   cv_loss = cvMatrixFrobeniusLoss,
-  v_folds = 10,
+  v_folds = 5,
   parallel = FALSE,
   center = TRUE,
-  scale = FALSE
+  scale = TRUE
+)
+
+# With one no hyper
+cvTestNH <- cvCovEst(
+  dat = dat,
+  estimators = c(
+    nlShrinkLWEst,
+    bandingEst
+  ),
+  estimator_params = estimator_params,
+  cv_scheme = "v_fold",
+  cv_loss = cvMatrixFrobeniusLoss,
+  v_folds = 5,
+  parallel = FALSE,
+  center = TRUE,
+  scale = TRUE
 )
 
 has_hypers <- c(
@@ -45,20 +65,20 @@ has_hypers <- c(
 # Class Test
 test_that("Objects of other known classes throw an error", {
   # cvCovest class
-  expect_s3_class(cvTest, "cvCovEst")
+  expect_s3_class(cvTestH, "cvCovEst")
   expect_silent(
-    summary(cvTest)
+    summary(cvTestH)
     )
   expect_silent(
-    cvTest %>% summary()
+    cvTestH %>% summary()
   )
   # different class
-  class(cvTest) <- "lm"
+  class(cvTestH) <- "lm"
   expect_error(
-    summary(cvTest)
+    summary(cvTestH)
     )
   expect_error(
-    cvTest %>% summary()
+    cvTestH %>% summary()
   )
   # other object disguised as cvCovEst object
   disguise <- c('disguise')
@@ -70,17 +90,17 @@ test_that("Objects of other known classes throw an error", {
 
 test_that("Only current implemented summary functions are allowed", {
   expect_silent(
-    summary(cvTest, summ_fun = 'bestInClass')
+    summary(cvTestH, summ_fun = 'bestInClass')
   )
   expect_error(
-    summary(cvTest, summ_fun = 'other')
+    summary(cvTestH, summ_fun = 'other')
   )
 })
 
 test_that("Only supported summary statistics are allowed for plotting", {
   expect_silent(
     cvMultiMelt(
-      dat = cvTest,
+      dat = cvTestH,
       estimator = c('poetEst'),
       stat = c('min'),
       dat_orig = dat,
@@ -89,7 +109,7 @@ test_that("Only supported summary statistics are allowed for plotting", {
     )
   expect_error(
     cvMultiMelt(
-      dat = cvTest,
+      dat = cvTestH,
       estimator = c('poetEst'),
       stat = c('mean'),
       dat_orig = dat,
@@ -103,7 +123,7 @@ test_that("Valid estimator arguments are passed to plotting functions",  {
   # Non-cvCovEst estimator
   expect_error(
     cvMultiMelt(
-      dat = cvTest,
+      dat = cvTestH,
       estimator = c(
         'linearShrinkEst',
         'other'),
@@ -115,7 +135,7 @@ test_that("Valid estimator arguments are passed to plotting functions",  {
   # Estimator not originally called to cvCovEst()
   expect_error(
     cvMultiMelt(
-      dat = cvTest,
+      dat = cvTestH,
       estimator = c('poetEst',
                     'scadEst'),
       stat = c('min'),
@@ -126,7 +146,7 @@ test_that("Valid estimator arguments are passed to plotting functions",  {
   # Multiple plots of the same estimator
   expect_error(
     cvMultiMelt(
-      dat = cvTest,
+      dat = cvTestH,
       estimator = c('nlShrinkLWEst'),
       stat = c('min', 'max'),
       dat_orig = dat,
@@ -135,4 +155,74 @@ test_that("Valid estimator arguments are passed to plotting functions",  {
   )
 })
 
+test_that("Indexing by only 1 hyperparameter throws an error in risk plot",{
+  expect_error(
+    plot.cvCovEst(
+      x = cvTestH,
+      dat_orig = dat,
+      estimator = 'bandingEst',
+      plot_type = 'risk')
+  )
+})
 
+test_that("Calling risk plot for non-hyper estimator throws an error",{
+  expect_error(
+    plot.cvCovEst(
+      x = cvTestNH,
+      dat_orig = dat,
+      estimator = 'nlShrinkLWEst',
+      plot_type = 'risk')
+  )
+})
+
+test_that("Calling for multiple stats for non-hyper estimator gets a message",{
+  expect_message(
+    plot.cvCovEst(
+      x = cvTestNH,
+      dat_orig = dat,
+      estimator = 'nlShrinkLWEst',
+      plot_type = 'eigen',
+      k = 50,
+      stat = c('min', 'max'))
+  )
+})
+
+test_that("Plotting only works if estimator was passed to cvCovEst",{
+  expect_error(
+    plot.cvCovEst(
+      x = cvTestH,
+      dat_orig = dat,
+      estimator = 'nlShrinkLWEst',
+      plot_type = 'eigen',
+      k = 50,
+      stat = c('min'))
+  )
+})
+
+test_that("Asking for more k than exist throws an error",{
+  expect_error(
+    plot.cvCovEst(
+      x = cvTestH,
+      dat_orig = dat,
+      estimator = 'linearShrinkEst',
+      plot_type = 'eigen',
+      k = 51,
+      stat = c('min'))
+  )
+})
+
+test_that("Plot method throws other errors where appripriate",{
+  expect_message(
+    plot.cvCovEst(
+      x = cvTestH,
+      dat_orig = dat,
+      estimator = c('linearShrinkEst'),
+      plot_type = ('summary'))
+  )
+})
+
+plot.cvCovEst(
+  x = cvTestH,
+  dat_orig = dat,
+  estimator = c('linearShrinkEst'),
+  plot_type = ('summary'))
