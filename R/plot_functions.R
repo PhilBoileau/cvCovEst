@@ -945,6 +945,7 @@ multiHyperRisk <- function(
           if (switch_vars) {
             factor_range <- range(u_dat$lambda)
             u_dat$lambda <- factor(u_dat$lambda)
+            u_dat <- dplyr::arrange(u_dat, .data$k)
 
             if (min_max){
               u_dat <- u_dat[which(u_dat$lambda %in% factor_range), ]
@@ -961,6 +962,7 @@ multiHyperRisk <- function(
           else{
             factor_range <- range(u_dat$k)
             u_dat$k <- factor(u_dat$k)
+            d_dat <- dplyr::arrange(u_dat, .data$lambda)
 
             if (min_max){
               u_dat <- u_dat[which(u_dat$k %in% factor_range), ]
@@ -1006,7 +1008,8 @@ multiHyperRisk <- function(
 
         if (switch_vars) {
           factor_range <- range(f_dat$lambda)
-          f_dat$lambda <- factor(f_dat$lambda)
+          f_dat$lambda <- as.factor(f_dat$lambda)
+          f_dat <- dplyr::arrange(f_dat, .data$k)
 
           if (min_max){
             f_dat <- f_dat[which(f_dat$lambda %in% factor_range), ]
@@ -1023,6 +1026,7 @@ multiHyperRisk <- function(
         else{
           factor_range <- range(f_dat$k)
           f_dat$k <- factor(f_dat$k)
+          f_dat <- dplyr::arrange(f_dat, .data$lambda)
 
           if (min_max){
             f_dat <- f_dat[which(f_dat$k %in% factor_range), ]
@@ -1068,6 +1072,7 @@ multiHyperRisk <- function(
       if (switch_vars) {
         factor_range <- range(f_dat$lambda)
         f_dat$lambda <- factor(f_dat$lambda)
+        f_dat <- dplyr::arrange(f_dat, .data$n)
 
         if (min_max){
           f_dat <- f_dat[which(f_dat$lambda %in% factor_range), ]
@@ -1084,6 +1089,7 @@ multiHyperRisk <- function(
       else{
         factor_range <- range(f_dat$n)
         f_dat$n <- factor(f_dat$n)
+        f_dat <- dplyr::arrange(f_dat, .data$lambda)
 
         if (min_max){
           f_dat <- f_dat[which(f_dat$n %in% factor_range), ]
@@ -1433,10 +1439,10 @@ cvSummaryPlot <- function(
 
   p4_a <- tab_add_title(
     p4_a,
-    text = "Best Estimator Performace by Class",
+    text = "Best Hyperparameter Values by Class",
     face = 'bold',
     size = 10,
-    hjust = -0.2,
+    hjust = -0.125,
     padding = unit(2, 'line')
   )
 
@@ -1635,6 +1641,10 @@ plot.cvCovEst <- function(
   # Plot the winning estimator for summary plot or NULL estimator
   if (plot_type == 'summary' | is.null(estimator)){
     estimator <- unlist(stringr::str_split(x$estimator, ", "))[1]
+  }
+
+  if (is.null(k)) {
+    k <- ncol(dat_orig)
   }
 
   plot <- switch(plot_type,
