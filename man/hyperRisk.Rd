@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_functions.R
 \name{hyperRisk}
 \alias{hyperRisk}
-\title{Summarize Risk by Class with Hyperparameter}
+\title{Summarize Empirical Risks by Class with Hyperparameter}
 \usage{
 hyperRisk(dat)
 }
@@ -11,7 +11,7 @@ hyperRisk(dat)
 \code{cvCovEst}.}
 }
 \value{
-A named \code{list} of data frames.  Each list element corresponds to
+A named \code{list} of data frames. Each list element corresponds to
 a \code{data.frame} of summary statistics for a specific estimator class.
 If no estimators have hyper-parameters, a message is returned.
 }

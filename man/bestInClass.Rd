@@ -7,8 +7,7 @@
 bestInClass(dat, worst = FALSE)
 }
 \arguments{
-\item{dat}{The table of empirical risk calculations which is output by
-\code{cvCovEst}.}
+\item{dat}{The table of empirical risks which is output by \code{cvCovEst}.}
 
 \item{worst}{This facilitates the option to choose the worst performing
 estimator in each class.  Default is \code{FALSE}.}

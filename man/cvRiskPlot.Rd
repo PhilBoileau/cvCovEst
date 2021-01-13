@@ -42,7 +42,7 @@ estimators to compare.}
 A single plot or grid of plots for each estimator specified.
 }
 \description{
-\code{cvRiskPlot} plots the empirical risk for a given estimator,
-or set of estimators, as a function of the hyperparameters.
+\code{cvRiskPlot} plots the empirical risk for a given
+estimator, or set of estimators, as a function of the hyperparameters.
 }
 \keyword{internal}

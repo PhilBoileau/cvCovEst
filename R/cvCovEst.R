@@ -274,7 +274,7 @@ cvCovEst <- function(
         estimator = paste0(
           cv_results[1, ]$estimator, ", ",
           cv_results[1, ]$hyperparameters
-          ),
+        ),
         risk_df = cv_results,
         cv_df = fold_results_concat,
         args = args,
