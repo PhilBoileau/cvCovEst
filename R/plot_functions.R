@@ -38,19 +38,19 @@ is.cvCovEst <- function(x) {
 #'
 #' @keywords internal
 empRiskByClass <- function(dat) {
-  empRisk <- dat %>%
+  emp_risk <- dat %>%
     dplyr::group_by(.data$estimator) %>%
     dplyr::summarise(
       min = min(.data$empirical_risk),
       Q1 = quantile(.data$empirical_risk, probs = 0.25, type = 3),
-      Q2 = quantile(.data$empirical_risk, probs = 0.5, type = 3),
+      median = quantile(.data$empirical_risk, probs = 0.5, type = 3),
       Q3 = quantile(.data$empirical_risk, probs = 0.75, type = 3),
       max = max(.data$empirical_risk),
       mean_risk = mean(.data$empirical_risk),
       .groups = "keep") %>%
     dplyr::arrange(mean_risk)
 
-  return(empRisk)
+  return(emp_risk)
 }
 
 ################################################################################
@@ -60,8 +60,7 @@ empRiskByClass <- function(dat) {
 #'  estimator within each class of estimator passed to \code{cvCovEst} and
 #'  finds the associated hyper-parameters if applicable.
 #'
-#' @param dat The table of empirical risk calculations which is output by
-#'  \code{cvCovEst}.
+#' @param dat The table of empirical risks which is output by \code{cvCovEst}.
 #' @param worst This facilitates the option to choose the worst performing
 #'  estimator in each class.  Default is \code{FALSE}.
 #'
@@ -76,7 +75,7 @@ empRiskByClass <- function(dat) {
 bestInClass <- function(dat, worst = FALSE) {
 
   if (worst) {
-    worstEst <- dat %>%
+    worst_est <- dat %>%
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::last(.data$hyperparameters),
@@ -84,11 +83,11 @@ bestInClass <- function(dat, worst = FALSE) {
         .groups = "keep") %>%
       dplyr::arrange(.data$empirical_risk)
 
-    return(worstEst)
+    return(worst_est)
 
   }
   else{
-    bestEst <- dat %>%
+    best_est <- dat %>%
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::first(.data$hyperparameters),
@@ -96,13 +95,13 @@ bestInClass <- function(dat, worst = FALSE) {
         .groups = "keep") %>%
       dplyr::arrange(.data$empirical_risk)
 
-    return(bestEst)
+    return(best_est)
 
   }
 }
 
 ################################################################################
-#' Summarize Risk by Class with Hyperparameter
+#' Summarize Empirical Risks by Class with Hyperparameter
 #'
 #' @description The \code{hyperRisk} function groups together estimators of the
 #'  same class and parses the hyperparameter values over quantiles of the risk.
@@ -110,7 +109,7 @@ bestInClass <- function(dat, worst = FALSE) {
 #' @param dat The table of empirical risk calculations which is output by
 #'  \code{cvCovEst}.
 #'
-#' @return A named \code{list} of data frames.  Each list element corresponds to
+#' @return A named \code{list} of data frames. Each list element corresponds to
 #'  a \code{data.frame} of summary statistics for a specific estimator class.
 #'  If no estimators have hyper-parameters, a message is returned.
 #'
@@ -133,7 +132,7 @@ hyperRisk <- function(dat) {
 
     hyper_est <- estimators[which(estimators %in% has_hypers)]
 
-    hyperSumm <- lapply(hyper_est, function(est) {
+    hyper_summ <- lapply(hyper_est, function(est) {
 
       h <- dat %>%
         dplyr::filter(estimator == est) %>%
@@ -143,7 +142,7 @@ hyperRisk <- function(dat) {
         h$empirical_risk,
         probs = c(0, 0.25, 0.50, 0.75, 1),
         type = 3
-        )
+      )
 
       hyper_risk <- sapply(unname(risk_stats), function(r) {
         # Filter by the quantiles of the empirical risk
@@ -153,7 +152,7 @@ hyperRisk <- function(dat) {
         vec <- c(
           dplyr::first(hr$hyperparameters),
           dplyr::first(hr$empirical_risk)
-          )
+        )
 
         return(vec)
       })
@@ -162,10 +161,10 @@ hyperRisk <- function(dat) {
         t(hyper_risk),
         row.names = c(
           "min",
-          "Q1", "Q2","Q3",
+          "Q1", "median", "Q3",
           "max"
-          )
         )
+      )
 
       colnames(df) <- c("hyperparameters", "empirical_risk")
 
@@ -173,13 +172,13 @@ hyperRisk <- function(dat) {
     })
 
     # Named list of data.frames corresponding to each estimator class
-    names(hyperSumm) <- hyper_est
+    names(hyper_summ) <- hyper_est
   }
   else{
-    hyperSumm <- NULL
-    message("No estimators have hyperparameters. hyperRisk = NULL")
+    hyper_summ <- NULL
+    message("No candidate estimators have hyperparameters. hyperRisk = NULL")
   }
-  return(hyperSumm)
+  return(hyper_summ)
 }
 
 ################################################################################
@@ -214,7 +213,7 @@ summary.cvCovEst <- function(
   # Check cvCovEst credentials
   checkPlotSumArgs(
     object,
-    which_fun = 'summary',
+    which_fun = "summary",
     summ_fun = summ_fun)
 
   risk_dat <- object$risk_df
@@ -223,8 +222,8 @@ summary.cvCovEst <- function(
     summary_functions %in% summ_fun)]
 
   out <- lapply(sums_to_exec, function(sum_fun) {
-      if (sum_fun == 'worstInClass') {
-        f <- rlang::exec('bestInClass', risk_dat, worst = TRUE)
+      if (sum_fun == "worstInClass") {
+        f <- rlang::exec("bestInClass", risk_dat, worst = TRUE)
       }
       else{
         f <- rlang::exec(sum_fun, risk_dat)
@@ -261,51 +260,51 @@ summary.cvCovEst <- function(
 #' @keywords internal
 getHypers <- function(dat, summ_stat, new_df = FALSE) {
 
-  if (new_df){
+  if (new_df) {
     n <- as.integer(ncol(dat))
 
-    hypers <- lapply(dat$hyperparameters, function(h){
+    hypers <- lapply(dat$hyperparameters, function(h) {
         h_split <- stringr::str_split(
           h, ", ") %>% unlist()
 
         n <- length(h_split)
 
-        hyperNames <- rep(" ", n)
-        hyperVals <- rep(0, n)
+        hyper_names <- rep(" ", n)
+        hyper_vals <- rep(0, n)
 
         for (i in 1:n) {
           h_split2 <- stringr::str_split(
             h_split[i], "= ") %>% unlist()
 
-          hyperNames[i] <- stringr::str_squish(h_split2[1])
-          if (h_split2[2] %in% c('mad', 'sample', 'huber')){
-            hyperVals[i] <- stringr::str_squish(h_split2[2])
+          hyper_names[i] <- stringr::str_squish(h_split2[1])
+          if (h_split2[2] %in% c("mad", "sample", "huber")) {
+            hyper_vals[i] <- stringr::str_squish(h_split2[2])
           }
           else{
-            hyperVals[i] <- as.numeric(h_split2[2])
+            hyper_vals[i] <- as.numeric(h_split2[2])
           }
         }
 
-        hyperList <- as.list(hyperVals)
-        names(hyperList) <- hyperNames
+        hyper_list <- as.list(hyper_vals)
+        names(hyper_list) <- hyper_names
 
-        return(hyperList)
+        return(hyper_list)
       })
 
     hypers <- data.table::rbindlist(hypers)
-    hypers <- cbind(dat[,1], hypers, dat[,(3:n)])
+    hypers <- cbind(dat[, 1], hypers, dat[, (3:n)])
   }
   else{
 
-  hyperList <- as.list(
+  hyper_list <- as.list(
     stringr::str_split(dat[summ_stat, 1], ", ") %>% unlist()
   )
 
-  hyperValues <- lapply(hyperList, function(s) {
+  hyper_values <- lapply(hyper_list, function(s) {
       hyper <- stringr::str_split(
         s, "= ") %>% unlist()
 
-      if (hyper[2] %in% c('mad', 'sample', 'huber')){
+      if (hyper[2] %in% c("mad", "sample", "huber")) {
         return(hyper[2])
       }
       else{
@@ -313,17 +312,18 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
         }
     })
 
-  hyperNames <- lapply(hyperList, function(s) {
+  hyper_names <- lapply(hyper_list, function(s) {
       hyper <- stringr::str_split(
         s, "= ") %>% unlist()
 
       return(stringr::str_squish(hyper[1]))
 
-    }) %>% unlist()
+  }) %>%
+    unlist()
 
   hypers <- list(
-    hyperNames = hyperNames,
-    hyperValues = hyperValues)
+    hyper_names = hyper_names,
+    hyper_values = hyper_values)
 
   }
   return(hypers)
@@ -354,7 +354,7 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
 #' @param has_hypers A character vector containing the names of current
 #'  estimators with hyperparameters.
 #' @param abs_v A \code{logical} determining if the absolute value of the matrix
-#'  entries should be displayed versus the signed value.  Default is \code{TRUE}.
+#'  entries should be displayed versus the signed value. Default is \code{TRUE}.
 #'
 #' @return A grid of heat map plots comparing the desired covariance matrix
 #' estimators.
@@ -372,25 +372,26 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
 cvMultiMelt <- function(
   dat,
   estimator,
-  stat = 'min',
+  stat = "min",
   dat_orig,
-  plot_type = 'heatmap',
+  plot_type = "heatmap",
   cv_details,
   has_hypers,
   abs_v = TRUE) {
 
-  stat_choices <- c("min", "Q1", "Q2", "Q3", "max")
+  stat_choices <- c("min", "Q1", "median", "Q3", "max")
 
   single_stat <- ifelse(length(stat) == 1, TRUE, FALSE)
 
   single_est <- ifelse(length(estimator) == 1, TRUE, FALSE)
 
   # Center and Scale Original Data to Match Call to cvCovEst
-  dat_orig <- unname(cvCovEst::safeColScale(
+  dat_orig <- safeColScale(
     dat_orig,
     center = dat$args$center,
     scale = dat$args$scale
-    ))
+  ) %>%
+    unname
 
   # Call cvSummary
   cv_sum <- summary.cvCovEst(dat)
@@ -404,24 +405,24 @@ cvMultiMelt <- function(
     dat$args$scale, "Correlation Matrix Heatmap", "Covariance Matrix Heatmap")
 
   # Single Stat Option
-  if (single_stat){
+  if (single_stat) {
 
     stat_melts <- lapply(estimator, function(est) {
         # For Estimators With Hyper-parameters
-        if (est %in% has_hypers){
-          estimatorStats <- cv_sum$hyperRisk[[est]]
+        if (est %in% has_hypers) {
+          estimator_stats <- cv_sum$hyperRisk[[est]]
 
           # Get The Associated Hyper-parameters
-          estHypers <- getHypers(dat = estimatorStats, summ_stat = stat)
+          est_hypers <- getHypers(dat = estimator_stats, summ_stat = stat)
 
           # Collect Args & Run The Associated Estimator
-          dat = list(dat_orig)
-          arg_names <- c('dat', estHypers$hyperNames)
+          dat <- list(dat_orig)
+          arg_names <- c("dat", est_hypers$hyper_names)
 
-          estArgs <- append(dat, estHypers$hyperValues)
-          names(estArgs) <- arg_names
+          est_args <- append(dat, est_hypers$hyper_values)
+          names(est_args) <- arg_names
 
-          estimate <- rlang::exec(est, !!!estArgs)
+          estimate <- rlang::exec(est, !!!est_args)
         }
         # If No Hyper-parameters
         else{
@@ -429,20 +430,20 @@ cvMultiMelt <- function(
         }
 
         # Create Melted Data Frame
-        if (abs_v){
-          meltEst <- reshape2::melt(abs(estimate))
+        if (abs_v) {
+          melt_est <- reshape2::melt(abs(estimate))
         }
         else{
-          meltEst <- reshape2::melt(estimate)
+          melt_est <- reshape2::melt(estimate)
         }
 
         # Label by Estimator
-        est_name <- rep(est, nrow(meltEst))
+        est_name <- rep(est, nrow(melt_est))
 
-        meltEst$Var1 <- rev(meltEst$Var1)
-        meltEst$estimator <- est_name
+        melt_est$Var1 <- rev(melt_est$Var1)
+        melt_est$estimator <- est_name
 
-        return(meltEst)
+        return(melt_est)
         })
 
     # Combine and Re-factor
@@ -458,12 +459,12 @@ cvMultiMelt <- function(
 
     if (abs_v) {
       plot <- plot +
-        scale_fill_gradient(low = 'white', high = blues[9]) +
+        scale_fill_gradient(low = "white", high = blues[9]) +
         theme_cvCovEst(plot_type = plot_type)
     }
     else{
       plot <- plot +
-        scale_fill_gradient2(low = 'gold', mid = 'white', high = blues[9]) +
+        scale_fill_gradient2(low = "gold", mid = "white", high = blues[9]) +
         theme_cvCovEst(plot_type = plot_type)
     }
     return(plot)
@@ -479,41 +480,43 @@ cvMultiMelt <- function(
         All plots will be the same."
       )
 
-      estimatorStats <- cv_sum$hyperRisk[[estimator]]
+      estimator_stats <- cv_sum$hyperRisk[[estimator]]
       stat_melts <- lapply(stat, function(stat_est) {
-          # Get The Associated Hyper-parameters
-          estHypers <- getHypers(dat = estimatorStats, summ_stat = stat_est)
+        # Get The Associated Hyper-parameters
+        est_hypers <- getHypers(dat = estimator_stats, summ_stat = stat_est)
 
-          # Collect Args & Run The Associated Estimator
-          dat = list(dat_orig)
-          arg_names <- c('dat', estHypers$hyperNames)
+        # Collect Args & Run The Associated Estimator
+        dat <- list(dat_orig)
+        arg_names <- c("dat", est_hypers$hyper_names)
 
-          estArgs <- append(dat, estHypers$hyperValues)
-          names(estArgs) <- arg_names
+        est_args <- append(dat, est_hypers$hyper_values)
+        names(est_args) <- arg_names
 
-          estimate <- rlang::exec(estimator, !!!estArgs)
+        estimate <- rlang::exec(estimator, !!!est_args)
 
-          # Create Melted Data Frame
-          if (abs_v){
-            meltEst <- reshape2::melt(abs(estimate))
-          }
-          else{
-            meltEst <- reshape2::melt(estimate)
-          }
+        # Create Melted Data Frame
+        if (abs_v) {
+          melt_est <- reshape2::melt(abs(estimate))
+        }
+        else{
+          melt_est <- reshape2::melt(estimate)
+        }
 
-          # Label by Stat
-          stat_name <- rep(stat_est, nrow(meltEst))
+        # Label by Stat
+        stat_name <- rep(stat_est, nrow(melt_est))
 
-          meltEst$Var1 <- rev(meltEst$Var1)
-          meltEst$summary_stat <- stat_name
+        melt_est$Var1 <- rev(melt_est$Var1)
+        melt_est$summary_stat <- stat_name
 
-          return(meltEst)
-          })
+        return(melt_est)
+      })
 
       # Combine and Re-factor
       stat_melts <- dplyr::bind_rows(stat_melts)
       stat_melts$summary_stat <- factor(
-        stat_melts$summary_stat, levels = stat_choices)
+        stat_melts$summary_stat,
+        levels = stat_choices
+      )
 
       plot <- ggplot(stat_melts, aes(x = .data$Var1, y = .data$Var2)) +
         geom_raster(aes(fill = .data$value)) +
@@ -522,12 +525,12 @@ cvMultiMelt <- function(
 
       if (abs_v) {
         plot <- plot +
-          scale_fill_gradient(low = 'white', high = blues[9]) +
+          scale_fill_gradient(low = "white", high = blues[9]) +
           theme_cvCovEst(plot_type = plot_type)
       }
       else{
         plot <- plot +
-          scale_fill_gradient2(low = 'gold', mid = 'white', high = blues[9]) +
+          scale_fill_gradient2(low = "gold", mid = "white", high = blues[9]) +
           theme_cvCovEst(plot_type = plot_type)
       }
       return(plot)
@@ -535,55 +538,62 @@ cvMultiMelt <- function(
     else{
       # Multi-Stat for Several Estimators
       multi_melts <- lapply(estimator, function(est) {
-          estimatorStats <- cv_sum$hyperRisk[[est]]
+          estimator_stats <- cv_sum$hyperRisk[[est]]
 
           stat_melts <- lapply(stat, function(stat_est) {
 
               # Get The Associated Hyper-parameters
-              estHypers <- getHypers(dat = estimatorStats, summ_stat = stat_est)
+              est_hypers <- getHypers(
+                dat = estimator_stats,
+                summ_stat = stat_est
+              )
 
               # Run The Associated Estimator
-              dat = list(dat_orig)
-              arg_names <- c('dat', estHypers$hyperNames)
+              dat <- list(dat_orig)
+              arg_names <- c("dat", est_hypers$hyper_names)
 
-              estArgs <- append(dat, estHypers$hyperValues)
-              names(estArgs) <- arg_names
+              est_args <- append(dat, est_hypers$hyper_values)
+              names(est_args) <- arg_names
 
-              estimate <- rlang::exec(est, !!!estArgs)
+              estimate <- rlang::exec(est, !!!est_args)
 
               # Create Melted Data Frame
-              if (abs_v){
-                meltEst <- reshape2::melt(abs(estimate))
+              if (abs_v) {
+                melt_est <- reshape2::melt(abs(estimate))
               }
               else{
-                meltEst <- reshape2::melt(estimate)
+                melt_est <- reshape2::melt(estimate)
               }
 
               # Label by Stat
-              stat_name <- rep(stat_est, nrow(meltEst))
+              stat_name <- rep(stat_est, nrow(melt_est))
 
               # Label by Estimator
-              est_name <- rep(est, nrow(meltEst))
+              est_name <- rep(est, nrow(melt_est))
 
-              meltEst$Var1 <- rev(meltEst$Var1)
-              meltEst$summary_stat <- stat_name
-              meltEst$estimator <- est_name
+              melt_est$Var1 <- rev(melt_est$Var1)
+              melt_est$summary_stat <- stat_name
+              melt_est$estimator <- est_name
 
-              return(meltEst)
+              return(melt_est)
             })
 
           stat_melts <- dplyr::bind_rows(stat_melts)
 
           return(stat_melts)
-          })
+        })
 
       # Combine and Re-factor
       multi_melts <- dplyr::bind_rows(multi_melts)
 
       multi_melts$summary_stat <- factor(
-        multi_melts$summary_stat, levels = stat_choices)
+        multi_melts$summary_stat,
+        levels = stat_choices
+      )
       multi_melts$estimator <- factor(
-        multi_melts$estimator, levels = cv_sum$bestInClass$estimator)
+        multi_melts$estimator,
+        levels = cv_sum$bestInClass$estimator
+      )
 
       plot <- ggplot(multi_melts, aes(x = .data$Var1, y = .data$Var2)) +
         geom_raster(aes(fill = .data$value)) +
@@ -594,12 +604,12 @@ cvMultiMelt <- function(
 
       if (abs_v) {
         plot <- plot +
-          scale_fill_gradient(low = 'white', high = blues[9]) +
+          scale_fill_gradient(low = "white", high = blues[9]) +
           theme_cvCovEst(plot_type = plot_type)
       }
       else{
         plot <- plot +
-          scale_fill_gradient2(low = 'gold', mid = 'white', high = blues[9]) +
+          scale_fill_gradient2(low = "gold", mid = "white", high = blues[9]) +
           theme_cvCovEst(plot_type = plot_type)
       }
       return(plot)
@@ -649,15 +659,15 @@ cvMultiMelt <- function(
 cvEigenPlot <- function(
   dat,
   estimator,
-  stat = 'min',
+  stat = "min",
   dat_orig,
   k,
   leading = TRUE,
-  plot_type = 'eigen',
+  plot_type = "eigen",
   cv_details,
   has_hypers) {
 
-  stat_choices <- c("min", "Q1", "Q2", "Q3", "max")
+  stat_choices <- c("min", "Q1", "median", "Q3", "max")
 
   single_stat <- ifelse(length(stat) == 1, TRUE, FALSE)
 
@@ -686,36 +696,36 @@ cvEigenPlot <- function(
   b <- ifelse(leading, "1", as.character(p))
 
   # Single Estimator Option
-  if (single_est){
+  if (single_est) {
     # Has Hypers
     if (estimator %in% has_hypers) {
-      estimatorStats <- cv_sum$hyperRisk[[estimator]]
+      estimator_stats <- cv_sum$hyperRisk[[estimator]]
 
       stat_eigs <- lapply(stat, function(stat_est) {
-          # Get The Associated Hyper-parameters
-          estHypers <- getHypers(dat = estimatorStats, summ_stat = stat_est)
+        # Get The Associated Hyper-parameters
+        est_hypers <- getHypers(dat = estimator_stats, summ_stat = stat_est)
 
-          # Run The Associated Estimator
-          dat = list(dat_orig)
-          arg_names <- c('dat', estHypers$hyperNames)
+        # Run The Associated Estimator
+        dat <- list(dat_orig)
+        arg_names <- c("dat", est_hypers$hyper_names)
 
-          estArgs <- append(dat, estHypers$hyperValues)
-          names(estArgs) <- arg_names
+        est_args <- append(dat, est_hypers$hyper_values)
+        names(est_args) <- arg_names
 
-          estimate <- rlang::exec(estimator, !!!estArgs)
+        estimate <- rlang::exec(estimator, !!!est_args)
 
-          # Get the eigenvalues
-          estEigs <- data.frame(
-            index = index,
-            eigenvalues = suppressWarnings(RSpectra::eigs_sym(
-              estimate, k = k, which = eig_type)$values
-              ),
-            stat = rep(stat_est, k),
-            estimator = rep(estimator, k)
-            )
+        # Get the eigenvalues
+        est_eigs <- data.frame(
+          index = index,
+          eigenvalues = suppressWarnings(RSpectra::eigs_sym(
+            estimate, k = k, which = eig_type)$values
+            ),
+          stat = rep(stat_est, k),
+          estimator = rep(estimator, k)
+        )
 
-          return(estEigs)
-        })
+        return(est_eigs)
+      })
 
       # Combine and Re-factor
       stat_eigs <- dplyr::bind_rows(stat_eigs)
@@ -743,30 +753,32 @@ cvEigenPlot <- function(
     stat_eigs$stat <- factor(stat_eigs$stat, levels = stat_choices)
 
     # Generate Plot
-    if (k == 1){
+    if (k == 1) {
       plot <- ggplot(
         stat_eigs,
         aes(x = .data$index, y = .data$eigenvalues, color = .data$stat)) +
         geom_point() +
         scale_x_continuous(n.breaks = 3, labels = c("", b, "")) +
         facet_wrap(facets = vars(.data$estimator)) +
-        scale_color_viridis_d(name = 'Risk', begin = 0, end = 0.8) +
-        labs(title = "Estimator Eigenvalues", caption = cv_details,
-             x = "Eigenvalue Index",
-             y = "Eigenvalue") +
+        scale_color_viridis_d(name = "Risk", begin = 0, end = 0.8) +
+        labs(
+          title = "Estimator Eigenvalues", caption = cv_details,
+          x = "Eigenvalue Index", y = "Eigenvalue"
+        ) +
         theme_cvCovEst(plot_type = plot_type)
     }
     else{
-      if ('summary' %in% plot_type){
+      if ("summary" %in% plot_type) {
         plot <- ggplot(
           stat_eigs,
           aes(x = .data$index, y = .data$eigenvalues)) +
           geom_path(color = blues[9]) +
           scale_x_continuous(n.breaks = min(10, k)) +
           facet_wrap(facets = vars(.data$estimator)) +
-          labs(title = "Estimator Eigenvalues", caption = cv_details,
-               x = "Eigenvalue Index",
-               y = "Eigenvalue") +
+          labs(
+            title = "Estimator Eigenvalues", caption = cv_details,
+            x = "Eigenvalue Index", y = "Eigenvalue"
+          ) +
           theme_cvCovEst(plot_type = plot_type)
       }
       else{
@@ -776,10 +788,11 @@ cvEigenPlot <- function(
           geom_path() +
           scale_x_continuous(n.breaks = min(10, k)) +
           facet_wrap(facets = vars(.data$estimator)) +
-          scale_color_viridis_d(name = 'Risk', begin = 0, end = 0.8) +
-          labs(title = "Estimator Eigenvalues", caption = cv_details,
-               x = "Eigenvalue Index",
-               y = "Eigenvalue") +
+          scale_color_viridis_d(name = "Risk", begin = 0, end = 0.8) +
+          labs(
+            title = "Estimator Eigenvalues", caption = cv_details,
+            x = "Eigenvalue Index", y = "Eigenvalue"
+          ) +
           theme_cvCovEst(plot_type = plot_type)
       }
     }
@@ -791,74 +804,82 @@ cvEigenPlot <- function(
     stat_eigs <- lapply(stat, function(stat_est) {
 
       est_eigs <- lapply(estimator, function(est) {
-          # Has Hypers
-          if (est %in% has_hypers){
-            estimatorStats <- cv_sum$hyperRisk[[est]]
+        # Has Hypers
+        if (est %in% has_hypers) {
+          estimator_stats <- cv_sum$hyperRisk[[est]]
 
-            estHypers <- getHypers(dat = estimatorStats, summ_stat = stat_est)
+          est_hypers <- getHypers(dat = estimator_stats, summ_stat = stat_est)
 
-            # Run The Associated Estimator
-            dat = list(dat_orig)
-            arg_names <- c('dat', estHypers$hyperNames)
+          # Run The Associated Estimator
+          dat <- list(dat_orig)
+          arg_names <- c("dat", est_hypers$hyper_names)
 
-            estArgs <- append(dat, estHypers$hyperValues)
-            names(estArgs) <- arg_names
+          est_args <- append(dat, est_hypers$hyper_values)
+          names(est_args) <- arg_names
 
-            estimate <- rlang::exec(est, !!!estArgs)
-          }
-          else{
-            # No Hypers
-            estimate <- rlang::exec(est, dat_orig)
-          }
-          # Create Data Frame
-          eigs_df <- data.frame(
-            index = index,
-            eigenvalues = suppressWarnings(RSpectra::eigs_sym(
-              estimate, k = k, which = eig_type)$values
-              ),
-            stat = rep(stat_est, k),
-            estimator = rep(est, k)
-          )
+          estimate <- rlang::exec(est, !!!est_args)
+        }
+        else{
+          # No Hypers
+          estimate <- rlang::exec(est, dat_orig)
+        }
+        # Create Data Frame
+        eigs_df <- data.frame(
+          index = index,
+          eigenvalues = suppressWarnings(RSpectra::eigs_sym(
+            estimate, k = k, which = eig_type)$values
+            ),
+          stat = rep(stat_est, k),
+          estimator = rep(est, k)
+        )
 
-          return(eigs_df)
-          })
+        return(eigs_df)
+      })
 
       return(est_eigs)
-      })
+    })
 
     # Combine and Re-factor
     stat_eigs <- dplyr::bind_rows(stat_eigs)
 
     stat_eigs$stat <- factor(
-      stat_eigs$stat, levels = stat_choices)
+      stat_eigs$stat, levels = stat_choices
+    )
 
     stat_eigs$estimator <- factor(
-      stat_eigs$estimator, levels = cv_sum$bestInClass$estimator)
+      stat_eigs$estimator, levels = cv_sum$bestInClass$estimator
+    )
 
     # Generate Plot
-    if (k == 1){
-      plot1 <- ggplot(stat_eigs,
-                      aes(x = .data$index,
-                          y = .data$eigenvalues,
-                          color = .data$stat)) +
+    if (k == 1) {
+      plot1 <- ggplot(
+        stat_eigs,
+        aes(x = .data$index,
+        y = .data$eigenvalues,
+        color = .data$stat)
+      ) +
         geom_point() +
         scale_x_continuous(n.breaks = 3, labels = c("", b, ""))
     }
     else{
-      plot1 <- ggplot(stat_eigs,
-                      aes(x = .data$index,
-                          y = .data$eigenvalues,
-                          color = .data$stat)) +
+      plot1 <- ggplot(
+        stat_eigs,
+        aes(
+          x = .data$index,
+          y = .data$eigenvalues,
+          color = .data$stat)
+      ) +
         geom_path() +
         scale_x_continuous(n.breaks = min(10, k))
     }
 
     plot <- plot1 +
       facet_wrap(facets = vars(.data$estimator)) +
-      scale_color_viridis_d(name = 'Risk', begin = 0, end = 0.8) +
-      labs(title = "Estimator Eigenvalues", caption = cv_details,
-           x = "Eigenvalue Index",
-           y = "Eigenvalue") +
+      scale_color_viridis_d(name = "Risk", begin = 0, end = 0.8) +
+      labs(
+        title = "Estimator Eigenvalues", caption = cv_details,
+        x = "Eigenvalue Index", y = "Eigenvalue"
+      ) +
       theme_cvCovEst(plot_type = plot_type)
 
     return(plot)
@@ -898,14 +919,14 @@ cvEigenPlot <- function(
 multiHyperRisk <- function(
   dat,
   estimator,
-  plot_type = 'risk',
+  plot_type = "risk",
   switch_vars = FALSE,
   min_max = FALSE) {
 
   # Generate List of Plots by Estimator
   plot_env <- new.env()
 
-  plot_list <- lapply(estimator, function(e){
+  plot_list <- lapply(estimator, function(e) {
 
     f_dat <- dat %>%
       filter(.data$estimator %in% e)
@@ -913,10 +934,10 @@ multiHyperRisk <- function(
     # Split hyperparameters into new columns
     f_dat <- getHypers(dat = f_dat, new_df = TRUE)
 
-    if (e %in% c('poetEst', 'robustPoetEst')){
+    if (e %in% c("poetEst", "robustPoetEst")) {
       # If robustPoetEst, then breakdown by var_est and plot individually
 
-      if (e == 'robustPoetEst') {
+      if (e == "robustPoetEst") {
         f_dat$estimator <- paste("robustPoetEst - ", f_dat$var_est)
 
         robust_plots <- lapply(unique(f_dat$estimator), function(u) {
@@ -927,7 +948,7 @@ multiHyperRisk <- function(
           n_lam <- length(unique(u_dat$lambda))
           n_k <- length(unique(u_dat$k))
 
-          if (n_lam == 1 & n_k == 1){
+          if (n_lam == 1 & n_k == 1) {
             remove_message <- paste(
               "Omitting risk plot for ", u,
               " . Not enough hyperparameter combinations")
@@ -935,10 +956,10 @@ multiHyperRisk <- function(
             message(remove_message)
             return(NULL)
           }
-          if (n_lam == 1 & n_k > 1){
+          if (n_lam == 1 & n_k > 1) {
             switch_vars <- TRUE
           }
-          if (n_lam > 1 & n_k == 1){
+          if (n_lam > 1 & n_k == 1) {
             switch_vars <- FALSE
           }
 
@@ -947,34 +968,42 @@ multiHyperRisk <- function(
             u_dat$lambda <- factor(u_dat$lambda)
             u_dat <- dplyr::arrange(u_dat, .data$k)
 
-            if (min_max){
+            if (min_max) {
               u_dat <- u_dat[which(u_dat$lambda %in% factor_range), ]
             }
 
             plot1 <- ggplot(u_dat) +
               geom_path(
-                aes(x = .data$k,
-                    y = .data$empirical_risk,
-                    color = .data$lambda)) +
-              labs(title = 'Change in Empirical Risk',
-                   x = 'k', y = "Empirical Risk")
+                aes(
+                  x = .data$k,
+                  y = .data$empirical_risk,
+                  color = .data$lambda)
+                ) +
+                labs(
+                  title = "Change in Empirical Risk",
+                  x = "k", y = "Empirical Risk"
+                )
           }
           else{
             factor_range <- range(u_dat$k)
             u_dat$k <- factor(u_dat$k)
-            d_dat <- dplyr::arrange(u_dat, .data$lambda)
+            u_dat <- dplyr::arrange(u_dat, .data$lambda)
 
-            if (min_max){
+            if (min_max) {
               u_dat <- u_dat[which(u_dat$k %in% factor_range), ]
             }
 
             plot1 <- ggplot(u_dat) +
               geom_path(
-                aes(x = .data$lambda,
-                    y = .data$empirical_risk,
-                    color = .data$k)) +
-              labs(title = 'Change in Empirical Risk',
-                   x = 'lambda', y = "Empirical Risk")
+                aes(
+                  x = .data$lambda,
+                  y = .data$empirical_risk,
+                  color = .data$k)
+                ) +
+                labs(
+                  title = "Change in Empirical Risk",
+                  x = "lambda", y = "Empirical Risk"
+                )
           }
 
           plot <- plot1 +
@@ -991,7 +1020,7 @@ multiHyperRisk <- function(
         n_lam <- length(unique(f_dat$lambda))
         n_k <- length(unique(f_dat$k))
 
-        if (n_lam == 1 & n_k == 1){
+        if (n_lam == 1 & n_k == 1) {
           remove_message <- paste(
             "Omitting risk plot for ", e,
             " . Not enough hyperparameter combinations")
@@ -999,10 +1028,10 @@ multiHyperRisk <- function(
           message(remove_message)
           return(NULL)
         }
-        if (n_lam == 1 & n_k > 1){
+        if (n_lam == 1 & n_k > 1) {
           switch_vars <- TRUE
         }
-        if (n_lam > 1 & n_k == 1){
+        if (n_lam > 1 & n_k == 1) {
           switch_vars <- FALSE
         }
 
@@ -1011,34 +1040,42 @@ multiHyperRisk <- function(
           f_dat$lambda <- as.factor(f_dat$lambda)
           f_dat <- dplyr::arrange(f_dat, .data$k)
 
-          if (min_max){
+          if (min_max) {
             f_dat <- f_dat[which(f_dat$lambda %in% factor_range), ]
           }
 
           plot1 <- ggplot(f_dat) +
             geom_path(
-              aes(x = .data$k,
-                  y = .data$empirical_risk,
-                  color = .data$lambda)) +
-            labs(title = 'Change in Empirical Risk',
-                 x = 'k', y = "Empirical Risk")
+              aes(
+                x = .data$k,
+                y = .data$empirical_risk,
+                color = .data$lambda)
+              ) +
+              labs(
+                title = "Change in Empirical Risk",
+                x = "k", y = "Empirical Risk"
+              )
         }
         else{
           factor_range <- range(f_dat$k)
           f_dat$k <- factor(f_dat$k)
           f_dat <- dplyr::arrange(f_dat, .data$lambda)
 
-          if (min_max){
+          if (min_max) {
             f_dat <- f_dat[which(f_dat$k %in% factor_range), ]
           }
 
           plot1 <- ggplot(f_dat) +
             geom_path(
-              aes(x = .data$lambda,
-                  y = .data$empirical_risk,
-                  color = .data$k)) +
-            labs(title = 'Change in Empirical Risk',
-                 x = 'lambda', y = "Empirical Risk")
+              aes(
+                x = .data$lambda,
+                y = .data$empirical_risk,
+                color = .data$k)
+              ) +
+              labs(
+                title = "Change in Empirical Risk",
+                x = "lambda", y = "Empirical Risk"
+              )
         }
 
         plot <- plot1 +
@@ -1055,7 +1092,7 @@ multiHyperRisk <- function(
       n_lam <- length(unique(f_dat$lambda))
       n_n <- length(unique(f_dat$n))
 
-      if (n_lam == 1 & n_n == 1){
+      if (n_lam == 1 & n_n == 1) {
         remove_message <- paste(
           "Omitting risk plot for ", e,
           " . Not enough hyperparameter combinations")
@@ -1063,10 +1100,10 @@ multiHyperRisk <- function(
         message(remove_message)
         return(NULL)
       }
-      if (n_lam == 1 & n_n > 1){
+      if (n_lam == 1 & n_n > 1) {
         switch_vars <- TRUE
       }
-      if (n_lam > 1 & n_n == 1){
+      if (n_lam > 1 & n_n == 1) {
         switch_vars <- FALSE
       }
       if (switch_vars) {
@@ -1074,34 +1111,42 @@ multiHyperRisk <- function(
         f_dat$lambda <- factor(f_dat$lambda)
         f_dat <- dplyr::arrange(f_dat, .data$n)
 
-        if (min_max){
+        if (min_max) {
           f_dat <- f_dat[which(f_dat$lambda %in% factor_range), ]
         }
 
         plot1 <- ggplot(f_dat) +
           geom_path(
-            aes(x = .data$n,
-                y = .data$empirical_risk,
-                color = .data$lambda)) +
-          labs(title = 'Change in Empirical Risk',
-               x = 'n', y = "Empirical Risk")
+            aes(
+              x = .data$n,
+              y = .data$empirical_risk,
+              color = .data$lambda)
+            ) +
+            labs(
+              title = "Change in Empirical Risk",
+              x = "n", y = "Empirical Risk"
+            )
       }
       else{
         factor_range <- range(f_dat$n)
         f_dat$n <- factor(f_dat$n)
         f_dat <- dplyr::arrange(f_dat, .data$lambda)
 
-        if (min_max){
+        if (min_max) {
           f_dat <- f_dat[which(f_dat$n %in% factor_range), ]
         }
 
         plot1 <- ggplot(f_dat) +
           geom_path(
-            aes(x = .data$lambda,
-                y = .data$empirical_risk,
-                color = .data$n)) +
-          labs(title = 'Change in Empirical Risk',
-               x = 'lambda', y = "Empirical Risk")
+            aes(
+              x = .data$lambda,
+              y = .data$empirical_risk,
+              color = .data$n)
+            ) +
+            labs(
+              title = "Change in Empirical Risk",
+              x = "lambda", y = "Empirical Risk"
+            )
       }
 
       plot <- plot1 +
@@ -1121,8 +1166,8 @@ multiHyperRisk <- function(
 ################################################################################
 #' Empirical Risk Plot
 #'
-#' @description \code{cvRiskPlot} plots the empirical risk for a given estimator,
-#'  or set of estimators, as a function of the hyperparameters.
+#' @description \code{cvRiskPlot} plots the empirical risk for a given
+#'  estimator, or set of estimators, as a function of the hyperparameters.
 #'
 #' @param dat A named \code{list}.  Specifically, this is the standard output of
 #'  \code{cvCovEst}.
@@ -1157,7 +1202,7 @@ multiHyperRisk <- function(
 cvRiskPlot <- function(
   dat,
   est,
-  plot_type = 'risk',
+  plot_type = "risk",
   cv_details,
   has_hypers,
   switch_vars = FALSE,
@@ -1167,7 +1212,7 @@ cvRiskPlot <- function(
   if (all(est %in% has_hypers) == FALSE) {
     assert_that(
       any(est %in% has_hypers) == TRUE,
-      msg = 'Risk plot unavailable for estimators without hyperparameters.')
+      msg = "Risk plot unavailable for estimators without hyperparameters.")
 
     message("Only plots for estimators with hyperparameters will be displayed")
   }
@@ -1177,11 +1222,12 @@ cvRiskPlot <- function(
     filter(estimator %in% has_hypers)
 
   # Estimators with 2+ hypers
-  multi_hypers <- c('poetEst', 'adaptiveLassoEst', 'robustPoetEst')
+  multi_hypers <- c("poetEst", "adaptiveLassoEst", "robustPoetEst")
 
   # Estimators with single hyper
-  single_hyper <- c('linearShrinkEst', 'thresholdingEst',
-                  'bandingEst', 'taperingEst', 'scadEst')
+  single_hyper <- c(
+    "linearShrinkEst", "thresholdingEst", "bandingEst", "taperingEst", "scadEst"
+  )
 
   # Send multi hyper estimators to multiHyperRisk
   if (any(est %in% multi_hypers)) {
@@ -1197,7 +1243,7 @@ cvRiskPlot <- function(
     # Parse list of plots into a single output
     num_plots <- length(multi_plots)
 
-    if (num_plots == 1){
+    if (num_plots == 1) {
       final_plot <- multi_plots[[1]] +
         labs(caption = cv_details)
     }
@@ -1206,7 +1252,7 @@ cvRiskPlot <- function(
         plotlist = multi_plots,
         ncol = num_plots,
         nrow = 1,
-        align = 'h')
+        align = "h")
 
       final_plot <- annotate_figure(
         final_plot,
@@ -1217,7 +1263,7 @@ cvRiskPlot <- function(
         plotlist = multi_plots,
         ncol = 2,
         nrow = 2,
-        align = 'hv')
+        align = "hv")
 
       final_plot <- annotate_figure(
         final_plot,
@@ -1228,7 +1274,7 @@ cvRiskPlot <- function(
         plotlist = multi_plots,
         ncol = 3,
         nrow = 2,
-        align = 'hv')
+        align = "hv")
 
       final_plot <- annotate_figure(
         final_plot,
@@ -1241,9 +1287,7 @@ cvRiskPlot <- function(
   }
 
   # For estimators with only one hyper
-  if (any(est %in% single_hyper)){
-
-    blues <- RColorBrewer::brewer.pal(9, 'Blues')
+  if (any(est %in% single_hyper)) {
 
     est <- est[which(est %in% single_hyper)]
 
@@ -1251,37 +1295,40 @@ cvRiskPlot <- function(
       filter(estimator %in% est)
 
     # Check for occurrences of only 1 hyperparameter
-    hyperCount <- risk %>%
+    hyper_count <- risk %>%
       group_by(estimator) %>%
       count()
 
-    if (any(hyperCount$n == 1)) {
-      removed <- hyperCount$estimator[which(hyperCount$n == 1)]
-      keep <- hyperCount$estimator[which(hyperCount$n != 1)]
+    if (any(hyper_count$n == 1)) {
+      removed <- hyper_count$estimator[which(hyper_count$n == 1)]
+      keep <- hyper_count$estimator[which(hyper_count$n != 1)]
 
       assertthat::assert_that(
         length(keep) > 0,
-        msg = 'Cannot plot estimators with only one hyperparameter instance.')
+        msg = "Cannot plot estimators with only one hyperparameter instance.")
 
       risk <- risk %>%
         filter(estimator %in% keep)
 
       rem_message <- paste(
-        "The following estimators were omitted due to insufficient observations",
-        removed, sep = " ")
+        "The following estimators were omitted due to insufficient",
+        "observations",
+        removed, sep = " "
+      )
 
       message(rem_message)
     }
 
-    hyperVals <- lapply(risk$hyperparameters,function(h) {
-        h_split <- stringr::str_split(
-          h, "= ") %>% unlist()
+    hyper_vals <- lapply(risk$hyperparameters, function(h) {
+      h_split <- stringr::str_split(
+        h, "= ") %>% unlist()
 
-        return(as.numeric(h_split[2]))
+      return(as.numeric(h_split[2]))
 
-        }) %>% unlist()
+    }) %>%
+      unlist()
 
-    risk$hyperparameters <- hyperVals
+    risk$hyperparameters <- hyper_vals
     risk <- risk %>%
       group_by(estimator) %>%
       arrange(hyperparameters, .by_group = TRUE)
@@ -1290,9 +1337,10 @@ cvRiskPlot <- function(
       geom_path(aes(x = .data$hyperparameters, y = .data$empirical_risk)) +
       facet_wrap(facets = vars(.data$estimator), scales = "free_x") +
       labs(
-           caption = cv_details,
-           x = "Hyperparameter",
-           y = "Risk") +
+        caption = cv_details,
+        x = "Hyperparameter",
+        y = "Risk"
+      ) +
       scale_x_continuous(n.breaks = 10) +
       theme_cvCovEst(plot_type = plot_type)
   }
@@ -1303,7 +1351,7 @@ cvRiskPlot <- function(
   plot_list <- list(
     multi_plots = final_plot1,
     single_plots = final_plot2
-    )
+  )
 
   return(plot_list)
 }
@@ -1353,14 +1401,14 @@ cvSummaryPlot <- function(
   stat,
   k,
   leading,
-  plot_type = 'summary',
+  plot_type = "summary",
   cv_details,
   has_hypers,
   abs_v,
   switch_vars,
-  min_max){
+  min_max) {
 
-  if (is.null(k)){
+  if (is.null(k)) {
     k <- ncol(dat_orig)
   }
 
@@ -1375,7 +1423,7 @@ cvSummaryPlot <- function(
                      switch_vars = switch_vars,
                      min_max = min_max)
 
-    if (estimator %in% c('poetEst', 'robustPoetEst', 'adaptiveLassoEst')) {
+    if (estimator %in% c("poetEst", "robustPoetEst", "adaptiveLassoEst")) {
       p1 <- p1$multi_plots
     }
     else{
@@ -1389,40 +1437,44 @@ cvSummaryPlot <- function(
       p1$empRiskByClass,
       rows = NULL,
       theme = ttheme(
-        base_style = 'lBlueWhite',
+        base_style = "lBlueWhite",
         base_size = 8
       ))
 
     p1 <- tab_add_title(
       p1,
       text = "Risk Summary By Class",
-      face = 'bold',
+      face = "bold",
       size = 10,
       hjust = -1,
-      padding = unit(2, 'line')
+      padding = unit(2, "line")
     )
   }
 
   # Upper Right - Eigenvalue Plot
-  p2 <- cvEigenPlot(dat = dat,
-                    estimator = estimator,
-                    dat_orig = dat_orig,
-                    stat = stat,
-                    k = k,
-                    leading = leading,
-                    plot_type = plot_type,
-                    cv_details = cv_details,
-                    has_hypers = has_hypers)
+  p2 <- cvEigenPlot(
+    dat = dat,
+    estimator = estimator,
+    dat_orig = dat_orig,
+    stat = stat,
+    k = k,
+    leading = leading,
+    plot_type = plot_type,
+    cv_details = cv_details,
+    has_hypers = has_hypers
+  )
 
   # Lower Left - Heatmap
-  p3 <- cvMultiMelt(dat = dat,
-                    estimator = estimator,
-                    stat = stat,
-                    dat_orig = dat_orig,
-                    plot_type = c('summary', 'heatmap'),
-                    cv_details = cv_details,
-                    has_hypers = has_hypers,
-                    abs_v = abs_v)
+  p3 <- cvMultiMelt(
+    dat = dat,
+    estimator = estimator,
+    stat = stat,
+    dat_orig = dat_orig,
+    plot_type = c("summary", "heatmap"),
+    cv_details = cv_details,
+    has_hypers = has_hypers,
+    abs_v = abs_v
+  )
 
   # Lower Right - Summary Table - bestInClass
   p4_a <- summary.cvCovEst(object = dat, summ_fun = "bestInClass")
@@ -1433,25 +1485,25 @@ cvSummaryPlot <- function(
     p4_a$bestInClass,
     rows = NULL,
     theme = ttheme(
-      base_style = 'lBlueWhite',
+      base_style = "lBlueWhite",
       base_size = 8
     ))
 
   p4_a <- tab_add_title(
     p4_a,
     text = "Best Hyperparameter Values by Class",
-    face = 'bold',
+    face = "bold",
     size = 10,
     hjust = -0.125,
-    padding = unit(2, 'line')
+    padding = unit(2, "line")
   )
 
   p4 <- annotate_figure(
     p4_a,
     fig.lab = cv_details,
-    fig.lab.pos = 'bottom.left',
+    fig.lab.pos = "bottom.left",
     fig.lab.size = 12,
-    fig.lab.face = 'italic'
+    fig.lab.face = "italic"
   )
 
   plot <- ggarrange(
@@ -1498,16 +1550,16 @@ theme_cvCovEst <- function(plot_type, ...) {
     axis.text = element_text(size = 10),
     axis.title = element_text(size = 12),
     plot.title = element_blank(),
-    plot.caption = element_text(hjust = 0, size = 10, face = 'italic'),
+    plot.caption = element_text(hjust = 0, size = 10, face = "italic"),
     legend.key = element_blank(),
-    legend.title = element_text(vjust = 0.75, size = 10, face = 'bold'),
-    legend.text = element_text(size = 8, face = 'bold'),
+    legend.title = element_text(vjust = 0.75, size = 10, face = "bold"),
+    legend.text = element_text(size = 8, face = "bold"),
     strip.background = element_rect(
       fill = alpha(blues[4], alpha = 0.5), color = blues[9], size = 0.5),
-    strip.text = element_text(size = 12, face = 'bold', colour = blues[9]))
+    strip.text = element_text(size = 12, face = "bold", colour = blues[9]))
 
   # Changes for cvMultiMelt
-  if ('heatmap' %in% plot_type){
+  if ("heatmap" %in% plot_type) {
     cv_theme <- cv_theme +
       theme(
         panel.border = element_blank(),
@@ -1516,28 +1568,32 @@ theme_cvCovEst <- function(plot_type, ...) {
         axis.text = element_blank(),
         axis.title = element_blank(),
         axis.ticks = element_blank(),
-        legend.position = 'bottom',
-        legend.key.width = unit(10, 'mm'))
+        legend.position = "bottom",
+        legend.key.width = unit(10, "mm")
+      )
     # If cvMultiMelt & cvSummaryPlot
-    if ('summary' %in% plot_type){
+    if ("summary" %in% plot_type) {
       cv_theme <- cv_theme +
         theme(
           axis.title.y = element_text(size = 12),
-          legend.key.width = unit(10, 'mm'),
+          legend.key.width = unit(10, "mm"),
           legend.title = element_text(
-            vjust = 0.75, size = 8, face = 'bold'))
+            vjust = 0.75, size = 8, face = "bold")
+        )
     }
   }
 
   # Changes for cvSummaryPlot
-  if ('summary' %in% plot_type){
+  if ("summary" %in% plot_type) {
     cv_theme <- cv_theme +
       theme(
         plot.title = element_text(
-          hjust = 0.5, vjust = 1.5, size = 10, face = 'bold'),
+          hjust = 0.5, vjust = 1.5, size = 10, face = "bold"
+        ),
         plot.caption = element_blank(),
         strip.background = element_blank(),
-        strip.text = element_blank())
+        strip.text = element_blank()
+      )
   }
 
   return(cv_theme)
@@ -1591,8 +1647,8 @@ plot.cvCovEst <- function(
   x,
   dat_orig,
   estimator = NULL,
-  plot_type = c('summary'),
-  stat = c('min'),
+  plot_type = c("summary"),
+  stat = c("min"),
   k = NULL,
   leading = TRUE,
   abs_v = TRUE,
@@ -1605,7 +1661,7 @@ plot.cvCovEst <- function(
   checkPlotSumArgs(
     dat = x,
     dat_orig = dat_orig,
-    which_fun = 'plot',
+    which_fun = "plot",
     estimator = estimator,
     plot_type = plot_type,
     stat = stat,
@@ -1615,14 +1671,14 @@ plot.cvCovEst <- function(
 
   # Define cv_details
   pretty_args <- list(
-    mc = 'Monte Carlo CV',
+    mc = "Monte Carlo CV",
     v_fold = "V-fold CV",
     cvMatrixFrobeniusLoss = "Matrix Frobenius Loss",
     cvFrobeniusLoss = "Scaled Frobenius Loss",
     cvScaledMatrixFrobeniusLoss = "Scaled Matrix Frobenius Loss"
     )
 
-  if (x$args$cv_scheme == 'mc'){
+  if (x$args$cv_scheme == "mc") {
     scheme <- paste(pretty_args$mc, "split", x$args$mc_split, sep = " ")
   }
   else{
@@ -1639,7 +1695,7 @@ plot.cvCovEst <- function(
     "scadEst", "poetEst", "robustPoetEst", "adaptiveLassoEst")
 
   # Plot the winning estimator for summary plot or NULL estimator
-  if (plot_type == 'summary' | is.null(estimator)){
+  if (plot_type == "summary" | is.null(estimator)) {
     estimator <- unlist(stringr::str_split(x$estimator, ", "))[1]
   }
 
@@ -1647,45 +1703,55 @@ plot.cvCovEst <- function(
     k <- ncol(dat_orig)
   }
 
-  plot <- switch(plot_type,
-         summary = cvSummaryPlot(dat = x,
-                                 estimator = estimator,
-                                 dat_orig = dat_orig,
-                                 stat = stat,
-                                 k = k,
-                                 leading = leading,
-                                 plot_type = 'summary',
-                                 cv_details = cv_details,
-                                 has_hypers = has_hypers,
-                                 abs_v = abs_v,
-                                 switch_vars = switch_vars,
-                                 min_max = min_max),
-         risk = cvRiskPlot(dat = x,
-                           est = estimator,
-                           plot_type = 'risk',
-                           cv_details = cv_details,
-                           has_hypers = has_hypers,
-                           switch_vars = switch_vars,
-                           min_max = min_max),
-         eigen = cvEigenPlot(dat = x,
-                             estimator = estimator,
-                             stat = stat,
-                             dat_orig = dat_orig,
-                             k = k,
-                             leading = leading,
-                             plot_type = 'eigen',
-                             cv_details = cv_details,
-                             has_hypers = has_hypers),
-         heatmap = cvMultiMelt(dat = x,
-                               estimator = estimator,
-                               stat = stat,
-                               dat_orig = dat_orig,
-                               plot_type = 'heatmap',
-                               cv_details = cv_details,
-                               has_hypers = has_hypers,
-                               abs_v = abs_v))
+  plot <- switch(
+    plot_type,
+    summary = cvSummaryPlot(
+      dat = x,
+      estimator = estimator,
+      dat_orig = dat_orig,
+      stat = stat,
+      k = k,
+      leading = leading,
+      plot_type = "summary",
+      cv_details = cv_details,
+      has_hypers = has_hypers,
+      abs_v = abs_v,
+      switch_vars = switch_vars,
+      min_max = min_max
+    ),
+    risk = cvRiskPlot(
+      dat = x,
+      est = estimator,
+      plot_type = "risk",
+      cv_details = cv_details,
+      has_hypers = has_hypers,
+      switch_vars = switch_vars,
+      min_max = min_max
+    ),
+    eigen = cvEigenPlot(
+      dat = x,
+      estimator = estimator,
+      stat = stat,
+      dat_orig = dat_orig,
+      k = k,
+      leading = leading,
+      plot_type = "eigen",
+      cv_details = cv_details,
+      has_hypers = has_hypers
+    ),
+    heatmap = cvMultiMelt(
+      dat = x,
+      estimator = estimator,
+      stat = stat,
+      dat_orig = dat_orig,
+      plot_type = "heatmap",
+      cv_details = cv_details,
+      has_hypers = has_hypers,
+      abs_v = abs_v
+    )
+  )
 
-  if (plot_type == 'risk') {
+  if (plot_type == "risk") {
     if (is.null(plot$multi_plots)) {
       return(plot$single_plots)
     }
@@ -1711,7 +1777,7 @@ plot.cvCovEst <- function(
 #'  standard output of the function \code{cvCovEst}.
 #' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{cvCovEst}.
-#' @param which_fun A choice of \code{'plot'} or \code{'summary'} depending on
+#' @param which_fun A choice of \code{"plot"} or \code{"summary"} depending on.
 #'  which function is being checked.
 #' @param estimator A character vector specifying one or more classes of
 #'  estimators to compare.
@@ -1728,7 +1794,7 @@ plot.cvCovEst <- function(
 #'
 #' @import assertthat
 #'
-#' @return Whether all argument conditions are satisfied
+#' @return Whether all argument conditions are satisfied.
 #'
 #' @keywords internal
 checkPlotSumArgs <- function(
@@ -1741,7 +1807,7 @@ checkPlotSumArgs <- function(
   stat,
   k,
   leading,
-  abs_v){
+  abs_v) {
 
   # Define possible valid arguments for both functions
   cv_names <- c("estimate", "estimator", "risk_df", "cv_df", "args")
@@ -1750,14 +1816,18 @@ checkPlotSumArgs <- function(
   if (is.cvCovEst(dat)) {
     assertthat::assert_that(
       all(cv_names %in% names(dat)) == TRUE,
-      msg = "cvCovEst object is missing data."
+      msg = paste(
+        "cvCovEst object is missing data.",
+        "Make sure that the cvCovEst object possess the following elements:",
+        "'estimate', 'estimator', 'risk_df', 'cv_df', and 'args'."
+      )
     ) # change output message here?
   }
   # For plot functions only:
-  if (which_fun == 'plot'){
+  if (which_fun == "plot") {
     # Define valid plot arguments
     plot_types <- c("summary", "risk", "eigen", "heatmap")
-    stat_choices <- c("min", "Q1", "Q2", "Q3", "max")
+    stat_choices <- c("min", "Q1", "median", "Q3", "max")
     cv_estimators <- unique(dat$risk_df$estimator)
 
     # Check valid summary stat choices
@@ -1772,7 +1842,7 @@ checkPlotSumArgs <- function(
     if (!is.null(k)) {
       assertthat::assert_that(
         k <= ncol(dat_orig),
-        msg = 'k cannot exceed the number of columns in dat_orig.'
+        msg = "k cannot exceed the number of columns in dat_orig."
       )
     }
     # Check valid plot types
@@ -1787,10 +1857,10 @@ checkPlotSumArgs <- function(
         is.logical(leading),
         is.logical(abs_v)
       ) == TRUE,
-      msg = 'Invalid value for logical argument.'
+      msg = "Invalid value for logical argument."
     )
     # Check valid summary plot conditions
-    if (plot_type == 'summary' & !is.null(estimator)){
+    if (plot_type == "summary" & !is.null(estimator)) {
       message("Summary plot defaults to the optimal selected estimator.")
     }
   }
@@ -1807,14 +1877,3 @@ checkPlotSumArgs <- function(
     )
   }
 }
-
-
-
-
-
-
-
-
-
-
-

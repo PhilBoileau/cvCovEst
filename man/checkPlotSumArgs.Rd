@@ -24,7 +24,7 @@ standard output of the function \code{cvCovEst}.}
 \item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
 object originally passed to \code{cvCovEst}.}
 
-\item{which_fun}{A choice of \code{'plot'} or \code{'summary'} depending on
+\item{which_fun}{A choice of \code{"plot"} or \code{"summary"} depending on.
 which function is being checked.}
 
 \item{estimator}{A character vector specifying one or more classes of
@@ -47,7 +47,7 @@ be used.}
 entries should be used for plotting the matrix heatmap.}
 }
 \value{
-Whether all argument conditions are satisfied
+Whether all argument conditions are satisfied.
 }
 \description{
 The \code{checkPlotSumArgs} function verifies that all arguments

@@ -40,7 +40,7 @@ object originally passed to \code{cvCovEst}.}
 estimators with hyperparameters.}
 
 \item{abs_v}{A \code{logical} determining if the absolute value of the matrix
-entries should be displayed versus the signed value.  Default is \code{TRUE}.}
+entries should be displayed versus the signed value. Default is \code{TRUE}.}
 }
 \value{
 A grid of heat map plots comparing the desired covariance matrix
