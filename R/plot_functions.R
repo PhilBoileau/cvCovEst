@@ -48,7 +48,7 @@ empRiskByClass <- function(dat) {
       max = max(.data$empirical_risk),
       mean_risk = mean(.data$empirical_risk),
       .groups = "keep") %>%
-    dplyr::arrange(mean_risk)
+    dplyr::arrange(.data$mean_risk)
 
   return(emp_risk)
 }
@@ -135,8 +135,8 @@ hyperRisk <- function(dat) {
     hyper_summ <- lapply(hyper_est, function(est) {
 
       h <- dat %>%
-        dplyr::filter(estimator == est) %>%
-        dplyr::mutate(empirical_risk = round(empirical_risk))
+        dplyr::filter(.data$estimator == est) %>%
+        dplyr::mutate(empirical_risk = round(.data$empirical_risk))
 
       risk_stats <- quantile(
         h$empirical_risk,
@@ -147,7 +147,7 @@ hyperRisk <- function(dat) {
       hyper_risk <- sapply(unname(risk_stats), function(r) {
         # Filter by the quantiles of the empirical risk
         hr <- h %>%
-          dplyr::filter(empirical_risk == r)
+          dplyr::filter(.data$empirical_risk == r)
 
         vec <- c(
           dplyr::first(hr$hyperparameters),
@@ -1219,7 +1219,7 @@ cvRiskPlot <- function(
 
   # Filter only estimators with hypers
   hyper_dat <- dat$risk_df %>%
-    filter(estimator %in% has_hypers)
+    filter(.data$estimator %in% has_hypers)
 
   # Estimators with 2+ hypers
   multi_hypers <- c("poetEst", "adaptiveLassoEst", "robustPoetEst")
@@ -1292,11 +1292,11 @@ cvRiskPlot <- function(
     est <- est[which(est %in% single_hyper)]
 
     risk <- hyper_dat %>%
-      filter(estimator %in% est)
+      filter(.data$estimator %in% est)
 
     # Check for occurrences of only 1 hyperparameter
     hyper_count <- risk %>%
-      group_by(estimator) %>%
+      group_by(.data$estimator) %>%
       count()
 
     if (any(hyper_count$n == 1)) {
@@ -1308,7 +1308,7 @@ cvRiskPlot <- function(
         msg = "Cannot plot estimators with only one hyperparameter instance.")
 
       risk <- risk %>%
-        filter(estimator %in% keep)
+        filter(.data$estimator %in% keep)
 
       rem_message <- paste(
         "The following estimators were omitted due to insufficient",
@@ -1330,8 +1330,8 @@ cvRiskPlot <- function(
 
     risk$hyperparameters <- hyper_vals
     risk <- risk %>%
-      group_by(estimator) %>%
-      arrange(hyperparameters, .by_group = TRUE)
+      group_by(.data$estimator) %>%
+      arrange(.data$hyperparameters, .by_group = TRUE)
 
     final_plot2 <- ggplot(risk) +
       geom_path(aes(x = .data$hyperparameters, y = .data$empirical_risk)) +
