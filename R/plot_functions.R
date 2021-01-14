@@ -82,7 +82,7 @@ bestInClass <- function(dat, worst = FALSE) {
         hyperparameter = dplyr::last(.data$hyperparameters),
         empirical_risk = dplyr::last(.data$empirical_risk),
         .groups = "keep") %>%
-      dplyr::arrange(empirical_risk)
+      dplyr::arrange(.data$empirical_risk)
 
     return(worstEst)
 
@@ -94,7 +94,7 @@ bestInClass <- function(dat, worst = FALSE) {
         hyperparameter = dplyr::first(.data$hyperparameters),
         empirical_risk = dplyr::first(.data$empirical_risk),
         .groups = "keep") %>%
-      dplyr::arrange(empirical_risk)
+      dplyr::arrange(.data$empirical_risk)
 
     return(bestEst)
 
