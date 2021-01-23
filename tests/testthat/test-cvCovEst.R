@@ -80,7 +80,7 @@ test_that("cross-validated covariance selector runs silently", {
       ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
-    cv_loss = cvMatrixFrobeniusLoss, cv_scheme = "v_fold",
+    cv_loss = cvFrobeniusLoss, cv_scheme = "v_fold",
     mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
   ))
@@ -105,7 +105,7 @@ test_that("cross-validated covariance selector runs silently", {
       ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
-    cv_loss = cvMatrixFrobeniusLoss, cv_scheme = "mc",
+    cv_loss = cvFrobeniusLoss, cv_scheme = "mc",
     mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
   ))
@@ -180,6 +180,7 @@ test_that("cross-validated covariance selector runs silently", {
       ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cvFrobeniusLoss,
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE,
     true_cov_mat = Sigma
@@ -211,6 +212,7 @@ test_that("cross-validated covariance selector runs silently", {
     estimator_params = list(
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cvFrobeniusLoss,
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE,
     true_cov_mat = Sigma
@@ -226,6 +228,7 @@ test_that("cross-validated covariance selector runs silently", {
       scadEst = list(lambda = c(0.1, 0.2)),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cvFrobeniusLoss,
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE,
     true_cov_mat = Sigma
@@ -308,6 +311,7 @@ test_that("cvCovEst's outputs are of the correct dimensions", {
       ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cvFrobeniusLoss,
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE,
     true_cov_mat = Sigma
@@ -376,6 +380,7 @@ test_that("cross-validated covariance selector handles sparse, true cov mat", {
       ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
+    cv_loss = cvFrobeniusLoss,
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE,
     true_cov_mat = as(Sigma, "dgeMatrix")
