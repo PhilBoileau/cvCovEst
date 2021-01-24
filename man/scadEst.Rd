@@ -27,6 +27,10 @@ a linear interpolation between soft thresholding up to \code{2*lambda} and
 hard thresholding after \code{3.7*lambda}
 \insertCite{rothman2009}{cvCovEst}.
 }
+\examples{
+scadEst(dat = mtcars, lambda = 0.2)
+
+}
 \references{
 \insertAllCited{}
 }

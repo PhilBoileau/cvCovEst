@@ -23,6 +23,10 @@ matrix estimate's off-diagonal elements. For information on this
 estimator's derivation, see \insertCite{Ledoit2020b;textual}{cvCovEst} and
 \insertCite{shafer2005;textual}{cvCovEst}.
 }
+\examples{
+denseLinearShrinkEst(dat = mtcars)
+
+}
 \references{
 \insertAllCited{}
 }

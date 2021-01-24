@@ -299,9 +299,6 @@ cvCovEst <- function(
 #'
 #' @importFrom stringr str_sub
 #'
-#' @examples
-#' strToNumber("3.142")
-#'
 #' @keywords internal
 strToNumber <- function(x) {
   if (stringr::str_sub(x, start = -1) == "L") {

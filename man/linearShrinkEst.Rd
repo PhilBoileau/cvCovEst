@@ -26,3 +26,7 @@ determines the bias-variance tradeoff of the estimators in this class:
 values near 1 are more likely to exhibit high variance but low bias, and
 values near 0 are more likely to be be very biased but have low variance.
 }
+\examples{
+linearShrinkEst(dat = mtcars, alpha = 0.1)
+
+}

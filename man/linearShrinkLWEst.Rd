@@ -22,6 +22,10 @@ than the sample covariance matrix in high-dimensional settings under loose
 assumptions. For more information, review the manuscript by
 \insertCite{Ledoit2004;textual}{cvCovEst}).
 }
+\examples{
+linearShrinkLWEst(dat = mtcars)
+
+}
 \references{
 \insertAllCited{}
 }

@@ -18,6 +18,9 @@
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
 #'
+#' @examples
+#' linearShrinkEst(dat = mtcars, alpha = 0.1)
+#'
 #' @export
 linearShrinkEst <- function(dat, alpha) {
 
@@ -52,6 +55,9 @@ linearShrinkEst <- function(dat, alpha) {
 #'
 #' @references
 #'  \insertAllCited{}
+#'
+#' @examples
+#' linearShrinkLWEst(dat = mtcars)
 #'
 #' @export
 linearShrinkLWEst <- function(dat) {
@@ -108,6 +114,9 @@ linearShrinkLWEst <- function(dat) {
 #' @references
 #'   \insertAllCited{}
 #'
+#' @examples
+#' thresholdingEst(dat = mtcars, gamma = 0.2)
+#'
 #' @export
 thresholdingEst <- function(dat, gamma) {
   # compute the sample covariance matrix
@@ -131,6 +140,9 @@ thresholdingEst <- function(dat, gamma) {
 #'
 #' @return A \code{matrix} corresponding to the estimate of the covariance
 #'  matrix.
+#'
+#' @examples
+#' sampleCovEst(dat = mtcars)
 #'
 #' @export
 sampleCovEst <- function(dat) {
@@ -159,6 +171,9 @@ sampleCovEst <- function(dat) {
 #'
 #' @references
 #'  \insertAllCited{}
+#'
+#' @examples
+#' bandingEst(dat = mtcars, k = 2L)
 #'
 #' @export
 bandingEst <- function(dat, k) {
@@ -221,6 +236,9 @@ bandingEst <- function(dat, k) {
 #'
 #' @references
 #'  \insertAllCited{}
+#'
+#' @examples
+#' taperingEst(dat = mtcars, k = 0.1)
 #'
 #' @export
 taperingEst <- function(dat, k) {
@@ -293,6 +311,9 @@ taperingEst <- function(dat, k) {
 #'
 #' @references
 #'   \insertAllCited{}
+#'
+#' @examples
+#' nlShrinkLWEst(dat = mtcars)
 #'
 #' @export
 nlShrinkLWEst <- function(dat) {
@@ -390,6 +411,9 @@ nlShrinkLWEst <- function(dat) {
 #' @references
 #'   \insertAllCited{}
 #'
+#' @examples
+#' denseLinearShrinkEst(dat = mtcars)
+#'
 #' @export
 denseLinearShrinkEst <- function(dat) {
 
@@ -445,6 +469,9 @@ denseLinearShrinkEst <- function(dat) {
 #' @references
 #'   \insertAllCited{}
 #'
+#' @examples
+#' scadEst(dat = mtcars, lambda = 0.2)
+#'
 #' @export
 scadEst <- function(dat, lambda) {
 
@@ -488,6 +515,9 @@ scadEst <- function(dat, lambda) {
 #'
 #' @references
 #'  \insertAllCited{}
+#'
+#' @examples
+#' poetEst(dat = mtcars, k = 2L, lambda = 0.1)
 #'
 #' @export
 poetEst <- function(dat, k, lambda) {
@@ -564,10 +594,17 @@ poetEst <- function(dat, k, lambda) {
 #' @references
 #'   \insertAllCited{}
 #'
+#' @examples
+#' robustPoetEst(dat = mtcars, k = 2L, lambda = 0.1, var_est = "sample")
+#'
 #' @export
 robustPoetEst <- function(dat, k, lambda,
                           var_est = c("sample", "mad", "huber")) {
 
+  # if dataframe, turn to matrix
+  if (!is.matrix(dat))
+    dat <- as.matrix(dat)
+  
   # set default base covariance estimator
   var_est <- match.arg(var_est)
 
@@ -665,6 +702,9 @@ robustPoetEst <- function(dat, k, lambda,
 #'
 #' @references
 #'   \insertAllCited{}
+#'
+#' @examples
+#' adaptiveLassoEst(dat = mtcars, lambda = 0.9, n = 0.9)
 #'
 #' @export
 adaptiveLassoEst <- function(dat, lambda, n) {

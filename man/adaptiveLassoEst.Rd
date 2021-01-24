@@ -29,6 +29,10 @@ initial value. This weight then determines the relative size of the
 penalty resulting in larger values being penalized less and reducing bias
 \insertCite{rothman2009}{cvCovEst}.
 }
+\examples{
+adaptiveLassoEst(dat = mtcars, lambda = 0.9, n = 0.9)
+
+}
 \references{
 \insertAllCited{}
 }

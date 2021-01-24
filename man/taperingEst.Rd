@@ -30,6 +30,10 @@ i and j index the rows and columns of the weight matrix, respectively. If
 If \code{k/2 < abs(i-j) < k}, then entry i,j is equal to
 \code{2 - 2*abs(i-j)/k}. Otherwise, entry i,j is equal to 0.
 }
+\examples{
+taperingEst(dat = mtcars, k = 0.1)
+
+}
 \references{
 \insertAllCited{}
 }

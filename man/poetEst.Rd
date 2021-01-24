@@ -31,6 +31,10 @@ rank-\code{k} approximation and its thresholded principal orthogonal
 complement. The hard thresholding function is used here, though others
 could be used instead.
 }
+\examples{
+poetEst(dat = mtcars, k = 2L, lambda = 0.1)
+
+}
 \references{
 \insertAllCited{}
 }
