@@ -40,6 +40,35 @@
 #' @references
 #'   \insertAllCited{}
 #'
+#' @examples
+#' library(MASS)
+#' library(origami)
+#' library(rlang)
+#'
+#' # generate 10x10 covariance matrix with unit variances and off-diagonal
+#' # elements equal to 0.5
+#' Sigma <- matrix(0.5, nrow = 10, ncol = 10) + diag(0.5, nrow = 10)
+#'
+#' # sample 50 observations from multivariate normal with mean = 0, var = Sigma
+#' dat <- mvrnorm(n = 50, mu = rep(0, 10), Sigma = Sigma)
+#'
+#' # generate a single fold using MC-cv
+#' resub <- make_folds(dat,
+#'   fold_fun = folds_vfold,
+#'   V = 2
+#' )[[1]]
+#' cvFrobeniusLoss(
+#'   fold = resub,
+#'   dat = dat,
+#'   estimator_funs = rlang::quo(c(
+#'     linearShrinkEst, thresholdingEst, sampleCovEst
+#'   )),
+#'   estimator_params = list(
+#'     linearShrinkEst = list(alpha = c(0, 1)),
+#'     thresholdingEst = list(gamma = c(0, 1))
+#'   )
+#' )
+#'
 #' @export
 cvFrobeniusLoss <- function(fold, dat, estimator_funs,
                             estimator_params = NULL,
@@ -278,6 +307,35 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
 #' @references
 #'   \insertAllCited{}
 #'
+#' @examples
+#' library(MASS)
+#' library(origami)
+#' library(rlang)
+#'
+#' # generate 10x10 covariance matrix with unit variances and off-diagonal
+#' # elements equal to 0.5
+#' Sigma <- matrix(0.5, nrow = 10, ncol = 10) + diag(0.5, nrow = 10)
+#'
+#' # sample 50 observations from multivariate normal with mean = 0, var = Sigma
+#' dat <- mvrnorm(n = 50, mu = rep(0, 10), Sigma = Sigma)
+#'
+#' # generate a single fold using MC-cv
+#' resub <- make_folds(dat,
+#'   fold_fun = folds_vfold,
+#'   V = 2
+#' )[[1]]
+#' cvMatrixFrobeniusLoss(
+#'   fold = resub,
+#'   dat = dat,
+#'   estimator_funs = rlang::quo(c(
+#'     linearShrinkEst, thresholdingEst, sampleCovEst
+#'   )),
+#'   estimator_params = list(
+#'     linearShrinkEst = list(alpha = c(0, 1)),
+#'     thresholdingEst = list(gamma = c(0, 1))
+#'   )
+#' )
+#'
 #' @export
 cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
                                   estimator_params = NULL,
@@ -405,6 +463,35 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
 #'
 #' @references
 #'   \insertAllCited{}
+#'
+#' @examples
+#' library(MASS)
+#' library(origami)
+#' library(rlang)
+#'
+#' # generate 10x10 covariance matrix with unit variances and off-diagonal
+#' # elements equal to 0.5
+#' Sigma <- matrix(0.5, nrow = 10, ncol = 10) + diag(0.5, nrow = 10)
+#'
+#' # sample 50 observations from multivariate normal with mean = 0, var = Sigma
+#' dat <- mvrnorm(n = 50, mu = rep(0, 10), Sigma = Sigma)
+#'
+#' # generate a single fold using MC-cv
+#' resub <- make_folds(dat,
+#'   fold_fun = folds_vfold,
+#'   V = 2
+#' )[[1]]
+#' cvScaledMatrixFrobeniusLoss(
+#'   fold = resub,
+#'   dat = dat,
+#'   estimator_funs = rlang::quo(c(
+#'     linearShrinkEst, thresholdingEst, sampleCovEst
+#'   )),
+#'   estimator_params = list(
+#'     linearShrinkEst = list(alpha = c(0, 1)),
+#'     thresholdingEst = list(gamma = c(0, 1))
+#'   )
+#' )
 #'
 #' @export
 cvScaledMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,

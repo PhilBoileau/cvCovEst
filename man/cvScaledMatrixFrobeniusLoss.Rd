@@ -48,6 +48,36 @@ column variables. This loss should be used instead of
 \code{cvMatrixFrobeniusLoss} when a dataset's variables's values are of
 different magnitudes.
 }
+\examples{
+library(MASS)
+library(origami)
+library(rlang)
+
+# generate 10x10 covariance matrix with unit variances and off-diagonal
+# elements equal to 0.5
+Sigma <- matrix(0.5, nrow = 10, ncol = 10) + diag(0.5, nrow = 10)
+
+# sample 50 observations from multivariate normal with mean = 0, var = Sigma
+dat <- mvrnorm(n = 50, mu = rep(0, 10), Sigma = Sigma)
+
+# generate a single fold using MC-cv
+resub <- make_folds(dat,
+  fold_fun = folds_vfold,
+  V = 2
+)[[1]]
+cvScaledMatrixFrobeniusLoss(
+  fold = resub,
+  dat = dat,
+  estimator_funs = rlang::quo(c(
+    linearShrinkEst, thresholdingEst, sampleCovEst
+  )),
+  estimator_params = list(
+    linearShrinkEst = list(alpha = c(0, 1)),
+    thresholdingEst = list(gamma = c(0, 1))
+  )
+)
+
+}
 \references{
 \insertAllCited{}
 }
