@@ -1,5 +1,9 @@
 # cvCovEst 0.1.5 (2021-01-23)
 
++ Added basic examples to all exported functions.
+
+# cvCovEst 0.1.5 (2021-01-23)
+
 + Made `cvMatrixFrobeniusLoss` the default loss function.
 
 # cvCovEst 0.1.4 (2020-12-29)
