@@ -15,4 +15,8 @@ strToNumber(x)
 \description{
 Convert String to Numeric or Integer When Needed
 }
+\examples{
+strToNumber("3.142")
+
+}
 \keyword{internal}

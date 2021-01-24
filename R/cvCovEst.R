@@ -81,6 +81,18 @@
 #'       cvCovEst selection and the full dataset oracle selection.
 #'   }
 #'
+#' @examples
+#' cvCovEst(
+#'   dat =  mtcars,
+#'   estimators = c(
+#'     linearShrinkLWEst, thresholdingEst, sampleCovEst
+#'   ),
+#'   estimator_params = list(
+#'     thresholdingEst = list(gamma = seq(0.1, 0.3, 0.1))
+#'   ),
+#'   center = TRUE,
+#'   scale = TRUE
+#' )
 #' @export
 cvCovEst <- function(
                      dat,
@@ -286,6 +298,9 @@ cvCovEst <- function(
 #' @return \code{x} converted to the appropriate type.
 #'
 #' @importFrom stringr str_sub
+#'
+#' @examples
+#' strToNumber("3.142")
 #'
 #' @keywords internal
 strToNumber <- function(x) {

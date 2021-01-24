@@ -105,3 +105,16 @@ cvCovEst selection and the full dataset oracle selection.
 \code{cvCovEst} identifies the optimal covariance matrix
 estimator from among a set of candidate estimators.
 }
+\examples{
+cvCovEst(
+  dat =  mtcars,
+  estimators = c(
+    linearShrinkLWEst, thresholdingEst, sampleCovEst
+  ),
+  estimator_params = list(
+    thresholdingEst = list(gamma = seq(0.1, 0.3, 0.1))
+  ),
+  center = TRUE,
+  scale = TRUE
+)
+}
