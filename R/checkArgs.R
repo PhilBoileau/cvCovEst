@@ -15,9 +15,10 @@
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
 #' @param cv_loss A \code{function} indicating the loss function to use.
-#'  Defaults to the scaled Frobenius loss, \code{\link{cvFrobeniusLoss}}.
-#'  (Scaled) matrix-based versions, \code{cvMatrixFrobeniusLoss} and
-#'  \code{cvScaledMatrixFrobeniusLoss}, are offered as well.
+#'  Defaults to the Frobenius loss, \code{\link{cvMatrixFrobeniusLoss}}.
+#'  An observation-based version, \code{\link{cvFrobeniusLoss}}, is also
+#'  available. Finally, the \code{cvScaledMatrixFrobeniusLoss} is made available
+#'  for situations where \code{dat}'s variables of different scales.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
@@ -37,10 +38,11 @@
 #' @param true_cov_mat A \code{matrix} like object representing the true
 #'  covariance matrix of the data generating distribution, which is assumed to
 #'  be Gaussian. This parameter is intended for use only in simulation studies,
-#'  and defaults to a value of \code{NULL}. If not \code{NULL}, the
-#'  cross-validated conditional risk difference ratio of the estimator selected
-#'  by \code{\link{cvCovEst}} is computed relative to the cross-validated
-#'  oracle selector.
+#'  and defaults to a value of \code{NULL}. If not \code{NULL}, various
+#'  conditional risk difference ratios of the estimator selected
+#'  by \code{\link{cvCovEst}} are computed relative to the different oracle
+#'  selectors. NOTE: This parameter will be phased out by the release of version
+#'  1.0.0.
 #'
 #' @importFrom assertthat assert_that is.flag
 #' @importFrom methods is

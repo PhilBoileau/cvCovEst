@@ -22,9 +22,10 @@ Hejazi](https://nimahejazi.org)
 covariance matrix estimation, particularly useful in high-dimensional
 settings. The general methodology allows for cross-validation to be used
 to data adaptively identify the optimal estimator of the covariance
-matrix from a pre-specified set of candidate estimators. Also included
-are diagnostic tools for assessing the quality of covariance matrix
-estimators.
+matrix from a pre-specified set of candidate estimators. An overview of
+of the framework is provided in the package vignette.
+
+<!-- A suite of plotting and diagnostic tools are also included. -->
 
 ------------------------------------------------------------------------
 

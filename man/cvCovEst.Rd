@@ -9,7 +9,7 @@ cvCovEst(
   estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
   estimator_params = list(linearShrinkEst = list(alpha = 0), thresholdingEst =
     list(gamma = 0)),
-  cv_loss = cvFrobeniusLoss,
+  cv_loss = cvMatrixFrobeniusLoss,
   cv_scheme = "v_fold",
   mc_split = 0.5,
   v_folds = 10L,
@@ -35,9 +35,10 @@ hyperparameter(s). These hyperparameters may be in the form of a single
 for a given estimator, then the estimator need not be listed.}
 
 \item{cv_loss}{A \code{function} indicating the loss function to use.
-Defaults to the scaled Frobenius loss, \code{\link{cvFrobeniusLoss}}.
-(Scaled) matrix-based versions, \code{\link{cvMatrixFrobeniusLoss}} and
-\code{cvScaledMatrixFrobeniusLoss}, are offered too.}
+Defaults to the Frobenius loss, \code{\link{cvMatrixFrobeniusLoss}}.
+An observation-based version, \code{\link{cvFrobeniusLoss}}, is also
+available. Finally, the \code{cvScaledMatrixFrobeniusLoss} is made available
+for situations where \code{dat}'s variables of different scales.}
 
 \item{cv_scheme}{A \code{character} indicating the cross-validation scheme
 to be employed. There are two options: (1) V-fold cross-validation, via
@@ -48,8 +49,7 @@ Defaults to V-fold cross-validation.}
 of data in the validation set of each Monte Carlo cross-validation fold.}
 
 \item{v_folds}{A \code{integer} larger than or equal to 1 indicating the
-number of folds to use during cross-validation. The default is 10,
-regardless of cross-validation scheme.}
+number of folds to use during cross-validation. The default is 5.}
 
 \item{center}{A \code{logical} indicating whether or not to center the
 columns of \code{dat}. Set to \code{FALSE} only if the columns have already
@@ -60,7 +60,7 @@ columns of \code{dat} to have variance 1. Defaults to \code{FALSE}.}
 
 \item{parallel}{A \code{logical} option indicating whether to run the main
 cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
-is passed directly to \code{\link[origami]{cross_validate}}.}
+is passed to \code{\link[origami]{cross_validate}}.}
 
 \item{true_cov_mat}{A \code{matrix} like object representing the true
 covariance matrix of the data generating distribution, which is assumed to
@@ -68,7 +68,8 @@ be Gaussian. This parameter is intended for use only in simulation studies,
 and defaults to a value of \code{NULL}. If not \code{NULL}, various
 conditional risk difference ratios of the estimator selected
 by \code{\link{cvCovEst}} are computed relative to the different oracle
-selectors.}
+selectors. NOTE: This parameter will be phased out by the release of version
+1.0.0.}
 }
 \value{
 A \code{list} of results containing the following elements:
