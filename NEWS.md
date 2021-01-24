@@ -1,4 +1,8 @@
-# cvCovEst 0.1.3 (2020-12-29)
+# cvCovEst 0.1.5 (2021-01-23)
+
++ Made `cvMatrixFrobeniusLoss` the default loss function.
+
+# cvCovEst 0.1.4 (2020-12-29)
 
 + Added `cvScaledMatrixFrobeniusLoss`, a new matrix-based loss function that
   scales squared error calculations associated with each entry of a covariance
