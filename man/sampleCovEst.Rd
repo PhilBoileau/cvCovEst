@@ -17,3 +17,7 @@ matrix.
 \code{sampleCovEst} computes the sample covariance matrix. This
 function is a simple wrapper around \code{\link[stats]{cov}}.
 }
+\examples{
+sampleCovEst(dat = mtcars)
+
+}

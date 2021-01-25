@@ -81,6 +81,18 @@
 #'       cvCovEst selection and the full dataset oracle selection.
 #'   }
 #'
+#' @examples
+#' cvCovEst(
+#'   dat =  mtcars,
+#'   estimators = c(
+#'     linearShrinkLWEst, thresholdingEst, sampleCovEst
+#'   ),
+#'   estimator_params = list(
+#'     thresholdingEst = list(gamma = seq(0.1, 0.3, 0.1))
+#'   ),
+#'   center = TRUE,
+#'   scale = TRUE
+#' )
 #' @export
 cvCovEst <- function(
                      dat,

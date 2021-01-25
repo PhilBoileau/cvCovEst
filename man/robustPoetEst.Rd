@@ -44,6 +44,10 @@ tau estimator. The hard thresholding function is used to regularize the
 idiosyncratic errors' estimated covariance matrix, though other
 regularization schemes could be used.
 }
+\examples{
+robustPoetEst(dat = mtcars, k = 2L, lambda = 0.1, var_est = "sample")
+
+}
 \references{
 \insertAllCited{}
 }

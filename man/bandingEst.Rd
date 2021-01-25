@@ -23,6 +23,10 @@ covariance matrix will be zero if the absolute value of {i - j} is
 greater than some non-negative constant, \code{k}. This estimator was
 proposed by \insertCite{bickel2008_banding;textual}{cvCovEst}.
 }
+\examples{
+bandingEst(dat = mtcars, k = 2L)
+
+}
 \references{
 \insertAllCited{}
 }
