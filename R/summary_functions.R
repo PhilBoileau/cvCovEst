@@ -11,8 +11,8 @@
 #' @param dat The table of empirical risk calculations which is output by
 #'  \code{cvCovEst}.
 #'
-#' @return A \code{data.frame} with rows corresponding to estimator classes and
-#'  columns corresponding to each summary statistic.
+#' @return \code{\link[tibble]{tibble}} with rows corresponding to estimator
+#'  classes and columns corresponding to each summary statistic.
 #'
 #' @importFrom dplyr group_by summarize arrange %>%
 #' @importFrom stats median quantile
@@ -46,9 +46,9 @@ empRiskByClass <- function(dat) {
 #' @param worst This facilitates the option to choose the worst performing
 #'  estimator in each class.  Default is \code{FALSE}.
 #'
-#' @return A \code{data.frame} with rows corresponding to estimator classes and
-#'  columns for hyperparameter values and empirical risk for the best estimator
-#'  in that class.
+#' @return \code{\link[tibble]{tibble}} with rows corresponding to estimator
+#' classes and columns for hyperparameter values and empirical risk for the best
+#' estimator in that class.
 #'
 #' @importFrom dplyr group_by summarize arrange first %>%
 #' @importFrom rlang .data
@@ -92,11 +92,13 @@ bestInClass <- function(dat, worst = FALSE) {
 #'  \code{cvCovEst}.
 #'
 #' @return A named \code{list} of data frames. Each list element corresponds to
-#'  a \code{data.frame} of summary statistics for a specific estimator class.
-#'  If no estimators have hyper-parameters, a message is returned.
+#'  a \code{\link[tibble]{tibble}} of summary statistics for a specific
+#'  estimator class. If no estimators have hyper-parameters, a message is
+#'  returned.
 #'
 #' @importFrom dplyr filter mutate first %>%
 #' @importFrom stats quantile
+#' @importFrom tibble tibble
 #'
 #' @keywords internal
 hyperRisk <- function(dat) {
@@ -139,14 +141,9 @@ hyperRisk <- function(dat) {
         return(vec)
       })
 
-      df <- data.frame(
+      df <- tibble::tibble(
         t(hyper_risk),
-        row.names = c(
-          "min",
-          "Q1", "median", "Q3",
-          "max"
-        )
-      )
+        row.names = c("min", "Q1", "median", "Q3", "max"))
 
       colnames(df) <- c("hyperparameters", "empirical_risk")
 

@@ -24,7 +24,7 @@
 #' @param abs_v A \code{logical} determining if the absolute value of the matrix
 #'  entries should be used for plotting the matrix heatmap.
 #'
-#' @import assertthat
+#' @importFrom assertthat assert_that
 #'
 #' @return Whether all argument conditions are satisfied.
 #'
@@ -53,7 +53,7 @@ checkPlotSumArgs <- function(
         "Make sure that the cvCovEst object possess the following elements:",
         "'estimate', 'estimator', 'risk_df', 'cv_df', and 'args'."
       )
-    ) # change output message here?
+    )
   }
   # For plot functions only:
   if (which_fun == "plot") {

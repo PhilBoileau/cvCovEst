@@ -61,7 +61,7 @@ cvMultiMelt <- function(
     center = dat$args$center,
     scale = dat$args$scale
   ) %>%
-    unname
+    unname()
 
   # Call cvSummary
   cv_sum <- summary.cvCovEst(dat)
@@ -324,6 +324,8 @@ cvMultiMelt <- function(
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom RSpectra eigs_sym
 #' @importFrom rlang exec .data
+#' @importFrom dplyr %>%
+#' @importFrom tibble tibble
 #'
 #' @keywords internal
 cvEigenPlot <- function(
@@ -344,11 +346,11 @@ cvEigenPlot <- function(
   single_est <- ifelse(length(estimator) == 1, TRUE, FALSE)
 
   # Center and Scale Original Data to Match Call to cvCovEst
-  dat_orig <- cvCovEst::safeColScale(
+  dat_orig <- safeColScale(
     dat_orig,
     center = dat$args$center,
     scale = dat$args$scale
-  )
+  ) %>% unname()
 
   # Determine leading/trailing and set index accordingly
   eig_type <- ifelse(leading, "LA", "SA")
@@ -385,15 +387,13 @@ cvEigenPlot <- function(
         estimate <- rlang::exec(estimator, !!!est_args)
 
         # Get the eigenvalues
-        est_eigs <- data.frame(
+        est_eigs <- tibble::tibble(
           index = index,
           eigenvalues = suppressWarnings(RSpectra::eigs_sym(
-            estimate, k = k, which = eig_type)$values
-            ),
+            estimate, k = k, which = eig_type)$values),
           stat = rep(stat_est, k),
           estimator = rep(estimator, k)
         )
-
         return(est_eigs)
       })
 
@@ -410,11 +410,10 @@ cvEigenPlot <- function(
       estimate <- rlang::exec(estimator, dat_orig)
 
       # Create Data Frame
-      stat_eigs <- data.frame(
+      stat_eigs <- tibble::tibble(
         index = index,
         eigenvalues = suppressWarnings(RSpectra::eigs_sym(
-          estimate, k = k, which = eig_type)$values
-          ),
+          estimate, k = k, which = eig_type)$values),
         stat = rep(stat[1], k),
         estimator = rep(estimator, k)
         )
@@ -494,11 +493,10 @@ cvEigenPlot <- function(
           estimate <- rlang::exec(est, dat_orig)
         }
         # Create Data Frame
-        eigs_df <- data.frame(
+        eigs_df <- tibble::tibble(
           index = index,
           eigenvalues = suppressWarnings(RSpectra::eigs_sym(
-            estimate, k = k, which = eig_type)$values
-            ),
+            estimate, k = k, which = eig_type)$values),
           stat = rep(stat_est, k),
           estimator = rep(est, k)
         )
