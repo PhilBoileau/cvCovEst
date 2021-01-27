@@ -1226,7 +1226,7 @@ cvSummaryPlot <- function(
 #'  estimators with more than one hyperparameter. Default is \code{FALSE}.
 #' @param ... Additional arguments
 #'
-#' @import assertthat
+#' @importFrom assertthat assert_that
 #' @importFrom rlang as_label
 #'
 #' @return A plot object

@@ -117,7 +117,7 @@ theme_cvCovEst <- function(plot_type, ...) {
 #'
 #' @importFrom rlang exec
 #' @importFrom stringr str_split str_squish
-#' @importFrom data.table rbindlist
+#' @importFrom dplyr bind_rows
 #'
 #' @keywords internal
 getHypers <- function(dat, summ_stat, new_df = FALSE) {
@@ -153,7 +153,7 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
       return(hyper_list)
     })
 
-    hypers <- data.table::rbindlist(hypers)
+    hypers <- dplyr::bind_rows(hypers)
     hypers <- cbind(dat[, 1], hypers, dat[, (3:n)])
   }
   else{
