@@ -98,7 +98,7 @@ bestInClass <- function(dat, worst = FALSE) {
 #'
 #' @importFrom dplyr filter mutate first %>%
 #' @importFrom stats quantile
-#' @importFrom tibble tibble
+#' @importFrom tibble as_tibble
 #'
 #' @keywords internal
 hyperRisk <- function(dat) {
@@ -141,11 +141,12 @@ hyperRisk <- function(dat) {
         return(vec)
       })
 
-      df <- tibble::tibble(
-        t(hyper_risk),
-        row.names = c("min", "Q1", "median", "Q3", "max"))
+       df <- data.frame(
+         t(hyper_risk),
+         stat = c("min", "Q1", "median", "Q3", "max"))
 
-      colnames(df) <- c("hyperparameters", "empirical_risk")
+      colnames(df) <- c("hyperparameters", "empirical_risk", "stat")
+      df <- tibble::as_tibble(df)
 
       return(df)
     })
