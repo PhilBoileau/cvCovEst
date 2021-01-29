@@ -33,9 +33,7 @@
 #' @importFrom dplyr filter %>% bind_rows mutate_if
 #' @importFrom ggplot2 ggplot aes geom_raster facet_wrap labs facet_grid vars scale_fill_gradient scale_fill_gradient2
 #' @importFrom assertthat assert_that
-#' @import viridis
-#' @import viridisLite
-#' @import RColorBrewer
+#' @importFrom RColorBrewer brewer.pal
 #'
 #' @keywords internal
 cvMultiMelt <- function(
@@ -319,8 +317,6 @@ cvMultiMelt <- function(
 #'  eigenvalues of the specified estimators and associated summary statistics of
 #'  the empirical risk.
 #'
-#' @import viridis
-#' @import viridisLite
 #' @importFrom ggplot2 ggplot aes vars geom_point geom_path scale_x_continuous facet_wrap labs scale_color_viridis_d
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom RSpectra eigs_sym
@@ -861,8 +857,6 @@ multiHyperRisk <- function(
 #' @importFrom dplyr group_by filter %>% summarise arrange count
 #' @importFrom stats t.test
 #' @importFrom assertthat assert_that
-#' @import viridis
-#' @import viridisLite
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom ggplot2 ggplot aes vars geom_path geom_ribbon alpha facet_wrap scale_x_continuous labs
 #' @importFrom rlang .data
