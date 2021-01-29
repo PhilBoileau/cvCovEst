@@ -19,7 +19,7 @@ cvRiskPlot(
 \code{cvCovEst}.}
 
 \item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
-\code{'risk'}}
+\code{"risk"}}
 
 \item{cv_details}{Character vector summarizing key arguments passed to
 \code{cvCovEst}.}

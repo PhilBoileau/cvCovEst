@@ -30,7 +30,7 @@ estimators to compare.  If \code{NULL}, the class of estimator associated
 with optimal \code{cvCovEst} selection is used.}
 
 \item{plot_type}{A character vector specifying one of four choices of
-diagnostic plots.  Default is \code{'summary'}.  See Details for more about
+diagnostic plots.  Default is \code{"summary"}.  See Details for more about
 each plotting choice.}
 
 \item{stat}{A character vector of one or more summary statistics to use when

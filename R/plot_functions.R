@@ -18,7 +18,7 @@
 #' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{cvCovEst}.
 #' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
-#'  \code{'heatmap'}.
+#'  \code{"heatmap"}.
 #' @param cv_details Character vector summarizing key arguments passed to
 #'  \code{cvCovEst}.
 #' @param has_hypers A character vector containing the names of current
@@ -307,7 +307,7 @@ cvMultiMelt <- function(
 #'  be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing
 #'  eigenvalues will be used instead.
 #' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
-#'  \code{'eigen'}.
+#'  \code{"eigen"}.
 #' @param cv_details Character vector summarizing key arguments passed to
 #'  \code{cvCovEst}.
 #' @param has_hypers A character vector containing the names of current
@@ -568,7 +568,7 @@ cvEigenPlot <- function(
 #' @param estimator A character vector specifying one or more classes of
 #'  estimators to compare.
 #' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
-#'  \code{'risk'}.
+#'  \code{"risk"}.
 #' @param switch_vars A \code{logical} indicating if the x-axis and factor
 #'  variables should be switched.  Default is \code{FALSE}.
 #' @param min_max Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
@@ -839,7 +839,7 @@ multiHyperRisk <- function(
 #' @param estimator A character vector specifying one or more classes of
 #'  estimators to compare.
 #' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
-#'  \code{'risk'}
+#'  \code{"risk"}
 #' @param cv_details Character vector summarizing key arguments passed to
 #'  \code{cvCovEst}.
 #' @param has_hypers A character vector containing the names of current
@@ -1036,7 +1036,7 @@ cvRiskPlot <- function(
 #' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{cvCovEst}.
 #' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
-#'  \code{'summary'}.
+#'  \code{"summary"}.
 #' @param cv_details Character vector summarizing key arguments passed to
 #'  \code{cvCovEst}.
 #' @param has_hypers A character vector containing the names of current
@@ -1197,7 +1197,7 @@ cvSummaryPlot <- function(
 #' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{cvCovEst}.
 #' @param plot_type A character vector specifying one of four choices of
-#'  diagnostic plots.  Default is \code{'summary'}.  See Details for more about
+#'  diagnostic plots.  Default is \code{"summary"}.  See Details for more about
 #'  each plotting choice.
 #' @param estimator A character vector specifying one or more classes of
 #'  estimators to compare.  If \code{NULL}, the class of estimator associated

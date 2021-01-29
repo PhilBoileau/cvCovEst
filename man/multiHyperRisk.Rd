@@ -20,7 +20,7 @@ multiHyperRisk(
 estimators to compare.}
 
 \item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
-\code{'risk'}.}
+\code{"risk"}.}
 
 \item{switch_vars}{A \code{logical} indicating if the x-axis and factor
 variables should be switched.  Default is \code{FALSE}.}

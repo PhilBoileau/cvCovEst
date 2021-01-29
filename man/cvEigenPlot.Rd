@@ -38,7 +38,7 @@ be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing
 eigenvalues will be used instead.}
 
 \item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
-\code{'eigen'}.}
+\code{"eigen"}.}
 
 \item{cv_details}{Character vector summarizing key arguments passed to
 \code{cvCovEst}.}
