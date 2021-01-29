@@ -30,8 +30,7 @@
 #' estimators.
 #'
 #' @importFrom rlang exec .data
-#' @importFrom reshape2 melt
-#' @importFrom dplyr filter %>% bind_rows
+#' @importFrom dplyr filter %>% bind_rows mutate_if
 #' @importFrom ggplot2 ggplot aes geom_raster facet_wrap labs facet_grid vars scale_fill_gradient scale_fill_gradient2
 #' @importFrom assertthat assert_that
 #' @import viridis
@@ -78,43 +77,43 @@ cvMultiMelt <- function(
   if (single_stat) {
 
     stat_melts <- lapply(estimator, function(est) {
-        # For Estimators With Hyper-parameters
-        if (est %in% has_hypers) {
-          estimator_stats <- cv_sum$hyperRisk[[est]]
+      # For Estimators With Hyper-parameters
+      if (est %in% has_hypers) {
+        estimator_stats <- cv_sum$hyperRisk[[est]]
+        # Get The Associated Hyper-parameters
+        est_hypers <- getHypers(dat = estimator_stats, summ_stat = stat)
 
-          # Get The Associated Hyper-parameters
-          est_hypers <- getHypers(dat = estimator_stats, summ_stat = stat)
+        # Collect Args & Run The Associated Estimator
+        dat <- list(dat_orig)
+        arg_names <- c("dat", est_hypers$hyper_names)
 
-          # Collect Args & Run The Associated Estimator
-          dat <- list(dat_orig)
-          arg_names <- c("dat", est_hypers$hyper_names)
+        est_args <- append(dat, est_hypers$hyper_values)
+        names(est_args) <- arg_names
 
-          est_args <- append(dat, est_hypers$hyper_values)
-          names(est_args) <- arg_names
+        estimate <- rlang::exec(est, !!!est_args)
+      }
+      # If No Hyper-parameters
+      else{
+        estimate <- rlang::exec(est, dat_orig)
+      }
 
-          estimate <- rlang::exec(est, !!!est_args)
-        }
-        # If No Hyper-parameters
-        else{
-          estimate <- rlang::exec(est, dat_orig)
-        }
+      # Create Melted Data Frame
+      if (abs_v) {
+        estimate <- abs(estimate)
+      }
 
-        # Create Melted Data Frame
-        if (abs_v) {
-          melt_est <- reshape2::melt(abs(estimate))
-        }
-        else{
-          melt_est <- reshape2::melt(estimate)
-        }
+      melt_est <- as.data.frame.table(
+        estimate, responseName = "value") %>%
+        dplyr::mutate_if(is.factor, as.integer)
 
-        # Label by Estimator
-        est_name <- rep(est, nrow(melt_est))
+      # Label by Estimator
+      est_name <- rep(est, nrow(melt_est))
 
-        melt_est$Var1 <- rev(melt_est$Var1)
-        melt_est$estimator <- est_name
+      melt_est$Var1 <- rev(melt_est$Var1)
+      melt_est$estimator <- est_name
 
-        return(melt_est)
-        })
+      return(melt_est)
+      })
 
     # Combine and Re-factor
     stat_melts <- dplyr::bind_rows(stat_melts)
@@ -166,11 +165,12 @@ cvMultiMelt <- function(
 
         # Create Melted Data Frame
         if (abs_v) {
-          melt_est <- reshape2::melt(abs(estimate))
+          estimate <- abs(estimate)
         }
-        else{
-          melt_est <- reshape2::melt(estimate)
-        }
+
+        melt_est <- as.data.frame.table(
+          estimate, responseName = "value") %>%
+          dplyr::mutate_if(is.factor, as.integer)
 
         # Label by Stat
         stat_name <- rep(stat_est, nrow(melt_est))
@@ -229,11 +229,12 @@ cvMultiMelt <- function(
 
               # Create Melted Data Frame
               if (abs_v) {
-                melt_est <- reshape2::melt(abs(estimate))
+                estimate <- abs(estimate)
               }
-              else{
-                melt_est <- reshape2::melt(estimate)
-              }
+
+              melt_est <- as.data.frame.table(
+                estimate, responseName = "value") %>%
+                dplyr::mutate_if(is.factor, as.integer)
 
               # Label by Stat
               stat_name <- rep(stat_est, nrow(melt_est))

@@ -39,7 +39,6 @@ Imports:
     RSpectra,
     future,
     future.apply,
-    reshape2,
     ggplot2,
     ggpubr,
     viridis,
