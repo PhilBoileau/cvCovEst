@@ -594,7 +594,7 @@ multiHyperRisk <- function(
   plot_list <- lapply(estimator, function(e) {
 
     f_dat <- dat %>%
-      filter(.data$estimator %in% e)
+      dplyr::filter(.data$estimator %in% e)
 
     # Split hyperparameters into new columns
     f_dat <- getHypers(dat = f_dat, new_df = TRUE)
@@ -608,7 +608,7 @@ multiHyperRisk <- function(
         robust_plots <- lapply(unique(f_dat$estimator), function(u) {
           # Check for sufficient observations to plot
           u_dat <- f_dat %>%
-            filter(estimator %in% u)
+            dplyr::filter(estimator %in% u)
 
           n_lam <- length(unique(u_dat$lambda))
           n_k <- length(unique(u_dat$k))
@@ -955,12 +955,12 @@ cvRiskPlot <- function(
     est <- est[which(est %in% single_hyper)]
 
     risk <- hyper_dat %>%
-      filter(.data$estimator %in% est)
+      dplyr::filter(.data$estimator %in% est)
 
     # Check for occurrences of only 1 hyperparameter
     hyper_count <- risk %>%
-      group_by(.data$estimator) %>%
-      count()
+      dplyr::group_by(.data$estimator) %>%
+      dplyr::count()
 
     if (any(hyper_count$n == 1)) {
       removed <- hyper_count$estimator[which(hyper_count$n == 1)]
@@ -971,7 +971,7 @@ cvRiskPlot <- function(
         msg = "Cannot plot estimators with only one hyperparameter instance.")
 
       risk <- risk %>%
-        filter(.data$estimator %in% keep)
+        dplyr::filter(.data$estimator %in% keep)
 
       rem_message <- paste(
         "The following estimators were omitted due to insufficient",
@@ -993,8 +993,8 @@ cvRiskPlot <- function(
 
     risk$hyperparameters <- hyper_vals
     risk <- risk %>%
-      group_by(.data$estimator) %>%
-      arrange(.data$hyperparameters, .by_group = TRUE)
+      dplyr::group_by(.data$estimator) %>%
+      dplyr::arrange(.data$hyperparameters, .by_group = TRUE)
 
     final_plot2 <- ggplot(risk) +
       geom_path(aes(x = .data$hyperparameters, y = .data$empirical_risk)) +
@@ -1097,15 +1097,15 @@ cvSummaryPlot <- function(
   else{
     p1 <- summary.cvCovEst(object = dat, summ_fun = "empRiskByClass")
 
-    p1 <- ggtexttable(
+    p1 <- ggpubr::ggtexttable(
       p1$empRiskByClass,
       rows = NULL,
-      theme = ttheme(
+      theme = ggpubr::ttheme(
         base_style = "lBlueWhite",
         base_size = 8
       ))
 
-    p1 <- tab_add_title(
+    p1 <- ggpubr::tab_add_title(
       p1,
       text = "Risk Summary By Class",
       face = "bold",
@@ -1145,7 +1145,7 @@ cvSummaryPlot <- function(
 
   best_est <- p4_a$bestInClass$estimator[1]
 
-  p4_a <- ggtexttable(
+  p4_a <- ggpubr::ggtexttable(
     p4_a$bestInClass,
     rows = NULL,
     theme = ttheme(
@@ -1153,7 +1153,7 @@ cvSummaryPlot <- function(
       base_size = 8
     ))
 
-  p4_a <- tab_add_title(
+  p4_a <- ggpubr::tab_add_title(
     p4_a,
     text = "Best Hyperparameter Values by Class",
     face = "bold",
@@ -1162,7 +1162,7 @@ cvSummaryPlot <- function(
     padding = unit(2, "line")
   )
 
-  p4 <- annotate_figure(
+  p4 <- ggpubr::annotate_figure(
     p4_a,
     fig.lab = cv_details,
     fig.lab.pos = "bottom.left",
@@ -1170,12 +1170,12 @@ cvSummaryPlot <- function(
     fig.lab.face = "italic"
   )
 
-  plot <- ggarrange(
+  plot <- ggpubr::ggarrange(
     p1, p2, p3, p4,
     ncol = 2, nrow = 2,
     heights = c(1, 1.2))
 
-  plot <- annotate_figure(
+  plot <- ggpubr::annotate_figure(
     plot,
     top = paste("cvCovEst Selection: ", best_est, sep = ""))
 
