@@ -1006,6 +1006,7 @@ cvRiskPlot <- function(
       geom_path(aes(x = .data$hyperparameters, y = .data$empirical_risk)) +
       facet_wrap(facets = vars(.data$estimator), scales = "free_x") +
       labs(
+        title = "Estimator Empirical Risk",
         caption = cv_details,
         x = "Hyperparameter",
         y = "Risk"

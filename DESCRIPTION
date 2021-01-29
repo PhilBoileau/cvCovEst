@@ -41,8 +41,6 @@ Imports:
     future.apply,
     ggplot2,
     ggpubr,
-    viridis,
-    viridisLite,
     RColorBrewer
 Suggests:
     testthat,
