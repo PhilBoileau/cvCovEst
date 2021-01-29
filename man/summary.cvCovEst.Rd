@@ -13,9 +13,11 @@
 \arguments{
 \item{object}{A named \code{list} of class \code{"cvCovEst"}.}
 
-\item{summ_fun}{A character vector specifying which summaries to output.}
+\item{summ_fun}{A character vector specifying which summaries to output.  See
+Details for function descriptions.}
 
-\item{...}{Additional arguments passed to summary method.}
+\item{...}{Additional arguments passed to summary method.  These are not
+explicitly used and should be ignored by the user.}
 }
 \value{
 A named \code{list} where each element corresponds to the output of
@@ -24,4 +26,7 @@ of the requested summaries.
 \description{
 The \code{summary} method provides summary statistics regarding
 the performance of \code{cvCovEst} and can be used for diagnostic plotting.
+}
+\details{
+
 }

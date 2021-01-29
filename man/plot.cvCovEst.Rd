@@ -45,7 +45,7 @@ be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
 are used instead.}
 
 \item{abs_v}{A \code{logical} determining if the absolute value of the matrix
-entries should be used for plotting the matrix heatmap.  Default is
+entries should be used for plotting the matrix heat map.  Default is
 \code{TRUE}.}
 
 \item{switch_vars}{A \code{logical}. If \code{TRUE}, the hyperparameters used
@@ -57,14 +57,18 @@ is \code{FALSE}.}
 maximum values of the factor hyperparameter will be used.  Only applies to
 estimators with more than one hyperparameter. Default is \code{FALSE}.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments passed to the plot method.  These are not
+explicitly used and should be ignored by the user.}
 }
 \value{
 A plot object
 }
 \description{
-\code{plot.cvCovEst} is a generic plotting method for objects of
-class, \code{"cvCovEst"}.  The method is designed as a tool for diagnostic
+The \code{plot} method is a generic method for plotting objects
+of class, \code{"cvCovEst"}.  The method is designed as a tool for diagnostic
 and exploratory analysis purposes when selecting a covariance matrix
 estimator using \code{cvCovEst}.
+}
+\details{
+
 }
