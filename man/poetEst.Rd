@@ -27,7 +27,7 @@ matrix.
 Thresholding (POET) estimator, a nonparametric, unobserved-factor-based
 estimator of the covariance matrix \insertCite{fan2013}{cvCovEst}. The
 estimator is defined as the sum of the sample covariance matrix'
-rank-\code{k} approximation and its psot-thresholding principal orthogonal
+rank-\code{k} approximation and its post-thresholding principal orthogonal
 complement. The hard thresholding function is used here, though others
 could be used instead.
 }

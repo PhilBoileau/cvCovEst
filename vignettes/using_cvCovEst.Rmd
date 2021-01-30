@@ -123,7 +123,7 @@ you'd like to request a new estimator implementation, please submit an
 ### Loss Functions
 
 Given a collection of candidate estimators, `cvCovEst` compares their
-conditional cross-validated risk's to identify the optimal selection. The loss
+conditional cross-validated risks to identify the optimal selection. The loss
 function used to compute these risks should reflect both aspects of the
 data-generating distribution and the goal of the estimation procedure. This
 package currently implements three loss functions:
