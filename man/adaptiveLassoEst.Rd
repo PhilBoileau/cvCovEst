@@ -31,7 +31,6 @@ resulting in larger values being penalized less and reducing bias
 }
 \examples{
 adaptiveLassoEst(dat = mtcars, lambda = 0.9, n = 0.9)
-
 }
 \references{
 \insertAllCited{}

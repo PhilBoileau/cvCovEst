@@ -73,7 +73,6 @@ cvMatrixFrobeniusLoss(
     thresholdingEst = list(gamma = c(0, 1))
   )
 )
-
 }
 \references{
 \insertAllCited{}

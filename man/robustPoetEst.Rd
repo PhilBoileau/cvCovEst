@@ -46,7 +46,6 @@ regularization schemes could be used.
 }
 \examples{
 robustPoetEst(dat = mtcars, k = 2L, lambda = 0.1, var_est = "sample")
-
 }
 \references{
 \insertAllCited{}

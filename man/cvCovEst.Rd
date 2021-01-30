@@ -104,7 +104,7 @@ estimator from among a set of candidate estimators.
 }
 \examples{
 cvCovEst(
-  dat =  mtcars,
+  dat = mtcars,
   estimators = c(
     linearShrinkLWEst, thresholdingEst, sampleCovEst
   ),
@@ -114,5 +114,4 @@ cvCovEst(
   center = TRUE,
   scale = TRUE
 )
-
 }

@@ -19,5 +19,4 @@ function is a simple wrapper around \code{\link[coop]{covar}}.
 }
 \examples{
 sampleCovEst(dat = mtcars)
-
 }

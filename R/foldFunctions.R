@@ -68,7 +68,6 @@
 #'     thresholdingEst = list(gamma = c(0, 1))
 #'   )
 #' )
-#'
 #' @export
 cvFrobeniusLoss <- function(fold, dat, estimator_funs,
                             estimator_params = NULL,
@@ -334,7 +333,6 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
 #'     thresholdingEst = list(gamma = c(0, 1))
 #'   )
 #' )
-#'
 #' @export
 cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
                                   estimator_params = NULL,
@@ -487,7 +485,6 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
 #'     thresholdingEst = list(gamma = c(0, 1))
 #'   )
 #' )
-#'
 #' @export
 cvScaledMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
                                         estimator_params = NULL,
@@ -530,7 +527,7 @@ cvScaledMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
         estimator = est_name,
         hyperparameters = estimator_hparam,
         loss = matrixStats::sum2(((est_mat - sample_cov_valid)^2) *
-                                  scaling_factors),
+          scaling_factors),
         fold = origami::fold_index(fold = fold)
       )
     } else {
@@ -560,7 +557,7 @@ cvScaledMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
             estimator = est_name,
             hyperparameters = estimator_hparam,
             loss = matrixStats::sum2(((est_mat - sample_cov_valid)^2) *
-                                      scaling_factors),
+              scaling_factors),
             fold = origami::fold_index(fold = fold)
           )
           return(out)

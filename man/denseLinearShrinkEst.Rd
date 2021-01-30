@@ -25,7 +25,6 @@ estimator's derivation, see \insertCite{Ledoit2020b;textual}{cvCovEst} and
 }
 \examples{
 denseLinearShrinkEst(dat = mtcars)
-
 }
 \references{
 \insertAllCited{}

@@ -24,7 +24,6 @@ by \insertCite{Ledoit2004;textual}{cvCovEst}).
 }
 \examples{
 linearShrinkLWEst(dat = mtcars)
-
 }
 \references{
 \insertAllCited{}

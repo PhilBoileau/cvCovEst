@@ -29,7 +29,6 @@ and hard thresholding after \code{3.7 * lambda}
 }
 \examples{
 scadEst(dat = mtcars, lambda = 0.2)
-
 }
 \references{
 \insertAllCited{}

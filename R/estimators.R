@@ -20,7 +20,6 @@
 #'
 #' @examples
 #' linearShrinkEst(dat = mtcars, alpha = 0.1)
-#'
 #' @export
 linearShrinkEst <- function(dat, alpha) {
   # compute the sample covariance matrix
@@ -58,7 +57,6 @@ linearShrinkEst <- function(dat, alpha) {
 #'
 #' @examples
 #' linearShrinkLWEst(dat = mtcars)
-#'
 #' @export
 linearShrinkLWEst <- function(dat) {
   # get the number of variables and observations
@@ -115,7 +113,6 @@ linearShrinkLWEst <- function(dat) {
 #'
 #' @examples
 #' thresholdingEst(dat = mtcars, gamma = 0.2)
-#'
 #' @export
 thresholdingEst <- function(dat, gamma) {
   # compute the sample covariance matrix
@@ -142,7 +139,6 @@ thresholdingEst <- function(dat, gamma) {
 #'
 #' @examples
 #' sampleCovEst(dat = mtcars)
-#'
 #' @export
 sampleCovEst <- function(dat) {
   # compute the sample covariance matrix
@@ -174,7 +170,6 @@ sampleCovEst <- function(dat) {
 #'
 #' @examples
 #' bandingEst(dat = mtcars, k = 2L)
-#'
 #' @export
 bandingEst <- function(dat, k) {
   # compute the sample covariance matrix
@@ -238,7 +233,6 @@ bandingEst <- function(dat, k) {
 #'
 #' @examples
 #' taperingEst(dat = mtcars, k = 0.1)
-#'
 #' @export
 taperingEst <- function(dat, k) {
   # compute the sample covariance matrix
@@ -313,7 +307,6 @@ taperingEst <- function(dat, k) {
 #'
 #' @examples
 #' nlShrinkLWEst(dat = mtcars)
-#'
 #' @export
 nlShrinkLWEst <- function(dat) {
   # get the dimensions of the data
@@ -411,7 +404,6 @@ nlShrinkLWEst <- function(dat) {
 #'
 #' @examples
 #' denseLinearShrinkEst(dat = mtcars)
-#'
 #' @export
 denseLinearShrinkEst <- function(dat) {
   # get the number of variables and observations
@@ -469,7 +461,6 @@ denseLinearShrinkEst <- function(dat) {
 #'
 #' @examples
 #' scadEst(dat = mtcars, lambda = 0.2)
-#'
 #' @export
 scadEst <- function(dat, lambda) {
   # compute the sample covariance matrix
@@ -515,7 +506,6 @@ scadEst <- function(dat, lambda) {
 #'
 #' @examples
 #' poetEst(dat = mtcars, k = 2L, lambda = 0.1)
-#'
 #' @export
 poetEst <- function(dat, k, lambda) {
   # compute the sample covariance matrix
@@ -592,13 +582,13 @@ poetEst <- function(dat, k, lambda) {
 #'
 #' @examples
 #' robustPoetEst(dat = mtcars, k = 2L, lambda = 0.1, var_est = "sample")
-#'
 #' @export
 robustPoetEst <- function(dat, k, lambda,
                           var_est = c("sample", "mad", "huber")) {
   # if data frame, coerce to matrix
-  if (!is.matrix(dat))
+  if (!is.matrix(dat)) {
     dat <- as.matrix(dat)
+  }
 
   # set default base covariance estimator
   var_est <- match.arg(var_est)
@@ -700,7 +690,6 @@ robustPoetEst <- function(dat, k, lambda,
 #'
 #' @examples
 #' adaptiveLassoEst(dat = mtcars, lambda = 0.9, n = 0.9)
-#'
 #' @export
 adaptiveLassoEst <- function(dat, lambda, n) {
   # compute the sample covariance matrix
@@ -709,7 +698,8 @@ adaptiveLassoEst <- function(dat, lambda, n) {
   # apply adaptive thresholding to the sample covariance matrix
   adaptive_cov_mat <- apply(
     sample_cov_mat, c(1, 2),
-    adaptiveLassoThreshold, lambda = lambda, n = n
+    adaptiveLassoThreshold,
+    lambda = lambda, n = n
   )
 
   # output the post-thresholding estimate

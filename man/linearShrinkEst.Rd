@@ -28,5 +28,4 @@ values near 0 are more likely to be be very biased but have low variance.
 }
 \examples{
 linearShrinkEst(dat = mtcars, alpha = 0.1)
-
 }

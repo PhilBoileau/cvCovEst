@@ -26,7 +26,6 @@ estimator, review \insertCite{Bickel2008_thresh;textual}{cvCovEst}.
 }
 \examples{
 thresholdingEst(dat = mtcars, gamma = 0.2)
-
 }
 \references{
 \insertAllCited{}

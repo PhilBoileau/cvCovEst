@@ -1,6 +1,6 @@
 # cvCovEst 0.1.7 (2021-01-29)
 
-+ Minor updates to documentation, including clarifications throughout.
++ Minor clarifying updates to the documentation and the vignette.
 + Updates to `NEWS.md`, adding consistency in bullet point indicator and
   enforcing the 80-column rule.
 + Tweaks to dependencies, removing reliance on `stringi` since only invoked in

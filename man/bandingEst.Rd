@@ -25,7 +25,6 @@ than some non-negative constant \code{k}. This estimator was proposed by
 }
 \examples{
 bandingEst(dat = mtcars, k = 2L)
-
 }
 \references{
 \insertAllCited{}

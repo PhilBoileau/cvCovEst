@@ -33,7 +33,6 @@ could be used instead.
 }
 \examples{
 poetEst(dat = mtcars, k = 2L, lambda = 0.1)
-
 }
 \references{
 \insertAllCited{}

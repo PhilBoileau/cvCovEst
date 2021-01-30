@@ -108,8 +108,10 @@ checkArgs <- function(dat,
 
   # assert that the loss is well defined
   assertthat::assert_that(
-    as.character(cv_loss) %in% c("cvFrobeniusLoss", "cvMatrixFrobeniusLoss",
-                                 "cvScaledMatrixFrobeniusLoss")
+    as.character(cv_loss) %in% c(
+      "cvFrobeniusLoss", "cvMatrixFrobeniusLoss",
+      "cvScaledMatrixFrobeniusLoss"
+    )
   )
 
   # assert that estimator hyperparameters are well defined

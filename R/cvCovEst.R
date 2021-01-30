@@ -80,7 +80,7 @@
 #'
 #' @examples
 #' cvCovEst(
-#'   dat =  mtcars,
+#'   dat = mtcars,
 #'   estimators = c(
 #'     linearShrinkLWEst, thresholdingEst, sampleCovEst
 #'   ),
@@ -90,7 +90,6 @@
 #'   center = TRUE,
 #'   scale = TRUE
 #' )
-#'
 #' @export
 cvCovEst <- function(
                      dat,

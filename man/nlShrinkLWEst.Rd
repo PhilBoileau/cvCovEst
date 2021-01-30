@@ -27,7 +27,6 @@ global one.
 }
 \examples{
 nlShrinkLWEst(dat = mtcars)
-
 }
 \references{
 \insertAllCited{}

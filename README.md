@@ -6,6 +6,11 @@
 [![Travis build
 status](https://travis-ci.com/PhilBoileau/cvCovEst.svg?token=YL3L6rYQtszHibWHgFxU&branch=master)](https://travis-ci.com/PhilBoileau/cvCovEst)
 [![codecov](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ)](https://codecov.io/gh/PhilBoileau/cvCovEst)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![MIT
+license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
 > Cross-Validated Covariance Matrix Estimation
@@ -14,7 +19,7 @@ status](https://travis-ci.com/PhilBoileau/cvCovEst.svg?token=YL3L6rYQtszHibWHgFx
 Collica](https://www.linkedin.com/in/brian-collica-553b0b94), and [Nima
 Hejazi](https://nimahejazi.org)
 
-------------------------------------------------------------------------
+-----
 
 ## What’s `cvCovEst`?
 
@@ -27,7 +32,7 @@ of the framework is provided in the package vignette.
 
 <!-- A suite of plotting and diagnostic tools are also included. -->
 
-------------------------------------------------------------------------
+-----
 
 ## Installation
 
@@ -38,7 +43,7 @@ via [`remotes`](https://CRAN.R-project.org/package=remotes):
 remotes::install_github("PhilBoileau/cvCovEst")
 ```
 
-------------------------------------------------------------------------
+-----
 
 ## Example
 
@@ -68,8 +73,8 @@ cv_cov_est_out <- cvCovEst(
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L))
     ),
     cv_loss = cvMatrixFrobeniusLoss,
-    cv_scheme = "v_fold", v_folds = 5,
-
+    cv_scheme = "v_fold",
+    v_folds = 5,
   )
 
 # print the table of risk estimates
@@ -80,23 +85,23 @@ cv_cov_est_out$risk_df
 #>   <chr>                <chr>                         <dbl>
 #> 1 linearShrinkLWEst    hyperparameters = NA           357.
 #> 2 poetEst              lambda = 0.2, k = 1            369.
-#> 3 poetEst              lambda = 0.2, k = 2            372.
-#> 4 poetEst              lambda = 0.1, k = 2            375.
-#> 5 poetEst              lambda = 0.1, k = 1            376.
+#> 3 poetEst              lambda = 0.2, k = 2            371.
+#> 4 poetEst              lambda = 0.1, k = 1            377.
+#> 5 poetEst              lambda = 0.1, k = 2            377.
 #> 6 denseLinearShrinkEst hyperparameters = NA           379.
 #> 7 sampleCovEst         hyperparameters = NA           379.
 #> 8 thresholdingEst      gamma = 0.2                    384.
-#> 9 thresholdingEst      gamma = 2                      826.
+#> 9 thresholdingEst      gamma = 2                      827.
 ```
 
-------------------------------------------------------------------------
+-----
 
 ## Issues
 
 If you encounter any bugs or have any specific feature requests, please
 [file an issue](https://github.com/PhilBoileau/cvCovEst/issues).
 
-------------------------------------------------------------------------
+-----
 
 ## Contributions
 
@@ -105,11 +110,11 @@ our [contribution
 guidelines](https://github.com/PhilBoileau/cvCovEst/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
 
-------------------------------------------------------------------------
+-----
 
 ## License
 
-© 2020 [Philippe Boileau](https://pboileau.ca)
+© 2020-2021 [Philippe Boileau](https://pboileau.ca)
 
 The contents of this repository are distributed under the MIT license.
 See file

@@ -32,7 +32,6 @@ to 1. If \code{k / 2 < abs(i - j) < k}, then entry {i, j} is equal to
 }
 \examples{
 taperingEst(dat = mtcars, k = 0.1)
-
 }
 \references{
 \insertAllCited{}
