@@ -4,52 +4,52 @@
 #'  passed to \code{\link{cvCovEst}} function meet its specifications.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
-#' @param estimators A \code{list} of estimator functions to be
-#'  considered in the cross-validated selection procedure.
+#' @param estimators A \code{list} of estimator functions to be considered in
+#'  the cross-validated estimator selection procedure.
 #' @param estimator_params A named \code{list} of arguments corresponding to
 #'  the hyperparameters of covariance matrix estimators in \code{estimators}.
 #'  The name of each list element should match the name of an estimator passed
 #'  to \code{estimators}. Each element of the \code{estimator_params} is itself
-#'  a named \code{list}, with the names corresponding to a given estimators'
+#'  a named \code{list}, with the names corresponding to a given estimator's
 #'  hyperparameter(s). These hyperparameters may be in the form of a single
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
-#' @param cv_loss A \code{function} indicating the loss function to use.
-#'  Defaults to the Frobenius loss, \code{\link{cvMatrixFrobeniusLoss}}.
-#'  An observation-based version, \code{\link{cvFrobeniusLoss}}, is also
-#'  available. Finally, the \code{cvScaledMatrixFrobeniusLoss} is made available
-#'  for situations where \code{dat}'s variables of different scales.
+#' @param cv_loss A \code{function} indicating the loss function to be used.
+#'  This defaults to the Frobenius loss, \code{\link{cvMatrixFrobeniusLoss}}.
+#'  An observation-based version, \code{\link{cvFrobeniusLoss}}, is also made
+#'  available. Additionally, the \code{cvScaledMatrixFrobeniusLoss} is included
+#'  for situations in which \code{dat}'s variables are of different scales.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
 #'  Defaults to Monte Carlo cross-validation.
 #' @param mc_split A \code{numeric} between 0 and 1 indicating the proportion
-#'  of data in the validation set of each Monte Carlo cross-validation fold.
-#' @param v_folds A \code{integer} larger than or equal to 1 indicating the
-#'  number of folds to use during cross-validation. The default is 10,
-#'  regardless of cross-validation scheme.
-#' @param center A \code{logical} indicating whether or not to center the
-#'  columns of \code{dat}.
-#' @param scale A \code{logical} indicating whether or not to scale the
-#'  columns of \code{dat} to have variance 1.
+#'  of observations to be included in the validation set of each Monte Carlo
+#'  cross-validation fold.
+#' @param v_folds An \code{integer} larger than or equal to 1 indicating the
+#'  number of folds to use for cross-validation. The default is 10, regardless
+#'  of the choice of cross-validation scheme.
+#' @param center A \code{logical} indicating whether to center the columns of
+#'  \code{dat} to have mean zero.
+#' @param scale A \code{logical} indicating whether to scale the columns of
+#'  \code{dat} to have unit variance.
 #' @param parallel A \code{logical} option indicating whether to run the main
 #'  cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
 #'  is passed directly to \code{\link[origami]{cross_validate}}.
-#' @param true_cov_mat A \code{matrix} like object representing the true
-#'  covariance matrix of the data generating distribution, which is assumed to
-#'  be Gaussian. This parameter is intended for use only in simulation studies,
-#'  and defaults to a value of \code{NULL}. If not \code{NULL}, various
-#'  conditional risk difference ratios of the estimator selected
-#'  by \code{\link{cvCovEst}} are computed relative to the different oracle
-#'  selectors. NOTE: This parameter will be phased out by the release of version
-#'  1.0.0.
+#' @param true_cov_mat A \code{matrix}-like object giving the true covariance
+#'  matrix of the data-generating distribution, which is assumed Gaussian. This
+#'  parameter is intended as an aid for use only in simulation studies, and it
+#'  defaults to \code{NULL}. When not \code{NULL}, various conditional risk
+#'  difference ratios of the estimator selected by \code{\link{cvCovEst}} are
+#'  computed relative to the different oracle selectors. NOTE: This parameter
+#'  will be phased out by the release of version 1.0.0.
 #'
-#' @importFrom assertthat assert_that is.flag
 #' @importFrom methods is
+#' @importFrom assertthat assert_that is.flag
 #' @importFrom dplyr case_when "%>%"
 #' @importFrom rlang is_bare_numeric is_integer is_null expr_deparse
 #' @importFrom stringr str_sub str_split
-#' @importFrom stringi stri_remove_empty
+#' @importFrom purrr keep
 #'
 #' @return Whether all argument conditions are satisfied
 #'
@@ -61,12 +61,13 @@ checkArgs <- function(dat,
                       true_cov_mat = NULL) {
 
   # turn list of estimator functions to a vector of strings
-  estimators <- estimators %>%
+  estimators2 <- estimators %>%
     rlang::expr_deparse() %>%
     stringr::str_sub(3, -2) %>%
     stringr::str_split(", ", simplify = TRUE) %>%
-    as.vector() %>%
-    stringi::stri_remove_empty()
+    as.list() %>%
+    purrr::keep(function(x) nchar(x) > 0) %>%
+    unlist()
 
   # assert that the data is of the right class
   # TODO: test cvCovEst with these sparse matrix classes

@@ -37,7 +37,6 @@ Imports:
     rlang,
     methods,
     stringr,
-    stringi,
     RSpectra,
     future,
     future.apply,
