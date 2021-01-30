@@ -133,7 +133,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
       } else {
 
         # fit the covariance matrix estimator on the full dataset
-        # NOTE: this is located here out of convenience... not computationally
+        # NOTE: this is here out of convenience...it is not computationally
         # efficient, but not all that important since only for simulations,
         # and this will not be released in the main package.
         est_mat_full <- est_fun(dat)
@@ -189,12 +189,10 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
               fold = origami::fold_index(fold = fold)
             )
           } else {
-
-            # fit the covariance matrix estimator on the full dataset NOTE:
-            # this is located here out of convenience... not computationally
+            # fit the covariance matrix estimator on the full dataset
+            # NOTE: this is here out of convenience...it is not computationally
             # efficient, but not all that important since only for simulations,
             # and this will not be released in the main package.
-
             est_mat_full <- rlang::exec(
               est_fun,
               dat,
@@ -211,7 +209,6 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
               fold = origami::fold_index(fold = fold)
             )
           }
-
           return(out)
         }
       )
@@ -225,20 +222,21 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
   est_out <- dplyr::bind_rows(est_out)
   return(list(est_out))
 }
-################################################################################
+
+###############################################################################
 
 #' True Cross-Validated Frobenius Loss
 #'
 #' @description \code{trueFrobeniusLoss} computes the true cross-validated
-#'   Frobenius loss over the validation dataset.
+#'  Frobenius loss over the validation dataset.
 #'
 #' @param estimate A \code{matrix} corresponding to the estimate of the
-#'   covariance matrix.
-#' @param true_covar A \code{matrix} corresponding to the true covariance matrix
-#'   of the data generating distribution.
+#'  covariance matrix.
+#' @param true_covar A \code{matrix} corresponding to the true covariance
+#'  matrix of the data generating distribution.
 #'
 #' @return The true average Frobenius loss over the validation dataset of
-#'   \code{estimate} as a \code{numeric}.
+#'  \code{estimate} as a \code{numeric}.
 #'
 #' @importFrom matrixStats sum2
 #'
@@ -255,7 +253,7 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
   # compute the element-wise square of the true covariance matrix
   elem_square_true <- matrixStats::sum2(true_covar^2)
 
-  # compute the element wise multiplication of the estimate and true covariance
+  # compute element wise multiplication of the estimate and true covariance
   elem_mult <- matrixStats::sum2(estimate * true_covar)
 
   # compute the element-wise square of the estimate
@@ -267,15 +265,16 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
 
   return(loss)
 }
-################################################################################
+
+###############################################################################
 
 #' Cross-Validation Function for Matrix Frobenius Loss
 #'
-#' @description \code{cvMatrixFrobeniusLoss} evaluates the matrix Frobenius loss
-#'   over a \code{fold} object (from \pkg{origami}
-#'   \insertCite{Coyle2018}{cvCovEst}). This loss function is equivalent to that
-#'   presented in \code{\link[cvCovEst]{cvFrobeniusLoss}} in terms of estimator
-#'   selections, but is more computationally efficient.
+#' @description \code{cvMatrixFrobeniusLoss} evaluates the matrix Frobenius
+#'  loss over a \code{fold} object (from \pkg{origami}
+#'  \insertCite{Coyle2018}{cvCovEst}). This loss function is equivalent to that
+#'  presented in \code{\link[cvCovEst]{cvFrobeniusLoss}} in terms of estimator
+#'  selections, but is more computationally efficient.
 #'
 #' @param fold A \code{fold} object (from \code{\link[origami]{make_folds}})
 #'  over which the estimation procedure is to be performed.
@@ -301,8 +300,8 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
 #' @importFrom purrr flatten
 #'
 #' @return A \code{\link[tibble]{tibble}} providing information on estimators,
-#'  their hyperparameters (if any), and their matrix Frobenius loss
-#'  evaluated on a given \code{fold}.
+#'  their hyperparameters (if any), and their matrix Frobenius loss evaluated
+#'  on a given \code{fold}.
 #'
 #' @references
 #'   \insertAllCited{}
@@ -340,7 +339,6 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
 cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
                                   estimator_params = NULL,
                                   true_cov_mat = NULL) {
-
   # split the data into training and validation
   train_data <- origami::training(dat)
   valid_data <- origami::validation(dat)
@@ -362,7 +360,6 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
     # check if a hyperparameter is needed
     hyp_name <- names(estimator_params[[est_name]])
     if (is.null(hyp_name)) {
-
       # fit the covariance matrix estimator on the training set
       est_mat <- est_fun(train_data)
 
@@ -377,7 +374,6 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
         fold = origami::fold_index(fold = fold)
       )
     } else {
-
       # Compute the grid of hyperparameters
       hparam_grid <- expand.grid(estimator_params[[est_name]],
         stringsAsFactors = FALSE
@@ -420,19 +416,18 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
   return(list(est_out))
 }
 
-
-################################################################################
+###############################################################################
 
 #' Cross-Validation Function for Scaled Matrix Frobenius Loss
 #'
 #' @description \code{cvScaledMatrixFrobeniusLoss} evaluates the scaled matrix
-#'   Frobenius loss over a \code{fold} object (from \pkg{origami}
-#'   \insertCite{Coyle2018}{cvCovEst}). The squared error loss computed for each
-#'   entry of the estimated covariance matrix is scaled by the training set's
-#'   sample variances of the variable associated with that entry's row and
-#'   column variables. This loss should be used instead of
-#'   \code{cvMatrixFrobeniusLoss} when a dataset's variables's values are of
-#'   different magnitudes.
+#'  Frobenius loss over a \code{fold} object (from \pkg{origami}
+#'  \insertCite{Coyle2018}{cvCovEst}). The squared error loss computed for each
+#'  entry of the estimated covariance matrix is scaled by the training set's
+#'  sample variances of the variable associated with that entry's row and
+#'  column variables. This loss should be used instead of
+#'  \code{cvMatrixFrobeniusLoss} when a dataset's variables's values are of
+#'  different magnitudes.
 #'
 #' @param fold A \code{fold} object (from \code{\link[origami]{make_folds}})
 #'  over which the estimation procedure is to be performed.
@@ -497,7 +492,6 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
 cvScaledMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
                                         estimator_params = NULL,
                                         true_cov_mat = NULL) {
-
   # split the data into training and validation
   train_data <- origami::training(dat)
   valid_data <- origami::validation(dat)
@@ -525,7 +519,6 @@ cvScaledMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
     # check if a hyperparameter is needed
     hyp_name <- names(estimator_params[[est_name]])
     if (is.null(hyp_name)) {
-
       # fit the covariance matrix estimator on the training set
       est_mat <- est_fun(train_data)
 
@@ -541,7 +534,6 @@ cvScaledMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
         fold = origami::fold_index(fold = fold)
       )
     } else {
-
       # Compute the grid of hyperparameters
       hparam_grid <- expand.grid(estimator_params[[est_name]],
         stringsAsFactors = FALSE

@@ -23,7 +23,6 @@
 #'
 #' @export
 linearShrinkEst <- function(dat, alpha) {
-
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
@@ -61,7 +60,6 @@ linearShrinkEst <- function(dat, alpha) {
 #'
 #' @export
 linearShrinkLWEst <- function(dat) {
-
   # get the number of variables and observations
   p_n <- ncol(dat)
   n <- nrow(dat)
@@ -177,7 +175,6 @@ sampleCovEst <- function(dat) {
 #'
 #' @export
 bandingEst <- function(dat, k) {
-
   # compute the sample covariance matrix
   sam_cov <- coop::covar(dat)
   ncol_sampcov <- ncol(sam_cov)
@@ -199,7 +196,7 @@ bandingEst <- function(dat, k) {
   indicator_matrix <- do.call(cbind, indicator_list)
 
   # flip the matrix
-  indicator_matrix <- indicator_matrix + t(indicator_matrix) - 
+  indicator_matrix <- indicator_matrix + t(indicator_matrix) -
     diag(1, ncol_sampcov)
 
   # replace the sample covariance matrix
@@ -242,7 +239,6 @@ bandingEst <- function(dat, k) {
 #'
 #' @export
 taperingEst <- function(dat, k) {
-
   # compute the sample covariance matrix
   sam_cov <- coop::covar(dat)
   ncol_sampcov <- ncol(sam_cov)
@@ -317,7 +313,6 @@ taperingEst <- function(dat, k) {
 #'
 #' @export
 nlShrinkLWEst <- function(dat) {
-
   # get the dimensions of the data
   n <- nrow(dat)
   p <- ncol(dat)
@@ -416,7 +411,6 @@ nlShrinkLWEst <- function(dat) {
 #'
 #' @export
 denseLinearShrinkEst <- function(dat) {
-
   # get the number of variables and observations
   p_n <- ncol(dat)
 
@@ -474,7 +468,6 @@ denseLinearShrinkEst <- function(dat) {
 #'
 #' @export
 scadEst <- function(dat, lambda) {
-
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
@@ -521,7 +514,6 @@ scadEst <- function(dat, lambda) {
 #'
 #' @export
 poetEst <- function(dat, k, lambda) {
-
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
@@ -600,11 +592,10 @@ poetEst <- function(dat, k, lambda) {
 #' @export
 robustPoetEst <- function(dat, k, lambda,
                           var_est = c("sample", "mad", "huber")) {
-
-  # if dataframe, turn to matrix
+  # if data frame, coerce to matrix
   if (!is.matrix(dat))
     dat <- as.matrix(dat)
-  
+
   # set default base covariance estimator
   var_est <- match.arg(var_est)
 
@@ -708,11 +699,15 @@ robustPoetEst <- function(dat, k, lambda,
 #'
 #' @export
 adaptiveLassoEst <- function(dat, lambda, n) {
-
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
-  return(apply(sample_cov_mat, c(1, 2), adaptiveLassoThreshold,
-    lambda = lambda, n = n
-  ))
+  # apply adaptive thresholding to the sample covariance matrix
+  adaptive_cov_mat <- apply(
+    sample_cov_mat, c(1, 2),
+    adaptiveLassoThreshold, lambda = lambda, n = n
+  )
+
+  # output the post-thresholding estimate
+  return(adaptive_cov_mat)
 }

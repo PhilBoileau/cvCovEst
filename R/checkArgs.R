@@ -61,7 +61,7 @@ checkArgs <- function(dat,
                       true_cov_mat = NULL) {
 
   # turn list of estimator functions to a vector of strings
-  estimators2 <- estimators %>%
+  estimators <- estimators %>%
     rlang::expr_deparse() %>%
     stringr::str_sub(3, -2) %>%
     stringr::str_split(", ", simplify = TRUE) %>%
