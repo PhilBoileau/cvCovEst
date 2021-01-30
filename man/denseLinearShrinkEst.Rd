@@ -15,7 +15,7 @@ matrix.
 }
 \description{
 \code{denseLinearShrinkEst} computes the asymptotically optimal
-convex combination of the sample covariance matrix and a dense, target
+convex combination of the sample covariance matrix and a dense target
 matrix. This target matrix's diagonal elements are equal to the average
 of the sample covariance matrix estimate's diagonal elements, and its
 off-diagonal elements are equal to the average of the sample covariance

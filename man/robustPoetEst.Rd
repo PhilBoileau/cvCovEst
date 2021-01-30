@@ -18,7 +18,7 @@ practice, it is therefore preferable to use larger values.}
 thresholding applied to each element of sample covariance matrix's
 orthogonal complement.}
 
-\item{var_est}{An \code{character} dictating which variance estimator to
+\item{var_est}{A \code{character} dictating which variance estimator to
 use. This must be one of the strings \code{"sample"}, \code{"mad"}, or
 \code{"huber"}. \code{"sample"} uses sample variances; \code{"mad"}
 estimates variances via median absolute deviation; \code{"huber"} uses an
@@ -34,9 +34,9 @@ Orthogonal complEment Thresholding (POET) estimator, a nonparametric,
 unobserved-factor-based estimator of the covariance matrix when the
 underlying distribution is ellipitcal \insertCite{fan2018}{cvCovEst}. The
 estimator is defined as the sum of the sample covariance matrix's
-rank-\code{k} approximation and its thresholded principal orthogonal
+rank-\code{k} approximation and its post-thresholding principal orthogonal
 complement. The rank-\code{k} approximation is constructed from the sample
-covariance matrix, its leading eigenvalues, and leading eigenvectors.
+covariance matrix, its leading eigenvalues, and its leading eigenvectors.
 The sample covariance matrix and leading eigenvalues are initially
 estimated via an M-estimation procedure and the marginal Kendall's tau
 estimator. The leading eigenvectors are estimated using spatial Kendall's
