@@ -9,7 +9,7 @@ thresholdingEst(dat, gamma)
 \arguments{
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
-\item{gamma}{A non-negative \code{numeric} defining the amount of hard
+\item{gamma}{A non-negative \code{numeric} defining the degree of hard
 thresholding applied to each element of \code{dat}'s sample covariance
 matrix.}
 }
@@ -26,7 +26,6 @@ estimator, review \insertCite{Bickel2008_thresh;textual}{cvCovEst}.
 }
 \examples{
 thresholdingEst(dat = mtcars, gamma = 0.2)
-
 }
 \references{
 \insertAllCited{}

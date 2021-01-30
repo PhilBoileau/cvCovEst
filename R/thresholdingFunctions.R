@@ -1,17 +1,23 @@
 #' Smoothly Clipped Absolute Deviation Thresholding Function
 #'
 #' @param entry A \code{numeric} entry in a covariance matrix estimate.
-#' @param lambda A non-negative \code{numeric} defining the amount of
+#' @param lambda A non-negative \code{numeric} defining the degree of
 #'  thresholding applied to each element of \code{dat}'s sample covariance
 #'  matrix.
 #' @param a A \code{numeric} larger than or equal to \code{2} defining the
 #'  point at which the SCAD thresholding functions becomes equal to the hard
 #'  thresholding function.
 #'
+#' @importFrom assertthat assert_that
+#'
 #' @return A regularized \code{numeric}.
 #'
 #' @keywords internal
 scadThreshold <- function(entry, lambda, a) {
+  # size safety of equivalence between SCAD and hard thresholding
+  assertthat::assert_that(a >= 2)
+
+  # conditional thresholding
   if (abs(entry) <= 2 * lambda) {
     reg_entry <- abs(entry) - lambda
     if (reg_entry > 0) {
@@ -24,6 +30,8 @@ scadThreshold <- function(entry, lambda, a) {
   } else {
     reg_entry <- entry
   }
+
+  # output regularized entry
   return(reg_entry)
 }
 
@@ -42,12 +50,16 @@ scadThreshold <- function(entry, lambda, a) {
 #'
 #' @keywords internal
 adaptiveLassoThreshold <- function(entry, lambda, n) {
+  # define thresholding multiplier
   s <- abs(entry) - (lambda^(n + 1)) * abs(entry)^(-n)
 
+  # apply regularization
   if (s > 0) {
     reg_entry <- sign(entry) * s
   } else {
     reg_entry <- 0
   }
+
+  # output regularized entry
   return(reg_entry)
 }

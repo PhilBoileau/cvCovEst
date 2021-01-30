@@ -35,12 +35,12 @@ for a given estimator, then the estimator need not be listed.}
 }
 \value{
 A \code{\link[tibble]{tibble}} providing information on estimators,
-their hyperparameters (if any), and their matrix Frobenius loss
-evaluated on a given \code{fold}.
+their hyperparameters (if any), and their matrix Frobenius loss evaluated
+on a given \code{fold}.
 }
 \description{
-\code{cvMatrixFrobeniusLoss} evaluates the matrix Frobenius loss
-over a \code{fold} object (from \pkg{origami}
+\code{cvMatrixFrobeniusLoss} evaluates the matrix Frobenius
+loss over a \code{fold} object (from \pkg{origami}
 \insertCite{Coyle2018}{cvCovEst}). This loss function is equivalent to that
 presented in \code{\link[cvCovEst]{cvFrobeniusLoss}} in terms of estimator
 selections, but is more computationally efficient.
@@ -73,7 +73,6 @@ cvMatrixFrobeniusLoss(
     thresholdingEst = list(gamma = c(0, 1))
   )
 )
-
 }
 \references{
 \insertAllCited{}

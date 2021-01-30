@@ -4,45 +4,45 @@
 #'   estimator from among a set of candidate estimators.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
-#' @param estimators A \code{list} of estimator functions to be
-#'  considered in the cross-validated selection procedure.
+#' @param estimators A \code{list} of estimator functions to be considered in
+#'  the cross-validated estimator selection procedure.
 #' @param estimator_params A named \code{list} of arguments corresponding to
 #'  the hyperparameters of covariance matrix estimators in \code{estimators}.
 #'  The name of each list element should match the name of an estimator passed
 #'  to \code{estimators}. Each element of the \code{estimator_params} is itself
-#'  a named \code{list}, with the names corresponding to a given estimators'
+#'  a named \code{list}, with the names corresponding to a given estimator's
 #'  hyperparameter(s). These hyperparameters may be in the form of a single
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
-#' @param cv_loss A \code{function} indicating the loss function to use.
-#'  Defaults to the Frobenius loss, \code{\link{cvMatrixFrobeniusLoss}}.
-#'  An observation-based version, \code{\link{cvFrobeniusLoss}}, is also
-#'  available. Finally, the \code{cvScaledMatrixFrobeniusLoss} is made available
-#'  for situations where \code{dat}'s variables of different scales.
+#' @param cv_loss A \code{function} indicating the loss function to be used.
+#'  This defaults to the Frobenius loss, \code{\link{cvMatrixFrobeniusLoss}}.
+#'  An observation-based version, \code{\link{cvFrobeniusLoss}}, is also made
+#'  available. Additionally, the \code{cvScaledMatrixFrobeniusLoss} is included
+#'  for situations in which \code{dat}'s variables are of different scales.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
-#'  Defaults to V-fold cross-validation.
+#'  Defaults to Monte Carlo cross-validation.
 #' @param mc_split A \code{numeric} between 0 and 1 indicating the proportion
-#'  of data in the validation set of each Monte Carlo cross-validation fold.
-#' @param v_folds A \code{integer} larger than or equal to 1 indicating the
-#'  number of folds to use during cross-validation. The default is 5.
-#' @param center A \code{logical} indicating whether or not to center the
-#'  columns of \code{dat}. Set to \code{FALSE} only if the columns have already
-#'  been centered. Defaults to \code{TRUE}.
-#' @param scale A \code{logical} indicating whether or not to scale the
-#'  columns of \code{dat} to have variance 1. Defaults to \code{FALSE}.
+#'  of observations to be included in the validation set of each Monte Carlo
+#'  cross-validation fold.
+#' @param v_folds An \code{integer} larger than or equal to 1 indicating the
+#'  number of folds to use for cross-validation. The default is 10, regardless
+#'  of the choice of cross-validation scheme.
+#' @param center A \code{logical} indicating whether to center the columns of
+#'  \code{dat} to have mean zero.
+#' @param scale A \code{logical} indicating whether to scale the columns of
+#'  \code{dat} to have unit variance.
 #' @param parallel A \code{logical} option indicating whether to run the main
 #'  cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
-#'  is passed to \code{\link[origami]{cross_validate}}.
-#' @param true_cov_mat A \code{matrix} like object representing the true
-#'  covariance matrix of the data generating distribution, which is assumed to
-#'  be Gaussian. This parameter is intended for use only in simulation studies,
-#'  and defaults to a value of \code{NULL}. If not \code{NULL}, various
-#'  conditional risk difference ratios of the estimator selected
-#'  by \code{\link{cvCovEst}} are computed relative to the different oracle
-#'  selectors. NOTE: This parameter will be phased out by the release of version
-#'  1.0.0.
+#'  is passed directly to \code{\link[origami]{cross_validate}}.
+#' @param true_cov_mat A \code{matrix}-like object giving the true covariance
+#'  matrix of the data-generating distribution, which is assumed Gaussian. This
+#'  parameter is intended as an aid for use only in simulation studies, and it
+#'  defaults to \code{NULL}. When not \code{NULL}, various conditional risk
+#'  difference ratios of the estimator selected by \code{\link{cvCovEst}} are
+#'  computed relative to the different oracle selectors. NOTE: This parameter
+#'  will be phased out by the release of version 1.0.0.
 #'
 #' @importFrom origami cross_validate folds_vfold folds_montecarlo
 #' @importFrom dplyr arrange summarise group_by "%>%" ungroup
@@ -60,30 +60,27 @@
 #'       estimator and corresponding hyperparameters, if any.
 #'     \item \code{risk_df} - A \code{\link[tibble]{tibble}} providing the
 #'       cross-validated risk estimates of each estimator.
-#'     \item \code{cv_df} - A \code{\link[tibble]{tibble}} providing
-#'       each estimators' loss over the various folds of the cross-validated
-#'       procedure.
+#'     \item \code{cv_df} - A \code{\link[tibble]{tibble}} providing each
+#'       estimators' loss over the folds of the cross-validated procedure.
 #'   }
 #'   If the true covariance matrix is input through \code{true_cov_mat}, then
 #'   three additional elements are returned:
 #'   \itemize{
-#'     \item \code{cv_cv_riskdiff} - A \code{numeric} corresponding
-#'       to the conditional cross-validated risk difference of the
-#'       cvCovEst selection.
-#'     \item \code{oracle_cv_riskdiff} - A \code{numeric}
-#'       corresponding to the conditional cross-validated risk difference of
-#'       the oracle selection.
+#'     \item \code{cv_cv_riskdiff} - A \code{numeric} corresponding to the
+#'       conditional cross-validated risk difference of the cvCovEst selection.
+#'     \item \code{oracle_cv_riskdiff} - A \code{numeric} corresponding to the
+#'       conditional cross-validated risk difference of the oracle selection.
 #'     \item \code{cv_oracle_riskdiff_ratio} - A \code{numeric} corresponding
-#'       to the cross-validated risk difference ratio of the
-#'       cvCovEst selection and the cross-validated dataset oracle selection.
+#'       to the cross-validated risk difference ratio of the cvCovEst selection
+#'       and the cross-validated dataset oracle selection.
 #'     \item \code{full_data_riskdiff_ratio} - A \code{numeric} corresponding
-#'       to the full data risk difference ratio of the
-#'       cvCovEst selection and the full dataset oracle selection.
+#'       to the full data risk difference ratio of the cvCovEst selection and
+#'       the full dataset oracle selection.
 #'   }
 #'
 #' @examples
 #' cvCovEst(
-#'   dat =  mtcars,
+#'   dat = mtcars,
 #'   estimators = c(
 #'     linearShrinkLWEst, thresholdingEst, sampleCovEst
 #'   ),
@@ -130,7 +127,7 @@ cvCovEst <- function(
     col_means <- colMeans(dat)
     abs_diff_zero <- abs(col_means - rep(0, length(col_means)))
     if (any(abs_diff_zero > 1e-10)) {
-      message("`dat` argument's columns have been centered automatically")
+      message("The columns of argument `dat` have been centered automatically")
       dat <- safeColScale(X = dat, center = center, scale = scale)
     }
   } else {
@@ -287,7 +284,6 @@ cvCovEst <- function(
 
   return(out)
 }
-
 
 ###############################################################################
 

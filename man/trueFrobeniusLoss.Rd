@@ -10,8 +10,8 @@ trueFrobeniusLoss(estimate, true_covar)
 \item{estimate}{A \code{matrix} corresponding to the estimate of the
 covariance matrix.}
 
-\item{true_covar}{A \code{matrix} corresponding to the true covariance matrix
-of the data generating distribution.}
+\item{true_covar}{A \code{matrix} corresponding to the true covariance
+matrix of the data generating distribution.}
 }
 \value{
 The true average Frobenius loss over the validation dataset of

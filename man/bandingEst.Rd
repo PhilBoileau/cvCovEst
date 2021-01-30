@@ -9,7 +9,7 @@ bandingEst(dat, k)
 \arguments{
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
-\item{k}{A non-negative, numeric integer}
+\item{k}{A non-negative, \code{numeric} integer.}
 }
 \value{
 A \code{matrix} corresponding to the estimate of the covariance
@@ -18,14 +18,13 @@ matrix.
 \description{
 \code{bandingEst} estimates the covariance matrix of data with
 ordered variables by forcing off-diagonal entries to be zero for indices
-that are far removed from one another. The {i,j} entry of the estimated
-covariance matrix will be zero if the absolute value of {i - j} is
-greater than some non-negative constant, \code{k}. This estimator was
-proposed by \insertCite{bickel2008_banding;textual}{cvCovEst}.
+that are far removed from one another. The {i, j} entry of the estimated
+covariance matrix will be zero if the absolute value of {i - j} is greater
+than some non-negative constant \code{k}. This estimator was proposed by
+\insertCite{bickel2008_banding;textual}{cvCovEst}.
 }
 \examples{
 bandingEst(dat = mtcars, k = 2L)
-
 }
 \references{
 \insertAllCited{}

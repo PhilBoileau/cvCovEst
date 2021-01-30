@@ -285,7 +285,7 @@ test_that("cvCovEst automatically centers non-centered data", {
       cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
       center = FALSE, scale = FALSE, parallel = FALSE
     ),
-    "`dat` argument's columns have been centered automatically"
+    "The columns of argument `dat` have been centered automatically"
   )
 })
 
@@ -513,7 +513,7 @@ test_that("Parallelization works", {
     mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = TRUE
   ))
-    expect_silent(cvCovEst(
+  expect_silent(cvCovEst(
     dat = dat,
     estimators = c(
       linearShrinkEst, linearShrinkLWEst,
