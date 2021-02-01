@@ -190,3 +190,50 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
   }
   return(hypers)
 }
+
+################################################################################
+#' Estimator Attributes Function
+#'
+#' @description \code{estAttributes} returns a named list corresponding to the
+#'  attributes of a specific estimator implemented in \code{cvCovEst}.
+#'
+#' @param estimator A character vector specifying a class of estimator.
+#'  \code{cvCovEst}.
+#'
+#' @return A named \code{list} containing the attributes of the indicated
+#'  estimator.
+#'
+#' @importFrom rlang exec
+#' @importFrom stringr str_split str_squish
+#' @importFrom dplyr bind_rows
+#'
+#' @keywords internal
+estAttributes <- function(estimator){
+
+  est_attrs <- list(
+    linearShrinkEst = list(has_hypers = TRUE, n_hypers = 1),
+    linearShrinkLWEst = list(has_hypers = FALSE, n_hypers = 0),
+    thresholdingEst = list(has_hypers = TRUE, n_hypers = 1),
+    sampleCovEst = list(has_hypers = FALSE, n_hypers = 0),
+    bandingEst = list(has_hypers = TRUE, n_hypers = 1),
+    taperingEst = list(has_hypers = TRUE, n_hypers = 1),
+    nlShrinkLWEst = list(has_hypers = FALSE, n_hypers = 0),
+    denseLinearShrinkEst = list(has_hypers = FALSE, n_hypers = 0),
+    scadEst = list(has_hypers = TRUE, n_hypers = 1),
+    poetEst = list(has_hypers = TRUE, n_hypers = 2),
+    robustPoetEst = list(has_hypers = TRUE, n_hypers = 3),
+    adaptiveLassoEst = list(has_hypers = TRUE, n_hypers = 2)
+  )
+
+
+  out <- lapply(estimator, function(e){
+    return(est_attrs[[e]])
+    })
+
+  names(out) <- estimator
+  return(out)
+
+}
+
+
+

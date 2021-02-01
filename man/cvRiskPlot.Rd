@@ -9,7 +9,6 @@ cvRiskPlot(
   est,
   plot_type = "risk",
   cv_details,
-  has_hypers,
   switch_vars = FALSE,
   min_max = FALSE
 )
@@ -23,9 +22,6 @@ cvRiskPlot(
 
 \item{cv_details}{Character vector summarizing key arguments passed to
 \code{cvCovEst}.}
-
-\item{has_hypers}{A character vector containing the names of current
-estimators with hyperparameters.}
 
 \item{switch_vars}{Default is \code{FALSE}. If \code{TRUE},
 the hyperparameters used for the x-axis and factor variables are switched.

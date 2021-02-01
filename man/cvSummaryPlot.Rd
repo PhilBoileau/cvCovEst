@@ -14,6 +14,7 @@ cvSummaryPlot(
   plot_type = "summary",
   cv_details,
   has_hypers,
+  multi_hypers,
   abs_v,
   switch_vars,
   min_max
@@ -37,6 +38,9 @@ object originally passed to \code{cvCovEst}.}
 
 \item{has_hypers}{A character vector containing the names of current
 estimators with hyperparameters.}
+
+\item{multi_hypers}{A character vector containing the names of current
+estimators with multiple hyperparameters.}
 
 \item{abs_v}{A code{logical} determining if the absolute value of the matrix
 entries should be used for plotting the matrix heatmap.  Default is

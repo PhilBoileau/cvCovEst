@@ -567,8 +567,6 @@ cvEigenPlot <- function(
 #'  \code{risk_df} table output by \code{cvCovEst}.
 #' @param estimator A character vector specifying one or more classes of
 #'  estimators to compare.
-#' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
-#'  \code{"risk"}.
 #' @param switch_vars A \code{logical} indicating if the x-axis and factor
 #'  variables should be switched.  Default is \code{FALSE}.
 #' @param min_max Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
@@ -584,7 +582,6 @@ cvEigenPlot <- function(
 multiHyperRisk <- function(
   dat,
   estimator,
-  plot_type = "risk",
   switch_vars = FALSE,
   min_max = FALSE) {
 
@@ -626,8 +623,6 @@ multiHyperRisk <- function(
 #'  \code{"risk"}
 #' @param cv_details Character vector summarizing key arguments passed to
 #'  \code{cvCovEst}.
-#' @param has_hypers A character vector containing the names of current
-#'  estimators with hyperparameters.
 #' @param switch_vars Default is \code{FALSE}. If \code{TRUE},
 #'  the hyperparameters used for the x-axis and factor variables are switched.
 #'  Only applies to estimators with more than one hyperparameter.
@@ -651,30 +646,32 @@ cvRiskPlot <- function(
   est,
   plot_type = "risk",
   cv_details,
-  has_hypers,
   switch_vars = FALSE,
   min_max = FALSE) {
 
-  # Check for estimators with no hypers
-  if (all(est %in% has_hypers) == FALSE) {
-    assert_that(
-      any(est %in% has_hypers) == TRUE,
-      msg = "Risk plot unavailable for estimators without hyperparameters.")
+  # Get Attributes
+  attr_df <- estAttributes(estimator = est)
+  attr_df <- dplyr::bind_rows(attr_df)
+  attr_df$estimator <- est
 
+  # Check for estimators with no hypers
+  assertthat::assert_that(
+    any(attr_df$has_hypers),
+    msg = "Risk plot unavailable for estimators without hyperparameters."
+  )
+
+  if (!all(attr_df$has_hypers)){
     message("Only plots for estimators with hyperparameters will be displayed")
   }
 
   # Filter only estimators with hypers
+  has_hypers <- attr_df$estimator[which(attr_df$has_hypers)]
   hyper_dat <- dat$risk_df %>%
     filter(.data$estimator %in% has_hypers)
 
-  # Estimators with 2+ hypers
-  multi_hypers <- c("poetEst", "adaptiveLassoEst", "robustPoetEst")
-
-  # Estimators with single hyper
-  single_hyper <- c(
-    "linearShrinkEst", "thresholdingEst", "bandingEst", "taperingEst", "scadEst"
-  )
+  # Estimators with single or  2+ hypers
+  single_hyper <-attr_df$estimator[which(attr_df$n_hypers == 1)]
+  multi_hypers <- attr_df$estimator[which(attr_df$n_hypers > 1)]
 
   # Send multi hyper estimators to multiHyperRisk
   if (any(est %in% multi_hypers)) {
@@ -683,7 +680,6 @@ cvRiskPlot <- function(
     multi_plots <- multiHyperRisk(
       dat = hyper_dat,
       estimator = est_names,
-      plot_type = plot_type,
       switch_vars = switch_vars,
       min_max = min_max)
 
@@ -825,6 +821,8 @@ cvRiskPlot <- function(
 #'  \code{cvCovEst}.
 #' @param has_hypers A character vector containing the names of current
 #'  estimators with hyperparameters.
+#' @param multi_hypers A character vector containing the names of current
+#'  estimators with multiple hyperparameters.
 #' @param abs_v A code{logical} determining if the absolute value of the matrix
 #'  entries should be used for plotting the matrix heatmap.  Default is
 #'  \code{TRUE}.
@@ -852,6 +850,7 @@ cvSummaryPlot <- function(
   plot_type = "summary",
   cv_details,
   has_hypers,
+  multi_hypers,
   abs_v,
   switch_vars,
   min_max) {
@@ -867,11 +866,10 @@ cvSummaryPlot <- function(
                      est = estimator,
                      plot_type = plot_type,
                      cv_details = cv_details,
-                     has_hypers = has_hypers,
                      switch_vars = switch_vars,
                      min_max = min_max)
 
-    if (estimator %in% c("poetEst", "robustPoetEst", "adaptiveLassoEst")) {
+    if (estimator %in% multi_hypers) {
       p1 <- p1$multi_plots
     }
     else{
@@ -1095,11 +1093,6 @@ plot.cvCovEst <- function(
   loss <- pretty_args[[rlang::as_label(x$args$cv_loss)]]
   cv_details <- paste(scheme, folds, loss, sep = "  ||  ")
 
-  # Define estimators with hyperparameters
-  has_hypers <- c(
-    "linearShrinkEst", "thresholdingEst", "bandingEst", "taperingEst",
-    "scadEst", "poetEst", "robustPoetEst", "adaptiveLassoEst")
-
   # Plot the winning estimator for summary plot or NULL estimator
   if (plot_type == "summary" | is.null(estimator)) {
     estimator <- unlist(stringr::str_split(x$estimator, ", "))[1]
@@ -1108,6 +1101,13 @@ plot.cvCovEst <- function(
   if (is.null(k)) {
     k <- ncol(dat_orig)
   }
+
+  # Get Attributes
+  attr_df <- estAttributes(estimator = estimator)
+  attr_df <- dplyr::bind_rows(attr_df)
+  attr_df$estimator <- estimator
+  has_hypers <- attr_df$estimator[which(attr_df$has_hypers)]
+  multi_hypers <- attr_df$estimator[which(attr_df$n_hypers > 1)]
 
   plot <- switch(
     plot_type,
@@ -1121,6 +1121,7 @@ plot.cvCovEst <- function(
       plot_type = "summary",
       cv_details = cv_details,
       has_hypers = has_hypers,
+      multi_hypers = multi_hypers,
       abs_v = abs_v,
       switch_vars = switch_vars,
       min_max = min_max
@@ -1130,7 +1131,6 @@ plot.cvCovEst <- function(
       est = estimator,
       plot_type = "risk",
       cv_details = cv_details,
-      has_hypers = has_hypers,
       switch_vars = switch_vars,
       min_max = min_max
     ),

@@ -102,17 +102,16 @@ bestInClass <- function(dat, worst = FALSE) {
 #'
 #' @keywords internal
 hyperRisk <- function(dat) {
-  # These are the estimators with hyperparameters
-  has_hypers <- c(
-    "linearShrinkEst", "thresholdingEst",
-    "bandingEst", "taperingEst",
-    "scadEst", "poetEst", "robustPoetEst",
-    "adaptiveLassoEst"
-  )
 
   estimators <- unique(dat$estimator)
 
-  if (any(has_hypers %in% estimators)) {
+  # Get Attributes
+  attr_df <- estAttributes(estimator = estimators)
+  attr_df <- dplyr::bind_rows(attr_df)
+  attr_df$estimator <- estimators
+  has_hypers <- attr_df$estimator[which(attr_df$has_hypers)]
+
+  if (any(estimators %in% has_hypers)) {
 
     hyper_est <- estimators[which(estimators %in% has_hypers)]
 

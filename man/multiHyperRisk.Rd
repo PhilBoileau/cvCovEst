@@ -4,13 +4,7 @@
 \alias{multiHyperRisk}
 \title{Multi-Hyperparameter Risk Plots}
 \usage{
-multiHyperRisk(
-  dat,
-  estimator,
-  plot_type = "risk",
-  switch_vars = FALSE,
-  min_max = FALSE
-)
+multiHyperRisk(dat, estimator, switch_vars = FALSE, min_max = FALSE)
 }
 \arguments{
 \item{dat}{A data table of empirical risks.  Specifically, this is the
@@ -18,9 +12,6 @@ multiHyperRisk(
 
 \item{estimator}{A character vector specifying one or more classes of
 estimators to compare.}
-
-\item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
-\code{"risk"}.}
 
 \item{switch_vars}{A \code{logical} indicating if the x-axis and factor
 variables should be switched.  Default is \code{FALSE}.}
