@@ -28,5 +28,20 @@ The \code{summary} method provides summary statistics regarding
 the performance of \code{cvCovEst} and can be used for diagnostic plotting.
 }
 \details{
-
+The \code{summary} method accepts four different choices for the
+\code{summ_fun} argument.  The choices are:
+\itemize{
+\item \code{empRiskByClass} - Returns the minimum, 25\% quantile, median,
+75\% quantile, and maximum of the empirical risk associated with each
+class of estimator passed to \code{cvCovEst}.
+\item \code{bestInClass} - Returns the specific hyperparameters, if
+applicable, of the best performing estimator within each class.
+\item \code{worstInClass} - Returns the specific hyperparameters, if
+applicable, of the worst performing estimator within each class.
+\item \code{hyperRisk} - For estimators that take hyperparameters as
+arguments, this function returns the hyperparameters associated with
+the minimum, 25\% quantile, median, 75\% quantile, and maximum of the
+empirical risk within each class of estimator. Each class has its own
+\code{tibble}, which are returned as a \code{list}.
+}
 }

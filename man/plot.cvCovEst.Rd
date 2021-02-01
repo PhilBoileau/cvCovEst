@@ -70,5 +70,39 @@ and exploratory analysis purposes when selecting a covariance matrix
 estimator using \code{cvCovEst}.
 }
 \details{
+This plot method is designed to aide users in understanding the
+estimation procedure carried out in \code{cvCovEst}.  There are currently
+four different values for \code{plot_type} that can be called:
+\itemize{
+\item \code{"eigen"} - Plots the eigenvalues associated with the
+specified \code{estimator} and \code{stat} arguments in decreasing
+order.
+\item \code{"risk"} - Plots the empirical risk of the specified
+\code{estimator} as a function of the hyperparameter values passed to
+\code{cvCovEst}.  This type of plot is only compatible with estimators
+which take hyperparameters as arguments.
+\item \code{"heatmap"} - Plots a covariance heat map associated with the
+specified \code{estimator} and \code{stat} arguments.  Multiple
+estimators and performance stats may be specified to produce grids of
+heat maps.
+\item \code{"summary"} - Specifying this plot type will run all of the
+above plots for the best performing estimator selected by
+\code{cvCovEst}.  These plots are then combined into a single panel
+along with a table containing the best performing estimator within each
+class.  If the optimal estimator selected by \code{cvCovEst} does not
+have hyperparameters, then the risk plot is replaced with a table
+displaying the minimum, 25\% quantile, median, 75\% quantile, and maximum
+of the empirical risk associated with each class of estimator.
+}
 
+The \code{stat} argument accepts five values.  They each correspond to a
+summary statistic of the empirical risk distribution within a class of
+estimator.  Possible values are:
+\itemize{
+\item \code{"min"} - minimum
+\item \code{"Q2"} - 25\% quantile
+\item \code{"median"} - median
+\item \code{"Q3"} - 75\% quantile
+\item \code{"max"} - maximum
+}
 }

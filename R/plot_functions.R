@@ -588,244 +588,28 @@ multiHyperRisk <- function(
   switch_vars = FALSE,
   min_max = FALSE) {
 
-  # Generate List of Plots by Estimator
-  plot_env <- new.env()
+  plot_list <- list()
 
-  plot_list <- lapply(estimator, function(e) {
+  for (e in estimator) {
+    p <- switch(e,
+      robustPoetEst = plotRobustPoetEst(
+        dat = dat,
+        switch_vars = switch_vars,
+        min_max = min_max),
+      poetEst = plotPoetEst(
+        dat = dat,
+        switch_vars = switch_vars,
+        min_max = min_max),
+      adaptiveLassoEst = plotAdaptiveLassoEst(
+        dat = dat,
+        switch_vars = switch_vars,
+        min_max = min_max)
+    )
 
-    f_dat <- dat %>%
-      dplyr::filter(.data$estimator %in% e)
+    plot_list <- append(plot_list, p)
+  }
 
-    # Split hyperparameters into new columns
-    f_dat <- getHypers(dat = f_dat, new_df = TRUE)
-
-    if (e %in% c("poetEst", "robustPoetEst")) {
-      # If robustPoetEst, then breakdown by var_est and plot individually
-
-      if (e == "robustPoetEst") {
-        f_dat$estimator <- paste("robustPoetEst - ", f_dat$var_est)
-
-        robust_plots <- lapply(unique(f_dat$estimator), function(u) {
-          # Check for sufficient observations to plot
-          u_dat <- f_dat %>%
-            dplyr::filter(estimator %in% u)
-
-          n_lam <- length(unique(u_dat$lambda))
-          n_k <- length(unique(u_dat$k))
-
-          if (n_lam == 1 & n_k == 1) {
-            remove_message <- paste(
-              "Omitting risk plot for ", u,
-              " . Not enough hyperparameter combinations")
-
-            message(remove_message)
-            return(NULL)
-          }
-          if (n_lam == 1 & n_k > 1) {
-            switch_vars <- TRUE
-          }
-          if (n_lam > 1 & n_k == 1) {
-            switch_vars <- FALSE
-          }
-
-          if (switch_vars) {
-            factor_range <- range(u_dat$lambda)
-            u_dat$lambda <- factor(u_dat$lambda)
-            u_dat <- dplyr::arrange(u_dat, .data$k)
-
-            if (min_max) {
-              u_dat <- u_dat[which(u_dat$lambda %in% factor_range), ]
-            }
-
-            plot1 <- ggplot(u_dat) +
-              geom_path(
-                aes(
-                  x = .data$k,
-                  y = .data$empirical_risk,
-                  color = .data$lambda)
-                ) +
-                labs(
-                  title = "Change in Empirical Risk",
-                  x = "k", y = "Empirical Risk"
-                )
-          }
-          else{
-            factor_range <- range(u_dat$k)
-            u_dat$k <- factor(u_dat$k)
-            u_dat <- dplyr::arrange(u_dat, .data$lambda)
-
-            if (min_max) {
-              u_dat <- u_dat[which(u_dat$k %in% factor_range), ]
-            }
-
-            plot1 <- ggplot(u_dat) +
-              geom_path(
-                aes(
-                  x = .data$lambda,
-                  y = .data$empirical_risk,
-                  color = .data$k)
-                ) +
-                labs(
-                  title = "Change in Empirical Risk",
-                  x = "lambda", y = "Empirical Risk"
-                )
-          }
-
-          plot <- plot1 +
-            scale_color_viridis_d(begin = 0, end = 0.8) +
-            facet_wrap(facets = vars(.data$estimator)) +
-            theme_cvCovEst(plot_type = plot_type)
-
-          assign(u, plot, envir = plot_env)
-        })
-      }
-      else{
-        # poetEst
-        # Check for sufficient observations to plot
-        n_lam <- length(unique(f_dat$lambda))
-        n_k <- length(unique(f_dat$k))
-
-        if (n_lam == 1 & n_k == 1) {
-          remove_message <- paste(
-            "Omitting risk plot for ", e,
-            " . Not enough hyperparameter combinations")
-
-          message(remove_message)
-          return(NULL)
-        }
-        if (n_lam == 1 & n_k > 1) {
-          switch_vars <- TRUE
-        }
-        if (n_lam > 1 & n_k == 1) {
-          switch_vars <- FALSE
-        }
-
-        if (switch_vars) {
-          factor_range <- range(f_dat$lambda)
-          f_dat$lambda <- as.factor(f_dat$lambda)
-          f_dat <- dplyr::arrange(f_dat, .data$k)
-
-          if (min_max) {
-            f_dat <- f_dat[which(f_dat$lambda %in% factor_range), ]
-          }
-
-          plot1 <- ggplot(f_dat) +
-            geom_path(
-              aes(
-                x = .data$k,
-                y = .data$empirical_risk,
-                color = .data$lambda)
-              ) +
-              labs(
-                title = "Change in Empirical Risk",
-                x = "k", y = "Empirical Risk"
-              )
-        }
-        else{
-          factor_range <- range(f_dat$k)
-          f_dat$k <- factor(f_dat$k)
-          f_dat <- dplyr::arrange(f_dat, .data$lambda)
-
-          if (min_max) {
-            f_dat <- f_dat[which(f_dat$k %in% factor_range), ]
-          }
-
-          plot1 <- ggplot(f_dat) +
-            geom_path(
-              aes(
-                x = .data$lambda,
-                y = .data$empirical_risk,
-                color = .data$k)
-              ) +
-              labs(
-                title = "Change in Empirical Risk",
-                x = "lambda", y = "Empirical Risk"
-              )
-        }
-
-        plot <- plot1 +
-          scale_color_viridis_d(begin = 0, end = 0.8) +
-          facet_wrap(facets = vars(.data$estimator)) +
-          theme_cvCovEst(plot_type = plot_type)
-
-        assign(e, plot, envir = plot_env)
-      }
-    }
-    # Adaptive LASSO
-    else{
-      # Check for sufficient observations to plot
-      n_lam <- length(unique(f_dat$lambda))
-      n_n <- length(unique(f_dat$n))
-
-      if (n_lam == 1 & n_n == 1) {
-        remove_message <- paste(
-          "Omitting risk plot for ", e,
-          " . Not enough hyperparameter combinations")
-
-        message(remove_message)
-        return(NULL)
-      }
-      if (n_lam == 1 & n_n > 1) {
-        switch_vars <- TRUE
-      }
-      if (n_lam > 1 & n_n == 1) {
-        switch_vars <- FALSE
-      }
-      if (switch_vars) {
-        factor_range <- range(f_dat$lambda)
-        f_dat$lambda <- factor(f_dat$lambda)
-        f_dat <- dplyr::arrange(f_dat, .data$n)
-
-        if (min_max) {
-          f_dat <- f_dat[which(f_dat$lambda %in% factor_range), ]
-        }
-
-        plot1 <- ggplot(f_dat) +
-          geom_path(
-            aes(
-              x = .data$n,
-              y = .data$empirical_risk,
-              color = .data$lambda)
-            ) +
-            labs(
-              title = "Change in Empirical Risk",
-              x = "n", y = "Empirical Risk"
-            )
-      }
-      else{
-        factor_range <- range(f_dat$n)
-        f_dat$n <- factor(f_dat$n)
-        f_dat <- dplyr::arrange(f_dat, .data$lambda)
-
-        if (min_max) {
-          f_dat <- f_dat[which(f_dat$n %in% factor_range), ]
-        }
-
-        plot1 <- ggplot(f_dat) +
-          geom_path(
-            aes(
-              x = .data$lambda,
-              y = .data$empirical_risk,
-              color = .data$n)
-            ) +
-            labs(
-              title = "Change in Empirical Risk",
-              x = "lambda", y = "Empirical Risk"
-            )
-      }
-
-      plot <- plot1 +
-        scale_color_viridis_d(begin = 0, end = 0.8) +
-        facet_wrap(facets = vars(.data$estimator)) +
-        theme_cvCovEst(plot_type = plot_type)
-
-      assign(e, plot, envir = plot_env)
-    }
-    })
-
-  plot_env <- as.list(plot_env)
-
-  return(plot_env)
+  return(plot_list)
 }
 
 ################################################################################
@@ -1246,6 +1030,7 @@ cvSummaryPlot <- function(
 #'       have hyperparameters, then the risk plot is replaced with a table
 #'       displaying the minimum, 25% quantile, median, 75% quantile, and maximum
 #'       of the empirical risk associated with each class of estimator.
+#'  }
 #'
 #'   The \code{stat} argument accepts five values.  They each correspond to a
 #'   summary statistic of the empirical risk distribution within a class of
@@ -1256,6 +1041,7 @@ cvSummaryPlot <- function(
 #'     \item \code{"median"} - median
 #'     \item \code{"Q3"} - 75% quantile
 #'     \item \code{"max"} - maximum
+#'  }
 #'
 #' @importFrom assertthat assert_that
 #' @importFrom rlang as_label

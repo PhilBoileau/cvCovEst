@@ -188,6 +188,7 @@ hyperRisk <- function(dat) {
 #'       the minimum, 25% quantile, median, 75% quantile, and maximum of the
 #'       empirical risk within each class of estimator. Each class has its own
 #'       \code{tibble}, which are returned as a \code{list}.
+#'  }
 #'
 #' @return A named \code{list} where each element corresponds to the output of
 #' of the requested summaries.
