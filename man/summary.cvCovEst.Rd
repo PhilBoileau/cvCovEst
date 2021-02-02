@@ -45,3 +45,20 @@ empirical risk within each class of estimator. Each class has its own
 \code{tibble}, which are returned as a \code{list}.
 }
 }
+\examples{
+cv_dat <- cvCovEst(
+  dat = mtcars,
+  estimators = c(
+   linearShrinkEst, thresholdingEst, sampleCovEst
+  ),
+  estimator_params = list(
+    linearShrinkEst = list(alpha = seq(0.1, 0.9, 0.1)),
+    thresholdingEst = list(gamma = seq(0.1, 0.9, 0.1))
+  ),
+  center = TRUE,
+  scale = TRUE
+)
+
+summary(cv_dat)
+
+}

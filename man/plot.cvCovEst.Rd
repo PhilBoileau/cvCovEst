@@ -106,3 +106,19 @@ estimator.  Possible values are:
 \item \code{"max"} - maximum
 }
 }
+\examples{
+cv_dat <- cvCovEst(
+  dat = mtcars,
+  estimators = c(
+    thresholdingEst, sampleCovEst
+  ),
+  estimator_params = list(
+    thresholdingEst = list(gamma = seq(0.1, 0.9, 0.1))
+  ),
+  center = TRUE,
+  scale = TRUE
+)
+
+plot(x = cv_dat, dat_orig = mtcars)
+
+}

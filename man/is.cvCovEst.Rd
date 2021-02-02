@@ -17,3 +17,19 @@ class \code{cvCovEst}.
 \code{is.cvCovEst} provides a generic method for checking if
 input is of class \code{cvCovEst}.
 }
+\examples{
+cv_dat <- cvCovEst(
+  dat = mtcars,
+  estimators = c(
+    thresholdingEst, sampleCovEst
+  ),
+  estimator_params = list(
+    thresholdingEst = list(gamma = seq(0.1, 0.3, 0.1))
+  ),
+  center = TRUE,
+  scale = TRUE
+)
+
+is.cvCovEst(cv_dat)
+
+}

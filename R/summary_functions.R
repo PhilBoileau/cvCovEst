@@ -194,6 +194,22 @@ hyperRisk <- function(dat) {
 #'
 #' @importFrom rlang exec
 #'
+#' @examples
+#' cv_dat <- cvCovEst(
+#'   dat = mtcars,
+#'   estimators = c(
+#'    linearShrinkEst, thresholdingEst, sampleCovEst
+#'   ),
+#'   estimator_params = list(
+#'     linearShrinkEst = list(alpha = seq(0.1, 0.9, 0.1)),
+#'     thresholdingEst = list(gamma = seq(0.1, 0.9, 0.1))
+#'   ),
+#'   center = TRUE,
+#'   scale = TRUE
+#' )
+#'
+#' summary(cv_dat)
+#'
 #' @export
 summary.cvCovEst <- function(
   object,
