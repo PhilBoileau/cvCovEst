@@ -21,10 +21,9 @@
 #'
 #' @keywords internal
 plotRobustPoetEst <- function(
-  dat,
-  switch_vars = FALSE,
-  min_max = FALSE) {
-
+                              dat,
+                              switch_vars = FALSE,
+                              min_max = FALSE) {
   f_dat <- dat %>%
     dplyr::filter(.data$estimator == "robustPoetEst")
 
@@ -46,7 +45,8 @@ plotRobustPoetEst <- function(
     if (n_lam == 1 & n_k == 1) {
       remove_message <- paste(
         "Omitting risk plot for ", u,
-        " . Not enough hyperparameter combinations")
+        " . Not enough hyperparameter combinations"
+      )
 
       message(remove_message)
       return(NULL)
@@ -72,14 +72,15 @@ plotRobustPoetEst <- function(
           aes(
             x = .data$k,
             y = .data$empirical_risk,
-            color = .data$lambda)
+            color = .data$lambda
+          )
         ) +
         labs(
           title = "Change in Empirical Risk",
           x = "k", y = "Empirical Risk"
         )
     }
-    else{
+    else {
       factor_range <- range(u_dat$k)
       u_dat$k <- factor(u_dat$k)
       u_dat <- dplyr::arrange(u_dat, .data$lambda)
@@ -93,7 +94,8 @@ plotRobustPoetEst <- function(
           aes(
             x = .data$lambda,
             y = .data$empirical_risk,
-            color = .data$k)
+            color = .data$k
+          )
         ) +
         labs(
           title = "Change in Empirical Risk",
@@ -134,10 +136,9 @@ plotRobustPoetEst <- function(
 #'
 #' @keywords internal
 plotPoetEst <- function(
-  dat,
-  switch_vars = FALSE,
-  min_max = FALSE) {
-
+                        dat,
+                        switch_vars = FALSE,
+                        min_max = FALSE) {
   f_dat <- dat %>%
     dplyr::filter(.data$estimator == "poetEst")
 
@@ -149,7 +150,8 @@ plotPoetEst <- function(
 
   if (n_lam == 1 & n_k == 1) {
     remove_message <- paste(
-      "Omitting risk plot for poetEst. Not enough hyperparameter combinations")
+      "Omitting risk plot for poetEst. Not enough hyperparameter combinations"
+    )
 
     message(remove_message)
     return(NULL)
@@ -175,14 +177,15 @@ plotPoetEst <- function(
         aes(
           x = .data$k,
           y = .data$empirical_risk,
-          color = .data$lambda)
+          color = .data$lambda
+        )
       ) +
       labs(
         title = "Change in Empirical Risk",
         x = "k", y = "Empirical Risk"
       )
   }
-  else{
+  else {
     factor_range <- range(f_dat$k)
     f_dat$k <- factor(f_dat$k)
     f_dat <- dplyr::arrange(f_dat, .data$lambda)
@@ -196,7 +199,8 @@ plotPoetEst <- function(
         aes(
           x = .data$lambda,
           y = .data$empirical_risk,
-          color = .data$k)
+          color = .data$k
+        )
       ) +
       labs(
         title = "Change in Empirical Risk",
@@ -211,7 +215,6 @@ plotPoetEst <- function(
 
   out <- list(poetEst = plot)
   return(out)
-
 }
 
 ################################################################################
@@ -235,10 +238,9 @@ plotPoetEst <- function(
 #'
 #' @keywords internal
 plotAdaptiveLassoEst <- function(
-  dat,
-  switch_vars = FALSE,
-  min_max = FALSE) {
-
+                                 dat,
+                                 switch_vars = FALSE,
+                                 min_max = FALSE) {
   f_dat <- dat %>%
     dplyr::filter(.data$estimator == "adaptiveLassoEst")
 
@@ -252,7 +254,8 @@ plotAdaptiveLassoEst <- function(
   if (n_lam == 1 & n_n == 1) {
     remove_message <- paste(
       "Omitting risk plot for adaptiveLassoEst.
-      Not enough hyperparameter combinations")
+      Not enough hyperparameter combinations"
+    )
 
     message(remove_message)
     return(NULL)
@@ -277,14 +280,15 @@ plotAdaptiveLassoEst <- function(
         aes(
           x = .data$n,
           y = .data$empirical_risk,
-          color = .data$lambda)
+          color = .data$lambda
+        )
       ) +
       labs(
         title = "Change in Empirical Risk",
         x = "n", y = "Empirical Risk"
       )
   }
-  else{
+  else {
     factor_range <- range(f_dat$n)
     f_dat$n <- factor(f_dat$n)
     f_dat <- dplyr::arrange(f_dat, .data$lambda)
@@ -298,7 +302,8 @@ plotAdaptiveLassoEst <- function(
         aes(
           x = .data$lambda,
           y = .data$empirical_risk,
-          color = .data$n)
+          color = .data$n
+        )
       ) +
       labs(
         title = "Change in Empirical Risk",

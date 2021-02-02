@@ -29,7 +29,8 @@ empRiskByClass <- function(dat) {
       Q3 = quantile(.data$empirical_risk, probs = 0.75, type = 3),
       max = max(.data$empirical_risk),
       mean_risk = mean(.data$empirical_risk),
-      .groups = "keep") %>%
+      .groups = "keep"
+    ) %>%
     dplyr::arrange(.data$mean_risk)
 
   return(emp_risk)
@@ -55,30 +56,29 @@ empRiskByClass <- function(dat) {
 #'
 #' @keywords internal
 bestInClass <- function(dat, worst = FALSE) {
-
   if (worst) {
     worst_est <- dat %>%
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::last(.data$hyperparameters),
         empirical_risk = dplyr::last(.data$empirical_risk),
-        .groups = "keep") %>%
+        .groups = "keep"
+      ) %>%
       dplyr::arrange(.data$empirical_risk)
 
     return(worst_est)
-
   }
-  else{
+  else {
     best_est <- dat %>%
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::first(.data$hyperparameters),
         empirical_risk = dplyr::first(.data$empirical_risk),
-        .groups = "keep") %>%
+        .groups = "keep"
+      ) %>%
       dplyr::arrange(.data$empirical_risk)
 
     return(best_est)
-
   }
 }
 
@@ -102,7 +102,6 @@ bestInClass <- function(dat, worst = FALSE) {
 #'
 #' @keywords internal
 hyperRisk <- function(dat) {
-
   estimators <- unique(dat$estimator)
 
   # Get Attributes
@@ -112,11 +111,9 @@ hyperRisk <- function(dat) {
   has_hypers <- attr_df$estimator[which(attr_df$has_hypers)]
 
   if (any(estimators %in% has_hypers)) {
-
     hyper_est <- estimators[which(estimators %in% has_hypers)]
 
     hyper_summ <- lapply(hyper_est, function(est) {
-
       h <- dat %>%
         dplyr::filter(.data$estimator == est) %>%
         dplyr::mutate(empirical_risk = round(.data$empirical_risk))
@@ -140,9 +137,10 @@ hyperRisk <- function(dat) {
         return(vec)
       })
 
-       df <- data.frame(
-         t(hyper_risk),
-         stat = c("min", "Q1", "median", "Q3", "max"))
+      df <- data.frame(
+        t(hyper_risk),
+        stat = c("min", "Q1", "median", "Q3", "max")
+      )
 
       colnames(df) <- c("hyperparameters", "empirical_risk", "stat")
       df <- tibble::as_tibble(df)
@@ -153,7 +151,7 @@ hyperRisk <- function(dat) {
     # Named list of data.frames corresponding to each estimator class
     names(hyper_summ) <- hyper_est
   }
-  else{
+  else {
     hyper_summ <- NULL
     message("No candidate estimators have hyperparameters. hyperRisk = NULL")
   }
@@ -198,7 +196,7 @@ hyperRisk <- function(dat) {
 #' cv_dat <- cvCovEst(
 #'   dat = mtcars,
 #'   estimators = c(
-#'    linearShrinkEst, thresholdingEst, sampleCovEst
+#'     linearShrinkEst, thresholdingEst, sampleCovEst
 #'   ),
 #'   estimator_params = list(
 #'     linearShrinkEst = list(alpha = seq(0.1, 0.9, 0.1)),
@@ -209,37 +207,38 @@ hyperRisk <- function(dat) {
 #' )
 #'
 #' summary(cv_dat)
-#'
 #' @export
 summary.cvCovEst <- function(
-  object,
-  summ_fun = c(
-    "empRiskByClass",
-    "bestInClass",
-    "worstInClass",
-    "hyperRisk"),
-  ...
-) {
-
+                             object,
+                             summ_fun = c(
+                               "empRiskByClass",
+                               "bestInClass",
+                               "worstInClass",
+                               "hyperRisk"
+                             ),
+                             ...) {
   summary_functions <- c(
-    "empRiskByClass", "bestInClass", "worstInClass", "hyperRisk")
+    "empRiskByClass", "bestInClass", "worstInClass", "hyperRisk"
+  )
 
   # Check cvCovEst credentials
   checkPlotSumArgs(
     object,
     which_fun = "summary",
-    summ_fun = summ_fun)
+    summ_fun = summ_fun
+  )
 
   risk_dat <- object$risk_df
 
   sums_to_exec <- summary_functions[which(
-    summary_functions %in% summ_fun)]
+    summary_functions %in% summ_fun
+  )]
 
   out <- lapply(sums_to_exec, function(sum_fun) {
     if (sum_fun == "worstInClass") {
       f <- rlang::exec("bestInClass", risk_dat, worst = TRUE)
     }
-    else{
+    else {
       f <- rlang::exec(sum_fun, risk_dat)
     }
     return(f)

@@ -49,7 +49,7 @@ empirical risk within each class of estimator. Each class has its own
 cv_dat <- cvCovEst(
   dat = mtcars,
   estimators = c(
-   linearShrinkEst, thresholdingEst, sampleCovEst
+    linearShrinkEst, thresholdingEst, sampleCovEst
   ),
   estimator_params = list(
     linearShrinkEst = list(alpha = seq(0.1, 0.9, 0.1)),
@@ -60,5 +60,4 @@ cv_dat <- cvCovEst(
 )
 
 summary(cv_dat)
-
 }

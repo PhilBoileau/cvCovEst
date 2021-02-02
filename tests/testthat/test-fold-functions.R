@@ -21,18 +21,26 @@ test_that("Estimators not throw error", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,
     dat = dat,
-    estimator_funs = rlang::quo(c(linearShrinkEst, linearShrinkLWEst,
-                                  thresholdingEst, sampleCovEst)),
-    estimator_params = list(linearShrinkEst = list(alpha = c(0, 1)),
-                            thresholdingEst = list(gamma = c(0, 1)))
+    estimator_funs = rlang::quo(c(
+      linearShrinkEst, linearShrinkLWEst,
+      thresholdingEst, sampleCovEst
+    )),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0, 1)),
+      thresholdingEst = list(gamma = c(0, 1))
+    )
   ))
   expect_silent(cvMatrixFrobeniusLoss(
     fold = resub,
     dat = dat,
-    estimator_funs = rlang::quo(c(linearShrinkEst, linearShrinkLWEst,
-                                  thresholdingEst, sampleCovEst)),
-    estimator_params = list(linearShrinkEst = list(alpha = c(0, 1)),
-                            thresholdingEst = list(gamma = c(0, 1)))
+    estimator_funs = rlang::quo(c(
+      linearShrinkEst, linearShrinkLWEst,
+      thresholdingEst, sampleCovEst
+    )),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0, 1)),
+      thresholdingEst = list(gamma = c(0, 1))
+    )
   ))
 })
 

@@ -354,7 +354,7 @@ nlShrinkLWEst <- function(dat) {
 
     # LW Equation C.8
     Hf_tilde0 <- (1 / pi) * ((3 / 10) * s4 +
-                               (s1 / h) * (1 - (1 / 5) * s4) * log_term) * m
+      (s1 / h) * (1 - (1 / 5) * s4) * log_term) * m
 
     # LW Equation C.5
     d_tilde0 <- 1 / (pi * (p - eig_nonzero_tol) / eig_nonzero_tol * Hf_tilde0)

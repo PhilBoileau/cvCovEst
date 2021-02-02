@@ -31,5 +31,4 @@ cv_dat <- cvCovEst(
 )
 
 is.cvCovEst(cv_dat)
-
 }

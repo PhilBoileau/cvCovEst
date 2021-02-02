@@ -120,5 +120,4 @@ cv_dat <- cvCovEst(
 )
 
 plot(x = cv_dat, dat_orig = mtcars)
-
 }

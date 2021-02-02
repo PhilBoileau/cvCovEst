@@ -10,16 +10,20 @@ Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
 dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 
 estimator_params <- list(
-  poetEst = list(# 3 x 3 different indexed hyperparameters
+  poetEst = list( # 3 x 3 different indexed hyperparameters
     lambda = c(0.01, 0.05, 0.1),
-    k = c(1L, 3L, 5L)),
-  adaptiveLassoEst = list(# 2 x 1 indexed hyperparameters
+    k = c(1L, 3L, 5L)
+  ),
+  adaptiveLassoEst = list( # 2 x 1 indexed hyperparameters
     lambda = c(0.01, 0.1),
-    n = c(2L, 3L)),
-  linearShrinkEst = list(# 2 different indexed hyperparameters
-    alpha = c(0.1, 0.9)),
-  bandingEst = list(# 1 indexed hyperparameter
-    k = 2L)
+    n = c(2L, 3L)
+  ),
+  linearShrinkEst = list( # 2 different indexed hyperparameters
+    alpha = c(0.1, 0.9)
+  ),
+  bandingEst = list( # 1 indexed hyperparameter
+    k = 2L
+  )
 )
 
 # All with hypers
@@ -67,7 +71,7 @@ test_that("Objects of other known classes throw an error", {
   expect_s3_class(cvTestH, "cvCovEst")
   expect_silent(
     summary(cvTestH)
-    )
+  )
   expect_silent(
     cvTestH %>% summary()
   )
@@ -75,7 +79,7 @@ test_that("Objects of other known classes throw an error", {
   class(cvTestH) <- "lm"
   expect_error(
     summary(cvTestH)
-    )
+  )
   expect_error(
     cvTestH %>% summary()
   )
@@ -104,8 +108,9 @@ test_that("Only supported summary statistics are allowed for plotting", {
       stat = c("min"),
       dat_orig = dat,
       cv_details = "",
-      has_hypers = has_hypers)
+      has_hypers = has_hypers
     )
+  )
   expect_error(
     cvMultiMelt(
       dat = cvTestH,
@@ -113,9 +118,9 @@ test_that("Only supported summary statistics are allowed for plotting", {
       stat = c("mean"),
       dat_orig = dat,
       cv_details = "",
-      has_hypers = has_hypers)
+      has_hypers = has_hypers
+    )
   )
-
 })
 
 test_that("Valid estimator arguments are passed to plotting functions", {
@@ -127,7 +132,8 @@ test_that("Valid estimator arguments are passed to plotting functions", {
       stat = c("min"),
       dat_orig = dat,
       cv_details = "",
-      has_hypers = has_hypers)
+      has_hypers = has_hypers
+    )
   )
   # Estimator not originally called to cvCovEst()
   expect_error(
@@ -137,7 +143,8 @@ test_that("Valid estimator arguments are passed to plotting functions", {
       stat = c("min"),
       dat_orig = dat,
       cv_details = "",
-      has_hypers = has_hypers)
+      has_hypers = has_hypers
+    )
   )
   # Multiple plots of the same estimator
   expect_error(
@@ -147,7 +154,8 @@ test_that("Valid estimator arguments are passed to plotting functions", {
       stat = c("min", "max"),
       dat_orig = dat,
       cv_details = "",
-      has_hypers = has_hypers)
+      has_hypers = has_hypers
+    )
   )
 })
 
@@ -157,7 +165,8 @@ test_that("Indexing by only 1 hyperparameter throws an error in risk plot", {
       x = cvTestH,
       dat_orig = dat,
       estimator = "bandingEst",
-      plot_type = "risk")
+      plot_type = "risk"
+    )
   )
 })
 
@@ -167,7 +176,8 @@ test_that("Calling risk plot for non-hyper estimator throws an error", {
       x = cvTestNH,
       dat_orig = dat,
       estimator = "nlShrinkLWEst",
-      plot_type = "risk")
+      plot_type = "risk"
+    )
   )
 })
 
@@ -179,7 +189,8 @@ test_that("Calling for multiple stats for non-hyper estimator gets a message", {
       estimator = "nlShrinkLWEst",
       plot_type = "eigen",
       k = 50,
-      stat = c("min", "max"))
+      stat = c("min", "max")
+    )
   )
 })
 
@@ -191,7 +202,8 @@ test_that("Plotting only works if estimator was passed to cvCovEst", {
       estimator = "nlShrinkLWEst",
       plot_type = "eigen",
       k = 50,
-      stat = c("min"))
+      stat = c("min")
+    )
   )
 })
 
@@ -203,7 +215,8 @@ test_that("Asking for more k than exist throws an error", {
       estimator = "linearShrinkEst",
       plot_type = "eigen",
       k = 51,
-      stat = c("min"))
+      stat = c("min")
+    )
   )
 })
 
@@ -213,7 +226,8 @@ test_that("Plot method throws other errors where appripriate", {
       x = cvTestH,
       dat_orig = dat,
       estimator = c("linearShrinkEst"),
-      plot_type = ("summary"))
+      plot_type = ("summary")
+    )
   )
 })
 
@@ -221,4 +235,5 @@ plot.cvCovEst(
   x = cvTestH,
   dat_orig = dat,
   estimator = c("linearShrinkEst"),
-  plot_type = ("summary"))
+  plot_type = ("summary")
+)

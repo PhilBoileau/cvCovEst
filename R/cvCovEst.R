@@ -270,18 +270,18 @@ cvCovEst <- function(
 
     # prep output and return
     out <- list(
-        estimate = estimate,
-        estimator = paste0(
-          cv_results[1, ]$estimator, ", ",
-          cv_results[1, ]$hyperparameters
-        ),
-        risk_df = cv_results,
-        cv_df = fold_results_concat,
-        args = args,
-        cv_cv_riskdiff = cvCovEst_true_cv_risk - min_full_risk,
-        oracle_cv_riskdiff = oracle_true_cv_risk - min_full_risk,
-        cv_oracle_riskdiff_ratio = cv_oracle_riskdiff_ratio,
-        full_oracle_riskdiff_ratio = full_oracle_riskdiff_ratio
+      estimate = estimate,
+      estimator = paste0(
+        cv_results[1, ]$estimator, ", ",
+        cv_results[1, ]$hyperparameters
+      ),
+      risk_df = cv_results,
+      cv_df = fold_results_concat,
+      args = args,
+      cv_cv_riskdiff = cvCovEst_true_cv_risk - min_full_risk,
+      oracle_cv_riskdiff = oracle_true_cv_risk - min_full_risk,
+      cv_oracle_riskdiff_ratio = cv_oracle_riskdiff_ratio,
+      full_oracle_riskdiff_ratio = full_oracle_riskdiff_ratio
     )
   }
 

@@ -30,16 +30,16 @@
 #'
 #' @keywords internal
 checkPlotSumArgs <- function(
-  dat,
-  dat_orig,
-  which_fun,
-  estimator,
-  plot_type,
-  summ_fun,
-  stat,
-  k,
-  leading,
-  abs_v) {
+                             dat,
+                             dat_orig,
+                             which_fun,
+                             estimator,
+                             plot_type,
+                             summ_fun,
+                             stat,
+                             k,
+                             leading,
+                             abs_v) {
 
   # Define possible valid arguments for both functions
   cv_names <- c("estimate", "estimator", "risk_df", "cv_df", "args")
@@ -65,11 +65,13 @@ checkPlotSumArgs <- function(
     # Check valid summary stat choices
     assertthat::assert_that(
       all(stat %in% stat_choices) == TRUE,
-      msg = "Non-supported summary statistic provided.")
+      msg = "Non-supported summary statistic provided."
+    )
     # Check valid estimators - estimators must have been passed through cvCovEst
     assertthat::assert_that(
       all(estimator %in% cv_estimators) == TRUE,
-      msg = "Can only use estimators passed to the cvCovEst function.")
+      msg = "Can only use estimators passed to the cvCovEst function."
+    )
     # Check valid k values
     if (!is.null(k)) {
       assertthat::assert_that(
@@ -81,8 +83,10 @@ checkPlotSumArgs <- function(
     assertthat::assert_that(
       all(
         plot_type %in% plot_types,
-        length(plot_type) == 1) == TRUE,
-      msg = "Must provide a single valid plot type.")
+        length(plot_type) == 1
+      ) == TRUE,
+      msg = "Must provide a single valid plot type."
+    )
     # Check valid logicals
     assertthat::assert_that(
       all(
@@ -97,10 +101,11 @@ checkPlotSumArgs <- function(
     }
   }
   # For summary functions only (which_fun == 'summary')
-  else{
+  else {
     # Define valid summary functions
     summary_functions <- c(
-      "empRiskByClass", "bestInClass", "worstInClass", "hyperRisk")
+      "empRiskByClass", "bestInClass", "worstInClass", "hyperRisk"
+    )
 
     # Check valid summary functions
     assertthat::assert_that(

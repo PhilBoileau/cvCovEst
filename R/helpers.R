@@ -26,7 +26,6 @@
 #' )
 #'
 #' is.cvCovEst(cv_dat)
-#'
 #' @export
 is.cvCovEst <- function(x) {
   inherits(x, "cvCovEst")
@@ -50,7 +49,6 @@ is.cvCovEst <- function(x) {
 #'
 #' @keywords internal
 theme_cvCovEst <- function(plot_type, ...) {
-
   blues <- RColorBrewer::brewer.pal(9, "Blues")
 
   # Base Theme
@@ -68,8 +66,10 @@ theme_cvCovEst <- function(plot_type, ...) {
       legend.title = element_text(vjust = 0.75, size = 10, face = "bold"),
       legend.text = element_text(size = 8, face = "bold"),
       strip.background = element_rect(
-        fill = alpha(blues[4], alpha = 0.5), color = blues[9], size = 0.5),
-      strip.text = element_text(size = 12, face = "bold", colour = blues[9]))
+        fill = alpha(blues[4], alpha = 0.5), color = blues[9], size = 0.5
+      ),
+      strip.text = element_text(size = 12, face = "bold", colour = blues[9])
+    )
 
   # Changes for cvMultiMelt
   if ("heatmap" %in% plot_type) {
@@ -91,7 +91,8 @@ theme_cvCovEst <- function(plot_type, ...) {
           axis.title.y = element_text(size = 12),
           legend.key.width = unit(10, "mm"),
           legend.title = element_text(
-            vjust = 0.75, size = 8, face = "bold")
+            vjust = 0.75, size = 8, face = "bold"
+          )
         )
     }
   }
@@ -136,13 +137,13 @@ theme_cvCovEst <- function(plot_type, ...) {
 #'
 #' @keywords internal
 getHypers <- function(dat, summ_stat, new_df = FALSE) {
-
   if (new_df) {
     n <- as.integer(ncol(dat))
 
     hypers <- lapply(dat$hyperparameters, function(h) {
       h_split <- stringr::str_split(
-        h, ", ") %>% unlist()
+        h, ", "
+      ) %>% unlist()
 
       n <- length(h_split)
 
@@ -151,13 +152,14 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
 
       for (i in 1:n) {
         h_split2 <- stringr::str_split(
-          h_split[i], "= ") %>% unlist()
+          h_split[i], "= "
+        ) %>% unlist()
 
         hyper_names[i] <- stringr::str_squish(h_split2[1])
         if (h_split2[2] %in% c("mad", "sample", "huber")) {
           hyper_vals[i] <- stringr::str_squish(h_split2[2])
         }
-        else{
+        else {
           hyper_vals[i] <- as.numeric(h_split2[2])
         }
       }
@@ -171,7 +173,7 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
     hypers <- dplyr::bind_rows(hypers)
     hypers <- cbind(dat[, 1], hypers, dat[, (3:n)])
   }
-  else{
+  else {
     ws <- which(dat$stat == summ_stat)
     hyper_list <- as.list(
       stringr::str_split(dat[ws, 1], ", ") %>% unlist()
@@ -179,29 +181,30 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
 
     hyper_values <- lapply(hyper_list, function(s) {
       hyper <- stringr::str_split(
-        s, "= ") %>% unlist()
+        s, "= "
+      ) %>% unlist()
 
       if (hyper[2] %in% c("mad", "sample", "huber")) {
         return(hyper[2])
       }
-      else{
+      else {
         return(as.numeric(hyper[2]))
       }
     })
 
     hyper_names <- lapply(hyper_list, function(s) {
       hyper <- stringr::str_split(
-        s, "= ") %>% unlist()
+        s, "= "
+      ) %>% unlist()
 
       return(stringr::str_squish(hyper[1]))
-
     }) %>%
       unlist()
 
     hypers <- list(
       hyper_names = hyper_names,
-      hyper_values = hyper_values)
-
+      hyper_values = hyper_values
+    )
   }
   return(hypers)
 }
@@ -223,8 +226,7 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
 #' @importFrom dplyr bind_rows
 #'
 #' @keywords internal
-estAttributes <- function(estimator){
-
+estAttributes <- function(estimator) {
   est_attrs <- list(
     linearShrinkEst = list(has_hypers = TRUE, n_hypers = 1),
     linearShrinkLWEst = list(has_hypers = FALSE, n_hypers = 0),
@@ -241,14 +243,10 @@ estAttributes <- function(estimator){
   )
 
 
-  out <- lapply(estimator, function(e){
+  out <- lapply(estimator, function(e) {
     return(est_attrs[[e]])
-    })
+  })
 
   names(out) <- estimator
   return(out)
-
 }
-
-
-
