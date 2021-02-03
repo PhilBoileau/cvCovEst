@@ -33,8 +33,8 @@ approaches for selecting an optimal estimator from among estimators belonging to
 certain (limited) classes have been derived, the question of selecting an
 estimator from among a diverse collection of candidates remains unaddressed.
 
-To address this question, we offer just that: a general, cross-validation-based
-framework for covariance matrix estimator selection in high dimensions. The
+We therefore put forth a general, cross-validation-based framework for
+covariance matrix estimator selection to tackle just that. The
 (high-dimensional) asymptotic optimality of selections are guaranteed based upon
 extensions of the seminal work of @laan_dudoit:2003, @dudoit2005, and @vaart2006
 (on data-adaptive estimator selection) to high-dimensional covariance matrix
