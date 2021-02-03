@@ -82,6 +82,8 @@ estimator and corresponding hyperparameters, if any.
 cross-validated risk estimates of each estimator.
 \item \code{cv_df} - A \code{\link[tibble]{tibble}} providing each
 estimators' loss over the folds of the cross-validated procedure.
+\item \code{args} - A named \code{list} containing arguments passed to
+\code{cvCovEst}.
 }
 If the true covariance matrix is input through \code{true_cov_mat}, then
 three additional elements are returned:

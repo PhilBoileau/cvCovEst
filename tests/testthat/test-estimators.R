@@ -59,7 +59,7 @@ test_that("banding estimator with k = 0 is diagonal of S_n", {
 test_that("banding estimator with k >> 0 is S_n", {
   expect_identical(
     bandingEst(mtcars, k = 1000000L),
-    coop::covar(mtcars)
+    coop::covar(mtcars) %>% unname()
   )
 })
 

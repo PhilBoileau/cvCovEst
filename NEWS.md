@@ -1,3 +1,9 @@
+# cvCovEst 0.2.0 (2021-02-02)
+
++ `cvCovEst` now possesses a slew of diagnostic and visualization tools. A
+  detailed description of these functions will be added to the vignette in the
+  near future.
+
 # cvCovEst 0.1.7 (2021-01-29)
 
 + Minor clarifying updates to the documentation and the vignette.

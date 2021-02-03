@@ -198,6 +198,8 @@ bandingEst <- function(dat, k) {
 
   # replace the sample covariance matrix
   sam_cov <- replace(sam_cov, which(indicator_matrix == 0), 0)
+  sam_cov <- unname(sam_cov)
+
   return(sam_cov)
 }
 
@@ -276,7 +278,7 @@ taperingEst <- function(dat, k) {
   weight_matrix <- weight_matrix + t(weight_matrix) - diag(diag(sam_cov))
 
   # return the new weight matrix
-  return(weight_matrix)
+  return(unname(weight_matrix))
 }
 
 ###############################################################################

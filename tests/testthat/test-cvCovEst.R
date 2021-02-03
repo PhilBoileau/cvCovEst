@@ -316,7 +316,7 @@ test_that("cvCovEst's outputs are of the correct dimensions", {
     center = TRUE, scale = FALSE, parallel = FALSE,
     true_cov_mat = Sigma
   )
-  expect_true(length(with_true_covmat) == 8)
+  expect_true(length(with_true_covmat) == 9)
   expect_true(ncol(with_true_covmat$risk_df) == 5)
   expect_true(ncol(with_true_covmat$cv_df) == 6)
   expect_true(is.numeric(with_true_covmat$cv_cv_riskdiff))
@@ -352,7 +352,7 @@ test_that("cvCovEst's outputs are of the correct dimensions", {
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
   )
-  expect_true(length(without_true_covmat) == 4)
+  expect_true(length(without_true_covmat) == 5)
   expect_true(ncol(without_true_covmat$risk_df) == 3)
   expect_true(ncol(without_true_covmat$cv_df) == 4)
   expect_true(is.null(without_true_covmat$cv_oracle_riskdiff_ratio))

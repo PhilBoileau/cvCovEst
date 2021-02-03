@@ -1,6 +1,6 @@
 Package: cvCovEst
 Title: Cross-Validated Covariance Matrix Estimation
-Version: 0.1.7
+Version: 0.2.0
 Authors@R: c(
     person("Philippe", "Boileau", email = "philippe_boileau@berkeley.edu",
            role = c("aut", "cre", "cph"),
@@ -20,10 +20,10 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-6069-8629"))
   )
 Description: An efficient cross-validated approach for covariance matrix
-    estimation, particularly useful in high-dimensional settings. The general
-    methodology allows for cross-validation to be used to data-adaptively
-    identify the optimal estimator of the covariance matrix from a pre-specified
-    set of candidate estimators.
+    estimation, particularly useful in high-dimensional settings. This
+    method relies upon the theory of loss-based estimator selection to
+    identify the optimal estimator of the covariance matrix from among a
+    pre-specified set of candidate.
 Depends: R (>= 3.6.0)
 Imports:
     matrixStats,
@@ -42,7 +42,10 @@ Imports:
     assertthat,
     RSpectra,
     future,
-    future.apply
+    future.apply,
+    ggplot2,
+    ggpubr,
+    RColorBrewer
 Suggests:
     testthat,
     knitr,
