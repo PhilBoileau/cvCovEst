@@ -13,7 +13,7 @@ estimators <- rlang::expr(c(
   linearShrinkEst, thresholdingEst, sampleCovEst,
   linearShrinkLWEst, bandingEst, taperingEst,
   nlShrinkLWEst, denseLinearShrinkEst, scadEst,
-  poetEst, adaptiveLassoEst
+  poetEst, robustPoetEst, adaptiveLassoEst
 ))
 estimator_params <- list(
   linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -22,6 +22,10 @@ estimator_params <- list(
   taperingEst = list(k = c(2L, 6L)),
   scadEst = list(lambda = c(0.1, 0.2)),
   poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
+  robustPoetEst = list(
+    lambda = c(0.1, 0.2), k = c(1L, 3L),
+    var_est = "sample"
+  ),
   adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
 )
 cv_loss <- rlang::expr(cvFrobeniusLoss)
@@ -490,7 +494,79 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = 0.1),
       poetEst = list(lambda = 0.1, k = c(1, 2)),
-      adaptiveLassoEst = list(lambda = 1, n = -0.1)
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+    ),
+    cv_loss = cv_loss,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = 0.1),
+      poetEst = list(lambda = 0.1, k = c(1, 2)),
+      robustPoetEst = list(
+        lambda = 0.1, k = c(1L, 2L),
+        var_est = c("samp", "huber")
+      ),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+    ),
+    cv_loss = cv_loss,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = 0.1),
+      poetEst = list(lambda = 0.1, k = c(1, 2)),
+      robustPoetEst = list(
+        lambda = "a", k = c(1L, 2L),
+        var_est = c("mad", "huber")
+      ),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+    ),
+    cv_loss = cv_loss,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = 0.1),
+      poetEst = list(lambda = 0.1, k = c(1, 2)),
+      robustPoetEst = list(
+        lambda = 0.1, k = c(1.1, 2L),
+        var_est = c("mad", "huber")
+      ),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -724,6 +800,18 @@ test_that("checkArgs only allows pre-defined loss functions", {
     scale = scale,
     parallel = parallel
   ))
+  expect_true(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = estimator_params,
+    cv_loss = rlang::expr(cvScaledMatrixFrobeniusLoss),
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
   expect_error(checkArgs(
     dat = dat,
     estimators = estimators,
@@ -754,6 +842,10 @@ test_that("checkArgs works well in cvCovEst Function", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(3L, 4L),
+        var_est = c("sample", "mad")
+      ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cvFrobeniusLoss, cv_scheme = "v_fold",
@@ -775,9 +867,38 @@ test_that("checkArgs works well in cvCovEst Function", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(3L, 4L),
+        var_est = c("sample", "mad")
+      ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
     ),
     cv_loss = cvMatrixFrobeniusLoss, cv_scheme = "mc",
+    mc_split = 0.5, v_folds = 5,
+    center = TRUE, scale = FALSE, parallel = FALSE
+  ))
+  expect_silent(cvCovEst(
+    dat = dat,
+    estimators = c(
+      linearShrinkEst, linearShrinkLWEst,
+      thresholdingEst, sampleCovEst, bandingEst,
+      taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
+      scadEst, poetEst, adaptiveLassoEst
+    ),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = c(0.1, 0.2)),
+      poetEst = list(lambda = c(0.1, 0.2), k = c(3L, 4L)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(3L, 4L),
+        var_est = c("sample", "mad")
+      ),
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+    ),
+    cv_loss = cvScaledMatrixFrobeniusLoss, cv_scheme = "mc",
     mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
   ))

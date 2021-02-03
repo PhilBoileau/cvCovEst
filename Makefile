@@ -1,4 +1,4 @@
-md:
+readme:
 	Rscript -e "rmarkdown::render('README.Rmd', output_file = 'README.md')"
 
 check:
@@ -22,5 +22,4 @@ buildfast:
 style:
 	Rscript -e "styler::style_pkg()"
 
-pr: style doc check md
-	echo "If all checks have passed, your PR is ready for submission."
+pr: style check readme

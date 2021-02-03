@@ -9,8 +9,9 @@ thresholdingEst(dat, gamma)
 \arguments{
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
-\item{gamma}{A non-negative \code{numeric} defining the amount of hard
-thresholding applied to each element of \code{dat}'s sample covariance matrix.}
+\item{gamma}{A non-negative \code{numeric} defining the degree of hard
+thresholding applied to each element of \code{dat}'s sample covariance
+matrix.}
 }
 \value{
 A \code{matrix} corresponding to the estimate of the covariance
@@ -22,6 +23,9 @@ of the covariance matrix for a given value of \code{gamma}. The threshold
 estimator of the covariance matrix applies a hard thresholding operator to
 each element of the sample covariance matrix. For more information on this
 estimator, review \insertCite{Bickel2008_thresh;textual}{cvCovEst}.
+}
+\examples{
+thresholdingEst(dat = mtcars, gamma = 0.2)
 }
 \references{
 \insertAllCited{}

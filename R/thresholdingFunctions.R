@@ -1,0 +1,62 @@
+#' Smoothly Clipped Absolute Deviation Thresholding Function
+#'
+#' @param entry A \code{numeric} entry in a covariance matrix estimate.
+#' @param lambda A non-negative \code{numeric} defining the degree of
+#'  thresholding applied to each element of \code{dat}'s sample covariance
+#'  matrix.
+#' @param a A \code{numeric} larger than or equal to \code{2} defining the
+#'  point at which the SCAD thresholding functions becomes equal to the hard
+#'  thresholding function.
+#'
+#' @importFrom assertthat assert_that
+#'
+#' @return A regularized \code{numeric}.
+#'
+#' @keywords internal
+scadThreshold <- function(entry, lambda, a) {
+  # size safety of equivalence between SCAD and hard thresholding
+  assertthat::assert_that(a >= 2)
+
+  # conditional thresholding
+  if (abs(entry) <= 2 * lambda) {
+    reg_entry <- abs(entry) - lambda
+    if (reg_entry > 0) {
+      reg_entry <- sign(entry) * reg_entry
+    } else {
+      reg_entry <- 0
+    }
+  } else if (abs(entry) <= a * lambda) {
+    reg_entry <- ((a - 1) * entry - sign(entry) * a * lambda) / (a - 2)
+  } else {
+    reg_entry <- entry
+  }
+
+  # output regularized entry
+  return(reg_entry)
+}
+
+###############################################################################
+
+#' Adaptive LASSO Thresholding Function
+#'
+#' @param entry A \code{numeric} entry in a covariance matrix estimate.
+#' @param lambda A non-negative \code{numeric} defining the amount of
+#'  thresholding applied to each element of \code{dat}'s sample covariance
+#'  matrix.
+#' @param n A non-negative \code{numeric} defining the adaptive weight
+#'  applied to each element of \code{dat}'s sample covariance matrix.
+#'
+#' @return A regularized \code{numeric}.
+#'
+#' @keywords internal
+adaptiveLassoThreshold <- function(entry, lambda, n) {
+  # define thresholding multiplier
+  s <- abs(entry) - (lambda^(n + 1)) * abs(entry)^(-n)
+
+  # apply regularization
+  s[s < 0] <- 0
+  s[s > 0] <- sign(entry[s > 0]) * s[s > 0]
+
+  # output regularized entry
+  return(s)
+}

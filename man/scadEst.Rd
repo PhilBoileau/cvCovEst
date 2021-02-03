@@ -9,7 +9,7 @@ scadEst(dat, lambda)
 \arguments{
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
-\item{lambda}{A non-negative \code{numeric} defining the amount of
+\item{lambda}{A non-negative \code{numeric} defining the degree of
 thresholding applied to each element of \code{dat}'s sample covariance
 matrix.}
 }
@@ -18,14 +18,17 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-The Smoothly Clipped Absolute Deviation (SCAD) covariance matrix
-estimator applies the SCAD threholding function of
+The Smoothly Clipped Absolute Deviation (SCAD) covariance
+matrix estimator applies the SCAD thresholding function of
 \insertCite{fan2001;textual}{cvCovEst} to each entry of the sample
 covariance matrix. This penalized estimator constitutes a compromise
 between hard and soft thresholding of the sample covariance matrix: it is
-a linear interpolation between soft thresholding up to \code{2*lambda} and
-hard thresholding after \code{3.7*lambda}
+a linear interpolation between soft thresholding up to \code{2 * lambda}
+and hard thresholding after \code{3.7 * lambda}
 \insertCite{rothman2009}{cvCovEst}.
+}
+\examples{
+scadEst(dat = mtcars, lambda = 0.2)
 }
 \references{
 \insertAllCited{}

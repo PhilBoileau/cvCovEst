@@ -1,6 +1,6 @@
 Package: cvCovEst
 Title: Cross-Validated Covariance Matrix Estimation
-Version: 0.1.0
+Version: 0.1.7
 Authors@R: c(
     person("Philippe", "Boileau", email = "philippe_boileau@berkeley.edu",
            role = c("aut", "cre", "cph"),
@@ -9,7 +9,9 @@ Authors@R: c(
            role = "aut",
            comment = c(ORCID = "0000-0002-7127-2789")),
     person("Brian", "Collica", email = "bcollica@berkeley.edu ",
-            role = "aut"),
+           role = "aut"),
+    person("Jamarcus", "Liu", email = "yanwei.liu@berkeley.edu ",
+           role = "ctb"),
     person("Mark", "van der Laan", email = "laan@berkeley.edu",
            role = c("ctb", "ths"),
            comment = c(ORCID = "0000-0003-1432-5511")),
@@ -26,16 +28,18 @@ Depends: R (>= 3.6.0)
 Imports:
     matrixStats,
     Matrix,
+    stats,
+    methods,
     origami,
+    MASS,
     coop,
     Rdpack,
+    rlang,
     dplyr,
+    stringr,
+    purrr,
     tibble,
     assertthat,
-    rlang,
-    methods,
-    stringr,
-    stringi,
     RSpectra,
     future,
     future.apply,
@@ -47,7 +51,7 @@ Suggests:
     knitr,
     rmarkdown,
     covr,
-    MASS
+    spelling
 License: MIT + file LICENSE
 URL: https://github.com/PhilBoileau/cvCovEst
 BugReports: https://github.com/PhilBoileau/cvCovEst/issues
@@ -57,3 +61,4 @@ VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 RdMacros: Rdpack
+Language: en-US

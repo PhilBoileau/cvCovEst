@@ -10,17 +10,20 @@ linearShrinkLWEst(dat)
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 }
 \value{
-A \code{matrix} corresponding to the Ledoit-Wolf linear shrinkgage
+A \code{matrix} corresponding to the Ledoit-Wolf linear shrinkage
 estimate of the covariance matrix.
 }
 \description{
-\code{linearShrinkLWEst} computes the asymptotically optimal
-convex combination of the sample covariance matrix and the identity. This
-convex combination effectively shrinks the eigenvalues of the sample
+\code{linearShrinkLWEst} computes an asymptotically optimal
+convex combination of the sample covariance matrix and the identity matrix.
+This convex combination effectively shrinks the eigenvalues of the sample
 covariance matrix towards the identity. This estimator is more accurate
-than the sample covariance matrix in high-dimensional settings under loose
-assumptions. For more information, review the manuscript by
-\insertCite{Ledoit2004;textual}{cvCovEst}).
+than the sample covariance matrix in high-dimensional settings under fairly
+loose assumptions. For more information, consider reviewing the manuscript
+by \insertCite{Ledoit2004;textual}{cvCovEst}).
+}
+\examples{
+linearShrinkLWEst(dat = mtcars)
 }
 \references{
 \insertAllCited{}

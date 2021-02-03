@@ -16,19 +16,18 @@ r_build_args: '--no-manual'
 r_check_args: '--no-build-vignettes --no-manual'
 
 r_packages:
-  - devtools
   - covr
-  - Matrix
   - matrixStats
   - origami
-  - Rdpack
   - dplyr
+  - purrr
+  - stringr
   - tibble
-  - assertthat
   - rlang
-  - MASS
+  - assertthat
   - testthat
   - RSpectra
+  - spelling
 
 r_github_packages:
   - r-lib/sessioninfo

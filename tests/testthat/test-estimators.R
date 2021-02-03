@@ -121,12 +121,15 @@ test_that("Dense linear shrinkage estimator produces shrunken estimates", {
   # Mean covariance is -0.05 in sample covarian matrix.
   # All absolute covariance values are larger than 0.057.
   # Estimator should therefore produce smaller estimates in each entry.
+  # However, the diagnoal/off-diagonal entries shouldn't be identical.
   dat <- scale(mtcars, center = TRUE, scale = TRUE)
   abs_est <- abs(denseLinearShrinkEst(dat))
   abs_sample_cov <- abs(cov(dat))
   expect_true(
     sum(round((abs_sample_cov - abs_est), digits = 6) >= 0) == 121
   )
+  expect_true(abs_est[1, 1] != abs_est[3, 3])
+  expect_true(abs_est[2, 5] != abs_est[6, 8])
 })
 
 # SCAD Thresholding Estimator ##################################################
@@ -169,6 +172,43 @@ test_that("Verify POET estimator's results", {
 
   # compare
   expect_identical(round(rank_one_sample_cov, 10), round(poet_estimate, 10))
+})
+
+# Robust POET Estimator ########################################################
+
+test_that("Verify Robust POET estimator's ranks", {
+  # check that the rank of robust POET equal to k when lambda is large
+  # compute the robust POET estimate with a large lambda
+  dat <- scale(mtcars, center = TRUE, scale = TRUE)
+  k <- ceiling(ncol(dat) / 5)
+  robust_poet_estimate <- robustPoetEst(dat, k,
+    lambda = 10,
+    var_est = "sample"
+  )
+
+  # compare
+  library(Matrix)
+  expect_equal(Matrix::rankMatrix(robust_poet_estimate)[1], k)
+})
+
+
+test_that("Verify Robust POET estimator's results", {
+  # In this specific example, robust POET estimator is supposed to return a
+  # matrix of all 13 or all 19.78292 dependent on the variance estimation method
+  Y <- matrix(c(1:12, 2:13, 3:14, 4:15, 5:16), 12, 5)
+  est <- matrix(rep(13L, 25), 5, 5)
+  est_mad <- matrix(rep((3 * 1.4826)**2, 25), 5, 5)
+  robust_poet_estimate <- robustPoetEst(Y, 1,
+    lambda = 10,
+    var_est = "sample"
+  )
+  robust_poet_estimate_mad <- robustPoetEst(Y, 1,
+    lambda = 10,
+    var_est = "mad"
+  )
+  # compare
+  expect_equal(est, robust_poet_estimate)
+  expect_equal(est_mad, robust_poet_estimate_mad)
 })
 
 # Adaptive Lasso Estimator #####################################################

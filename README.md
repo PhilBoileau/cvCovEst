@@ -6,6 +6,11 @@
 [![Travis build
 status](https://travis-ci.com/PhilBoileau/cvCovEst.svg?token=YL3L6rYQtszHibWHgFxU&branch=master)](https://travis-ci.com/PhilBoileau/cvCovEst)
 [![codecov](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ)](https://codecov.io/gh/PhilBoileau/cvCovEst)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![MIT
+license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
 > Cross-Validated Covariance Matrix Estimation
@@ -22,9 +27,10 @@ Hejazi](https://nimahejazi.org)
 covariance matrix estimation, particularly useful in high-dimensional
 settings. The general methodology allows for cross-validation to be used
 to data adaptively identify the optimal estimator of the covariance
-matrix from a pre-specified set of candidate estimators. Also included
-are diagnostic tools for assessing the quality of covariance matrix
-estimators.
+matrix from a pre-specified set of candidate estimators. An overview of
+of the framework is provided in the package vignette.
+
+<!-- A suite of plotting and diagnostic tools are also included. -->
 
 -----
 
@@ -54,8 +60,8 @@ set.seed(1584)
 # elements equal to 0.5
 Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
 
-# sample 200 observations from multivariate normal with mean = 0, var = Sigma
-dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
+# sample 50 observations from multivariate normal with mean = 0, var = Sigma
+dat <- mvrnorm(n = 50, mu = rep(0, 50), Sigma = Sigma)
 
 # run CV-selector
 cv_cov_est_out <- cvCovEst(
@@ -66,7 +72,9 @@ cv_cov_est_out <- cvCovEst(
       thresholdingEst = list(gamma = c(0.2, 2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L))
     ),
-    cv_scheme = "v_fold", v_folds = 5,
+    cv_loss = cvMatrixFrobeniusLoss,
+    cv_scheme = "v_fold",
+    v_folds = 5,
   )
 
 # print the table of risk estimates
@@ -75,15 +83,15 @@ cv_cov_est_out$risk_df
 #> # A tibble: 9 x 3
 #>   estimator            hyperparameters      empirical_risk
 #>   <chr>                <chr>                         <dbl>
-#> 1 denseLinearShrinkEst hyperparameters = NA          3533.
-#> 2 poetEst              lambda = 0.2, k = 1           3542.
-#> 3 poetEst              lambda = 0.1, k = 1           3542.
-#> 4 poetEst              lambda = 0.2, k = 2           3543.
-#> 5 poetEst              lambda = 0.1, k = 2           3543.
-#> 6 linearShrinkLWEst    hyperparameters = NA          3544.
-#> 7 sampleCovEst         hyperparameters = NA          3545.
-#> 8 thresholdingEst      gamma = 0.2                   3545.
-#> 9 thresholdingEst      gamma = 2                     4164.
+#> 1 linearShrinkLWEst    hyperparameters = NA           357.
+#> 2 poetEst              lambda = 0.2, k = 1            369.
+#> 3 poetEst              lambda = 0.2, k = 2            371.
+#> 4 poetEst              lambda = 0.1, k = 1            377.
+#> 5 poetEst              lambda = 0.1, k = 2            377.
+#> 6 denseLinearShrinkEst hyperparameters = NA           379.
+#> 7 sampleCovEst         hyperparameters = NA           379.
+#> 8 thresholdingEst      gamma = 0.2                    384.
+#> 9 thresholdingEst      gamma = 2                      827.
 ```
 
 -----
@@ -106,7 +114,7 @@ prior to submitting a pull request.
 
 ## License
 
-© 2020 [Philippe Boileau](https://pboileau.ca)
+© 2020-2021 [Philippe Boileau](https://pboileau.ca)
 
 The contents of this repository are distributed under the MIT license.
 See file
