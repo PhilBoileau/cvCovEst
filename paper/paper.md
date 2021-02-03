@@ -9,7 +9,7 @@ authors:
     orcid: 0000-0002-4850-2507
     affiliation: 1
   - name: Brian Collica
-    orcid:
+    orcid: 0000-0003-1127-2557
     affiliation: 3
   - name: Nima S. Hejazi
     orcid: 0000-0002-7127-2789
