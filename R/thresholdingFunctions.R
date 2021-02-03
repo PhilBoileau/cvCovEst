@@ -54,12 +54,9 @@ adaptiveLassoThreshold <- function(entry, lambda, n) {
   s <- abs(entry) - (lambda^(n + 1)) * abs(entry)^(-n)
 
   # apply regularization
-  if (s > 0) {
-    reg_entry <- sign(entry) * s
-  } else {
-    reg_entry <- 0
-  }
+  s[s < 0] <- 0
+  s[s > 0] <- sign(entry[s > 0]) * s[s > 0]
 
   # output regularized entry
-  return(reg_entry)
+  return(s)
 }
