@@ -153,19 +153,132 @@ like us to consider implementing another, let us know by filing an
 | Monte-Carlo | To perform Monte-Carlo cross-validation, set the `cv_scheme` argument to `"mc"`. Set the proportion of data to be used in each validation set using the `mc_split` argument, and the number of iterations to perform with the `v_folds` argument. |
 
 
-<!--
 ## Diagnostic Tools
 
-A variety of summary and diagnostic functions are provided by the `cvCovEst`
-package.
+In addition to selecting an optimal estimator, the `cvCovEst` package contains summary and plotting methods which highlight some of the mathematical properties of the candidate estimators as well as the empirical risk.  The goal of these tools is help build intuition surrounding how these estimators act on the data and how their performance changes over varying inputs.
 
-TODO
+### Summary Method 
+
+The `summary` method for `cvCovEst` accepts the following arguments:
+
+| Argument | Description |
+|----------|-------------|
+| object | A named `list` of class `cvCovEst` |
+| summ_fun | A character vector specifying which summaries to output |
+
+The choices of `summ_fun` and their outputs are described below:
+
+| Summary | Implementation | Description |
+|---------|----------------|-------------|
+| Empirical Risk by Estimator Class | `empRiskByClass` | Returns the minimum, 25% quantile, median, 75% quantile, and maximum of the empirical risk associated with each class of estimator passed to `cvCovEst`. |
+| Best Performing Estimator by Class | `bestInClass` | Returns the specific hyperparameters, if applicable, of the best performing estimator within each class. |
+| Worst Performing Estimator by Class | `worstInClass` | Returns the specific hyperparameters, if applicable, of the worst performing estimator within each class. | 
+| Empirical Risk by Hyperparameter | `hyperRisk` | For estimators that take hyperparameters as arguments, this returns the hyperparameters associated with the minimum, 25% quantile, median, 75% quantile, and maximum of the empirical risk within each class of estimator.  Each class has its own `tibble` which are returned as a `list`. |
+
+### Plot Method
+
+The `plot` method for `cvCovEst` allows users to visualize three main `plot_type`s of the candidate estimators: covariance heat maps (`heatmap`), eigenvalue plots (`eigen`), and the empirical risk (`risk`) as a function of the hyperparameters (for applicable estimator classes).  If users do not specify a plot type, then all three plots are combined into one figure for the optimal estimator selected by `cvCovEst`.  Users can also achieve this by setting `plot_type = "summary"`.
+
+The heat maps and eigenvalue plots facilitate comparisons both within and between estimator classes by allowing multiple values to be passed as `estimator` and `stat` arguments.
+
+Additional arguments specific to each `plot_type` are outlined below:
+
+#### Heat Map
+
+| Argument | Description |
+|----------|-------------|
+| abs_v | If `TRUE`, then the absolute value of the covariance is mapped.  Otherwise, the signed value is used. |
+
+#### Eigenvalue Plot
+
+| Argument | Description |
+|----------|-------------|
+| leading | If `TRUE`, then the k leading eigenvalues are displayed.  Otherwise, the k trailing eigenvalues are displayed. | 
+| k | The number of leading or trailing eigenvalues to plot. |
+
+#### Empirical Risk
+
+These two additional arguments only apply to estimators with multiple hyperparameters:
+
+| Argument | Description |
+|----------|-------------|
+| switch_vars | If `TRUE`, the hyperparameters used for the x-axis and factor variables are switched. |
+| min-max | If `TRUE`, only the minimum and maximum values of the factor hyperparameter will be used. |
+
 
 # Data Analysis Examples
 
-TODO
+To show how the plot and summary methods can be used, data is simulated from a predetermined covariance matrix structure.  
 
 ## Simulated Data
+
+```{r toep-sim}
+library(MASS)
+library(cvCovEst)
+set.seed(1584)
+
+toep_sim <- function(p, rho, alpha) {
+    times <- seq_len(p)
+    H <- abs(outer(times, times, "-")) + diag(p)
+    H <- H^-(1 + alpha) * rho
+    covmat <- H + diag(p)*(1 - rho)
+
+    sign_mat <- sapply(
+      times,
+      function(i) {
+        sapply(
+          times,
+          function(j) {
+            (-1)^(abs(i - j))
+          }
+        )
+      }
+    )
+    return(covmat * sign_mat)
+}
+
+# simulate a 100 x 100 covariance matrix
+sim_covmat <- toep_sim(p = 100, rho = 0.6, alpha = 0.3)
+
+# sample 75 observations from multivariate normal mean = 0, var = sim_covmat
+sim_dat <-  MASS::mvrnorm(n = 75, mu = rep(0, 100), Sigma = sim_covmat)
+
+# run CV-selector
+cv_cov_est_sim <- cvCovEst(
+  dat = sim_dat,
+  estimators = c(
+    linearShrinkEst, thresholdingEst, 
+    bandingEst, adaptiveLassoEst, 
+    sampleCovEst),
+  estimator_params = list(
+    linearShrinkEst = list(alpha = seq(0.25, 0.75, 0.05)),
+    thresholdingEst = list(gamma = seq(0.25, 0.75, 0.05)),
+    bandingEst = list(k = seq(2L, 10L, 2L)),
+    adaptiveLassoEst = list(lambda = c(0.1, 0.25, 0.5, 0.75, 1),
+                            n = seq(1, 5))),
+  cv_loss = cvMatrixFrobeniusLoss,
+  cv_scheme = "v_fold",
+  v_folds = 5,
+  center = TRUE,
+  scale = TRUE
+)
+```
+
+
+### Summary Method 
+
+To compare the best performing estimators in each class:
+
+```{r summary-sim}
+cv_sum <- summary(cv_cov_est_sim)
+cv_sum$bestInClass
+```
+
+
+
+<!--
+
+TODO
 
 ## Single Cell Transcriptomic Data
 -->
