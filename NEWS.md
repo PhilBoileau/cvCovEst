@@ -1,3 +1,35 @@
+# cvCovEst 0.2.0 (2021-02-02)
+
++ `cvCovEst` now possesses a slew of diagnostic and visualization tools. A
+  detailed description of these functions will be added to the vignette in the
+  near future.
+
+# cvCovEst 0.1.7 (2021-01-29)
+
++ Minor clarifying updates to the documentation and the vignette.
++ Updates to `NEWS.md`, adding consistency in bullet point indicator and
+  enforcing the 80-column rule.
++ Tweaks to dependencies, removing reliance on `stringi` since only invoked in
+  a single pipe call in `checkArgs`.
+
+# cvCovEst 0.1.6 (2021-01-24)
+
++ Added basic examples to all exported functions.
+
+# cvCovEst 0.1.5 (2021-01-23)
+
++ Made `cvMatrixFrobeniusLoss` the default loss function.
+
+# cvCovEst 0.1.4 (2020-12-29)
+
++ Added `cvScaledMatrixFrobeniusLoss`, a new matrix-based loss function that
+  scales squared error calculations associated with each entry of a covariance
+  matrix estimate by the sample variances of the entry's row and column
+  variables. This is particularly useful if the features of your dataset are of
+  different magnitude. It's approximately equivalent to estimating the
+  correlation matrix, but without the need to re-scale the estimated
+  correlation matrix to be an estimated covariance matrix.
+
 # cvCovEst 0.1.3 (2020-12-29)
 
 + Fixed error with `denseLinearShrinkEst`: the shrinkage parameter was often
@@ -13,116 +45,123 @@
 
 # cvCovEst 0.1.0 (2020-11-19)
 
-* cvCovEst version 0.1.0 is used in the accompanying manuscript to generate all results.
-* It is stored as a separate branch called 'preprint'.
++ cvCovEst version 0.1.0 is used in the accompanying manuscript to generate all
+  results.
++ It is stored as a separate branch called 'preprint'.
 
 # cvCovEst 0.0.18 (2020-10-19)
 
-* cvCovEst now accepts cvMatrixFrobeniusLoss as a loss function. This loss function is a matrix-based alternative to the standard loss function. Through Proposition 1 of the method's manuscript the resulting selections of each loss are identical for any fixed cross-validation scheme. However, the matrix-based loss is more computationally efficient.
-* Other minor tweaks to testing procedures.
++ cvCovEst now accepts cvMatrixFrobeniusLoss as a loss function. This loss
+  function is a matrix-based alternative to the standard loss function. Through
+  Proposition 1 of the method's manuscript the resulting selections of each
+  loss are identical for any fixed cross-validation scheme. However, the
+  matrix-based loss is more computationally efficient. Other minor tweaks to
+  testing procedures.
 
 # cvCovEst 0.0.17 (2020-10-19)
 
-* cvCovEst can now be run in parallel using future.
++ cvCovEst can now be run in parallel using future.
 
 # cvCovEst 0.0.16 (2020-10-16)
 
-* When provided with the true covariance matrix, cvCovEst now outputs the conditional cross-validated risk differences of the cross-validation selection and the oracle selections.
++ When provided with the true covariance matrix, cvCovEst now outputs the
+  conditional cross-validated risk differences of the cross-validation
+  selection and the oracle selections.
 
 # cvCovEst 0.0.15 (2020-10-03)
 
-* Fixing a minor dimension error in `nlShrinkLWEst` by changing a conditional,
++ Fixing a minor dimension error in `nlShrinkLWEst` by changing a conditional,
   as per https://github.com/PhilBoileau/cvCovEst/issues/23.
-* Enforcing the [`tidyverse` code style](https://style.tidyverse.org/) via the
++ Enforcing the [`tidyverse` code style](https://style.tidyverse.org/) via the
   first call to `styler` in this codebase (via `make style`).
-* Enforcing 80-columns in `NEWS.md`.
++ Enforcing 80-columns in `NEWS.md`.
 
 # cvCovEst 0.0.14 (2020-09-29)
 
-* Replacing `stats::cov` with `coop::covar` after resolving the issue on Linux
++ Replacing `stats::cov` with `coop::covar` after resolving the issue on Linux
   machines, as per https://github.com/PhilBoileau/cvCovEst/issues/18.
-* Removed calculation of spurious risk ratios from `cvCovEst` and from
++ Removed calculation of spurious risk ratios from `cvCovEst` and from
   `cvFrobeniusLoss` when the true covariance matrix is passed in.
 
 # cvCovEst 0.0.13 (2020-09-28)
 
-* Changing loss function computation so that it is more computationally
++ Changing loss function computation so that it is more computationally
   efficient.
 
 # cvCovEst 0.0.12 (2020-09-26)
 
-* Removing `coop::covar` due to strange parallelization issue on Linux machines.
++ Removing `coop::covar` due to strange parallelization issue on Linux machines.
   Hopefully we can use it again one day.
-* Prevent users from including a lone estimator as input to `cvCovEst` if the
++ Prevent users from including a lone estimator as input to `cvCovEst` if the
   estimator in questions doesn't have any hyperparameters.
-* Coerce sparse, true covariance matrices to regular matrix objects if and when
++ Coerce sparse, true covariance matrices to regular matrix objects if and when
   input to `cvCovEst`.
 
 # cvCovEst 0.0.11 (2020-09-24)
 
-* Adding additional risk difference ratio calculations when the true covariance
++ Adding additional risk difference ratio calculations when the true covariance
   matrix of Gaussian Multivariate data is provided.
 
 # cvCovEst 0.0.10 (2020-09-22)
 
-* Added adaptive LASSO estimator.
-* Users now have the option to include the true covariance matrix of their
++ Added adaptive LASSO estimator.
++ Users now have the option to include the true covariance matrix of their
   multivariate Gaussian data, allowing them to compare cvCovEst's selection
   versus that of the cross-validated oracle.
 
 # cvCovEst 0.0.9 (2020-09-13)
 
-* Adding POET estimator
-* Estimators can now take multiple hyperparameter arguments.
++ Adding POET estimator
++ Estimators can now take multiple hyperparameter arguments.
 
 # cvCovEst 0.0.8 (2020-09-13)
 
-* Adding smoothly clipped absolute deviation thresholding estimator.
++ Adding smoothly clipped absolute deviation thresholding estimator.
 
 # cvCovEst 0.0.7 (2020-08-22)
 
-* Updated the loss computation; it now patches the formula used in the draft.
++ Updated the loss computation; it now patches the formula used in the draft.
   Note that it vastly overestimates the true risk of an estimator, but that it
   provides an equivalent decision rule compared to a matrix-based loss. Perhaps
   we're missing a scaling factor in our calculations?
-* Moved Frobenius loss calculations to cv fold loss function.
-* Removed the penalized cross-validation loss. Doesn't make sense to include.
-* Included check for centered data matrix.
++ Moved Frobenius loss calculations to cv fold loss function.
++ Removed the penalized cross-validation loss. Doesn't make sense to include.
++ Included check for centered data matrix.
 
 # cvCovEst 0.0.6 (2020-08-19)
 
-* Adding dense covariance matrix linear shrinkage estimator.
-* Updating citations in estimators docs.
++ Adding dense covariance matrix linear shrinkage estimator.
++ Updating citations in estimators docs.
 
 # cvCovEst 0.0.5 (2020-08-06)
 
-* Adding analytical nonlinear shrinkage estimator.
++ Adding analytical nonlinear shrinkage estimator.
 
 # cvCovEst 0.0.4 (2020-07-05)
 
-* Adding tapering estimator.
++ Adding tapering estimator.
 
 # cvCovEst 0.0.4 (2020-06-23)
 
-* Adding argument checker for `cvCovEst` function.
++ Adding argument checker for `cvCovEst` function.
 
 # cvCovEst 0.0.3 (2020-06-22)
 
-* Adding banding estimator.
++ Adding banding estimator.
 
 # cvCovEst 0.0.2 (2020-06-06)
 
-* Added unpenalized frobenius matrix loss.
-* cvCovEst() now requires a vector of candidate estimator functions be passed to
-  the estimators argument, instead of a vector of characters corresponding to
++ Added unpenalized frobenius matrix loss.
++ cvCovEst() now requires a vector of candidate estimator functions be passed
+  to he estimators argument, instead of a vector of characters corresponding to
   these candidates' names.
 
 # cvCovEst 0.0.1 (2020-05-21)
 
-* Minor changes to core routines, including changes to use of `origami`.
-* Updates to documentation, including `Roxygen` styling.
-* Addition of templates for vignette and JOSS paper.
++ Minor changes to core routines, including changes to use of `origami`.
++ Updates to documentation, including `Roxygen` styling.
++ Addition of templates for vignette and JOSS paper.
 
 # cvCovEst 0.0.0.9000 (2020-05-01)
 
-* Added a `NEWS.md` file to track changes to the package.
++ Added a `NEWS.md` file to track changes to the package.

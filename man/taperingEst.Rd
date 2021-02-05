@@ -20,15 +20,18 @@ matrix.
 \code{data.frame}-like object with ordered variables by gradually shrinking
 the bands of the sample covariance matrix towards zero. The estimator is
 defined as the Hadamard product of the sample covariance matrix and a
-weight matrix. The amount of shrinkage is dictated by the weight matrix,
-and is controlled by a hyperparameter, \code{k}. This estimator is
-attributed to \insertCite{cai2010;textual}{cvCovEst}.
+weight matrix. The amount of shrinkage is dictated by the weight matrix
+and is specified by a hyperparameter \code{k}. This estimator is attributed
+to \insertCite{cai2010;textual}{cvCovEst}.
 
-The weight matrix is a Toeplitz matrix with entries defined as follows: Let
+The weight matrix is a Toeplitz matrix with entries defined as follows. Let
 i and j index the rows and columns of the weight matrix, respectively. If
-\code{abs(i-j) <= k/2}, then entry i,j in the weight matrix is equal to 1.
-If \code{k/2 < abs(i-j) < k}, then entry i,j is equal to
-\code{2 - 2*abs(i-j)/k}. Otherwise, entry i,j is equal to 0.
+\code{abs(i - j) <= k / 2}, then entry {i, j} in the weight matrix is equal
+to 1. If \code{k / 2 < abs(i - j) < k}, then entry {i, j} is equal to
+\code{2 - 2 * abs(i - j) / k}. Otherwise, entry {i, j} is equal to 0.
+}
+\examples{
+taperingEst(dat = mtcars, k = 0.1)
 }
 \references{
 \insertAllCited{}

@@ -47,6 +47,18 @@ test_that("Estimators not throw error", {
       thresholdingEst = list(gamma = c(0, 1))
     )
   ))
+  expect_silent(cvScaledMatrixFrobeniusLoss(
+    fold = resub,
+    dat = dat,
+    estimator_funs = rlang::quo(c(
+      linearShrinkEst, linearShrinkLWEst,
+      thresholdingEst, sampleCovEst
+    )),
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0, 1)),
+      thresholdingEst = list(gamma = c(0, 1))
+    )
+  ))
 })
 
 test_that("trueFrobeniusLoss computes the correct validation set loss", {

@@ -9,7 +9,7 @@ scadThreshold(entry, lambda, a)
 \arguments{
 \item{entry}{A \code{numeric} entry in a covariance matrix estimate.}
 
-\item{lambda}{A non-negative \code{numeric} defining the amount of
+\item{lambda}{A non-negative \code{numeric} defining the degree of
 thresholding applied to each element of \code{dat}'s sample covariance
 matrix.}
 
