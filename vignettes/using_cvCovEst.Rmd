@@ -284,6 +284,55 @@ cv_sum$hyperRisk$bandingEst
 
 ### Plot Method
 
+We can see the change in empirical risk as the value of `k` changes.
+
+
+```{r risk-sim, fig.width=6}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "risk")
+```
+
+We can also examine the matrix structure as the value of `k` changes...
+
+
+```{r multi-heat-sim, fig.height=3.5}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "heatmap", 
+     stat = c("min", "median", "max"))
+```
+
+...or maybe the sign of the covariance.
+
+
+```{r sign-multi-heat-sim, fig.height=3.5}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "heatmap", 
+     stat = c("min", "median", "max"), abs_v = FALSE)
+```
+
+And we can see how different the optimal estimator is from the sample covariance matrix.
+
+
+```{r samp-heat-sim, fig.height=4.5}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "heatmap", 
+     estimator = c("bandingEst", "sampleCovEst"),
+     stat = c("min"), abs_v = FALSE)
+```
+
+We may also be interested in the eigenvalues of the various banding estimators...
+
+
+```{r eigen-sim, fig.width=6}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "eigen", 
+     stat = c("min", "median", "max"))
+```
+
+...or how they compare to the eigenvalues of the other estimator classes.
+
+```{r multi-eigen-sim, fig.width=6}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "eigen", 
+     stat = c("min", "median", "max"),
+     estimator = c(
+       "bandingEst", "thresholdingEst", "linearShrinkEst", "adaptiveLassoEst"))
+```
+
 
 
 <!--
