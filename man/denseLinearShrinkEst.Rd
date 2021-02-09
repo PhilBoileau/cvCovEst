@@ -15,13 +15,16 @@ matrix.
 }
 \description{
 \code{denseLinearShrinkEst} computes the asymptotically optimal
-convex combination of the sample covariance matrix and a dense, target
+convex combination of the sample covariance matrix and a dense target
 matrix. This target matrix's diagonal elements are equal to the average
 of the sample covariance matrix estimate's diagonal elements, and its
 off-diagonal elements are equal to the average of the sample covariance
 matrix estimate's off-diagonal elements. For information on this
 estimator's derivation, see \insertCite{Ledoit2020b;textual}{cvCovEst} and
 \insertCite{shafer2005;textual}{cvCovEst}.
+}
+\examples{
+denseLinearShrinkEst(dat = mtcars)
 }
 \references{
 \insertAllCited{}

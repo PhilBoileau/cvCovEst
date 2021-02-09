@@ -59,7 +59,7 @@ test_that("banding estimator with k = 0 is diagonal of S_n", {
 test_that("banding estimator with k >> 0 is S_n", {
   expect_identical(
     bandingEst(mtcars, k = 1000000L),
-    coop::covar(mtcars)
+    coop::covar(mtcars) %>% unname()
   )
 })
 
@@ -121,12 +121,15 @@ test_that("Dense linear shrinkage estimator produces shrunken estimates", {
   # Mean covariance is -0.05 in sample covarian matrix.
   # All absolute covariance values are larger than 0.057.
   # Estimator should therefore produce smaller estimates in each entry.
+  # However, the diagnoal/off-diagonal entries shouldn't be identical.
   dat <- scale(mtcars, center = TRUE, scale = TRUE)
   abs_est <- abs(denseLinearShrinkEst(dat))
   abs_sample_cov <- abs(cov(dat))
   expect_true(
     sum(round((abs_sample_cov - abs_est), digits = 6) >= 0) == 121
   )
+  expect_true(abs_est[1, 1] != abs_est[3, 3])
+  expect_true(abs_est[2, 5] != abs_est[6, 8])
 })
 
 # SCAD Thresholding Estimator ##################################################

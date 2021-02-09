@@ -36,10 +36,10 @@ A centered and/or scaled version of the input data.
 \description{
 \code{safeColScale} is a safe utility for centering and scaling
 an input matrix \code{X}. It is intended to avoid the drawback of using
-\code{\link[base]{scale}} on data with constant variance by inducing adding
-a small perturbation to truncate the values in such columns. It also takes
-the opportunity to be faster than \code{\link[base]{scale}} through relying
-on \pkg{matrixStats} for a key internal computation.
+\code{\link[base]{scale}} on data with constant variance by adding a small
+perturbation to truncate the values in such columns. Also, this is faster
+than \code{\link[base]{scale}} through relying on \pkg{matrixStats} for a
+key internal computation.
 }
 \note{
 This is an un-exported function borrowed directly from \pkg{scPCA}.

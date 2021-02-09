@@ -11,7 +11,7 @@ poetEst(dat, k, lambda)
 
 \item{k}{An \code{integer} indicating the number of unobserved latent
 factors. Empirical evidence suggests that the POET estimator is robust to
-overestimations of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+over-estimates of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
 practice, it is therefore preferable to use larger values.}
 
 \item{lambda}{A non-negative \code{numeric} defining the amount of
@@ -27,9 +27,12 @@ matrix.
 Thresholding (POET) estimator, a nonparametric, unobserved-factor-based
 estimator of the covariance matrix \insertCite{fan2013}{cvCovEst}. The
 estimator is defined as the sum of the sample covariance matrix'
-rank-\code{k} approximation and its thresholded principal orthogonal
+rank-\code{k} approximation and its post-thresholding principal orthogonal
 complement. The hard thresholding function is used here, though others
 could be used instead.
+}
+\examples{
+poetEst(dat = mtcars, k = 2L, lambda = 0.1)
 }
 \references{
 \insertAllCited{}

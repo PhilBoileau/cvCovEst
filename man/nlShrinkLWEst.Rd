@@ -25,6 +25,9 @@ function pulls eigenvalues towards the nearest mode of their empirical
 distribution, thus creating a localized shrinkage effect rather than a
 global one.
 }
+\examples{
+nlShrinkLWEst(dat = mtcars)
+}
 \references{
 \insertAllCited{}
 }
