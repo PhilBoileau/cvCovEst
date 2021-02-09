@@ -1,6 +1,6 @@
 ---
 title: "`cvCovEst`: Cross-Validated Covariance Matrix Estimation"
-author: "[Philippe Boileau](https://pboileau.ca), Brian Collica, [Nima
+author: "[Philippe Boileau](https://pboileau.ca), [Brian Collica](https://github.com/bcollica), [Nima
   Hejazi](https://nimahejazi.org)"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -36,7 +36,7 @@ estimator from among a diverse collection of candidates remains unaddressed.
 We therefore offer just that: a general, cross-validation-based framework for
 covariance matrix estimator selection in high dimensions. The
 (high-dimensional) asymptotic optimality of selections are guaranteed by
-extendending the seminal work of @laan_dudoit:2003, @dudoit2005, and @vaart2006
+extending the seminal work of @laan_dudoit:2003, @dudoit2005, and @vaart2006
 on data-adaptive estimator selection to high-dimensional covariance matrix
 estimation [@boileau2021]. The interested reader is invited to review
 theoretical underpinnings of the method provided in @boileau2021 .
@@ -132,7 +132,7 @@ package currently implements three loss functions:
 
 | Loss | Implementation | Description |
 |------|----------------|-------------|
-| Matrix-based Frobenius | `cvMatrixFrobeniusLoss` | The default, Bbased on the Frobenius norm. Appropriate when the dataset's features are of similar magnitudes. |
+| Matrix-based Frobenius | `cvMatrixFrobeniusLoss` | The default, Based on the Frobenius norm. Appropriate when the dataset's features are of similar magnitudes. |
 | Variance-scaled matrix-based Frobenius | `cvScaledMatrixFrobeniusLoss` | A scaled version of the matrix-based Frobenius loss, where weights are the inverse of products from the sample covariance matrix's diagonal. Appropriate when the features of the dataset are of different magnitudes. |
 | Observation-based Frobenius | `cvFrobeniusLoss` | Based on the Frobenius norm and the rank-1, observation-level estimates of the sample covariance matrix. Its selections are equivalent to that of the matrix-based Frobenius, though less computationally efficient. However, the optimality results of @boileau2021 rely on it. | 
 
@@ -166,7 +166,7 @@ The `summary` method for `cvCovEst` accepts the following arguments:
 | object | A named `list` of class `cvCovEst` |
 | summ_fun | A character vector specifying which summaries to output |
 
-The choices of `summ_fun` and their outputs are described below:
+These summary functions allow the user to quickly compare the performance of several classes of estimators and compute other metrics of interest.  The choices of `summ_fun` and their outputs are described below:
 
 | Summary | Implementation | Description |
 |---------|----------------|-------------|
@@ -179,7 +179,7 @@ The choices of `summ_fun` and their outputs are described below:
 
 The `plot` method for `cvCovEst` allows users to visualize three main `plot_type`s of the candidate estimators: covariance heat maps (`heatmap`), eigenvalue plots (`eigen`), and the empirical risk (`risk`) as a function of the hyperparameters (for applicable estimator classes).  If users do not specify a plot type, then all three plots are combined into one figure for the optimal estimator selected by `cvCovEst`.  Users can also achieve this by setting `plot_type = "summary"`.
 
-The heat maps and eigenvalue plots facilitate comparisons both within and between estimator classes by allowing multiple values to be passed as `estimator` and `stat` arguments.
+The heat maps and eigenvalue plots facilitate comparisons both within and between estimator classes by allowing multiple values to be passed as `estimator` and `stat` arguments.  
 
 Additional arguments specific to each `plot_type` are outlined below:
 
@@ -208,7 +208,7 @@ These two additional arguments only apply to estimators with multiple hyperparam
 
 # Data Analysis Examples
 
-To show how the plot and summary methods can be used, data is simulated from a predetermined covariance matrix structure.  
+To show how the plot and summary methods can be used, data is simulated from a predetermined covariance matrix following a Toeplitz structure.  The data is then passed to `cvCovEst` along with a handful of estimator classes.    
 
 ## Simulated Data
 
@@ -284,54 +284,62 @@ cv_sum$hyperRisk$bandingEst
 
 ### Plot Method
 
-We can see the change in empirical risk as the value of `k` changes.
+By specifying `plot_type = "risk"`, we can see the change in empirical risk as the value of `k` changes.  A summary of the cross-validation scheme and loss function is displayed at the bottom of all `cvCovEst` plot outputs.   
 
 
-```{r risk-sim, fig.width=6}
+```{r risk-sim, fig.height = 3.5, fig.width=4}
 plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "risk")
 ```
 
-We can also examine the matrix structure as the value of `k` changes...
+We can also examine the matrix structure as the value of `k` changes.  Examining the overall sparsity of the resulting estimator can be useful since, in some cases, the assumption of sparsity is not warranted.
 
 
-```{r multi-heat-sim, fig.height=3.5}
+```{r multi-heat-sim, fig.height=3.5, fig.width=7}
 plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "heatmap", 
      stat = c("min", "median", "max"))
 ```
 
-...or maybe the sign of the covariance.
+If the sign of the covariance is of interest, users can display that as well.  
 
 
-```{r sign-multi-heat-sim, fig.height=3.5}
+```{r sign-multi-heat-sim, fig.height=3.5, fig.width=7}
 plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "heatmap", 
      stat = c("min", "median", "max"), abs_v = FALSE)
 ```
 
-And we can see how different the optimal estimator is from the sample covariance matrix.
+The different between the optimal estimator selected by `cvCovEst` and the sample covariance matrix is clear when displaying their respective heat maps side by side.
 
 
-```{r samp-heat-sim, fig.height=4.5}
+```{r samp-heat-sim, fig.height=3.5, fig.width=5}
 plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "heatmap", 
      estimator = c("bandingEst", "sampleCovEst"),
      stat = c("min"), abs_v = FALSE)
 ```
 
-We may also be interested in the eigenvalues of the various banding estimators...
+We may also be interested in the eigenvalues of the various banding estimators.  The distribution of eigenvalues relays information such as the condition number or the positive-definiteness of the resulting estimator.  As with the other plot types, if the `estimator` argument is not specified, the default is to display the optimal estimator selected by `cvCovEst`.
 
 
-```{r eigen-sim, fig.width=6}
+```{r eigen-sim, fig.height = 3.5, fig.width=5}
 plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "eigen", 
      stat = c("min", "median", "max"))
 ```
 
-...or how they compare to the eigenvalues of the other estimator classes.
+Specifying multiple values in the `estimator` argument allows us compare the eigenvalues of the other estimator classes as well.
 
-```{r multi-eigen-sim, fig.width=6}
+```{r multi-eigen-sim, fig.height=4.5, fig.width=6}
 plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "eigen", 
      stat = c("min", "median", "max"),
      estimator = c(
        "bandingEst", "thresholdingEst", "linearShrinkEst", "adaptiveLassoEst"))
 ```
+
+
+As previously mentioned, simply calling the `plot` method on the output of `cvCovEst` and the original data will result in a quick visual summary of the optimally selected estimator.  
+
+```{r plot-summary, fig.height=6, fig.width=7.5}
+plot(cv_cov_est_sim, dat_orig = sim_dat)
+```
+
 
 
 
