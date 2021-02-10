@@ -212,7 +212,7 @@ These two additional arguments only apply to estimators with multiple hyperparam
 | Argument | Description |
 |----------|-------------|
 | switch_vars | If `TRUE`, the hyperparameters used for the x-axis and factor variables are switched. |
-| min-max | If `TRUE`, only the minimum and maximum values of the factor hyperparameter will be used. |
+| min_max | If `TRUE`, only the minimum and maximum values of the factor hyperparameter will be used. |
 
 
 # Simulated Data Analysis Example
