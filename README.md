@@ -19,7 +19,7 @@ license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opens
 Collica](https://www.linkedin.com/in/brian-collica-553b0b94), and [Nima
 Hejazi](https://nimahejazi.org)
 
------
+------------------------------------------------------------------------
 
 ## What’s `cvCovEst`?
 
@@ -28,11 +28,11 @@ covariance matrix estimation, particularly useful in high-dimensional
 settings. The general methodology allows for cross-validation to be used
 to data adaptively identify the optimal estimator of the covariance
 matrix from a pre-specified set of candidate estimators. An overview of
-of the framework is provided in the package vignette.
+the framework is provided in the package vignette.
 
 <!-- A suite of plotting and diagnostic tools are also included. -->
 
------
+------------------------------------------------------------------------
 
 ## Installation
 
@@ -43,7 +43,7 @@ via [`remotes`](https://CRAN.R-project.org/package=remotes):
 remotes::install_github("PhilBoileau/cvCovEst")
 ```
 
------
+------------------------------------------------------------------------
 
 ## Example
 
@@ -85,23 +85,23 @@ cv_cov_est_out$risk_df
 #>   <chr>                <chr>                         <dbl>
 #> 1 linearShrinkLWEst    hyperparameters = NA           357.
 #> 2 poetEst              lambda = 0.2, k = 1            369.
-#> 3 poetEst              lambda = 0.2, k = 2            371.
-#> 4 poetEst              lambda = 0.1, k = 1            377.
-#> 5 poetEst              lambda = 0.1, k = 2            377.
+#> 3 poetEst              lambda = 0.2, k = 2            372.
+#> 4 poetEst              lambda = 0.1, k = 2            375.
+#> 5 poetEst              lambda = 0.1, k = 1            376.
 #> 6 denseLinearShrinkEst hyperparameters = NA           379.
 #> 7 sampleCovEst         hyperparameters = NA           379.
 #> 8 thresholdingEst      gamma = 0.2                    384.
-#> 9 thresholdingEst      gamma = 2                      827.
+#> 9 thresholdingEst      gamma = 2                      826.
 ```
 
------
+------------------------------------------------------------------------
 
 ## Issues
 
 If you encounter any bugs or have any specific feature requests, please
 [file an issue](https://github.com/PhilBoileau/cvCovEst/issues).
 
------
+------------------------------------------------------------------------
 
 ## Contributions
 
@@ -110,7 +110,7 @@ our [contribution
 guidelines](https://github.com/PhilBoileau/cvCovEst/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
 
------
+------------------------------------------------------------------------
 
 ## License
 
