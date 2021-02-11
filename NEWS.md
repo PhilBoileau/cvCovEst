@@ -1,3 +1,9 @@
+# cvCovEst 0.3.0 (2021-02-10)
+
++ Added information and simulated data examples of plotting and summary
+  functions.
++ Made the `cvCovEst` R package a public repository GitHub. 
+
 # cvCovEst 0.2.0 (2021-02-02)
 
 + `cvCovEst` now possesses a slew of diagnostic and visualization tools. A
