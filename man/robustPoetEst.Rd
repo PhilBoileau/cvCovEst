@@ -11,7 +11,7 @@ robustPoetEst(dat, k, lambda, var_est = c("sample", "mad", "huber"))
 
 \item{k}{An \code{integer} indicating the number of unobserved latent
 factors. Empirical evidence suggests that the POET estimator is robust to
-overestimations of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+overestimation of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
 practice, it is therefore preferable to use larger values.}
 
 \item{lambda}{A non-negative \code{numeric} defining the amount of

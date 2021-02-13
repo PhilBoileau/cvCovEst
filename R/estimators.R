@@ -493,7 +493,7 @@ scadEst <- function(dat, lambda) {
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param k An \code{integer} indicating the number of unobserved latent
 #'  factors. Empirical evidence suggests that the POET estimator is robust to
-#'  over-estimates of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+#'  overestimation of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
 #'  practice, it is therefore preferable to use larger values.
 #' @param lambda A non-negative \code{numeric} defining the amount of
 #'  thresholding applied to each element of sample covariance matrix's
@@ -563,7 +563,7 @@ poetEst <- function(dat, k, lambda) {
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param k An \code{integer} indicating the number of unobserved latent
 #'  factors. Empirical evidence suggests that the POET estimator is robust to
-#'  overestimations of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+#'  overestimation of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
 #'  practice, it is therefore preferable to use larger values.
 #' @param lambda A non-negative \code{numeric} defining the amount of
 #'  thresholding applied to each element of sample covariance matrix's
