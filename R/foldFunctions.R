@@ -424,7 +424,7 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
 #'  entry of the estimated covariance matrix is scaled by the training set's
 #'  sample variances of the variable associated with that entry's row and
 #'  column variables. This loss should be used instead of
-#'  \code{cvMatrixFrobeniusLoss} when a dataset's variables's values are of
+#'  \code{cvMatrixFrobeniusLoss} when a dataset's variables' values are of
 #'  different magnitudes.
 #'
 #' @param fold A \code{fold} object (from \code{\link[origami]{make_folds}})
