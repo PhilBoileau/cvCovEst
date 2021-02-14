@@ -18,7 +18,7 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-\code{thresholdingEst} computes the hard thresholding estimate
+\code{thresholdingEst()} computes the hard thresholding estimate
 of the covariance matrix for a given value of \code{gamma}. The threshold
 estimator of the covariance matrix applies a hard thresholding operator to
 each element of the sample covariance matrix. For more information on this

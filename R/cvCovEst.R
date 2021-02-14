@@ -1,6 +1,6 @@
 #' Cross-Validated Covariance Matrix Estimator Selector
 #'
-#' @description \code{cvCovEst} identifies the optimal covariance matrix
+#' @description \code{cvCovEst()} identifies the optimal covariance matrix
 #'   estimator from among a set of candidate estimators.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
@@ -11,14 +11,15 @@
 #'  The name of each list element should match the name of an estimator passed
 #'  to \code{estimators}. Each element of the \code{estimator_params} is itself
 #'  a named \code{list}, with the names corresponding to a given estimator's
-#'  hyperparameter(s). These hyperparameters may be in the form of a single
+#'  hyperparameter(s). The hyperparameter(s) may be in the form of a single
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
 #' @param cv_loss A \code{function} indicating the loss function to be used.
-#'  This defaults to the Frobenius loss, \code{\link{cvMatrixFrobeniusLoss}}.
-#'  An observation-based version, \code{\link{cvFrobeniusLoss}}, is also made
-#'  available. Additionally, the \code{cvScaledMatrixFrobeniusLoss} is included
-#'  for situations in which \code{dat}'s variables are of different scales.
+#'  This defaults to the Frobenius loss, \code{\link{cvMatrixFrobeniusLoss}()}.
+#'  An observation-based version, \code{\link{cvFrobeniusLoss}()}, is also made
+#'  available. Additionally, the \code{\link{cvScaledMatrixFrobeniusLoss}()} is
+#'  included for situations in which \code{dat}'s variables are of different
+#'  scales.
 #' @param cv_scheme A \code{character} indicating the cross-validation scheme
 #'  to be employed. There are two options: (1) V-fold cross-validation, via
 #'  \code{"v_folds"}; and (2) Monte Carlo cross-validation, via \code{"mc"}.
@@ -34,13 +35,13 @@
 #' @param scale A \code{logical} indicating whether to scale the columns of
 #'  \code{dat} to have unit variance.
 #' @param parallel A \code{logical} option indicating whether to run the main
-#'  cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
-#'  is passed directly to \code{\link[origami]{cross_validate}}.
+#'  cross-validation loop with \code{\link[future.apply]{future_lapply}()}. This
+#'  is passed directly to \code{\link[origami]{cross_validate}()}.
 #' @param true_cov_mat A \code{matrix}-like object giving the true covariance
 #'  matrix of the data-generating distribution, which is assumed Gaussian. This
 #'  parameter is intended as an aid for use only in simulation studies, and it
 #'  defaults to \code{NULL}. When not \code{NULL}, various conditional risk
-#'  difference ratios of the estimator selected by \code{\link{cvCovEst}} are
+#'  difference ratios of the estimator selected by \code{\link{cvCovEst}()} are
 #'  computed relative to the different oracle selectors. NOTE: This parameter
 #'  will be phased out by the release of version 1.0.0.
 #'

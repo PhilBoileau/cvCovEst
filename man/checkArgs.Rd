@@ -34,10 +34,11 @@ hyperparameter(s). These hyperparameters may be in the form of a single
 for a given estimator, then the estimator need not be listed.}
 
 \item{cv_loss}{A \code{function} indicating the loss function to be used.
-This defaults to the Frobenius loss, \code{\link{cvMatrixFrobeniusLoss}}.
-An observation-based version, \code{\link{cvFrobeniusLoss}}, is also made
-available. Additionally, the \code{cvScaledMatrixFrobeniusLoss} is included
-for situations in which \code{dat}'s variables are of different scales.}
+This defaults to the Frobenius loss, \code{\link{cvMatrixFrobeniusLoss}()}.
+An observation-based version, \code{\link{cvFrobeniusLoss}()}, is also made
+available. Additionally, the \code{\link{cvScaledMatrixFrobeniusLoss}(())}
+is included for situations in which \code{dat}'s variables are of different
+scales.}
 
 \item{cv_scheme}{A \code{character} indicating the cross-validation scheme
 to be employed. There are two options: (1) V-fold cross-validation, via
@@ -59,14 +60,14 @@ of the choice of cross-validation scheme.}
 \code{dat} to have unit variance.}
 
 \item{parallel}{A \code{logical} option indicating whether to run the main
-cross-validation loop with \code{\link[future.apply]{future_lapply}}. This
-is passed directly to \code{\link[origami]{cross_validate}}.}
+cross-validation loop with \code{\link[future.apply]{future_lapply}()}. This
+is passed directly to \code{\link[origami]{cross_validate}()}.}
 
 \item{true_cov_mat}{A \code{matrix}-like object giving the true covariance
 matrix of the data-generating distribution, which is assumed Gaussian. This
 parameter is intended as an aid for use only in simulation studies, and it
 defaults to \code{NULL}. When not \code{NULL}, various conditional risk
-difference ratios of the estimator selected by \code{\link{cvCovEst}} are
+difference ratios of the estimator selected by \code{\link{cvCovEst}()} are
 computed relative to the different oracle selectors. NOTE: This parameter
 will be phased out by the release of version 1.0.0.}
 }
@@ -74,7 +75,7 @@ will be phased out by the release of version 1.0.0.}
 Whether all argument conditions are satisfied
 }
 \description{
-The \code{checkArgs} function verifies that all arguments
-passed to \code{\link{cvCovEst}} function meet its specifications.
+\code{checkArgs()} verifies that all arguments
+passed to \code{\link{cvCovEst}()} function meet its specifications.
 }
 \keyword{internal}

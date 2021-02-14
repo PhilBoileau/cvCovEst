@@ -20,6 +20,8 @@ applied to each element of \code{dat}'s sample covariance matrix.}
 A regularized \code{numeric}.
 }
 \description{
-Adaptive LASSO Thresholding Function
+\code{adaptiveLassoThreshold()} applies the adaptive LASSO
+thresholding function to the entries of a \code{matrix}. In particular, it
+is meant to be applied to sample covariance matrix
 }
 \keyword{internal}

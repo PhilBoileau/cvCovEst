@@ -18,7 +18,7 @@ The true average Frobenius loss over the validation dataset of
 \code{estimate} as a \code{numeric}.
 }
 \description{
-\code{trueFrobeniusLoss} computes the true cross-validated
+\code{trueFrobeniusLoss()} computes the true cross-validated
 Frobenius loss over the validation dataset.
 }
 \keyword{internal}

@@ -8,8 +8,8 @@ getHypers(dat, summ_stat, new_df = FALSE)
 }
 \arguments{
 \item{dat}{A \code{data.frame} of estimators and their hyperparameter values.
-Specifically, this is one of the outputs of \code{summary.cvCovEst} or
-\code{cvCovEst}.}
+Specifically, this is one of the outputs of \code{summary.cvCovEst()} or
+\code{cvCovEst()}.}
 
 \item{summ_stat}{A character vector specifying the summary statistic of
 interest.}
@@ -23,7 +23,7 @@ A named \code{list} containing the names of all hyperparameters and
 their associated values, or a new wider \code{data.frame}.
 }
 \description{
-\code{getHypers} retrieves the names and values of all
-hyperparameters associated with an estimator passed to \code{cvCovEst}.
+\code{getHypers()} retrieves the names and values of all
+hyperparameters associated with an estimator passed to \code{cvCovEst()}.
 }
 \keyword{internal}

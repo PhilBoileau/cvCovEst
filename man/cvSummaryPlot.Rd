@@ -24,45 +24,46 @@ cvSummaryPlot(
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
 \code{cvCovEst}.}
 
-\item{estimator}{A character vector specifying which class of estimator to
-plot.}
+\item{estimator}{A \code{character} vector specifying which class of
+estimator to plot.}
 
-\item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
+\item{dat_orig}{The \code{numeric data.frame}, \code{matrix}, or similar
 object originally passed to \code{cvCovEst}.}
 
-\item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
-\code{"summary"}.}
+\item{plot_type}{A \code{character} detailing the type of plot. Passed to
+\code{\link{theme_cvCovEst}()}, defaults to \code{"risk"}}
 
 \item{cv_details}{Character vector summarizing key arguments passed to
-\code{cvCovEst}.}
+\code{\link{cvCovEst}()}.}
 
-\item{has_hypers}{A character vector containing the names of current
+\item{has_hypers}{A \code{character} vector containing the names of current
 estimators with hyperparameters.}
 
-\item{multi_hypers}{A character vector containing the names of current
+\item{multi_hypers}{A \code{character} vector containing the names of current
 estimators with multiple hyperparameters.}
 
-\item{abs_v}{A code{logical} determining if the absolute value of the matrix
+\item{abs_v}{A \code{logical} determining if the absolute value of the matrix
 entries should be used for plotting the matrix heatmap.  Default is
 \code{TRUE}.}
 
-\item{switch_vars}{Default is \code{FALSE}. If \code{TRUE}, the
-hyperparameters used for the x-axis and factor variables are switched.  Only
-applies to estimators with more than one hyperparameter.}
+\item{switch_vars}{A \code{logical}. If \code{TRUE},
+the hyperparameters used for the x-axis and factor variables are switched.
+Only applies to estimators with more than one hyperparameter. Defaults to
+\code{FALSE}.}
 
-\item{min_max}{Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
+\item{min_max}{A \code{logical}. If \code{TRUE}, only the minimum and
 maximum values of the factor hyperparameter will be used.  Only applies to
-estimators with more than one hyperparameter.}
+estimators with more than one hyperparameter. Defaults to \code{FALSE}.}
 }
 \value{
 A collection of plots and summary statistics for the optimal
 estimator selected by \code{cvCovEst}.
 }
 \description{
-\code{cvSummaryPlot} combines plots of the eigenvalues and the
-covariance heatmap for the optimal estimator selected by \code{cvCovEst},
-and also provides a table showing the best estimator within each class.  A
-plot the risk of the optimal estimator's class is also provided if
-applicable.
+\code{cvSummaryPlot()} combines plots of the eigenvalues and the
+covariance heatmap for the optimal estimator selected by
+\code{\link{cvCovEst}()}, and also provides a table showing the best
+estimator within each class.  A plot the risk of the optimal estimator's
+class is also provided if applicable.
 }
 \keyword{internal}

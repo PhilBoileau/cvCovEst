@@ -14,16 +14,20 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-\code{nlShrinkLWEst} invokes the analytical estimator
+\code{nlShrinkLWEst()} invokes the analytical estimator
 presented by \insertCite{Ledoit2020;textual}{cvCovEst} for applying a
 nonlinear shrinkage function to the sample eigenvalues of the covariance
 matrix. The shrinkage function relies on an application of the Hilbert
 Transform to an estimate of the sample eigenvalues' limiting spectral
 density. This estimated density is computed with the Epanechnikov kernel
-using a global bandwidth parameter of n^(-1/3). The resulting shrinkage
-function pulls eigenvalues towards the nearest mode of their empirical
-distribution, thus creating a localized shrinkage effect rather than a
-global one.
+using a global bandwidth parameter of \code{n^(-1/3)}. The resulting
+shrinkage function pulls eigenvalues towards the nearest mode of their
+empirical distribution, thus creating a localized shrinkage effect rather
+than a global one.
+
+We do not recommend that this estimator be employed when
+the estimand is the correlation matrix. The diagonal entries of the
+resulting estimate are not guaranteed to be equal to one.
 }
 \examples{
 nlShrinkLWEst(dat = mtcars)

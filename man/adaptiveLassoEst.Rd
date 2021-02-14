@@ -21,8 +21,9 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-The \code{adaptiveLassoEst} function is a modification of
-the similarly named penalized regression introduced by
+\code{adaptiveLassoEst()} applied the adaptive LASSO to the
+entries of the sample covariance matrix. The thresholding function is
+inspired by the penalized regression introduced by
 \insertCite{zou2006;textual}{cvCovEst}. The thresholding function assigns
 a weight to each entry of the sample covariance matrix based on its
 initial value. This weight then determines the relative size of the penalty

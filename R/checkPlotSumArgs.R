@@ -1,24 +1,26 @@
 #' Check Arguments Passed to plot.cvCovEst and summary.cvCovEst
 #'
-#' @description The \code{checkPlotSumArgs} function verifies that all arguments
-#' passed to the \code{plot.cvCovEst} and \code{summary.cvCovEst} functions meet
-#' their specifications.  Some additional arguments may be checked at the
-#' individual function level.
+#' @description The \code{checkPlotSumArgs()} function verifies that all
+#'  arguments passed to the \code{\link{plot.cvCovEst}()} and
+#'  \code{\link{summary.cvCovEst}()} functions meet their specifications. Some
+#'  additional arguments may be checked at the individual function level.
 #'
-#' @param dat An object of class, \code{"cvCovEst"}.  Specifically, this is the
-#'  standard output of the function \code{cvCovEst}.
-#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
-#'  object originally passed to \code{cvCovEst}.
-#' @param which_fun A choice of \code{"plot"} or \code{"summary"} depending on.
-#'  which function is being checked.
-#' @param estimator A character vector specifying one or more classes of
+#' @param dat An object of class \code{"cvCovEst"}.  Specifically, this is the
+#'  standard output of the \code{\link{cvCovEst}()}.
+#' @param dat_orig The \code{numeric} \code{data.frame}, \code{matrix}, or
+#'  similar object originally passed to \code{\link{cvCovEst}()}.
+#' @param which_fun A \code{character} indicating a choice of \code{"plot"} or
+#'  \code{"summary"} depending on which function is being checked.
+#' @param estimator A \code{character} vector specifying one or more classes of
 #'  estimators to compare.
-#' @param plot_type A character vector specifying one of four choices of
+#' @param plot_type A \code{character} vector specifying one of four choices of
 #'  diagnostic plots.
-#' @param summ_fun A character vector specifying which summaries to output.
-#' @param stat A character vector of one or more summary statistics to use when
-#'  comparing estimators.
-#' @param k The number of leading/trailing eigenvalues to plot.
+#' @param summ_fun A \code{character} vector specifying which summaries to
+#'  output.
+#' @param stat A \code{character} vector of one or more summary statistics to
+#'  use when comparing estimators.
+#' @param k A \code{integer} indicating the number of leading/trailing
+#'  eigenvalues to plot.
 #' @param leading A \code{logical} indicating if the leading eigenvalues should
 #'  be used.
 #' @param abs_v A \code{logical} determining if the absolute value of the matrix

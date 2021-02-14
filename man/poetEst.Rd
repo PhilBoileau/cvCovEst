@@ -11,7 +11,7 @@ poetEst(dat, k, lambda)
 
 \item{k}{An \code{integer} indicating the number of unobserved latent
 factors. Empirical evidence suggests that the POET estimator is robust to
-over-estimates of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+overestimation of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
 practice, it is therefore preferable to use larger values.}
 
 \item{lambda}{A non-negative \code{numeric} defining the amount of
@@ -23,7 +23,7 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-\code{poetEst} implements the Principal Orthogonal complement
+\code{poetEst()} implements the Principal Orthogonal complEment
 Thresholding (POET) estimator, a nonparametric, unobserved-factor-based
 estimator of the covariance matrix \insertCite{fan2013}{cvCovEst}. The
 estimator is defined as the sum of the sample covariance matrix'

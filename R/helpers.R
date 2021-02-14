@@ -4,7 +4,7 @@
 ################################################################################
 #' Check for cvCovEst Class
 #'
-#' @description \code{is.cvCovEst} provides a generic method for checking if
+#' @description \code{is.cvCovEst()} provides a generic method for checking if
 #' input is of class \code{cvCovEst}.
 #'
 #' @param x The specific object to test.
@@ -34,13 +34,13 @@ is.cvCovEst <- function(x) {
 ################################################################################
 #' cvCovEst Plot Theme
 #'
-#' @description \code{theme_cvCovEst} defines the overall theme of the
-#'  \code{cvCovEst} plotting functions and makes changes depending on which plot
-#'  function is being called.
+#' @description \code{theme_cvCovEst()} defines the overall theme of the
+#'  \code{cvCovEst} package plotting functions and makes changes depending on
+#'  which plot function is being called.
 #'
-#' @param plot_type A character vector specifying which plot is to be displayed.
-#'   Can contain more than one value in the case of
-#'   \code{plot_type = c('heatmap', 'summary')}.
+#' @param plot_type A \code{character} vector specifying which plot is to be
+#'  displayed. Can contain more than one value in the case of
+#'  \code{plot_type = c("heatmap", "summary")}.
 #'
 #' @return A \code{ggplot} theme.
 #'
@@ -116,12 +116,12 @@ theme_cvCovEst <- function(plot_type, ...) {
 ################################################################################
 #' Hyperparameter Retrieval Function
 #'
-#' @description \code{getHypers} retrieves the names and values of all
-#'  hyperparameters associated with an estimator passed to \code{cvCovEst}.
+#' @description \code{getHypers()} retrieves the names and values of all
+#'  hyperparameters associated with an estimator passed to \code{cvCovEst()}.
 #'
 #' @param dat A \code{data.frame} of estimators and their hyperparameter values.
-#'  Specifically, this is one of the outputs of \code{summary.cvCovEst} or
-#'  \code{cvCovEst}.
+#'  Specifically, this is one of the outputs of \code{summary.cvCovEst()} or
+#'  \code{cvCovEst()}.
 #' @param summ_stat A character vector specifying the summary statistic of
 #'  interest.
 #' @param new_df A \code{logical} indicating whether a new \code{data.frame}
@@ -212,11 +212,11 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
 ################################################################################
 #' Estimator Attributes Function
 #'
-#' @description \code{estAttributes} returns a named list corresponding to the
-#'  attributes of a specific estimator implemented in \code{cvCovEst}.
+#' @description \code{estAttributes()} returns a named list corresponding to the
+#'  attributes of a specific estimator implemented in the \code{cvCovEst}
+#'  package.
 #'
-#' @param estimator A character vector specifying a class of estimator.
-#'  \code{cvCovEst}.
+#' @param estimator A \code{character} vector specifying a class of estimator.
 #'
 #' @return A named \code{list} containing the attributes of the indicated
 #'  estimator.
