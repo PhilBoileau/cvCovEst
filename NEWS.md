@@ -1,3 +1,7 @@
+# cvCovEst 0.3.1 (2021-02-13)
+
++ Edited documentation to meet CRAN specificationsq
+
 # cvCovEst 0.3.0 (2021-02-10)
 
 + Added information and simulated data examples of plotting and summary

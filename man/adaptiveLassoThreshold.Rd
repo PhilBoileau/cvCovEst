@@ -21,6 +21,7 @@ A regularized \code{numeric}.
 }
 \description{
 \code{adaptiveLassoThreshold()} applies the adaptive LASSO
-thresholding function to the entries of a matrix.
+thresholding function to the entries of a \code{matrix}. In particular, it
+is meant to be applied to sample covariance matrix
 }
 \keyword{internal}

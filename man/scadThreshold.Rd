@@ -22,6 +22,7 @@ A regularized \code{numeric}.
 }
 \description{
 \code{scadThreshold()} applies the smoothly clipped absolute
-deviation thresholding function to the entries of a matrix.
+deviation thresholding function to the entries of a \code{matrix}.
+In particular, it is meant to be applied to the sample covariance matrix.
 }
 \keyword{internal}
