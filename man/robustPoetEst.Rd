@@ -29,20 +29,20 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-\code{robustPoetEst} implements the robust version of Principal
-Orthogonal complEment Thresholding (POET) estimator, a nonparametric,
-unobserved-factor-based estimator of the covariance matrix when the
-underlying distribution is ellipitcal \insertCite{fan2018}{cvCovEst}. The
-estimator is defined as the sum of the sample covariance matrix's
-rank-\code{k} approximation and its post-thresholding principal orthogonal
-complement. The rank-\code{k} approximation is constructed from the sample
-covariance matrix, its leading eigenvalues, and its leading eigenvectors.
-The sample covariance matrix and leading eigenvalues are initially
-estimated via an M-estimation procedure and the marginal Kendall's tau
-estimator. The leading eigenvectors are estimated using spatial Kendall's
-tau estimator. The hard thresholding function is used to regularize the
-idiosyncratic errors' estimated covariance matrix, though other
-regularization schemes could be used.
+\code{robustPoetEst()} implements the robust version of
+Principal Orthogonal complEment Thresholding (POET) estimator, a
+nonparametric, unobserved-factor-based estimator of the covariance matrix
+when the underlying distribution is ellipitcal
+\insertCite{fan2018}{cvCovEst}. The estimator is defined as the sum of the
+sample covariance matrix's rank-\code{k} approximation and its
+post-thresholding principal orthogonal complement. The rank-\code{k}
+approximation is constructed from the sample covariance matrix, its leading
+eigenvalues, and its leading eigenvectors.  The sample covariance matrix and
+leading eigenvalues are initially estimated via an M-estimation procedure
+and the marginal Kendall's tau estimator. The leading eigenvectors are
+estimated using spatial Kendall's tau estimator. The hard thresholding
+function is used to regularize the idiosyncratic errors' estimated
+covariance matrix, though other regularization schemes could be used.
 }
 \examples{
 robustPoetEst(dat = mtcars, k = 2L, lambda = 0.1, var_est = "sample")

@@ -112,13 +112,15 @@ test_that("Only supported summary statistics are allowed for plotting", {
     )
   )
   expect_error(
-    cvMultiMelt(
-      dat = cvTestH,
-      estimator = c("poetEst"),
-      stat = c("mean"),
-      dat_orig = dat,
-      cv_details = "",
-      has_hypers = has_hypers
+    suppressWarnings(
+      cvMultiMelt(
+        dat = cvTestH,
+        estimator = c("poetEst"),
+        stat = c("mean"),
+        dat_orig = dat,
+        cv_details = "",
+        has_hypers = has_hypers
+      )
     )
   )
 })

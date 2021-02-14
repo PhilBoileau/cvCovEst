@@ -13,7 +13,7 @@ cvFrobeniusLoss(
 )
 }
 \arguments{
-\item{fold}{A \code{fold} object (from \code{\link[origami]{make_folds}})
+\item{fold}{A \code{fold} object (from \code{\link[origami]{make_folds}()})
 over which the estimation procedure is to be performed.}
 
 \item{dat}{A \code{data.frame} containing the full (non-sample-split) data,
@@ -44,8 +44,8 @@ their hyperparameters (if any), and their scaled Frobenius loss evaluated
 on a given \code{fold}.
 }
 \description{
-\code{cvFrobeniusLoss} evaluates the aggregated Frobenius loss
-over a \code{fold} object (from \pkg{origami}
+\code{cvFrobeniusLoss()} evaluates the aggregated Frobenius loss
+over a \code{fold} object (from '\pkg{origami}'
 \insertCite{Coyle2018}{cvCovEst}).
 }
 \examples{

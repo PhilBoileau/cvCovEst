@@ -1,10 +1,10 @@
 #' Cross-Validation Function for Aggregated Frobenius Loss
 #'
-#' @description \code{cvFrobeniusLoss} evaluates the aggregated Frobenius loss
-#'   over a \code{fold} object (from \pkg{origami}
+#' @description \code{cvFrobeniusLoss()} evaluates the aggregated Frobenius loss
+#'   over a \code{fold} object (from '\pkg{origami}'
 #'   \insertCite{Coyle2018}{cvCovEst}).
 #'
-#' @param fold A \code{fold} object (from \code{\link[origami]{make_folds}})
+#' @param fold A \code{fold} object (from \code{\link[origami]{make_folds}()})
 #'  over which the estimation procedure is to be performed.
 #' @param dat A \code{data.frame} containing the full (non-sample-split) data,
 #'  on which the cross-validated procedure is performed.
@@ -226,7 +226,7 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
 
 #' True Cross-Validated Frobenius Loss
 #'
-#' @description \code{trueFrobeniusLoss} computes the true cross-validated
+#' @description \code{trueFrobeniusLoss()} computes the true cross-validated
 #'  Frobenius loss over the validation dataset.
 #'
 #' @param estimate A \code{matrix} corresponding to the estimate of the
@@ -269,13 +269,13 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
 
 #' Cross-Validation Function for Matrix Frobenius Loss
 #'
-#' @description \code{cvMatrixFrobeniusLoss} evaluates the matrix Frobenius
-#'  loss over a \code{fold} object (from \pkg{origami}
+#' @description \code{cvMatrixFrobeniusLoss()} evaluates the matrix Frobenius
+#'  loss over a \code{fold} object (from '\pkg{origami}'
 #'  \insertCite{Coyle2018}{cvCovEst}). This loss function is equivalent to that
-#'  presented in \code{\link[cvCovEst]{cvFrobeniusLoss}} in terms of estimator
+#'  presented in \code{\link[cvCovEst]{cvFrobeniusLoss}()} in terms of estimator
 #'  selections, but is more computationally efficient.
 #'
-#' @param fold A \code{fold} object (from \code{\link[origami]{make_folds}})
+#' @param fold A \code{fold} object (from \code{\link[origami]{make_folds}()})
 #'  over which the estimation procedure is to be performed.
 #' @param dat A \code{data.frame} containing the full (non-sample-split) data,
 #'  on which the cross-validated procedure is performed.
@@ -418,16 +418,16 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
 
 #' Cross-Validation Function for Scaled Matrix Frobenius Loss
 #'
-#' @description \code{cvScaledMatrixFrobeniusLoss} evaluates the scaled matrix
-#'  Frobenius loss over a \code{fold} object (from \pkg{origami}
+#' @description \code{cvScaledMatrixFrobeniusLoss()} evaluates the scaled matrix
+#'  Frobenius loss over a \code{fold} object (from '\pkg{origami}'
 #'  \insertCite{Coyle2018}{cvCovEst}). The squared error loss computed for each
 #'  entry of the estimated covariance matrix is scaled by the training set's
 #'  sample variances of the variable associated with that entry's row and
 #'  column variables. This loss should be used instead of
-#'  \code{cvMatrixFrobeniusLoss} when a dataset's variables' values are of
-#'  different magnitudes.
+#'  \code{\link{cvMatrixFrobeniusLoss}()} when a dataset's variables' values
+#'  are of different magnitudes.
 #'
-#' @param fold A \code{fold} object (from \code{\link[origami]{make_folds}})
+#' @param fold A \code{fold} object (from \code{\link[origami]{make_folds}()})
 #'  over which the estimation procedure is to be performed.
 #' @param dat A \code{data.frame} containing the full (non-sample-split) data,
 #'  on which the cross-validated procedure is performed.

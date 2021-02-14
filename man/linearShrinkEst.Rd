@@ -10,7 +10,7 @@ linearShrinkEst(dat, alpha)
 \item{dat}{A numeric \code{data.frame}, \code{matrix}, or similar object.}
 
 \item{alpha}{A \code{numeric} between 0 and 1 defining convex combinations
-of the sample covariance matrix and the identity. \code{alpha = 1} returns
+of the sample covariance matrix and the identity. \code{alpha = 1} produces
 the sample covariance matrix, and \code{alpha = 0} returns the identity.}
 }
 \value{
@@ -18,7 +18,7 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-\code{linearShrinkEst} computes the linear shrinkage estimate
+\code{linearShrinkEst()} computes the linear shrinkage estimate
 of the covariance matrix for a given value of \code{alpha}. The linear
 shrinkage estimator is defined as the convex combination of the sample
 covariance matrix and the identity matrix. The choice of \code{alpha}

@@ -23,7 +23,7 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-\code{poetEst} implements the Principal Orthogonal complement
+\code{poetEst()} implements the Principal Orthogonal complEment
 Thresholding (POET) estimator, a nonparametric, unobserved-factor-based
 estimator of the covariance matrix \insertCite{fan2013}{cvCovEst}. The
 estimator is defined as the sum of the sample covariance matrix'

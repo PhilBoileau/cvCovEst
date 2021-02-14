@@ -15,30 +15,31 @@ cvRiskPlot(
 }
 \arguments{
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
-\code{cvCovEst}.}
+\code{\link{cvCovEst}()}.}
 
-\item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
-\code{"risk"}}
+\item{plot_type}{A \code{character} detailing the type of plot. Passed to
+\code{\link{theme_cvCovEst}()}, defaults to \code{"risk"}}
 
-\item{cv_details}{Character vector summarizing key arguments passed to
-\code{cvCovEst}.}
+\item{cv_details}{A \code{character} vector summarizing key arguments passed
+to \code{\link{cvCovEst}()}.}
 
-\item{switch_vars}{Default is \code{FALSE}. If \code{TRUE},
+\item{switch_vars}{A \code{logical}. If \code{TRUE},
 the hyperparameters used for the x-axis and factor variables are switched.
-Only applies to estimators with more than one hyperparameter.}
+Only applies to estimators with more than one hyperparameter. Defaults to
+\code{FALSE}.}
 
-\item{min_max}{Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
+\item{min_max}{A \code{logical}. If \code{TRUE}, only the minimum and
 maximum values of the factor hyperparameter will be used.  Only applies to
-estimators with more than one hyperparameter.}
+estimators with more than one hyperparameter. Defaults to \code{FALSE}.}
 
-\item{estimator}{A character vector specifying one or more classes of
+\item{estimator}{A \code{character} vector specifying one or more classes of
 estimators to compare.}
 }
 \value{
 A single plot or grid of plots for each estimator specified.
 }
 \description{
-\code{cvRiskPlot} plots the empirical risk for a given
+\code{cvRiskPlot()} plots the empirical risk for a given
 estimator, or set of estimators, as a function of the hyperparameters.
 }
 \keyword{internal}

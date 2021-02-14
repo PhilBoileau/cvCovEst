@@ -14,7 +14,7 @@ A \code{logical} indicating \code{TRUE} if \code{x} inherits from
 class \code{cvCovEst}.
 }
 \description{
-\code{is.cvCovEst} provides a generic method for checking if
+\code{is.cvCovEst()} provides a generic method for checking if
 input is of class \code{cvCovEst}.
 }
 \examples{

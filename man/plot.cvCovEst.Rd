@@ -22,23 +22,24 @@
 \item{x}{An object of class, \code{"cvCovEst"}.  Specifically, this is the
 standard output of the function \code{cvCovEst}.}
 
-\item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
+\item{dat_orig}{The \code{numeric data.frame}, \code{matrix}, or similar
 object originally passed to \code{cvCovEst}.}
 
-\item{estimator}{A character vector specifying one or more classes of
+\item{estimator}{A \code{character} vector specifying one or more classes of
 estimators to compare.  If \code{NULL}, the class of estimator associated
 with optimal \code{cvCovEst} selection is used.}
 
-\item{plot_type}{A character vector specifying one of four choices of
+\item{plot_type}{A \code{character} vector specifying one of four choices of
 diagnostic plots.  Default is \code{"summary"}.  See Details for more about
 each plotting choice.}
 
-\item{stat}{A character vector of one or more summary statistics to use when
-comparing estimators.  Default is \code{'min'} for minimum
+\item{stat}{A \code{character} vector of one or more summary statistics to
+use when comparing estimators.  Default is \code{"min"} for minimum
 empirical risk.  See Details for more options.}
 
-\item{k}{The number of leading/trailing eigenvalues to plot. If \code{NULL},
-will default to the number of columns in \code{dat_orig}.}
+\item{k}{A \code{integer} indicating the number of leading/trailing
+eigenvalues to plot. If \code{NULL}, will default to the number of columns
+in \code{dat_orig}.}
 
 \item{leading}{A \code{logical} indicating if the leading eigenvalues should
 be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
@@ -49,9 +50,9 @@ entries should be used for plotting the matrix heat map.  Default is
 \code{TRUE}.}
 
 \item{switch_vars}{A \code{logical}. If \code{TRUE}, the hyperparameters used
-for the x-axis and factor variables are switched in the plot of the empirical
-risk.  Only applies to estimators with more than one hyperparameter. Default
-is \code{FALSE}.}
+for the x-axis and factor variables are switched in the plot of the
+empirical risk.  Only applies to estimators with more than one
+hyperparameter. Default is \code{FALSE}.}
 
 \item{min_max}{A \code{logical}.  If \code{TRUE}, only the minimum and
 maximum values of the factor hyperparameter will be used.  Only applies to
@@ -71,28 +72,29 @@ estimator using \code{cvCovEst}.
 }
 \details{
 This plot method is designed to aide users in understanding the
-estimation procedure carried out in \code{cvCovEst}.  There are currently
-four different values for \code{plot_type} that can be called:
+estimation procedure carried out in \code{\link{cvCovEst}()}. There are
+currently four different values for \code{plot_type} that can be called:
 \itemize{
 \item \code{"eigen"} - Plots the eigenvalues associated with the
 specified \code{estimator} and \code{stat} arguments in decreasing
 order.
 \item \code{"risk"} - Plots the empirical risk of the specified
 \code{estimator} as a function of the hyperparameter values passed to
-\code{cvCovEst}.  This type of plot is only compatible with estimators
-which take hyperparameters as arguments.
+\code{\link{cvCovEst}()}.  This type of plot is only compatible with
+estimators which take hyperparameters as arguments.
 \item \code{"heatmap"} - Plots a covariance heat map associated with the
 specified \code{estimator} and \code{stat} arguments.  Multiple
 estimators and performance stats may be specified to produce grids of
 heat maps.
 \item \code{"summary"} - Specifying this plot type will run all of the
 above plots for the best performing estimator selected by
-\code{cvCovEst}.  These plots are then combined into a single panel
-along with a table containing the best performing estimator within each
-class.  If the optimal estimator selected by \code{cvCovEst} does not
-have hyperparameters, then the risk plot is replaced with a table
-displaying the minimum, 25\% quantile, median, 75\% quantile, and maximum
-of the empirical risk associated with each class of estimator.
+\code{\link{cvCovEst}()}.  These plots are then combined into a single
+panel along with a table containing the best performing estimator
+within each class.  If the optimal estimator selected by
+\code{\link{cvCovEst}()} does not have hyperparameters, then the risk
+plot is replaced with a table displaying the minimum, first quartile,
+median, third quartile, and maximum of the empirical risk associated
+with each class of estimator.
 }
 
 The \code{stat} argument accepts five values.  They each correspond to a
@@ -100,9 +102,9 @@ summary statistic of the empirical risk distribution within a class of
 estimator.  Possible values are:
 \itemize{
 \item \code{"min"} - minimum
-\item \code{"Q2"} - 25\% quantile
+\item \code{"Q1"} - first quartile
 \item \code{"median"} - median
-\item \code{"Q3"} - 75\% quantile
+\item \code{"Q3"} - third quartile
 \item \code{"max"} - maximum
 }
 }

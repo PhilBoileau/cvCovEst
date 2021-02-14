@@ -1,4 +1,8 @@
 #' Smoothly Clipped Absolute Deviation Thresholding Function
+#' 
+#' @description \code{scadThreshold()} applies the smoothly clipped absolute 
+#'   deviation thresholding function to the entries of a \code{matrix}.
+#'   In particular, it is meant to be applied to the sample covariance matrix.
 #'
 #' @param entry A \code{numeric} entry in a covariance matrix estimate.
 #' @param lambda A non-negative \code{numeric} defining the degree of
@@ -38,6 +42,10 @@ scadThreshold <- function(entry, lambda, a) {
 ###############################################################################
 
 #' Adaptive LASSO Thresholding Function
+#'
+#' @description \code{adaptiveLassoThreshold()} applies the adaptive LASSO
+#'  thresholding function to the entries of a \code{matrix}. In particular, it
+#'  is meant to be applied to sample covariance matrix 
 #'
 #' @param entry A \code{numeric} entry in a covariance matrix estimate.
 #' @param lambda A non-negative \code{numeric} defining the amount of

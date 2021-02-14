@@ -16,7 +16,7 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-\code{taperingEst} estimates the covariance matrix of a
+\code{taperingEst()} estimates the covariance matrix of a
 \code{data.frame}-like object with ordered variables by gradually shrinking
 the bands of the sample covariance matrix towards zero. The estimator is
 defined as the Hadamard product of the sample covariance matrix and a

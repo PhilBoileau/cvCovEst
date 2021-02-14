@@ -13,7 +13,7 @@ cvMatrixFrobeniusLoss(
 )
 }
 \arguments{
-\item{fold}{A \code{fold} object (from \code{\link[origami]{make_folds}})
+\item{fold}{A \code{fold} object (from \code{\link[origami]{make_folds}()})
 over which the estimation procedure is to be performed.}
 
 \item{dat}{A \code{data.frame} containing the full (non-sample-split) data,
@@ -39,10 +39,10 @@ their hyperparameters (if any), and their matrix Frobenius loss evaluated
 on a given \code{fold}.
 }
 \description{
-\code{cvMatrixFrobeniusLoss} evaluates the matrix Frobenius
-loss over a \code{fold} object (from \pkg{origami}
+\code{cvMatrixFrobeniusLoss()} evaluates the matrix Frobenius
+loss over a \code{fold} object (from '\pkg{origami}'
 \insertCite{Coyle2018}{cvCovEst}). This loss function is equivalent to that
-presented in \code{\link[cvCovEst]{cvFrobeniusLoss}} in terms of estimator
+presented in \code{\link[cvCovEst]{cvFrobeniusLoss}()} in terms of estimator
 selections, but is more computationally efficient.
 }
 \examples{

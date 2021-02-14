@@ -3,15 +3,16 @@
 ################################################################################
 #' Plot robustPoetEst
 #'
-#' @description \code{plotRobustPoetEst} performs actions specific to plotting
+#' @description \code{plotRobustPoetEst()} performs actions specific to plotting
 #'  the empirical risk of the Robust POET estimator.
 #'
 #' @param dat A data table of empirical risks.  Specifically, this is the
-#'  \code{risk_df} table output by \code{cvCovEst}.
+#'  \code{risk_df} table output by \code{\link{cvCovEst}()}.
 #' @param switch_vars A \code{logical} indicating if the x-axis and factor
 #'  variables should be switched.  Default is \code{FALSE}.
-#' @param min_max Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
-#'  maximum values of the factor hyperparameter will be used.
+#' @param min_max A \code{logical}. Default is \code{FALSE}. If \code{TRUE},
+#'  only the minimum and maximum values of the factor hyperparameter will be
+#'  used.
 #'
 #' @importFrom dplyr filter %>%
 #' @importFrom rlang .data
@@ -118,15 +119,16 @@ plotRobustPoetEst <- function(
 ################################################################################
 #' Plot poetEst
 #'
-#' @description \code{plotPoetEst} performs actions specific to plotting
+#' @description \code{plotPoetEst()} performs actions specific to plotting
 #'  the empirical risk of the POET estimator.
 #'
 #' @param dat A data table of empirical risks.  Specifically, this is the
-#'  \code{risk_df} table output by \code{cvCovEst}.
+#'  \code{risk_df} table output by \code{\link{cvCovEst}()}.
 #' @param switch_vars A \code{logical} indicating if the x-axis and factor
 #'  variables should be switched.  Default is \code{FALSE}.
-#' @param min_max Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
-#'  maximum values of the factor hyperparameter will be used.
+#' @param min_max A \code{logical}. Default is \code{FALSE}. If \code{TRUE},
+#'  only the minimum and maximum values of the factor hyperparameter will be
+#'  used.
 #'
 #' @importFrom dplyr filter %>%
 #' @importFrom rlang .data
@@ -220,15 +222,16 @@ plotPoetEst <- function(
 ################################################################################
 #' Plot adaptiveLassoEst
 #'
-#' @description \code{plotAdaptiveLassoEst} performs actions specific to plotting
-#'  the empirical risk of the Adaptive LASSO estimator.
+#' @description \code{plotAdaptiveLassoEst()} performs actions specific to
+#'  plotting the empirical risk of the Adaptive LASSO estimator.
 #'
 #' @param dat A data table of empirical risks.  Specifically, this is the
-#'  \code{risk_df} table output by \code{cvCovEst}.
+#'  \code{risk_df} table output by \code{\link{cvCovEst}()}.
 #' @param switch_vars A \code{logical} indicating if the x-axis and factor
 #'  variables should be switched.  Default is \code{FALSE}.
-#' @param min_max Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
-#'  maximum values of the factor hyperparameter will be used.
+#' @param min_max A \code{logical}. Default is \code{FALSE}. If \code{TRUE},
+#'  only the minimum and maximum values of the factor hyperparameter will be
+#'  used.
 #'
 #' @importFrom dplyr filter %>%
 #' @importFrom rlang .data

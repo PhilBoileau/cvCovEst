@@ -14,8 +14,8 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-\code{sampleCovEst} computes the sample covariance matrix. This
-function is a simple wrapper around \code{\link[coop]{covar}}.
+\code{sampleCovEst()} computes the sample covariance matrix. This
+function is a simple wrapper around \code{\link[coop]{covar}()}.
 }
 \examples{
 sampleCovEst(dat = mtcars)

@@ -21,6 +21,7 @@ thresholding function.}
 A regularized \code{numeric}.
 }
 \description{
-Smoothly Clipped Absolute Deviation Thresholding Function
+\code{scadThreshold()} applies the smoothly clipped absolute
+deviation thresholding function to the entries of a matrix.
 }
 \keyword{internal}

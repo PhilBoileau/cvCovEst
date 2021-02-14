@@ -3,25 +3,25 @@
 ################################################################################
 #' Multiple Heat Map Plot
 #'
-#' @description \code{cvMultiMelt} visualizes the structure of one or more
+#' @description \code{cvMultiMelt()} visualizes the structure of one or more
 #'  covariance matrix estimators through a grid of heat maps, where each heat
 #'  map corresponds to a different estimator.
 #'
 #' @param dat A named \code{list}.  Specifically, this is the standard output of
 #'  \code{cvCovEst}.
-#' @param estimator A character vector specifying one or more classes of
+#' @param estimator A \code{character} vector specifying one or more classes of
 #'  estimators to visualize and compare.
-#' @param stat A character vector containing the names of various empirical risk
-#'  summary statistics. Estimators corresponding to each statistics will be
-#'  visualized with a different heatmap. Default is \code{'min'} for minimum
-#'  empirical risk.
-#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
-#'  object originally passed to \code{cvCovEst}.
-#' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
-#'  \code{"heatmap"}.
-#' @param cv_details Character vector summarizing key arguments passed to
-#'  \code{cvCovEst}.
-#' @param has_hypers A character vector containing the names of current
+#' @param stat A \code{character} vector containing the names of various
+#'  empirical risk summary statistics. Estimators corresponding to each
+#'  statistics will be visualized with a different heatmap. Default is
+#'  \code{'min'} for minimum empirical risk.
+#' @param dat_orig The \code{numeric data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{\link{cvCovEst}()}.
+#' @param plot_type A \code{character} detailing the type of plot. Passed to
+#'  \code{theme_cvCovEst}, defaults to \code{"risk"}
+#' @param cv_details A \code{character} vector summarizing key arguments passed
+#'  to \code{\link{cvCovEst}()}.
+#' @param has_hypers A \code{character} vector containing the names of current
 #'  estimators with hyperparameters.
 #' @param abs_v A \code{logical} determining if the absolute value of the matrix
 #'  entries should be displayed versus the signed value. Default is \code{TRUE}.
@@ -299,31 +299,31 @@ cvMultiMelt <- function(
 ################################################################################
 #' Eigenvalue Plot
 #'
-#' @description \code{cvEigenPlot} plots the eigenvalues of one or more
-#' estimators produced by \code{cvCovEst}.
+#' @description \code{cvEigenPlot()} plots the eigenvalues of one or more
+#' estimators produced by \code{\link{cvCovEst}()}.
 #'
 #' @param dat A named \code{list}.  Specifically, this is the standard output of
-#'  \code{cvCovEst}.
-#' @param estimator A character vector specifying one or more classes of
+#'  \code{\link{cvCovEst}()}.
+#' @param estimator A \code{character} vector specifying one or more classes of
 #'  estimators to compare.
-#' @param stat A character vector containing the names of various empirical risk
-#'  summary statistics.  Within each class of estimator, eigenvalues will be
-#'  plot for the estimators corresponding to each stat.
-#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
-#'  object originally passed to \code{cvCovEst}.
-#' @param k The number of eigenvalues to plot.  Must be less than or equal to
-#'  the number of columns of the original data matrix.
+#' @param stat A \code{character} vector containing the names of various
+#'  empirical risk summary statistics.  Within each class of estimator,
+#'  eigenvalues will be plot for the estimators corresponding to each stat.
+#' @param dat_orig The \code{numeric data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{\link{cvCovEst}()}.
+#' @param k A \code{numeric} indicating the number of eigenvalues to plot. Must
+#'  be less than or equal to the number of columns of the original data matrix.
 #' @param leading A \code{logical} indicating if the leading eigenvalues should
 #'  be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing
 #'  eigenvalues will be used instead.
-#' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
-#'  \code{"eigen"}.
-#' @param cv_details Character vector summarizing key arguments passed to
-#'  \code{cvCovEst}.
-#' @param has_hypers A character vector containing the names of current
+#' @param plot_type A \code{character} detailing the type of plot. Passed to
+#'  \code{theme_cvCovEst}, defaults to \code{"risk"}
+#' @param cv_details A \code{character} vector summarizing key arguments passed
+#'  to \code{\link{cvCovEst}()}.
+#' @param has_hypers A \code{character} vector containing the names of current
 #'  estimators with hyperparameters.
 #'
-#' @return A plot, or grid of plots, showing the k leading or trailing
+#' @return A plot, or grid of plots, showing the \code{k} leading or trailing
 #'  eigenvalues of the specified estimators and associated summary statistics of
 #'  the empirical risk.
 #'
@@ -577,7 +577,7 @@ cvEigenPlot <- function(
 ################################################################################
 #' Multi-Hyperparameter Risk Plots
 #'
-#' @description \code{multiHyperRisk} produces plots of the empirical risk for
+#' @description \code{multiHyperRisk()} produces plots of the empirical risk for
 #'  estimators with more than one hyperparameter.  The function transforms one
 #'  of the hyperparameters into a factor and uses it to distinguish between the
 #'  risk of various estimators.  If one of the hyperparameters has only one
@@ -585,14 +585,15 @@ cvEigenPlot <- function(
 #'  hyperparameters have only one unique value, a plot is not generated for that
 #'  estimator class.
 #'
-#' @param dat A data table of empirical risks.  Specifically, this is the
-#'  \code{risk_df} table output by \code{cvCovEst}.
-#' @param estimator A character vector specifying one or more classes of
+#' @param dat A \code{data.frame} of empirical risks. Specifically, this is the
+#'  \code{risk_df} table output by \code{\link{cvCovEst}()}.
+#' @param estimator A \code{character} vector specifying one or more classes of
 #'  estimators to compare.
 #' @param switch_vars A \code{logical} indicating if the x-axis and factor
 #'  variables should be switched.  Default is \code{FALSE}.
-#' @param min_max Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
-#'  maximum values of the factor hyperparameter will be used.
+#' @param min_max A \code{logical}. If \code{TRUE}, only the minimum and
+#'  maximum values of the factor hyperparameter will be used. Defaults to
+#'  \code{FALSE}.
 #'
 #' @importFrom dplyr filter %>%
 #' @importFrom rlang .data
@@ -636,23 +637,24 @@ multiHyperRisk <- function(
 ################################################################################
 #' Empirical Risk Plot
 #'
-#' @description \code{cvRiskPlot} plots the empirical risk for a given
+#' @description \code{cvRiskPlot()} plots the empirical risk for a given
 #'  estimator, or set of estimators, as a function of the hyperparameters.
 #'
 #' @param dat A named \code{list}.  Specifically, this is the standard output of
-#'  \code{cvCovEst}.
-#' @param estimator A character vector specifying one or more classes of
+#'  \code{\link{cvCovEst}()}.
+#' @param estimator A \code{character} vector specifying one or more classes of
 #'  estimators to compare.
-#' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
-#'  \code{"risk"}
-#' @param cv_details Character vector summarizing key arguments passed to
-#'  \code{cvCovEst}.
-#' @param switch_vars Default is \code{FALSE}. If \code{TRUE},
+#' @param plot_type A \code{character} detailing the type of plot. Passed to
+#'  \code{\link{theme_cvCovEst}()}, defaults to \code{"risk"}
+#' @param cv_details A \code{character} vector summarizing key arguments passed
+#'  to \code{\link{cvCovEst}()}.
+#' @param switch_vars A \code{logical}. If \code{TRUE},
 #'  the hyperparameters used for the x-axis and factor variables are switched.
-#'  Only applies to estimators with more than one hyperparameter.
-#' @param min_max Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
+#'  Only applies to estimators with more than one hyperparameter. Defaults to
+#'  \code{FALSE}.
+#' @param min_max A \code{logical}. If \code{TRUE}, only the minimum and
 #'  maximum values of the factor hyperparameter will be used.  Only applies to
-#'  estimators with more than one hyperparameter.
+#'  estimators with more than one hyperparameter. Defaults to \code{FALSE}.
 #'
 #' @return A single plot or grid of plots for each estimator specified.
 #'
@@ -836,35 +838,36 @@ cvRiskPlot <- function(
 ################################################################################
 #' Summary Plot
 #'
-#' @description \code{cvSummaryPlot} combines plots of the eigenvalues and the
-#'  covariance heatmap for the optimal estimator selected by \code{cvCovEst},
-#'  and also provides a table showing the best estimator within each class.  A
-#'  plot the risk of the optimal estimator's class is also provided if
-#'  applicable.
+#' @description \code{cvSummaryPlot()} combines plots of the eigenvalues and the
+#'  covariance heatmap for the optimal estimator selected by
+#'  \code{\link{cvCovEst}()}, and also provides a table showing the best
+#'  estimator within each class.  A plot the risk of the optimal estimator's
+#'  class is also provided if applicable.
 #'
 #' @param dat A named \code{list}.  Specifically, this is the standard output of
 #'  \code{cvCovEst}.
-#' @param estimator A character vector specifying which class of estimator to
-#'  plot.
-#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
+#' @param estimator A \code{character} vector specifying which class of
+#'  estimator to plot.
+#' @param dat_orig The \code{numeric data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{cvCovEst}.
-#' @param plot_type Argument passed to \code{theme_cvCovEst}.  Defaults to
-#'  \code{"summary"}.
+#' @param plot_type A \code{character} detailing the type of plot. Passed to
+#'  \code{\link{theme_cvCovEst}()}, defaults to \code{"risk"}
 #' @param cv_details Character vector summarizing key arguments passed to
-#'  \code{cvCovEst}.
-#' @param has_hypers A character vector containing the names of current
+#'  \code{\link{cvCovEst}()}.
+#' @param has_hypers A \code{character} vector containing the names of current
 #'  estimators with hyperparameters.
-#' @param multi_hypers A character vector containing the names of current
+#' @param multi_hypers A \code{character} vector containing the names of current
 #'  estimators with multiple hyperparameters.
-#' @param abs_v A code{logical} determining if the absolute value of the matrix
+#' @param abs_v A \code{logical} determining if the absolute value of the matrix
 #'  entries should be used for plotting the matrix heatmap.  Default is
 #'  \code{TRUE}.
-#' @param switch_vars Default is \code{FALSE}. If \code{TRUE}, the
-#'  hyperparameters used for the x-axis and factor variables are switched.  Only
-#'  applies to estimators with more than one hyperparameter.
-#' @param min_max Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
+#' @param switch_vars A \code{logical}. If \code{TRUE},
+#'  the hyperparameters used for the x-axis and factor variables are switched.
+#'  Only applies to estimators with more than one hyperparameter. Defaults to
+#'  \code{FALSE}.
+#' @param min_max A \code{logical}. If \code{TRUE}, only the minimum and
 #'  maximum values of the factor hyperparameter will be used.  Only applies to
-#'  estimators with more than one hyperparameter.
+#'  estimators with more than one hyperparameter. Defaults to \code{FALSE}.
 #'
 #' @return A collection of plots and summary statistics for the optimal
 #'  estimator selected by \code{cvCovEst}.
@@ -1014,19 +1017,20 @@ cvSummaryPlot <- function(
 #'
 #' @param x An object of class, \code{"cvCovEst"}.  Specifically, this is the
 #'  standard output of the function \code{cvCovEst}.
-#' @param dat_orig The numeric \code{data.frame}, \code{matrix}, or similar
+#' @param dat_orig The \code{numeric data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{cvCovEst}.
-#' @param plot_type A character vector specifying one of four choices of
+#' @param plot_type A \code{character} vector specifying one of four choices of
 #'  diagnostic plots.  Default is \code{"summary"}.  See Details for more about
 #'  each plotting choice.
-#' @param estimator A character vector specifying one or more classes of
+#' @param estimator A \code{character} vector specifying one or more classes of
 #'  estimators to compare.  If \code{NULL}, the class of estimator associated
 #'  with optimal \code{cvCovEst} selection is used.
-#' @param stat A character vector of one or more summary statistics to use when
-#'  comparing estimators.  Default is \code{'min'} for minimum
+#' @param stat A \code{character} vector of one or more summary statistics to
+#'  use when comparing estimators.  Default is \code{"min"} for minimum
 #'  empirical risk.  See Details for more options.
-#' @param k The number of leading/trailing eigenvalues to plot. If \code{NULL},
-#'  will default to the number of columns in \code{dat_orig}.
+#' @param k A \code{integer} indicating the number of leading/trailing
+#'  eigenvalues to plot. If \code{NULL}, will default to the number of columns
+#'  in \code{dat_orig}.
 #' @param leading A \code{logical} indicating if the leading eigenvalues should
 #'  be used.  Default is \code{TRUE}.  If \code{FALSE}, the trailing eigenvalues
 #'  are used instead.
@@ -1034,9 +1038,9 @@ cvSummaryPlot <- function(
 #'  entries should be used for plotting the matrix heat map.  Default is
 #'  \code{TRUE}.
 #' @param switch_vars A \code{logical}. If \code{TRUE}, the hyperparameters used
-#'  for the x-axis and factor variables are switched in the plot of the empirical
-#'  risk.  Only applies to estimators with more than one hyperparameter. Default
-#'  is \code{FALSE}.
+#'  for the x-axis and factor variables are switched in the plot of the
+#'  empirical risk.  Only applies to estimators with more than one
+#'  hyperparameter. Default is \code{FALSE}.
 #' @param min_max A \code{logical}.  If \code{TRUE}, only the minimum and
 #'  maximum values of the factor hyperparameter will be used.  Only applies to
 #'  estimators with more than one hyperparameter. Default is \code{FALSE}.
@@ -1044,28 +1048,29 @@ cvSummaryPlot <- function(
 #'  explicitly used and should be ignored by the user.
 #'
 #' @details This plot method is designed to aide users in understanding the
-#'  estimation procedure carried out in \code{cvCovEst}.  There are currently
-#'  four different values for \code{plot_type} that can be called:
+#'  estimation procedure carried out in \code{\link{cvCovEst}()}. There are
+#'  currently four different values for \code{plot_type} that can be called:
 #'  \itemize{
 #'     \item \code{"eigen"} - Plots the eigenvalues associated with the
 #'       specified \code{estimator} and \code{stat} arguments in decreasing
 #'       order.
 #'     \item \code{"risk"} - Plots the empirical risk of the specified
 #'       \code{estimator} as a function of the hyperparameter values passed to
-#'       \code{cvCovEst}.  This type of plot is only compatible with estimators
-#'       which take hyperparameters as arguments.
+#'       \code{\link{cvCovEst}()}.  This type of plot is only compatible with
+#'       estimators which take hyperparameters as arguments.
 #'     \item \code{"heatmap"} - Plots a covariance heat map associated with the
 #'       specified \code{estimator} and \code{stat} arguments.  Multiple
 #'       estimators and performance stats may be specified to produce grids of
 #'       heat maps.
 #'     \item \code{"summary"} - Specifying this plot type will run all of the
 #'       above plots for the best performing estimator selected by
-#'       \code{cvCovEst}.  These plots are then combined into a single panel
-#'       along with a table containing the best performing estimator within each
-#'       class.  If the optimal estimator selected by \code{cvCovEst} does not
-#'       have hyperparameters, then the risk plot is replaced with a table
-#'       displaying the minimum, 25% quantile, median, 75% quantile, and maximum
-#'       of the empirical risk associated with each class of estimator.
+#'       \code{\link{cvCovEst}()}.  These plots are then combined into a single
+#'       panel along with a table containing the best performing estimator
+#'       within each class.  If the optimal estimator selected by
+#'       \code{\link{cvCovEst}()} does not have hyperparameters, then the risk
+#'       plot is replaced with a table displaying the minimum, first quartile,
+#'       median, third quartile, and maximum of the empirical risk associated
+#'       with each class of estimator.
 #'  }
 #'
 #'   The \code{stat} argument accepts five values.  They each correspond to a
@@ -1073,9 +1078,9 @@ cvSummaryPlot <- function(
 #'   estimator.  Possible values are:
 #'   \itemize{
 #'     \item \code{"min"} - minimum
-#'     \item \code{"Q2"} - 25% quantile
+#'     \item \code{"Q1"} - first quartile 
 #'     \item \code{"median"} - median
-#'     \item \code{"Q3"} - 75% quantile
+#'     \item \code{"Q3"} - third quartile
 #'     \item \code{"max"} - maximum
 #'  }
 #'
