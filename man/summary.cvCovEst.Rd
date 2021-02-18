@@ -33,9 +33,8 @@ plotting.
 \code{summ_fun} argument.  The choices are:
 \itemize{
 \item \code{"empRiskByClass"} - Returns the minimum, first quartile,
-median, third quartile, and maximum of the cross-validated risk
-associated with each class of estimator passed to
-\code{\link{cvCovEst}()}.
+median, third quartile, and maximum of the empirical risk associated
+with each class of estimator passed to \code{\link{cvCovEst}()}.
 \item \code{"bestInClass"} - Returns the specific hyperparameters, if
 applicable, of the best performing estimator within each class.
 \item \code{"worstInClass"} - Returns the specific hyperparameters, if
@@ -43,9 +42,8 @@ applicable, of the worst performing estimator within each class.
 \item \code{"hyperRisk"} - For estimators that take hyperparameters as
 arguments, this function returns the hyperparameters associated with
 the minimum, first quartile, median, third quartile, and maximum of the
-cross-validated risk within each class of estimator. Each class has
-its own \code{\link[tibble]{tibble}}, which are returned as a
-\code{list}.
+empirical risk within each class of estimator. Each class has its own
+\code{\link[tibble]{tibble}}, which are returned as a \code{list}.
 }
 }
 \examples{

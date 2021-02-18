@@ -2,13 +2,13 @@
 % Please edit documentation in R/summary_functions.R
 \name{empRiskByClass}
 \alias{empRiskByClass}
-\title{Summary Statistics of Cross-Validated Risk by Estimator Class}
+\title{Summary Statistics of Empirical Risk by Estimator Class}
 \usage{
 empRiskByClass(dat)
 }
 \arguments{
-\item{dat}{The \code{\link[tibble]{tibble}} of cross-validated risk
-calculations which is output by \code{\link{cvCovEst}()}.}
+\item{dat}{The \code{\link[tibble]{tibble}} of empirical risk calculations
+which is output by \code{\link{cvCovEst}()}.}
 }
 \value{
 \code{\link[tibble]{tibble}} with rows corresponding to estimator
@@ -16,8 +16,8 @@ classes and columns corresponding to each summary statistic.
 }
 \description{
 \code{empRiskByClass()} calculates the following
-summary statistics for the cross-validated risk within each class of
-estimator passed to \code{\link{cvCovEst}()}: minimum, Q1, median, mean,
-Q3, and maximum.  The results are output as a \code{tibble}.
+summary statistics for the empirical risk within each class of estimator
+passed to \code{\link{cvCovEst}()}: minimum, Q1, median, mean, Q3, and
+maximum.  The results are output as a \code{tibble}.
 }
 \keyword{internal}

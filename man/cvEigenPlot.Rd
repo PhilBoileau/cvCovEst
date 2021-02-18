@@ -24,7 +24,7 @@ cvEigenPlot(
 estimators to compare.}
 
 \item{stat}{A \code{character} vector containing the names of various
-cross=validated risk summary statistics.  Within each class of estimator,
+empirical risk summary statistics.  Within each class of estimator,
 eigenvalues will be plot for the estimators corresponding to each stat.}
 
 \item{dat_orig}{The \code{numeric data.frame}, \code{matrix}, or similar
@@ -49,7 +49,7 @@ estimators with hyperparameters.}
 \value{
 A plot, or grid of plots, showing the \code{k} leading or trailing
 eigenvalues of the specified estimators and associated summary statistics of
-the cross=validated risk.
+the empirical risk.
 }
 \description{
 \code{cvEigenPlot()} plots the eigenvalues of one or more

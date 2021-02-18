@@ -35,7 +35,7 @@ each plotting choice.}
 
 \item{stat}{A \code{character} vector of one or more summary statistics to
 use when comparing estimators.  Default is \code{"min"} for minimum
-cross-validated risk.  See Details for more options.}
+empirical risk.  See Details for more options.}
 
 \item{k}{A \code{integer} indicating the number of leading/trailing
 eigenvalues to plot. If \code{NULL}, will default to the number of columns
@@ -51,7 +51,7 @@ entries should be used for plotting the matrix heat map.  Default is
 
 \item{switch_vars}{A \code{logical}. If \code{TRUE}, the hyperparameters used
 for the x-axis and factor variables are switched in the plot of the
-cross-validated risk.  Only applies to estimators with more than one
+empirical risk.  Only applies to estimators with more than one
 hyperparameter. Default is \code{FALSE}.}
 
 \item{min_max}{A \code{logical}.  If \code{TRUE}, only the minimum and
@@ -78,7 +78,7 @@ currently four different values for \code{plot_type} that can be called:
 \item \code{"eigen"} - Plots the eigenvalues associated with the
 specified \code{estimator} and \code{stat} arguments in decreasing
 order.
-\item \code{"risk"} - Plots the cross-validated risk of the specified
+\item \code{"risk"} - Plots the empirical risk of the specified
 \code{estimator} as a function of the hyperparameter values passed to
 \code{\link{cvCovEst}()}.  This type of plot is only compatible with
 estimators which take hyperparameters as arguments.
@@ -93,13 +93,13 @@ panel along with a table containing the best performing estimator
 within each class.  If the optimal estimator selected by
 \code{\link{cvCovEst}()} does not have hyperparameters, then the risk
 plot is replaced with a table displaying the minimum, first quartile,
-median, third quartile, and maximum of the cross-validated risk
-associated with each class of estimator.
+median, third quartile, and maximum of the empirical risk associated
+with each class of estimator.
 }
 
 The \code{stat} argument accepts five values.  They each correspond to a
-summary statistic of the cross-validated risk distribution within a class
-of estimator.  Possible values are:
+summary statistic of the empirical risk distribution within a class of
+estimator.  Possible values are:
 \itemize{
 \item \code{"min"} - minimum
 \item \code{"Q1"} - first quartile

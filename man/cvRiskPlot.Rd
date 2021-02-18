@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_functions.R
 \name{cvRiskPlot}
 \alias{cvRiskPlot}
-\title{Cross-Validated Risk Plot}
+\title{Empirical Risk Plot}
 \usage{
 cvRiskPlot(
   dat,
@@ -39,7 +39,7 @@ estimators to compare.}
 A single plot or grid of plots for each estimator specified.
 }
 \description{
-\code{cvRiskPlot()} plots the cross-validated risk for a given
+\code{cvRiskPlot()} plots the empirical risk for a given
 estimator, or set of estimators, as a function of the hyperparameters.
 }
 \keyword{internal}

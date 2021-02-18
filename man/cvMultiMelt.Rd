@@ -23,9 +23,9 @@ cvMultiMelt(
 estimators to visualize and compare.}
 
 \item{stat}{A \code{character} vector containing the names of various
-cross=validated risk summary statistics. Estimators corresponding to each
+empirical risk summary statistics. Estimators corresponding to each
 statistics will be visualized with a different heatmap. Default is
-\code{'min'} for minimum cross=validated risk.}
+\code{'min'} for minimum empirical risk.}
 
 \item{dat_orig}{The \code{numeric data.frame}, \code{matrix}, or similar
 object originally passed to \code{\link{cvCovEst}()}.}
