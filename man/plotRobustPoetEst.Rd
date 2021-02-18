@@ -7,7 +7,7 @@
 plotRobustPoetEst(dat, switch_vars = FALSE, min_max = FALSE)
 }
 \arguments{
-\item{dat}{A data table of empirical risks.  Specifically, this is the
+\item{dat}{A data table of cross-validated risks.  Specifically, this is the
 \code{risk_df} table output by \code{\link{cvCovEst}()}.}
 
 \item{switch_vars}{A \code{logical} indicating if the x-axis and factor
@@ -22,6 +22,6 @@ A list of plots
 }
 \description{
 \code{plotRobustPoetEst()} performs actions specific to plotting
-the empirical risk of the Robust POET estimator.
+the cross-validated risk of the Robust POET estimator.
 }
 \keyword{internal}
