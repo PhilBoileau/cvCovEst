@@ -930,7 +930,7 @@ cvSummaryPlot <- function(
       text = "Cross-Validated Risk Summary By Class",
       face = "bold",
       size = 10,
-      hjust = -1,
+      hjust = -0.5,
       padding = unit(2, "line")
     )
   }
@@ -964,7 +964,7 @@ cvSummaryPlot <- function(
   p4_a <- summary.cvCovEst(object = dat, summ_fun = "bestInClass")
 
   best_est <- p4_a$bestInClass$estimator[1]
-  
+
   colnames(p4_a$bestInClass) <- c("Estimator", "Hyperparameter(s)", "CV Risk")
   p4_a <- ggpubr::ggtexttable(
     p4_a$bestInClass,
