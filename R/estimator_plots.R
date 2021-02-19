@@ -4,9 +4,9 @@
 #' Plot robustPoetEst
 #'
 #' @description \code{plotRobustPoetEst()} performs actions specific to plotting
-#'  the empirical risk of the Robust POET estimator.
+#'  the cross-validated risk of the Robust POET estimator.
 #'
-#' @param dat A data table of empirical risks.  Specifically, this is the
+#' @param dat A data table of cross-validated risks.  Specifically, this is the
 #'  \code{risk_df} table output by \code{\link{cvCovEst}()}.
 #' @param switch_vars A \code{logical} indicating if the x-axis and factor
 #'  variables should be switched.  Default is \code{FALSE}.
@@ -77,8 +77,8 @@ plotRobustPoetEst <- function(
           )
         ) +
         labs(
-          title = "Change in Empirical Risk",
-          x = "k", y = "Empirical Risk"
+          title = "Change in Cross-Validated Risk",
+          x = "k", y = "Cross-Validated Risk"
         )
     }
     else {
@@ -99,8 +99,8 @@ plotRobustPoetEst <- function(
           )
         ) +
         labs(
-          title = "Change in Empirical Risk",
-          x = "lambda", y = "Empirical Risk"
+          title = "Change in Cross-Validated Risk",
+          x = "lambda", y = "Cross-Validated Risk"
         )
     }
 
@@ -120,9 +120,9 @@ plotRobustPoetEst <- function(
 #' Plot poetEst
 #'
 #' @description \code{plotPoetEst()} performs actions specific to plotting
-#'  the empirical risk of the POET estimator.
+#'  the cross-validated risk of the POET estimator.
 #'
-#' @param dat A data table of empirical risks.  Specifically, this is the
+#' @param dat A data table of cross-validated risks.  Specifically, this is the
 #'  \code{risk_df} table output by \code{\link{cvCovEst}()}.
 #' @param switch_vars A \code{logical} indicating if the x-axis and factor
 #'  variables should be switched.  Default is \code{FALSE}.
@@ -183,8 +183,8 @@ plotPoetEst <- function(
         )
       ) +
       labs(
-        title = "Change in Empirical Risk",
-        x = "k", y = "Empirical Risk"
+        title = "Change in Cross-Validated Risk",
+        x = "k", y = "Cross-Validated Risk"
       )
   }
   else {
@@ -205,8 +205,8 @@ plotPoetEst <- function(
         )
       ) +
       labs(
-        title = "Change in Empirical Risk",
-        x = "lambda", y = "Empirical Risk"
+        title = "Change in Cross-Validated Risk",
+        x = "lambda", y = "Cross-Validated Risk"
       )
   }
 
@@ -223,9 +223,9 @@ plotPoetEst <- function(
 #' Plot adaptiveLassoEst
 #'
 #' @description \code{plotAdaptiveLassoEst()} performs actions specific to
-#'  plotting the empirical risk of the Adaptive LASSO estimator.
+#'  plotting the cross-validated risk of the Adaptive LASSO estimator.
 #'
-#' @param dat A data table of empirical risks.  Specifically, this is the
+#' @param dat A data table of cross-validated risks.  Specifically, this is the
 #'  \code{risk_df} table output by \code{\link{cvCovEst}()}.
 #' @param switch_vars A \code{logical} indicating if the x-axis and factor
 #'  variables should be switched.  Default is \code{FALSE}.
@@ -287,8 +287,8 @@ plotAdaptiveLassoEst <- function(
         )
       ) +
       labs(
-        title = "Change in Empirical Risk",
-        x = "n", y = "Empirical Risk"
+        title = "Change in Cross-Validated Risk",
+        x = "n", y = "Cross-Validated Risk"
       )
   }
   else {
@@ -309,8 +309,8 @@ plotAdaptiveLassoEst <- function(
         )
       ) +
       labs(
-        title = "Change in Empirical Risk",
-        x = "lambda", y = "Empirical Risk"
+        title = "Change in Cross-Validated Risk",
+        x = "lambda", y = "Cross-Validated Risk"
       )
   }
 
