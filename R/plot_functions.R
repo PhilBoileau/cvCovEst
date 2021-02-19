@@ -964,7 +964,8 @@ cvSummaryPlot <- function(
   p4_a <- summary.cvCovEst(object = dat, summ_fun = "bestInClass")
 
   best_est <- p4_a$bestInClass$estimator[1]
-
+  
+  colnames(p4_a$bestInClass) <- c("Estimator", "Hyperparameter(s)", "CV Risk")
   p4_a <- ggpubr::ggtexttable(
     p4_a$bestInClass,
     rows = NULL,
