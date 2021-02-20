@@ -440,7 +440,7 @@ cvEigenPlot <- function(
         geom_point() +
         scale_x_continuous(n.breaks = 3, labels = c("", b, "")) +
         facet_wrap(facets = vars(.data$estimator)) +
-        scale_color_viridis_d(name = "Risk", begin = 0, end = 0.8) +
+        scale_color_viridis_d(name = "CV Risk", begin = 0, end = 0.8) +
         labs(
           title = "Estimator Eigenvalues", caption = cv_details,
           x = "Eigenvalue Index", y = "Eigenvalue"
@@ -470,7 +470,7 @@ cvEigenPlot <- function(
           geom_path() +
           scale_x_continuous(n.breaks = min(10, k)) +
           facet_wrap(facets = vars(.data$estimator)) +
-          scale_color_viridis_d(name = "Risk", begin = 0, end = 0.8) +
+          scale_color_viridis_d(name = "CV Risk", begin = 0, end = 0.8) +
           labs(
             title = "Estimator Eigenvalues", caption = cv_details,
             x = "Eigenvalue Index", y = "Eigenvalue"
@@ -562,7 +562,7 @@ cvEigenPlot <- function(
 
     plot <- plot1 +
       facet_wrap(facets = vars(.data$estimator)) +
-      scale_color_viridis_d(name = "Risk", begin = 0, end = 0.8) +
+      scale_color_viridis_d(name = "CV Risk", begin = 0, end = 0.8) +
       labs(
         title = "Estimator Eigenvalues", caption = cv_details,
         x = "Eigenvalue Index", y = "Eigenvalue"
@@ -1079,7 +1079,7 @@ cvSummaryPlot <- function(
 #'   of estimator.  Possible values are:
 #'   \itemize{
 #'     \item \code{"min"} - minimum
-#'     \item \code{"Q1"} - first quartile 
+#'     \item \code{"Q1"} - first quartile
 #'     \item \code{"median"} - median
 #'     \item \code{"Q3"} - third quartile
 #'     \item \code{"max"} - maximum
