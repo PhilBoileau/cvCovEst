@@ -7,8 +7,8 @@
 hyperRisk(dat)
 }
 \arguments{
-\item{dat}{The table of empirical risk calculations which is output by
-\code{cvCovEst}.}
+\item{dat}{The \code{\link[tibble]{tibble}} of empirical risk calculations
+which is output by \code{\link{cvCovEst}()}.}
 }
 \value{
 A named \code{list} of data frames. Each list element corresponds to
@@ -17,7 +17,7 @@ estimator class. If no estimators have hyper-parameters, a message is
 returned.
 }
 \description{
-The \code{hyperRisk} function groups together estimators of the
+\code{hyperRisk()} groups together estimators of the
 same class and parses the hyperparameter values over quantiles of the risk.
 }
 \keyword{internal}

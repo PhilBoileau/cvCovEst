@@ -1,6 +1,6 @@
 ---
 title: "`cvCovEst`: Cross-Validated Covariance Matrix Estimation"
-author: "[Philippe Boileau](https://pboileau.ca), Brian Collica, [Nima
+author: "[Philippe Boileau](https://pboileau.ca), [Brian Collica](https://github.com/bcollica), [Nima
   Hejazi](https://nimahejazi.org)"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -33,11 +33,11 @@ approaches for selecting an optimal estimator from among estimators belonging to
 certain (limited) classes have been derived, the question of selecting an
 estimator from among a diverse collection of candidates remains unaddressed.
 
-We therefore put forth a general, cross-validation-based framework for
+We therefore offer a general, cross-validation-based framework for
 covariance matrix estimator selection to tackle just that. The
-(high-dimensional) asymptotic optimality of selections are guaranteed based upon
+high-dimensional asymptotic optimality of selections are guaranteed based upon
 extensions of the seminal work of @laan_dudoit:2003, @dudoit2005, and @vaart2006
-(on data-adaptive estimator selection) to high-dimensional covariance matrix
+on data-adaptive estimator selection to high-dimensional covariance matrix
 estimation [@boileau2021]. The interested reader is invited to review
 theoretical underpinnings of the methodology as described in @boileau2021.
 
@@ -150,21 +150,218 @@ the queue to request the implementation of another cross-validation scheme.
 | V-fold | To use V-fold cross-validation, set the `cv_scheme` argument in `cvCovEst` to `"v_fold"`, and set the number of folds through the `v_folds` argument. `cvCovEst` defaults to 5-fold cross-validation. |
 | Monte-Carlo | To perform Monte-Carlo cross-validation, set the `cv_scheme` argument to `"mc"`. Set the proportion of data to be used in each validation set using the `mc_split` argument, and the number of iterations to perform with the `v_folds` argument. |
 
-<!--
+
 ## Diagnostic Tools
 
-A variety of summary and diagnostic functions are provided by the `cvCovEst`
-package.
+In addition to selecting an optimal estimator, the `cvCovEst` package contains
+summary and plotting methods which highlight the statistical properties of the
+candidate estimators, and inform the performance of the selection framework.
+These tools help build intuition about these estimators' behavior and
+allows for the evaluation of their performance over varying inputs.
 
-TODO
+### Summary Method 
 
-# Data Analysis Examples
+The `summary` method for `cvCovEst` accepts an `object` argument, a named
+`list` of class `cvCovEst`, and a `summ_fun` argument, a character vector
+specifying the type of summary function to use.
 
-TODO
+These summary functions allow the user to quickly compare the performance of
+several classes of estimators and compute other metrics of interest.  The
+choices of `summ_fun` and their outputs are described below:
 
-## Simulated Data
+| Summary | Implementation | Description |
+|---------|----------------|-------------|
+| Empirical Risk by Estimator Class | `empRiskByClass` | Returns the minimum, 1^st^ quartile, median, 3^rd^ quartile, and maximum of the empirical risk associated with each class of estimator passed to `cvCovEst`. |
+| Best Performing Estimator by Class | `bestInClass` | Returns the specific hyperparameters, if applicable, of the best performing estimator within each class. |
+| Worst Performing Estimator by Class | `worstInClass` | Returns the specific hyperparameters, if applicable, of the worst performing estimator within each class. | 
+| Empirical Risk by Hyperparameter | `hyperRisk` | For estimators that take hyperparameters as arguments, this returns the hyperparameters associated with the minimum, 1^st^ quartile, median, 3^rd^ quartile, and maximum of the empirical risk within each class of estimator.  Each class has its own `tibble` which are returned as a `list`. |
 
-## Single Cell Transcriptomic Data
--->
+### Plot Method
+
+The `plot` method for `cvCovEst` allows users to visualize three main
+`plot_type`s of the candidate estimators: covariance heat maps (`heatmap`),
+eigenvalue plots (`eigen`), and the empirical risk (`risk`) as a function of
+the hyperparameters (for applicable estimator classes).  If users do not
+specify a plot type, then all three plots are combined into one figure for the
+optimal estimator selected by `cvCovEst`.  Users can also achieve this by
+setting `plot_type = "summary"`.
+
+The heat maps and eigenvalue plots facilitate comparisons both within and
+between estimator classes by allowing multiple values to be passed as
+`estimator` and `stat` arguments.  
+
+Additional arguments specific to each `plot_type` are outlined below:
+
+#### Heat Map
+
+| Argument | Description |
+|----------|-------------|
+| abs_v | If `TRUE`, then the absolute value of the covariance is mapped.  Otherwise, the signed value is used. |
+
+#### Eigenvalue Plot
+
+| Argument | Description |
+|----------|-------------|
+| leading | If `TRUE`, then the k leading eigenvalues are displayed.  Otherwise, the k trailing eigenvalues are displayed. | 
+| k | The number of leading or trailing eigenvalues to plot. |
+
+#### Empirical Risk
+
+These two additional arguments only apply to estimators with multiple hyperparameters:
+
+| Argument | Description |
+|----------|-------------|
+| switch_vars | If `TRUE`, the hyperparameters used for the x-axis and factor variables are switched. |
+| min_max | If `TRUE`, only the minimum and maximum values of the factor hyperparameter will be used. |
+
+
+# Simulated Data Analysis Example
+
+To show how the plot and summary methods can be used, data is simulated from a
+predetermined covariance matrix following a Toeplitz structure.  The data is
+then passed to `cvCovEst` along with a handful of estimator classes.    
+
+```{r toep-sim}
+library(MASS)
+library(cvCovEst)
+set.seed(1584)
+
+toep_sim <- function(p, rho, alpha) {
+    times <- seq_len(p)
+    H <- abs(outer(times, times, "-")) + diag(p)
+    H <- H^-(1 + alpha) * rho
+    covmat <- H + diag(p) * (1 - rho)
+
+    sign_mat <- sapply(
+      times,
+      function(i) {
+        sapply(
+          times,
+          function(j) {
+            (-1)^(abs(i - j))
+          }
+        )
+      }
+    )
+    return(covmat * sign_mat)
+}
+
+# simulate a 100 x 100 covariance matrix
+sim_covmat <- toep_sim(p = 100, rho = 0.6, alpha = 0.3)
+
+# sample 75 observations from multivariate normal mean = 0, var = sim_covmat
+sim_dat <-  MASS::mvrnorm(n = 75, mu = rep(0, 100), Sigma = sim_covmat)
+
+# run CV-selector
+cv_cov_est_sim <- cvCovEst(
+  dat = sim_dat,
+  estimators = c(
+    linearShrinkEst, thresholdingEst,
+    bandingEst, adaptiveLassoEst,
+    sampleCovEst),
+  estimator_params = list(
+    linearShrinkEst = list(alpha = seq(0.25, 0.75, 0.05)),
+    thresholdingEst = list(gamma = seq(0.25, 0.75, 0.05)),
+    bandingEst = list(k = seq(2L, 10L, 2L)),
+    adaptiveLassoEst = list(lambda = c(0.1, 0.25, 0.5, 0.75, 1),
+                            n = seq(1, 5))),
+  cv_loss = cvMatrixFrobeniusLoss,
+  cv_scheme = "v_fold",
+  v_folds = 5,
+  center = TRUE,
+  scale = TRUE
+)
+```
+
+
+### Summary Method 
+
+The `summary` method is then used to compare the best performing estimators in
+each class:
+
+```{r summary-sim}
+cv_sum <- summary(cv_cov_est_sim)
+cv_sum$bestInClass
+```
+
+In this case, the banding estimator with `k = 2` achieves the lowest empirical
+risk.  We can take a closer look at the banding estimators' performance by
+hashing `bandingEst` from the `hyperRisk` list.
+
+```{r hyperRisk-sim}
+cv_sum$hyperRisk$bandingEst
+```
+
+
+### Plot Method
+
+By specifying `plot_type = "risk"`, we can see the change in empirical risk as
+the value of `k` changes.  A summary of the cross-validation scheme and loss
+function is displayed at the bottom of all `cvCovEst` plot outputs.   
+
+
+```{r risk-sim, fig.height = 3.5, fig.width=4}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "risk")
+```
+
+We can also examine the matrix structure as the value of `k` changes.
+Examining the overall sparsity of the resulting estimator can be useful since,
+in some cases, the assumption of sparsity is not warranted.
+
+
+```{r multi-heat-sim, fig.height=3.5, fig.width=7}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "heatmap",
+     stat = c("min", "median", "max"))
+```
+
+If the signs of the covariances are of interest, they can be displayed by
+setting `abs_v = FALSE`:
+
+```{r sign-multi-heat-sim, fig.height=3.5, fig.width=7}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "heatmap",
+     stat = c("min", "median", "max"), abs_v = FALSE)
+```
+
+The difference between the optimal estimator selected by `cvCovEst` and the
+sample covariance matrix is clear when displaying their respective heat maps
+side by side.
+
+
+```{r samp-heat-sim, fig.height=3.5, fig.width=5}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "heatmap",
+     estimator = c("bandingEst", "sampleCovEst"),
+     stat = c("min"), abs_v = FALSE)
+```
+
+We may also be interested in the eigenvalues of the various banding estimators.
+The distribution of eigenvalues relays information such as the condition number
+or the positive-definiteness of the resulting estimator.  As with the other
+plot types, if the `estimator` argument is not specified, the default is to
+display the optimal estimator selected by `cvCovEst`.
+
+
+```{r eigen-sim, fig.height = 3.5, fig.width=5}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "eigen",
+     stat = c("min", "median", "max"))
+```
+
+Specifying multiple values in the `estimator` argument allows us compare the
+eigenvalues of the other estimator classes as well.
+
+```{r multi-eigen-sim, fig.height=4.5, fig.width=6}
+plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "eigen",
+     stat = c("min", "median", "max"),
+     estimator = c("bandingEst", "thresholdingEst", "linearShrinkEst",
+                    "adaptiveLassoEst"))
+```
+
+
+As previously mentioned, simply calling the `plot` method on the output of
+`cvCovEst` and providing the original data will result in a visual summary of
+the selected estimator.  
+
+```{r plot-summary, fig.height=7, fig.width=7.5}
+plot(cv_cov_est_sim, dat_orig = sim_dat)
+```
 
 ## References

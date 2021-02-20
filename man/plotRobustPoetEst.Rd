@@ -8,19 +8,20 @@ plotRobustPoetEst(dat, switch_vars = FALSE, min_max = FALSE)
 }
 \arguments{
 \item{dat}{A data table of empirical risks.  Specifically, this is the
-\code{risk_df} table output by \code{cvCovEst}.}
+\code{risk_df} table output by \code{\link{cvCovEst}()}.}
 
 \item{switch_vars}{A \code{logical} indicating if the x-axis and factor
 variables should be switched.  Default is \code{FALSE}.}
 
-\item{min_max}{Default is \code{FALSE}.  If \code{TRUE}, only the minimum and
-maximum values of the factor hyperparameter will be used.}
+\item{min_max}{A \code{logical}. Default is \code{FALSE}. If \code{TRUE},
+only the minimum and maximum values of the factor hyperparameter will be
+used.}
 }
 \value{
 A list of plots
 }
 \description{
-\code{plotRobustPoetEst} performs actions specific to plotting
+\code{plotRobustPoetEst()} performs actions specific to plotting
 the empirical risk of the Robust POET estimator.
 }
 \keyword{internal}

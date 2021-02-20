@@ -13,7 +13,7 @@ cvScaledMatrixFrobeniusLoss(
 )
 }
 \arguments{
-\item{fold}{A \code{fold} object (from \code{\link[origami]{make_folds}})
+\item{fold}{A \code{fold} object (from \code{\link[origami]{make_folds}()})
 over which the estimation procedure is to be performed.}
 
 \item{dat}{A \code{data.frame} containing the full (non-sample-split) data,
@@ -39,14 +39,14 @@ their hyperparameters (if any), and their scaled matrix Frobenius loss
 evaluated on a given \code{fold}.
 }
 \description{
-\code{cvScaledMatrixFrobeniusLoss} evaluates the scaled matrix
-Frobenius loss over a \code{fold} object (from \pkg{origami}
+\code{cvScaledMatrixFrobeniusLoss()} evaluates the scaled matrix
+Frobenius loss over a \code{fold} object (from '\pkg{origami}'
 \insertCite{Coyle2018}{cvCovEst}). The squared error loss computed for each
 entry of the estimated covariance matrix is scaled by the training set's
 sample variances of the variable associated with that entry's row and
 column variables. This loss should be used instead of
-\code{cvMatrixFrobeniusLoss} when a dataset's variables's values are of
-different magnitudes.
+\code{\link{cvMatrixFrobeniusLoss}()} when a dataset's variables' values
+are of different magnitudes.
 }
 \examples{
 library(MASS)

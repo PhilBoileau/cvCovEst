@@ -16,7 +16,7 @@ A \code{matrix} corresponding to the estimate of the covariance
 matrix.
 }
 \description{
-\code{bandingEst} estimates the covariance matrix of data with
+\code{bandingEst()} estimates the covariance matrix of data with
 ordered variables by forcing off-diagonal entries to be zero for indices
 that are far removed from one another. The {i, j} entry of the estimated
 covariance matrix will be zero if the absolute value of {i - j} is greater

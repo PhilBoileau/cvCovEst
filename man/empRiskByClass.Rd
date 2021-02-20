@@ -7,17 +7,17 @@
 empRiskByClass(dat)
 }
 \arguments{
-\item{dat}{The table of empirical risk calculations which is output by
-\code{cvCovEst}.}
+\item{dat}{The \code{\link[tibble]{tibble}} of empirical risk calculations
+which is output by \code{\link{cvCovEst}()}.}
 }
 \value{
 \code{\link[tibble]{tibble}} with rows corresponding to estimator
 classes and columns corresponding to each summary statistic.
 }
 \description{
-The \code{empRiskByClass} function calculates the following
+\code{empRiskByClass()} calculates the following
 summary statistics for the empirical risk within each class of estimator
-passed to \code{cvCovEst}: minimum, Q1, median, mean, Q3, and maximum.  The
-results are output as a \code{tibble}.
+passed to \code{\link{cvCovEst}()}: minimum, Q1, median, mean, Q3, and
+maximum.  The results are output as a \code{tibble}.
 }
 \keyword{internal}

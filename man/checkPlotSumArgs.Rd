@@ -18,27 +18,29 @@ checkPlotSumArgs(
 )
 }
 \arguments{
-\item{dat}{An object of class, \code{"cvCovEst"}.  Specifically, this is the
-standard output of the function \code{cvCovEst}.}
+\item{dat}{An object of class \code{"cvCovEst"}.  Specifically, this is the
+standard output of the \code{\link{cvCovEst}()}.}
 
-\item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
-object originally passed to \code{cvCovEst}.}
+\item{dat_orig}{The \code{numeric} \code{data.frame}, \code{matrix}, or
+similar object originally passed to \code{\link{cvCovEst}()}.}
 
-\item{which_fun}{A choice of \code{"plot"} or \code{"summary"} depending on.
-which function is being checked.}
+\item{which_fun}{A \code{character} indicating a choice of \code{"plot"} or
+\code{"summary"} depending on which function is being checked.}
 
-\item{estimator}{A character vector specifying one or more classes of
+\item{estimator}{A \code{character} vector specifying one or more classes of
 estimators to compare.}
 
-\item{plot_type}{A character vector specifying one of four choices of
+\item{plot_type}{A \code{character} vector specifying one of four choices of
 diagnostic plots.}
 
-\item{summ_fun}{A character vector specifying which summaries to output.}
+\item{summ_fun}{A \code{character} vector specifying which summaries to
+output.}
 
-\item{stat}{A character vector of one or more summary statistics to use when
-comparing estimators.}
+\item{stat}{A \code{character} vector of one or more summary statistics to
+use when comparing estimators.}
 
-\item{k}{The number of leading/trailing eigenvalues to plot.}
+\item{k}{A \code{integer} indicating the number of leading/trailing
+eigenvalues to plot.}
 
 \item{leading}{A \code{logical} indicating if the leading eigenvalues should
 be used.}
@@ -50,9 +52,9 @@ entries should be used for plotting the matrix heatmap.}
 Whether all argument conditions are satisfied.
 }
 \description{
-The \code{checkPlotSumArgs} function verifies that all arguments
-passed to the \code{plot.cvCovEst} and \code{summary.cvCovEst} functions meet
-their specifications.  Some additional arguments may be checked at the
-individual function level.
+The \code{checkPlotSumArgs()} function verifies that all
+arguments passed to the \code{\link{plot.cvCovEst}()} and
+\code{\link{summary.cvCovEst}()} functions meet their specifications. Some
+additional arguments may be checked at the individual function level.
 }
 \keyword{internal}

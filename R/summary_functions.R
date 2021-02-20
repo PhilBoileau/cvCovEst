@@ -3,13 +3,13 @@
 ################################################################################
 #' Summary Statistics of Empirical Risk by Estimator Class
 #'
-#' @description The \code{empRiskByClass} function calculates the following
+#' @description \code{empRiskByClass()} calculates the following
 #'  summary statistics for the empirical risk within each class of estimator
-#'  passed to \code{cvCovEst}: minimum, Q1, median, mean, Q3, and maximum.  The
-#'  results are output as a \code{tibble}.
+#'  passed to \code{\link{cvCovEst}()}: minimum, Q1, median, mean, Q3, and
+#'  maximum.  The results are output as a \code{tibble}.
 #'
-#' @param dat The table of empirical risk calculations which is output by
-#'  \code{cvCovEst}.
+#' @param dat The \code{\link[tibble]{tibble}} of empirical risk calculations
+#'  which is output by \code{\link{cvCovEst}()}.
 #'
 #' @return \code{\link[tibble]{tibble}} with rows corresponding to estimator
 #'  classes and columns corresponding to each summary statistic.
@@ -39,11 +39,12 @@ empRiskByClass <- function(dat) {
 ################################################################################
 #' Showing Best Estimator Within Each Class of Estimators
 #'
-#' @description The \code{bestInClass} function finds the best performing
-#'  estimator within each class of estimator passed to \code{cvCovEst} and
+#' @description \code{bestInClass()} finds the best performing estimator within
+#'  each class of estimator passed to \code{\link{cvCovEst}()} and
 #'  finds the associated hyper-parameters if applicable.
 #'
-#' @param dat The table of empirical risks which is output by \code{cvCovEst}.
+#' @param dat The \code{\link[tibble]{tibble}} of empirical risks which is
+#'  output by \code{\link{cvCovEst}()}.
 #' @param worst This facilitates the option to choose the worst performing
 #'  estimator in each class.  Default is \code{FALSE}.
 #'
@@ -85,11 +86,11 @@ bestInClass <- function(dat, worst = FALSE) {
 ################################################################################
 #' Summarize Empirical Risks by Class with Hyperparameter
 #'
-#' @description The \code{hyperRisk} function groups together estimators of the
+#' @description \code{hyperRisk()} groups together estimators of the
 #'  same class and parses the hyperparameter values over quantiles of the risk.
 #'
-#' @param dat The table of empirical risk calculations which is output by
-#'  \code{cvCovEst}.
+#' @param dat The \code{\link[tibble]{tibble}} of empirical risk calculations
+#'  which is output by \code{\link{cvCovEst}()}.
 #'
 #' @return A named \code{list} of data frames. Each list element corresponds to
 #'  a \code{\link[tibble]{tibble}} of summary statistics for a specific
@@ -161,30 +162,31 @@ hyperRisk <- function(dat) {
 ################################################################################
 #' Generic Summary Method for cvCovEst
 #'
-#' @description The \code{summary} method provides summary statistics regarding
-#'  the performance of \code{cvCovEst} and can be used for diagnostic plotting.
+#' @description \code{summary()} provides summary statistics regarding
+#'  the performance of \code{\link{cvCovEst}()} and can be used for diagnostic
+#'  plotting.
 #'
 #' @param object A named \code{list} of class \code{"cvCovEst"}.
-#' @param summ_fun A character vector specifying which summaries to output.  See
-#'  Details for function descriptions.
-#' @param ... Additional arguments passed to summary method.  These are not
+#' @param summ_fun A \code{character} vector specifying which summaries to
+#'  output.  See Details for function descriptions.
+#' @param ... Additional arguments passed to \code{summary()}These are not
 #'  explicitly used and should be ignored by the user.
 #'
-#' @details The \code{summary} method accepts four different choices for the
+#' @details \code{summary()} accepts four different choices for the
 #'  \code{summ_fun} argument.  The choices are:
 #'  \itemize{
-#'     \item \code{empRiskByClass} - Returns the minimum, 25% quantile, median,
-#'       75% quantile, and maximum of the empirical risk associated with each
-#'       class of estimator passed to \code{cvCovEst}.
-#'     \item \code{bestInClass} - Returns the specific hyperparameters, if
+#'     \item \code{"empRiskByClass"} - Returns the minimum, first quartile,
+#'       median, third quartile, and maximum of the empirical risk associated
+#'       with each class of estimator passed to \code{\link{cvCovEst}()}.
+#'     \item \code{"bestInClass"} - Returns the specific hyperparameters, if
 #'       applicable, of the best performing estimator within each class.
-#'     \item \code{worstInClass} - Returns the specific hyperparameters, if
+#'     \item \code{"worstInClass"} - Returns the specific hyperparameters, if
 #'       applicable, of the worst performing estimator within each class.
-#'     \item \code{hyperRisk} - For estimators that take hyperparameters as
+#'     \item \code{"hyperRisk"} - For estimators that take hyperparameters as
 #'       arguments, this function returns the hyperparameters associated with
-#'       the minimum, 25% quantile, median, 75% quantile, and maximum of the
+#'       the minimum, first quartile, median, third quartile, and maximum of the
 #'       empirical risk within each class of estimator. Each class has its own
-#'       \code{tibble}, which are returned as a \code{list}.
+#'       \code{\link[tibble]{tibble}}, which are returned as a \code{list}.
 #'  }
 #'
 #' @return A named \code{list} where each element corresponds to the output of

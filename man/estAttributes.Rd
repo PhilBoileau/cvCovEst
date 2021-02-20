@@ -7,15 +7,15 @@
 estAttributes(estimator)
 }
 \arguments{
-\item{estimator}{A character vector specifying a class of estimator.
-\code{cvCovEst}.}
+\item{estimator}{A \code{character} vector specifying a class of estimator.}
 }
 \value{
 A named \code{list} containing the attributes of the indicated
 estimator.
 }
 \description{
-\code{estAttributes} returns a named list corresponding to the
-attributes of a specific estimator implemented in \code{cvCovEst}.
+\code{estAttributes()} returns a named list corresponding to the
+attributes of a specific estimator implemented in the \code{cvCovEst}
+package.
 }
 \keyword{internal}

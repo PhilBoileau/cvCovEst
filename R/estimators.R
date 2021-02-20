@@ -1,6 +1,6 @@
 #' Linear Shrinkage Estimator
 #'
-#' @description \code{linearShrinkEst} computes the linear shrinkage estimate
+#' @description \code{linearShrinkEst()} computes the linear shrinkage estimate
 #'  of the covariance matrix for a given value of \code{alpha}. The linear
 #'  shrinkage estimator is defined as the convex combination of the sample
 #'  covariance matrix and the identity matrix. The choice of \code{alpha}
@@ -10,7 +10,7 @@
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param alpha A \code{numeric} between 0 and 1 defining convex combinations
-#'  of the sample covariance matrix and the identity. \code{alpha = 1} returns
+#'  of the sample covariance matrix and the identity. \code{alpha = 1} produces
 #'  the sample covariance matrix, and \code{alpha = 0} returns the identity.
 #'
 #' @importFrom coop covar
@@ -37,13 +37,13 @@ linearShrinkEst <- function(dat, alpha) {
 
 #' Ledoit-Wolf Linear Shrinkage Estimator
 #'
-#' @description \code{linearShrinkLWEst} computes an asymptotically optimal
+#' @description \code{linearShrinkLWEst()} computes an asymptotically optimal
 #'  convex combination of the sample covariance matrix and the identity matrix.
 #'  This convex combination effectively shrinks the eigenvalues of the sample
 #'  covariance matrix towards the identity. This estimator is more accurate
 #'  than the sample covariance matrix in high-dimensional settings under fairly
 #'  loose assumptions. For more information, consider reviewing the manuscript
-#'  by \insertCite{Ledoit2004;textual}{cvCovEst}).
+#'  by \insertCite{Ledoit2004;textual}{cvCovEst}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
@@ -92,7 +92,7 @@ linearShrinkLWEst <- function(dat) {
 
 #' Hard Thresholding Estimator
 #'
-#' @description \code{thresholdingEst} computes the hard thresholding estimate
+#' @description \code{thresholdingEst()} computes the hard thresholding estimate
 #'  of the covariance matrix for a given value of \code{gamma}. The threshold
 #'  estimator of the covariance matrix applies a hard thresholding operator to
 #'  each element of the sample covariance matrix. For more information on this
@@ -127,8 +127,8 @@ thresholdingEst <- function(dat, gamma) {
 
 #' Sample Covariance Matrix
 #'
-#' @description \code{sampleCovEst} computes the sample covariance matrix. This
-#'  function is a simple wrapper around \code{\link[coop]{covar}}.
+#' @description \code{sampleCovEst()} computes the sample covariance matrix. This
+#'  function is a simple wrapper around \code{\link[coop]{covar}()}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
@@ -150,7 +150,7 @@ sampleCovEst <- function(dat) {
 
 #' Banding Estimator
 #'
-#' @description \code{bandingEst} estimates the covariance matrix of data with
+#' @description \code{bandingEst()} estimates the covariance matrix of data with
 #'  ordered variables by forcing off-diagonal entries to be zero for indices
 #'  that are far removed from one another. The {i, j} entry of the estimated
 #'  covariance matrix will be zero if the absolute value of {i - j} is greater
@@ -207,7 +207,7 @@ bandingEst <- function(dat, k) {
 
 #' Tapering Estimator
 #'
-#' @description \code{taperingEst} estimates the covariance matrix of a
+#' @description \code{taperingEst()} estimates the covariance matrix of a
 #'  \code{data.frame}-like object with ordered variables by gradually shrinking
 #'  the bands of the sample covariance matrix towards zero. The estimator is
 #'  defined as the Hadamard product of the sample covariance matrix and a
@@ -285,16 +285,20 @@ taperingEst <- function(dat, k) {
 
 #' Analytical Non-Linear Shrinkage Estimator
 #'
-#' @description \code{nlShrinkLWEst} invokes the analytical estimator
+#' @description \code{nlShrinkLWEst()} invokes the analytical estimator
 #'  presented by \insertCite{Ledoit2020;textual}{cvCovEst} for applying a
 #'  nonlinear shrinkage function to the sample eigenvalues of the covariance
 #'  matrix. The shrinkage function relies on an application of the Hilbert
 #'  Transform to an estimate of the sample eigenvalues' limiting spectral
 #'  density. This estimated density is computed with the Epanechnikov kernel
-#'  using a global bandwidth parameter of n^(-1/3). The resulting shrinkage
-#'  function pulls eigenvalues towards the nearest mode of their empirical
-#'  distribution, thus creating a localized shrinkage effect rather than a
-#'  global one.
+#'  using a global bandwidth parameter of \code{n^(-1/3)}. The resulting
+#'  shrinkage function pulls eigenvalues towards the nearest mode of their
+#'  empirical distribution, thus creating a localized shrinkage effect rather
+#'  than a global one.
+#'
+#'  We do not recommend that this estimator be employed when
+#'  the estimand is the correlation matrix. The diagonal entries of the
+#'  resulting estimate are not guaranteed to be equal to one.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
@@ -382,11 +386,11 @@ nlShrinkLWEst <- function(dat) {
 
 #' Linear Shrinkage Estimator, Dense Target
 #'
-#' @description \code{denseLinearShrinkEst} computes the asymptotically optimal
-#'  convex combination of the sample covariance matrix and a dense target
-#'  matrix. This target matrix's diagonal elements are equal to the average
-#'  of the sample covariance matrix estimate's diagonal elements, and its
-#'  off-diagonal elements are equal to the average of the sample covariance
+#' @description \code{denseLinearShrinkEst()} computes the asymptotically
+#'  optimal convex combination of the sample covariance matrix and a dense
+#'  target matrix. This target matrix's diagonal elements are equal to the
+#'  average of the sample covariance matrix estimate's diagonal elements, and
+#'  its off-diagonal elements are equal to the average of the sample covariance
 #'  matrix estimate's off-diagonal elements. For information on this
 #'  estimator's derivation, see \insertCite{Ledoit2020b;textual}{cvCovEst} and
 #'  \insertCite{shafer2005;textual}{cvCovEst}.
@@ -439,8 +443,7 @@ denseLinearShrinkEst <- function(dat) {
 
 #' Smoothly Clipped Absolute Deviation Estimator
 #'
-#' @description The Smoothly Clipped Absolute Deviation (SCAD) covariance
-#'  matrix estimator applies the SCAD thresholding function of
+#' @description \code{scadEst()} applies the SCAD thresholding function of
 #'  \insertCite{fan2001;textual}{cvCovEst} to each entry of the sample
 #'  covariance matrix. This penalized estimator constitutes a compromise
 #'  between hard and soft thresholding of the sample covariance matrix: it is
@@ -480,7 +483,7 @@ scadEst <- function(dat, lambda) {
 
 #' POET Estimator
 #'
-#' @description \code{poetEst} implements the Principal Orthogonal complement
+#' @description \code{poetEst()} implements the Principal Orthogonal complEment
 #'  Thresholding (POET) estimator, a nonparametric, unobserved-factor-based
 #'  estimator of the covariance matrix \insertCite{fan2013}{cvCovEst}. The
 #'  estimator is defined as the sum of the sample covariance matrix'
@@ -491,7 +494,7 @@ scadEst <- function(dat, lambda) {
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param k An \code{integer} indicating the number of unobserved latent
 #'  factors. Empirical evidence suggests that the POET estimator is robust to
-#'  over-estimates of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+#'  overestimation of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
 #'  practice, it is therefore preferable to use larger values.
 #' @param lambda A non-negative \code{numeric} defining the amount of
 #'  thresholding applied to each element of sample covariance matrix's
@@ -543,25 +546,25 @@ poetEst <- function(dat, k, lambda) {
 
 #' Robust POET Estimator for Elliptical Distributions
 #'
-#' @description \code{robustPoetEst} implements the robust version of Principal
-#'  Orthogonal complEment Thresholding (POET) estimator, a nonparametric,
-#'  unobserved-factor-based estimator of the covariance matrix when the
-#'  underlying distribution is ellipitcal \insertCite{fan2018}{cvCovEst}. The
-#'  estimator is defined as the sum of the sample covariance matrix's
-#'  rank-\code{k} approximation and its post-thresholding principal orthogonal
-#'  complement. The rank-\code{k} approximation is constructed from the sample
-#'  covariance matrix, its leading eigenvalues, and its leading eigenvectors.
-#'  The sample covariance matrix and leading eigenvalues are initially
-#'  estimated via an M-estimation procedure and the marginal Kendall's tau
-#'  estimator. The leading eigenvectors are estimated using spatial Kendall's
-#'  tau estimator. The hard thresholding function is used to regularize the
-#'  idiosyncratic errors' estimated covariance matrix, though other
-#'  regularization schemes could be used.
+#' @description \code{robustPoetEst()} implements the robust version of
+#'  Principal Orthogonal complEment Thresholding (POET) estimator, a
+#'  nonparametric, unobserved-factor-based estimator of the covariance matrix
+#'  when the underlying distribution is ellipitcal
+#'  \insertCite{fan2018}{cvCovEst}. The estimator is defined as the sum of the
+#'  sample covariance matrix's rank-\code{k} approximation and its
+#'  post-thresholding principal orthogonal complement. The rank-\code{k}
+#'  approximation is constructed from the sample covariance matrix, its leading
+#'  eigenvalues, and its leading eigenvectors.  The sample covariance matrix and
+#'  leading eigenvalues are initially estimated via an M-estimation procedure
+#'  and the marginal Kendall's tau estimator. The leading eigenvectors are
+#'  estimated using spatial Kendall's tau estimator. The hard thresholding
+#'  function is used to regularize the idiosyncratic errors' estimated
+#'  covariance matrix, though other regularization schemes could be used.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param k An \code{integer} indicating the number of unobserved latent
 #'  factors. Empirical evidence suggests that the POET estimator is robust to
-#'  overestimations of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
+#'  overestimation of this hyperparameter \insertCite{fan2013}{cvCovEst}. In
 #'  practice, it is therefore preferable to use larger values.
 #' @param lambda A non-negative \code{numeric} defining the amount of
 #'  thresholding applied to each element of sample covariance matrix's
@@ -667,8 +670,9 @@ robustPoetEst <- function(dat, k, lambda,
 
 #' Adaptive LASSO Estimator
 #'
-#' @description The \code{adaptiveLassoEst} function is a modification of
-#'  the similarly named penalized regression introduced by
+#' @description \code{adaptiveLassoEst()} applied the adaptive LASSO to the
+#'  entries of the sample covariance matrix. The thresholding function is
+#'  inspired by the penalized regression introduced by
 #'  \insertCite{zou2006;textual}{cvCovEst}. The thresholding function assigns
 #'  a weight to each entry of the sample covariance matrix based on its
 #'  initial value. This weight then determines the relative size of the penalty

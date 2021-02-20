@@ -13,10 +13,10 @@
 \arguments{
 \item{object}{A named \code{list} of class \code{"cvCovEst"}.}
 
-\item{summ_fun}{A character vector specifying which summaries to output.  See
-Details for function descriptions.}
+\item{summ_fun}{A \code{character} vector specifying which summaries to
+output.  See Details for function descriptions.}
 
-\item{...}{Additional arguments passed to summary method.  These are not
+\item{...}{Additional arguments passed to \code{summary()}These are not
 explicitly used and should be ignored by the user.}
 }
 \value{
@@ -24,25 +24,26 @@ A named \code{list} where each element corresponds to the output of
 of the requested summaries.
 }
 \description{
-The \code{summary} method provides summary statistics regarding
-the performance of \code{cvCovEst} and can be used for diagnostic plotting.
+\code{summary()} provides summary statistics regarding
+the performance of \code{\link{cvCovEst}()} and can be used for diagnostic
+plotting.
 }
 \details{
-The \code{summary} method accepts four different choices for the
+\code{summary()} accepts four different choices for the
 \code{summ_fun} argument.  The choices are:
 \itemize{
-\item \code{empRiskByClass} - Returns the minimum, 25\% quantile, median,
-75\% quantile, and maximum of the empirical risk associated with each
-class of estimator passed to \code{cvCovEst}.
-\item \code{bestInClass} - Returns the specific hyperparameters, if
+\item \code{"empRiskByClass"} - Returns the minimum, first quartile,
+median, third quartile, and maximum of the empirical risk associated
+with each class of estimator passed to \code{\link{cvCovEst}()}.
+\item \code{"bestInClass"} - Returns the specific hyperparameters, if
 applicable, of the best performing estimator within each class.
-\item \code{worstInClass} - Returns the specific hyperparameters, if
+\item \code{"worstInClass"} - Returns the specific hyperparameters, if
 applicable, of the worst performing estimator within each class.
-\item \code{hyperRisk} - For estimators that take hyperparameters as
+\item \code{"hyperRisk"} - For estimators that take hyperparameters as
 arguments, this function returns the hyperparameters associated with
-the minimum, 25\% quantile, median, 75\% quantile, and maximum of the
+the minimum, first quartile, median, third quartile, and maximum of the
 empirical risk within each class of estimator. Each class has its own
-\code{tibble}, which are returned as a \code{list}.
+\code{\link[tibble]{tibble}}, which are returned as a \code{list}.
 }
 }
 \examples{

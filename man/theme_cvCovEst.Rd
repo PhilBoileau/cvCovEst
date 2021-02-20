@@ -7,16 +7,16 @@
 theme_cvCovEst(plot_type, ...)
 }
 \arguments{
-\item{plot_type}{A character vector specifying which plot is to be displayed.
-Can contain more than one value in the case of
-\code{plot_type = c('heatmap', 'summary')}.}
+\item{plot_type}{A \code{character} vector specifying which plot is to be
+displayed. Can contain more than one value in the case of
+\code{plot_type = c("heatmap", "summary")}.}
 }
 \value{
 A \code{ggplot} theme.
 }
 \description{
-\code{theme_cvCovEst} defines the overall theme of the
-\code{cvCovEst} plotting functions and makes changes depending on which plot
-function is being called.
+\code{theme_cvCovEst()} defines the overall theme of the
+\code{cvCovEst} package plotting functions and makes changes depending on
+which plot function is being called.
 }
 \keyword{internal}

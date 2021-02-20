@@ -19,24 +19,24 @@ cvMultiMelt(
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
 \code{cvCovEst}.}
 
-\item{estimator}{A character vector specifying one or more classes of
+\item{estimator}{A \code{character} vector specifying one or more classes of
 estimators to visualize and compare.}
 
-\item{stat}{A character vector containing the names of various empirical risk
-summary statistics. Estimators corresponding to each statistics will be
-visualized with a different heatmap. Default is \code{'min'} for minimum
-empirical risk.}
+\item{stat}{A \code{character} vector containing the names of various
+empirical risk summary statistics. Estimators corresponding to each
+statistics will be visualized with a different heatmap. Default is
+\code{'min'} for minimum empirical risk.}
 
-\item{dat_orig}{The numeric \code{data.frame}, \code{matrix}, or similar
-object originally passed to \code{cvCovEst}.}
+\item{dat_orig}{The \code{numeric data.frame}, \code{matrix}, or similar
+object originally passed to \code{\link{cvCovEst}()}.}
 
-\item{plot_type}{Argument passed to \code{theme_cvCovEst}.  Defaults to
-\code{"heatmap"}.}
+\item{plot_type}{A \code{character} detailing the type of plot. Passed to
+\code{theme_cvCovEst}, defaults to \code{"risk"}}
 
-\item{cv_details}{Character vector summarizing key arguments passed to
-\code{cvCovEst}.}
+\item{cv_details}{A \code{character} vector summarizing key arguments passed
+to \code{\link{cvCovEst}()}.}
 
-\item{has_hypers}{A character vector containing the names of current
+\item{has_hypers}{A \code{character} vector containing the names of current
 estimators with hyperparameters.}
 
 \item{abs_v}{A \code{logical} determining if the absolute value of the matrix
@@ -47,7 +47,7 @@ A grid of heat map plots comparing the desired covariance matrix
 estimators.
 }
 \description{
-\code{cvMultiMelt} visualizes the structure of one or more
+\code{cvMultiMelt()} visualizes the structure of one or more
 covariance matrix estimators through a grid of heat maps, where each heat
 map corresponds to a different estimator.
 }

@@ -1,11 +1,11 @@
 #' Safe Centering and Scaling of Columns
 #'
-#' @description \code{safeColScale} is a safe utility for centering and scaling
-#'  an input matrix \code{X}. It is intended to avoid the drawback of using
-#'  \code{\link[base]{scale}} on data with constant variance by adding a small
-#'  perturbation to truncate the values in such columns. Also, this is faster
-#'  than \code{\link[base]{scale}} through relying on \pkg{matrixStats} for a
-#'  key internal computation.
+#' @description \code{safeColScale()} is a safe utility for centering and
+#'  scaling an input matrix \code{X}. It is intended to avoid the drawback of
+#'  using \code{\link[base]{scale}()} on data with constant variance by adding a
+#'  small perturbation to truncate the values in such columns. Also, this is
+#'  faster than \code{\link[base]{scale}()} through relying on
+#'  '\pkg{matrixStats} for a key internal computation.
 #'
 #' @param X An input \code{matrix} to be centered and/or scaled. If \code{X} is
 #'  not of class \code{matrix}, then it must be coercible to such.
