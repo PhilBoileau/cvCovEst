@@ -250,3 +250,30 @@ estAttributes <- function(estimator) {
   names(out) <- estimator
   return(out)
 }
+
+################################################################################
+#' Calculate Condition Number
+#'
+#' @description \code{conditionNum()} calculates the condition number of a
+#'  covariance matrix estimator.
+#'
+#' @param estimate A symmetric \code{matrix} corresponding to a covariance
+#'  estimator.
+#'
+#' @return A \code{numeric} value indicating the condition number.  If undefined,
+#'  the condition number is set to 0.
+#'
+#' @keywords internal
+conditionNum <- function(estimate) {
+  e_vals <- eigen(estimate, symmetric = TRUE, only.values = TRUE)$values
+  n <- length(e_vals)
+
+  if (e_vals[n] != 0){
+    cn <- e_vals[1]/e_vals[n]
+  }
+  else{
+    cn <- 0
+  }
+
+  return(cn)
+}
