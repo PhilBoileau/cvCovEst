@@ -14,7 +14,7 @@
 #' @return \code{\link[tibble]{tibble}} with rows corresponding to estimator
 #'  classes and columns corresponding to each summary statistic.
 #'
-#' @importFrom dplyr group_by summarize arrange %>%
+#' @importFrom dplyr group_by summarize arrange %>% rename
 #' @importFrom stats median quantile
 #' @importFrom rlang .data
 #'
@@ -23,15 +23,17 @@ empRiskByClass <- function(dat) {
   emp_risk <- dat %>%
     dplyr::group_by(.data$estimator) %>%
     dplyr::summarise(
-      min = min(.data$empirical_risk),
+      Min = min(.data$empirical_risk),
       Q1 = quantile(.data$empirical_risk, probs = 0.25, type = 3),
-      median = quantile(.data$empirical_risk, probs = 0.5, type = 3),
+      Median = quantile(.data$empirical_risk, probs = 0.5, type = 3),
       Q3 = quantile(.data$empirical_risk, probs = 0.75, type = 3),
-      max = max(.data$empirical_risk),
-      mean_risk = mean(.data$empirical_risk),
+      Max = max(.data$empirical_risk),
+      Mean = mean(.data$empirical_risk),
       .groups = "keep"
     ) %>%
-    dplyr::arrange(.data$mean_risk)
+    dplyr::arrange(.data$Mean)
+
+  emp_risk <- dplyr::rename(emp_risk, Estimator = estimator)
 
   return(emp_risk)
 }
