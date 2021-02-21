@@ -914,7 +914,7 @@ cvSummaryPlot <- function(
     }
   }
   else {
-    p1 <- summary.cvCovEst(object = dat, summ_fun = "empRiskByClass")
+    p1 <- summary.cvCovEst(object = dat, summ_fun = "cvRiskByClass")
 
     p1 <- ggpubr::ggtexttable(
       p1$empRiskByClass,

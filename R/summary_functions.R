@@ -3,7 +3,7 @@
 ################################################################################
 #' Summary Statistics of Cross-Validated Risk by Estimator Class
 #'
-#' @description \code{empRiskByClass()} calculates the following
+#' @description \code{cvRiskByClass()} calculates the following
 #'  summary statistics for the cross-validated risk within each class of
 #'  estimator passed to \code{\link{cvCovEst}()}: minimum, Q1, median, mean, Q3,
 #'  and maximum.  The results are output as a \code{tibble}.
@@ -19,8 +19,8 @@
 #' @importFrom rlang .data
 #'
 #' @keywords internal
-empRiskByClass <- function(dat) {
-  emp_risk <- dat %>%
+cvRiskByClass <- function(dat) {
+  cv_risk <- dat %>%
     dplyr::group_by(.data$estimator) %>%
     dplyr::summarise(
       Min = min(.data$empirical_risk),
@@ -33,9 +33,9 @@ empRiskByClass <- function(dat) {
     ) %>%
     dplyr::arrange(.data$Mean)
 
-  emp_risk <- dplyr::rename(emp_risk, Estimator = estimator)
+  cv_risk <- dplyr::rename(cv_risk, Estimator = estimator)
 
-  return(emp_risk)
+  return(cv_risk)
 }
 
 ################################################################################
@@ -60,7 +60,7 @@ empRiskByClass <- function(dat) {
 #' @keywords internal
 bestInClass <- function(dat, worst = FALSE) {
   if (worst) {
-    worst_est <- dat %>%
+    inClass <- dat %>%
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::last(.data$hyperparameters),
@@ -68,11 +68,9 @@ bestInClass <- function(dat, worst = FALSE) {
         .groups = "keep"
       ) %>%
       dplyr::arrange(.data$empirical_risk)
-
-    return(worst_est)
   }
   else {
-    best_est <- dat %>%
+    inClass <- dat %>%
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::first(.data$hyperparameters),
@@ -80,9 +78,8 @@ bestInClass <- function(dat, worst = FALSE) {
         .groups = "keep"
       ) %>%
       dplyr::arrange(.data$empirical_risk)
-
-    return(best_est)
   }
+  return(inClass)
 }
 
 ################################################################################
@@ -177,7 +174,7 @@ hyperRisk <- function(dat) {
 #' @details \code{summary()} accepts four different choices for the
 #'  \code{summ_fun} argument.  The choices are:
 #'  \itemize{
-#'     \item \code{"empRiskByClass"} - Returns the minimum, first quartile,
+#'     \item \code{"cvRiskByClass"} - Returns the minimum, first quartile,
 #'       median, third quartile, and maximum of the cross-validated risk
 #'       associated with each class of estimator passed to
 #'       \code{\link{cvCovEst}()}.
@@ -217,14 +214,14 @@ hyperRisk <- function(dat) {
 summary.cvCovEst <- function(
                              object,
                              summ_fun = c(
-                               "empRiskByClass",
+                               "cvRiskByClass",
                                "bestInClass",
                                "worstInClass",
                                "hyperRisk"
                              ),
                              ...) {
   summary_functions <- c(
-    "empRiskByClass", "bestInClass", "worstInClass", "hyperRisk"
+    "cvRiskByClass", "bestInClass", "worstInClass", "hyperRisk"
   )
 
   # Check cvCovEst credentials
