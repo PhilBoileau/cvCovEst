@@ -35,8 +35,15 @@ and diagnostic tools are also included.
 
 ## Installation
 
-Install the *development version* of the `cvCovEst` package from GitHub
-via [`remotes`](https://CRAN.R-project.org/package=remotes):
+For standard use, install `cvCovEst` from
+[CRAN](https://cran.r-project.org/package=cvCovEst):
+
+``` r
+install.packages("cvCovEst")
+```
+
+The *development version* of the package may be installed from GitHub
+using [`remotes`](https://CRAN.R-project.org/package=remotes):
 
 ``` r
 remotes::install_github("PhilBoileau/cvCovEst")
@@ -108,6 +115,22 @@ Contributions are very welcome. Interested contributors should consult
 our [contribution
 guidelines](https://github.com/PhilBoileau/cvCovEst/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
+
+------------------------------------------------------------------------
+
+## Citation
+
+Please cite the following paper when using the `cvCovEst` R software
+package.
+
+    @misc{boileau2021,
+          title={Cross-Validated Loss-Based Covariance Matrix Estimator Selection in High Dimensions}, 
+          author={Philippe Boileau and Nima S. Hejazi and Mark J. van der Laan and Sandrine Dudoit},
+          year={2021},
+          eprint={2102.09715},
+          archivePrefix={arXiv},
+          primaryClass={stat.ME}
+    }
 
 ------------------------------------------------------------------------
 
