@@ -1,5 +1,6 @@
 ---
 output: github_document
+bibliography: "inst/REFERENCES.bib"
 ---
 
 ```{r, include = FALSE}
@@ -31,11 +32,12 @@ __Authors:__ [Philippe Boileau](https://pboileau.ca),
 ## What's `cvCovEst`?
 
 `cvCovEst` implements an efficient cross-validated procedure for covariance
-matrix estimation, particularly useful in high-dimensional settings. The general
-methodology allows for cross-validation to be used to data adaptively identify
-the optimal estimator of the covariance matrix from a prespecified set of
-candidate estimators. An overview of the framework is provided in the
-package vignette. A suite of plotting and diagnostic tools are also included.
+matrix estimation, particularly useful in high-dimensional settings. The
+general methodology allows for cross-validation to be used to data adaptively
+identify the optimal estimator of the covariance matrix from a prespecified set
+of candidate estimators. An overview of the framework is provided in the
+package vignette. For a more detailed description, see @boileau2021. A suite of
+plotting and diagnostic tools are also included.
 
 ---
 
@@ -126,7 +128,6 @@ Please cite the following paper when using the `cvCovEst` R software package.
 }
 ```
 
-
 ---
 
 ## License
@@ -136,3 +137,7 @@ Please cite the following paper when using the `cvCovEst` R software package.
 The contents of this repository are distributed under the MIT license. See file
 [`LICENSE.md`](https://github.com/PhilBoileau/cvCovEst/blob/master/LICENSE.md)
 for details.
+
+---
+
+## References

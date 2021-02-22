@@ -28,8 +28,9 @@ covariance matrix estimation, particularly useful in high-dimensional
 settings. The general methodology allows for cross-validation to be used
 to data adaptively identify the optimal estimator of the covariance
 matrix from a prespecified set of candidate estimators. An overview of
-the framework is provided in the package vignette. A suite of plotting
-and diagnostic tools are also included.
+the framework is provided in the package vignette. For a more detailed
+description, see Boileau et al. (2021). A suite of plotting and
+diagnostic tools are also included.
 
 ------------------------------------------------------------------------
 
@@ -142,3 +143,19 @@ The contents of this repository are distributed under the MIT license.
 See file
 [`LICENSE.md`](https://github.com/PhilBoileau/cvCovEst/blob/master/LICENSE.md)
 for details.
+
+------------------------------------------------------------------------
+
+## References
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+
+<div id="ref-boileau2021" class="csl-entry">
+
+Boileau, Philippe, Nima S. Hejazi, Mark J. van der Laan, and Sandrine
+Dudoit. 2021. “Cross-Validated Loss-Based Covariance Matrix Estimator
+Selection in High Dimensions.” <http://arxiv.org/abs/2102.09715>.
+
+</div>
+
+</div>
