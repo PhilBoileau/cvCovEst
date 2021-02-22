@@ -1,6 +1,10 @@
+# cvCovEst 0.3.2 (2021-02-22)
+
++ Adding preprint citation information.
+
 # cvCovEst 0.3.1 (2021-02-13)
 
-+ Edited documentation to meet CRAN specificationsq
++ Edited documentation to meet CRAN specifications.
 
 # cvCovEst 0.3.0 (2021-02-10)
 
