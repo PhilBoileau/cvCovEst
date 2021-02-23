@@ -561,6 +561,10 @@ poetEst <- function(dat, k, lambda) {
 #'  function is used to regularize the idiosyncratic errors' estimated
 #'  covariance matrix, though other regularization schemes could be used.
 #'
+#'  We do not recommend that this estimator be employed when
+#'  the estimand is the correlation matrix. The diagonal entries of the
+#'  resulting estimate are not guaranteed to be equal to one.
+#'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #' @param k An \code{integer} indicating the number of unobserved latent
 #'  factors. Empirical evidence suggests that the POET estimator is robust to
