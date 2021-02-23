@@ -43,6 +43,10 @@ and the marginal Kendall's tau estimator. The leading eigenvectors are
 estimated using spatial Kendall's tau estimator. The hard thresholding
 function is used to regularize the idiosyncratic errors' estimated
 covariance matrix, though other regularization schemes could be used.
+
+We do not recommend that this estimator be employed when
+the estimand is the correlation matrix. The diagonal entries of the
+resulting estimate are not guaranteed to be equal to one.
 }
 \examples{
 robustPoetEst(dat = mtcars, k = 2L, lambda = 0.1, var_est = "sample")
