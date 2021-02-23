@@ -252,28 +252,53 @@ estAttributes <- function(estimator) {
 }
 
 ################################################################################
-#' Calculate Condition Number
+#' Calculate Matrix Metrics
 #'
-#' @description \code{conditionNum()} calculates the condition number of a
-#'  covariance matrix estimator.
+#' @description \code{matrixMetrics()} calculates the condition number, the
+#' sparsity percentage, and the sign of a covariance matrix estimator.
 #'
 #' @param estimate A symmetric \code{matrix} corresponding to a covariance
 #'  estimator.
 #'
-#' @return A \code{numeric} value indicating the condition number.  If undefined,
-#'  the condition number is set to 0.
+#' @return A named \code{list} containing the different matrix metrics.  Note:
+#'  if the smallest eigenvalue of the matrix is 0, the condition number is set
+#'  to 0.
 #'
 #' @keywords internal
-conditionNum <- function(estimate) {
+matrixMetrics <- function(estimate) {
+  # Compute the Eigenvalues
   e_vals <- eigen(estimate, symmetric = TRUE, only.values = TRUE)$values
   n <- length(e_vals)
 
+  # Calculate Condition Number
   if (e_vals[n] != 0){
-    cn <- e_vals[1]/e_vals[n]
+    cn <- round(e_vals[1]/e_vals[n], digits = 3)
   }
   else{
     cn <- 0
   }
 
-  return(cn)
+  # Determine Matrix "Sign" (positive-definite, positive-semi-definite, etc)
+  if (all(e_vals > 0)) {
+    sign <- "PD"
+  }
+  if (any(e_vals == 0) & any(e_vals > 0) & !any(e_vals < 0)) {
+    sign <- "PSD"
+  }
+  if (all(e_vals < 0)) {
+    sign <- "ND"
+  }
+  if (any(e_vals == 0) & any(e_vals < 0) & !any(e_vals > 0)) {
+    sign <- "NSD"
+  }
+  if (any(e_vals > 0) & any(e_vals < 0)) {
+    sign <- "IND"
+  }
+
+  # Calculate Sparsity Measure
+  sp <- round(sum(estimate == 0)/length(estimate), digits = 3)
+
+  metrics <- list(cond_num = cn, sign = sign, sparsity = sp)
+
+  return(metrics)
 }
