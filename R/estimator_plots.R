@@ -28,10 +28,12 @@ plotRobustPoetEst <- function(
   f_dat <- dat %>%
     dplyr::filter(.data$estimator == "robustPoetEst")
 
-  f_dat$estimator <- paste("robustPoetEst - ", f_dat$var_est)
-
   # Split hyperparameters into new columns
   f_dat <- getHypers(dat = f_dat, new_df = TRUE)
+
+  f_dat$estimator <- paste("robustPoetEst -", f_dat$var_est)
+  f_dat$lambda <- as.numeric(f_dat$lambda)
+  f_dat$k <- as.numeric(f_dat$k)
 
   plot_env <- new.env()
 
