@@ -6,7 +6,7 @@
 \usage{
 \method{summary}{cvCovEst}(
   object,
-  summ_fun = c("empRiskByClass", "bestInClass", "worstInClass", "hyperRisk"),
+  summ_fun = c("cvRiskByClass", "bestInClass", "worstInClass", "hyperRisk"),
   ...
 )
 }
@@ -32,7 +32,7 @@ plotting.
 \code{summary()} accepts four different choices for the
 \code{summ_fun} argument.  The choices are:
 \itemize{
-\item \code{"empRiskByClass"} - Returns the minimum, first quartile,
+\item \code{"cvRiskByClass"} - Returns the minimum, first quartile,
 median, third quartile, and maximum of the cross-validated risk
 associated with each class of estimator passed to
 \code{\link{cvCovEst}()}.

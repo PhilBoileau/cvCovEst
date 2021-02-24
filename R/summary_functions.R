@@ -33,7 +33,7 @@ cvRiskByClass <- function(dat) {
     ) %>%
     dplyr::arrange(.data$Mean)
 
-  cv_risk <- dplyr::rename(cv_risk, Estimator = estimator)
+  cv_risk <- dplyr::rename(cv_risk, "Estimator" = "estimator")
 
   return(cv_risk)
 }
