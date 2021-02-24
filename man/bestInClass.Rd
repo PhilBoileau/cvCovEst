@@ -7,7 +7,7 @@
 bestInClass(dat, worst = FALSE)
 }
 \arguments{
-\item{dat}{The \code{\link[tibble]{tibble}} of empirical risks which is
+\item{dat}{The \code{\link[tibble]{tibble}} of cross-validated risks which is
 output by \code{\link{cvCovEst}()}.}
 
 \item{worst}{This facilitates the option to choose the worst performing
@@ -15,8 +15,8 @@ estimator in each class.  Default is \code{FALSE}.}
 }
 \value{
 \code{\link[tibble]{tibble}} with rows corresponding to estimator
-classes and columns for hyperparameter values and empirical risk for the best
-estimator in that class.
+classes and columns for hyperparameter values and cross-validated risk for
+the best estimator in that class.
 }
 \description{
 \code{bestInClass()} finds the best performing estimator within

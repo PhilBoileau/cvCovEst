@@ -1,8 +1,14 @@
+
+# cvCovEst 0.3.4 (2021-02-24)
+
++ Fixing plotting labels and table column names, along with associated
+  documentation.
+
 # cvCovEst 0.3.3 (2021-02-23)
 
 + Adding note to `robustPoetEst()` warning again its use for correlation matrix
   estimation.
-+ fixing bug in `robustPoetEst` plots.
++ Fixing bug in `robustPoetEst` plots.
 
 # cvCovEst 0.3.2 (2021-02-22)
 

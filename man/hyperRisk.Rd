@@ -2,12 +2,12 @@
 % Please edit documentation in R/summary_functions.R
 \name{hyperRisk}
 \alias{hyperRisk}
-\title{Summarize Empirical Risks by Class with Hyperparameter}
+\title{Summarize Cross-Validated Risks by Class with Hyperparameter}
 \usage{
 hyperRisk(dat)
 }
 \arguments{
-\item{dat}{The \code{\link[tibble]{tibble}} of empirical risk calculations
+\item{dat}{The \code{\link[tibble]{tibble}} of cross-validated risk calculations
 which is output by \code{\link{cvCovEst}()}.}
 }
 \value{

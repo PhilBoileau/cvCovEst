@@ -106,7 +106,7 @@ checkPlotSumArgs <- function(
   else {
     # Define valid summary functions
     summary_functions <- c(
-      "empRiskByClass", "bestInClass", "worstInClass", "hyperRisk"
+      "cvRiskByClass", "bestInClass", "worstInClass", "hyperRisk"
     )
 
     # Check valid summary functions
