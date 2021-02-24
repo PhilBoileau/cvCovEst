@@ -28,15 +28,23 @@ covariance matrix estimation, particularly useful in high-dimensional
 settings. The general methodology allows for cross-validation to be used
 to data adaptively identify the optimal estimator of the covariance
 matrix from a prespecified set of candidate estimators. An overview of
-the framework is provided in the package vignette. A suite of plotting
-and diagnostic tools are also included.
+the framework is provided in the package vignette. For a more detailed
+description, see Boileau et al. (2021). A suite of plotting and
+diagnostic tools are also included.
 
 ------------------------------------------------------------------------
 
 ## Installation
 
-Install the *development version* of the `cvCovEst` package from GitHub
-via [`remotes`](https://CRAN.R-project.org/package=remotes):
+For standard use, install `cvCovEst` from
+[CRAN](https://cran.r-project.org/package=cvCovEst):
+
+``` r
+install.packages("cvCovEst")
+```
+
+The *development version* of the package may be installed from GitHub
+using [`remotes`](https://CRAN.R-project.org/package=remotes):
 
 ``` r
 remotes::install_github("PhilBoileau/cvCovEst")
@@ -111,6 +119,22 @@ prior to submitting a pull request.
 
 ------------------------------------------------------------------------
 
+## Citation
+
+Please cite the following paper when using the `cvCovEst` R software
+package.
+
+    @misc{boileau2021,
+          title={Cross-Validated Loss-Based Covariance Matrix Estimator Selection in High Dimensions}, 
+          author={Philippe Boileau and Nima S. Hejazi and Mark J. van der Laan and Sandrine Dudoit},
+          year={2021},
+          eprint={2102.09715},
+          archivePrefix={arXiv},
+          primaryClass={stat.ME}
+    }
+
+------------------------------------------------------------------------
+
 ## License
 
 © 2020-2021 [Philippe Boileau](https://pboileau.ca)
@@ -119,3 +143,19 @@ The contents of this repository are distributed under the MIT license.
 See file
 [`LICENSE.md`](https://github.com/PhilBoileau/cvCovEst/blob/master/LICENSE.md)
 for details.
+
+------------------------------------------------------------------------
+
+## References
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+
+<div id="ref-boileau2021" class="csl-entry">
+
+Boileau, Philippe, Nima S. Hejazi, Mark J. van der Laan, and Sandrine
+Dudoit. 2021. “Cross-Validated Loss-Based Covariance Matrix Estimator
+Selection in High Dimensions.” <http://arxiv.org/abs/2102.09715>.
+
+</div>
+
+</div>

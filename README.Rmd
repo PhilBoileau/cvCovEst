@@ -1,5 +1,6 @@
 ---
 output: github_document
+bibliography: "inst/REFERENCES.bib"
 ---
 
 ```{r, include = FALSE}
@@ -31,17 +32,25 @@ __Authors:__ [Philippe Boileau](https://pboileau.ca),
 ## What's `cvCovEst`?
 
 `cvCovEst` implements an efficient cross-validated procedure for covariance
-matrix estimation, particularly useful in high-dimensional settings. The general
-methodology allows for cross-validation to be used to data adaptively identify
-the optimal estimator of the covariance matrix from a prespecified set of
-candidate estimators. An overview of the framework is provided in the
-package vignette. A suite of plotting and diagnostic tools are also included.
+matrix estimation, particularly useful in high-dimensional settings. The
+general methodology allows for cross-validation to be used to data adaptively
+identify the optimal estimator of the covariance matrix from a prespecified set
+of candidate estimators. An overview of the framework is provided in the
+package vignette. For a more detailed description, see @boileau2021. A suite of
+plotting and diagnostic tools are also included.
 
 ---
 
 ## Installation
 
-Install the _development version_ of the `cvCovEst` package from GitHub via
+For standard use, install `cvCovEst` from
+[CRAN](https://cran.r-project.org/package=cvCovEst):
+
+```{r CRAN-install, eval=FALSE}
+install.packages("cvCovEst")
+```
+
+The _development version_ of the package may be installed from GitHub using
 [`remotes`](https://CRAN.R-project.org/package=remotes):
 
 ```{r gh-master-installation, eval=FALSE}
@@ -104,6 +113,23 @@ prior to submitting a pull request.
 
 ---
 
+## Citation
+
+Please cite the following paper when using the `cvCovEst` R software package.
+
+```
+@misc{boileau2021,
+      title={Cross-Validated Loss-Based Covariance Matrix Estimator Selection in High Dimensions}, 
+      author={Philippe Boileau and Nima S. Hejazi and Mark J. van der Laan and Sandrine Dudoit},
+      year={2021},
+      eprint={2102.09715},
+      archivePrefix={arXiv},
+      primaryClass={stat.ME}
+}
+```
+
+---
+
 ## License
 
 &copy; 2020-2021 [Philippe Boileau](https://pboileau.ca)
@@ -111,3 +137,7 @@ prior to submitting a pull request.
 The contents of this repository are distributed under the MIT license. See file
 [`LICENSE.md`](https://github.com/PhilBoileau/cvCovEst/blob/master/LICENSE.md)
 for details.
+
+---
+
+## References

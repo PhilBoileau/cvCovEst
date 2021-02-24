@@ -23,7 +23,7 @@ Description: An efficient cross-validated approach for covariance matrix
     estimation, particularly useful in high-dimensional settings. This
     method relies upon the theory of loss-based estimator selection to
     identify the optimal estimator of the covariance matrix from among a
-    prespecified set of candidate.
+    prespecified set of candidates.
 Depends: R (>= 4.0.0)
 Imports:
     matrixStats,
