@@ -1,3 +1,8 @@
+# cvCovEst 0.3.4 (2021-02-24)
+
++ Fixing plotting labels and table column names, along with associated
+  documentation.
+
 # cvCovEst 0.3.1 (2021-02-13)
 
 + Edited documentation to meet CRAN specificationsq
