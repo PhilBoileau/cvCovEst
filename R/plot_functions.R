@@ -917,7 +917,7 @@ cvSummaryPlot <- function(
     p1 <- summary.cvCovEst(object = dat, summ_fun = "cvRiskByClass")
 
     p1 <- ggpubr::ggtexttable(
-      p1$empRiskByClass,
+      p1$cvRiskByClass,
       rows = NULL,
       theme = ggpubr::ttheme(
         base_style = "lBlueWhite",
