@@ -12,9 +12,9 @@
 #' @param estimator A \code{character} vector specifying one or more classes of
 #'  estimators to visualize and compare.
 #' @param stat A \code{character} vector containing the names of various
-#'  empirical risk summary statistics. Estimators corresponding to each
+#'  cross-validated risk summary statistics. Estimators corresponding to each
 #'  statistics will be visualized with a different heatmap. Default is
-#'  \code{'min'} for minimum empirical risk.
+#'  \code{'min'} for minimum cross-validated risk.
 #' @param dat_orig The \code{numeric data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{\link{cvCovEst}()}.
 #' @param plot_type A \code{character} detailing the type of plot. Passed to
@@ -307,7 +307,7 @@ cvMultiMelt <- function(
 #' @param estimator A \code{character} vector specifying one or more classes of
 #'  estimators to compare.
 #' @param stat A \code{character} vector containing the names of various
-#'  empirical risk summary statistics.  Within each class of estimator,
+#'  cross-validated risk summary statistics.  Within each class of estimator,
 #'  eigenvalues will be plot for the estimators corresponding to each stat.
 #' @param dat_orig The \code{numeric data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{\link{cvCovEst}()}.
@@ -325,7 +325,7 @@ cvMultiMelt <- function(
 #'
 #' @return A plot, or grid of plots, showing the \code{k} leading or trailing
 #'  eigenvalues of the specified estimators and associated summary statistics of
-#'  the empirical risk.
+#'  the cross-validated risk.
 #'
 #' @importFrom ggplot2 ggplot aes vars geom_point geom_path scale_x_continuous facet_wrap labs scale_color_viridis_d
 #' @importFrom RColorBrewer brewer.pal
@@ -440,7 +440,7 @@ cvEigenPlot <- function(
         geom_point() +
         scale_x_continuous(n.breaks = 3, labels = c("", b, "")) +
         facet_wrap(facets = vars(.data$estimator)) +
-        scale_color_viridis_d(name = "Risk", begin = 0, end = 0.8) +
+        scale_color_viridis_d(name = "CV Risk", begin = 0, end = 0.8) +
         labs(
           title = "Estimator Eigenvalues", caption = cv_details,
           x = "Eigenvalue Index", y = "Eigenvalue"
@@ -470,7 +470,7 @@ cvEigenPlot <- function(
           geom_path() +
           scale_x_continuous(n.breaks = min(10, k)) +
           facet_wrap(facets = vars(.data$estimator)) +
-          scale_color_viridis_d(name = "Risk", begin = 0, end = 0.8) +
+          scale_color_viridis_d(name = "CV Risk", begin = 0, end = 0.8) +
           labs(
             title = "Estimator Eigenvalues", caption = cv_details,
             x = "Eigenvalue Index", y = "Eigenvalue"
@@ -562,7 +562,7 @@ cvEigenPlot <- function(
 
     plot <- plot1 +
       facet_wrap(facets = vars(.data$estimator)) +
-      scale_color_viridis_d(name = "Risk", begin = 0, end = 0.8) +
+      scale_color_viridis_d(name = "CV Risk", begin = 0, end = 0.8) +
       labs(
         title = "Estimator Eigenvalues", caption = cv_details,
         x = "Eigenvalue Index", y = "Eigenvalue"
@@ -577,16 +577,16 @@ cvEigenPlot <- function(
 ################################################################################
 #' Multi-Hyperparameter Risk Plots
 #'
-#' @description \code{multiHyperRisk()} produces plots of the empirical risk for
-#'  estimators with more than one hyperparameter.  The function transforms one
-#'  of the hyperparameters into a factor and uses it to distinguish between the
-#'  risk of various estimators.  If one of the hyperparameters has only one
-#'  unique value, that hyperparameter is used as the factor variable.  If all
-#'  hyperparameters have only one unique value, a plot is not generated for that
-#'  estimator class.
+#' @description \code{multiHyperRisk()} produces plots of the cross-validated
+#'  risk for estimators with more than one hyperparameter.  The function
+#'  transforms one of the hyperparameters into a factor and uses it to
+#'  distinguish between the risk of various estimators.  If one of the
+#'  hyperparameters has only one unique value, that hyperparameter is used as
+#'  the factor variable.  If all hyperparameters have only one unique value, a
+#'  plot is not generated for that estimator class.
 #'
-#' @param dat A \code{data.frame} of empirical risks. Specifically, this is the
-#'  \code{risk_df} table output by \code{\link{cvCovEst}()}.
+#' @param dat A \code{data.frame} of cross-validated risks. Specifically, this
+#'  is the \code{risk_df} table output by \code{\link{cvCovEst}()}.
 #' @param estimator A \code{character} vector specifying one or more classes of
 #'  estimators to compare.
 #' @param switch_vars A \code{logical} indicating if the x-axis and factor
@@ -635,9 +635,9 @@ multiHyperRisk <- function(
 }
 
 ################################################################################
-#' Empirical Risk Plot
+#' Cross-Validated Risk Plot
 #'
-#' @description \code{cvRiskPlot()} plots the empirical risk for a given
+#' @description \code{cvRiskPlot()} plots the cross-validated risk for a given
 #'  estimator, or set of estimators, as a function of the hyperparameters.
 #'
 #' @param dat A named \code{list}.  Specifically, this is the standard output of
@@ -815,7 +815,7 @@ cvRiskPlot <- function(
       geom_path(aes(x = .data$hyperparameters, y = .data$empirical_risk)) +
       facet_wrap(facets = vars(.data$estimator), scales = "free_x") +
       labs(
-        title = "Estimator Empirical Risk",
+        title = "Estimator Cross-Validated Risk",
         caption = cv_details,
         x = "Hyperparameter",
         y = "Risk"
@@ -914,7 +914,7 @@ cvSummaryPlot <- function(
     }
   }
   else {
-    p1 <- summary.cvCovEst(object = dat, summ_fun = "empRiskByClass")
+    p1 <- summary.cvCovEst(object = dat, summ_fun = "cvRiskByClass")
 
     p1 <- ggpubr::ggtexttable(
       p1$empRiskByClass,
@@ -927,10 +927,10 @@ cvSummaryPlot <- function(
 
     p1 <- ggpubr::tab_add_title(
       p1,
-      text = "Risk Summary By Class",
+      text = "Cross-Validated Risk Summary By Class",
       face = "bold",
       size = 10,
-      hjust = -1,
+      hjust = -0.5,
       padding = unit(2, "line")
     )
   }
@@ -965,6 +965,7 @@ cvSummaryPlot <- function(
 
   best_est <- p4_a$bestInClass$estimator[1]
 
+  colnames(p4_a$bestInClass) <- c("Estimator", "Hyperparameter(s)", "CV Risk")
   p4_a <- ggpubr::ggtexttable(
     p4_a$bestInClass,
     rows = NULL,
@@ -1027,7 +1028,7 @@ cvSummaryPlot <- function(
 #'  with optimal \code{cvCovEst} selection is used.
 #' @param stat A \code{character} vector of one or more summary statistics to
 #'  use when comparing estimators.  Default is \code{"min"} for minimum
-#'  empirical risk.  See Details for more options.
+#'  cross-validated risk.  See Details for more options.
 #' @param k A \code{integer} indicating the number of leading/trailing
 #'  eigenvalues to plot. If \code{NULL}, will default to the number of columns
 #'  in \code{dat_orig}.
@@ -1039,7 +1040,7 @@ cvSummaryPlot <- function(
 #'  \code{TRUE}.
 #' @param switch_vars A \code{logical}. If \code{TRUE}, the hyperparameters used
 #'  for the x-axis and factor variables are switched in the plot of the
-#'  empirical risk.  Only applies to estimators with more than one
+#'  cross-validated risk.  Only applies to estimators with more than one
 #'  hyperparameter. Default is \code{FALSE}.
 #' @param min_max A \code{logical}.  If \code{TRUE}, only the minimum and
 #'  maximum values of the factor hyperparameter will be used.  Only applies to
@@ -1054,7 +1055,7 @@ cvSummaryPlot <- function(
 #'     \item \code{"eigen"} - Plots the eigenvalues associated with the
 #'       specified \code{estimator} and \code{stat} arguments in decreasing
 #'       order.
-#'     \item \code{"risk"} - Plots the empirical risk of the specified
+#'     \item \code{"risk"} - Plots the cross-validated risk of the specified
 #'       \code{estimator} as a function of the hyperparameter values passed to
 #'       \code{\link{cvCovEst}()}.  This type of plot is only compatible with
 #'       estimators which take hyperparameters as arguments.
@@ -1069,16 +1070,16 @@ cvSummaryPlot <- function(
 #'       within each class.  If the optimal estimator selected by
 #'       \code{\link{cvCovEst}()} does not have hyperparameters, then the risk
 #'       plot is replaced with a table displaying the minimum, first quartile,
-#'       median, third quartile, and maximum of the empirical risk associated
-#'       with each class of estimator.
+#'       median, third quartile, and maximum of the cross-validated risk
+#'       associated with each class of estimator.
 #'  }
 #'
 #'   The \code{stat} argument accepts five values.  They each correspond to a
-#'   summary statistic of the empirical risk distribution within a class of
-#'   estimator.  Possible values are:
+#'   summary statistic of the cross-validated risk distribution within a class
+#'   of estimator.  Possible values are:
 #'   \itemize{
 #'     \item \code{"min"} - minimum
-#'     \item \code{"Q1"} - first quartile 
+#'     \item \code{"Q1"} - first quartile
 #'     \item \code{"median"} - median
 #'     \item \code{"Q3"} - third quartile
 #'     \item \code{"max"} - maximum

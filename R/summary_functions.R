@@ -1,39 +1,41 @@
 # Main Summary Method and Summary Functions for cvCovEst
 
 ################################################################################
-#' Summary Statistics of Empirical Risk by Estimator Class
+#' Summary Statistics of Cross-Validated Risk by Estimator Class
 #'
-#' @description \code{empRiskByClass()} calculates the following
-#'  summary statistics for the empirical risk within each class of estimator
-#'  passed to \code{\link{cvCovEst}()}: minimum, Q1, median, mean, Q3, and
-#'  maximum.  The results are output as a \code{tibble}.
+#' @description \code{cvRiskByClass()} calculates the following
+#'  summary statistics for the cross-validated risk within each class of
+#'  estimator passed to \code{\link{cvCovEst}()}: minimum, Q1, median, mean, Q3,
+#'  and maximum.  The results are output as a \code{tibble}.
 #'
-#' @param dat The \code{\link[tibble]{tibble}} of empirical risk calculations
-#'  which is output by \code{\link{cvCovEst}()}.
+#' @param dat The \code{\link[tibble]{tibble}} of cross-validated risk
+#'  calculations which is output by \code{\link{cvCovEst}()}.
 #'
 #' @return \code{\link[tibble]{tibble}} with rows corresponding to estimator
 #'  classes and columns corresponding to each summary statistic.
 #'
-#' @importFrom dplyr group_by summarize arrange %>%
+#' @importFrom dplyr group_by summarize arrange %>% rename
 #' @importFrom stats median quantile
 #' @importFrom rlang .data
 #'
 #' @keywords internal
-empRiskByClass <- function(dat) {
-  emp_risk <- dat %>%
+cvRiskByClass <- function(dat) {
+  cv_risk <- dat %>%
     dplyr::group_by(.data$estimator) %>%
     dplyr::summarise(
-      min = min(.data$empirical_risk),
+      Min = min(.data$empirical_risk),
       Q1 = quantile(.data$empirical_risk, probs = 0.25, type = 3),
-      median = quantile(.data$empirical_risk, probs = 0.5, type = 3),
+      Median = quantile(.data$empirical_risk, probs = 0.5, type = 3),
       Q3 = quantile(.data$empirical_risk, probs = 0.75, type = 3),
-      max = max(.data$empirical_risk),
-      mean_risk = mean(.data$empirical_risk),
+      Max = max(.data$empirical_risk),
+      Mean = mean(.data$empirical_risk),
       .groups = "keep"
     ) %>%
-    dplyr::arrange(.data$mean_risk)
+    dplyr::arrange(.data$Mean)
 
-  return(emp_risk)
+  cv_risk <- dplyr::rename(cv_risk, "Estimator" = "estimator")
+
+  return(cv_risk)
 }
 
 ################################################################################
@@ -43,14 +45,14 @@ empRiskByClass <- function(dat) {
 #'  each class of estimator passed to \code{\link{cvCovEst}()} and
 #'  finds the associated hyper-parameters if applicable.
 #'
-#' @param dat The \code{\link[tibble]{tibble}} of empirical risks which is
+#' @param dat The \code{\link[tibble]{tibble}} of cross-validated risks which is
 #'  output by \code{\link{cvCovEst}()}.
 #' @param worst This facilitates the option to choose the worst performing
 #'  estimator in each class.  Default is \code{FALSE}.
 #'
 #' @return \code{\link[tibble]{tibble}} with rows corresponding to estimator
-#' classes and columns for hyperparameter values and empirical risk for the best
-#' estimator in that class.
+#'  classes and columns for hyperparameter values and cross-validated risk for
+#'  the best estimator in that class.
 #'
 #' @importFrom dplyr group_by summarize arrange first %>%
 #' @importFrom rlang .data
@@ -58,7 +60,7 @@ empRiskByClass <- function(dat) {
 #' @keywords internal
 bestInClass <- function(dat, worst = FALSE) {
   if (worst) {
-    worst_est <- dat %>%
+    inClass <- dat %>%
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::last(.data$hyperparameters),
@@ -66,11 +68,9 @@ bestInClass <- function(dat, worst = FALSE) {
         .groups = "keep"
       ) %>%
       dplyr::arrange(.data$empirical_risk)
-
-    return(worst_est)
   }
   else {
-    best_est <- dat %>%
+    inClass <- dat %>%
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::first(.data$hyperparameters),
@@ -78,18 +78,17 @@ bestInClass <- function(dat, worst = FALSE) {
         .groups = "keep"
       ) %>%
       dplyr::arrange(.data$empirical_risk)
-
-    return(best_est)
   }
+  return(inClass)
 }
 
 ################################################################################
-#' Summarize Empirical Risks by Class with Hyperparameter
+#' Summarize Cross-Validated Risks by Class with Hyperparameter
 #'
 #' @description \code{hyperRisk()} groups together estimators of the
 #'  same class and parses the hyperparameter values over quantiles of the risk.
 #'
-#' @param dat The \code{\link[tibble]{tibble}} of empirical risk calculations
+#' @param dat The \code{\link[tibble]{tibble}} of cross-validated risk calculations
 #'  which is output by \code{\link{cvCovEst}()}.
 #'
 #' @return A named \code{list} of data frames. Each list element corresponds to
@@ -175,9 +174,10 @@ hyperRisk <- function(dat) {
 #' @details \code{summary()} accepts four different choices for the
 #'  \code{summ_fun} argument.  The choices are:
 #'  \itemize{
-#'     \item \code{"empRiskByClass"} - Returns the minimum, first quartile,
-#'       median, third quartile, and maximum of the empirical risk associated
-#'       with each class of estimator passed to \code{\link{cvCovEst}()}.
+#'     \item \code{"cvRiskByClass"} - Returns the minimum, first quartile,
+#'       median, third quartile, and maximum of the cross-validated risk
+#'       associated with each class of estimator passed to
+#'       \code{\link{cvCovEst}()}.
 #'     \item \code{"bestInClass"} - Returns the specific hyperparameters, if
 #'       applicable, of the best performing estimator within each class.
 #'     \item \code{"worstInClass"} - Returns the specific hyperparameters, if
@@ -185,8 +185,9 @@ hyperRisk <- function(dat) {
 #'     \item \code{"hyperRisk"} - For estimators that take hyperparameters as
 #'       arguments, this function returns the hyperparameters associated with
 #'       the minimum, first quartile, median, third quartile, and maximum of the
-#'       empirical risk within each class of estimator. Each class has its own
-#'       \code{\link[tibble]{tibble}}, which are returned as a \code{list}.
+#'       cross-validated risk within each class of estimator. Each class has
+#'       its own \code{\link[tibble]{tibble}}, which are returned as a
+#'       \code{list}.
 #'  }
 #'
 #' @return A named \code{list} where each element corresponds to the output of
@@ -213,14 +214,14 @@ hyperRisk <- function(dat) {
 summary.cvCovEst <- function(
                              object,
                              summ_fun = c(
-                               "empRiskByClass",
+                               "cvRiskByClass",
                                "bestInClass",
                                "worstInClass",
                                "hyperRisk"
                              ),
                              ...) {
   summary_functions <- c(
-    "empRiskByClass", "bestInClass", "worstInClass", "hyperRisk"
+    "cvRiskByClass", "bestInClass", "worstInClass", "hyperRisk"
   )
 
   # Check cvCovEst credentials
