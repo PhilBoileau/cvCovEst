@@ -7,7 +7,7 @@ tags:
 authors:
   - name: Philippe Boileau
     orcid: 0000-0002-4850-2507
-    affiliation: 1
+    affiliation: "1, 2"
   - name: Brian Collica
     orcid: 0000-0003-1127-2557
     affiliation: 3
@@ -16,10 +16,10 @@ authors:
     affiliation: "1, 2"
   - name: Mark J. van der Laan
     orcid: 0000-0003-1432-5511
-    affiliation: "2, 3, 4"
+    affiliation: "4, 3, 2"
   - name: Sandrine Dudoit
     orcid: 0000-0002-6069-8629
-    affiliation: "2, 3, 4"
+    affiliation: "3, 4, 2"
 affiliations:
   - name: Graduate Group in Biostatistics, University of California, Berkeley
     index: 1
