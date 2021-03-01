@@ -7,3 +7,5 @@ vignettes/*.html
 
 ## macOS
 .DS_store
+doc
+Meta

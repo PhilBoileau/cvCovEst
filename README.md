@@ -154,7 +154,7 @@ for details.
 
 Boileau, Philippe, Nima S. Hejazi, Mark J. van der Laan, and Sandrine
 Dudoit. 2021. “Cross-Validated Loss-Based Covariance Matrix Estimator
-Selection in High Dimensions.” <http://arxiv.org/abs/2102.09715>.
+Selection in High Dimensions.” <https://arxiv.org/abs/2102.09715>.
 
 </div>
 
