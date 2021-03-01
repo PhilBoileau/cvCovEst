@@ -2,12 +2,12 @@ library(MASS)
 library(origami)
 set.seed(123)
 
-# generate 50x50 covariance matrix with unit variances and off-diagonal
+# generate 10x10 covariance matrix with unit variances and off-diagonal
 # elements equal to 0.5
-Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
+Sigma <- matrix(0.5, nrow = 10, ncol = 10) + diag(0.5, nrow = 10)
 
-# sample 200 observations from multivariate normal with mean = 0, var = Sigma
-dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
+# sample 50 observations from multivariate normal with mean = 0, var = Sigma
+dat <- mvrnorm(n = 50, mu = rep(0, 10), Sigma = Sigma)
 
 # generate a single fold using MC-cv
 resub <- make_folds(dat,

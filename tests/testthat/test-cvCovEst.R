@@ -2,14 +2,14 @@ library(future.apply)
 library(MASS)
 set.seed(123)
 
-# generate a 50x50 covariance matrix with unit variances and off-diagonal
+# generate a 10x10 covariance matrix with unit variances and off-diagonal
 # elements equal to 0.5
-Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
+Sigma <- matrix(0.5, nrow = 10, ncol = 10) + diag(0.5, nrow = 10)
 
-# sample 200 observations from multivariate normal with mean = 0, var = Sigma
-dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
+# sample 50 observations from multivariate normal with mean = 0, var = Sigma
+dat <- mvrnorm(n = 50, mu = rep(0, 10), Sigma = Sigma)
 
-# simple test (TODO: improve test and add tests to cover more cases)
+# simple test
 test_that("cross-validated covariance selector runs silently", {
   expect_silent(cvCovEst(
     dat = dat,

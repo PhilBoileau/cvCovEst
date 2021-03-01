@@ -3,6 +3,8 @@
 
 + Fixing plotting labels and table column names, along with associated
   documentation.
++ Fixing links to pass CRAN checks
++ Reducing size of toy datasets to increase testing speed
 
 # cvCovEst 0.3.3 (2021-02-23)
 
