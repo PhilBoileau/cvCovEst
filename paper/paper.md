@@ -35,18 +35,21 @@ bibliography: paper.bib
 
 # Summary
 
+# Statement of Need
+
 When the number of observations in a dataset far exceeds the number of
 features, the estimator of choice for the covariance matrix is the sample
 covariance matrix. It is an efficient estimator under minimal regularity
 assumptions on the data-generating distribution. In high-dimensional regimes,
-however, it leaves much to be desired: The sample covariance matrix is either
-singular, numerically unstable, or both, thereby amplifying estimation error.
+however, its performance is unsatisfactory: The sample covariance matrix is
+highly variable, and produces estimates with diverging condition numbers and
+over-dispersed eigenvalues. In Short, these issues amplify estimation
+error. 
 
 As high-dimensional data have become widespread, researchers have derived many
 novel covariance matrix estimators to remediate the sample covariance matrix's
 deficiencies. These estimators come in many flavours, though most are
-constructed by regularizing the sample covariance matrix, or through the
-estimation of latent factors. A comprehensive review is provided by @fan2016.
+constructed by regularizing the sample covariance matrix.
 
 This variety brings with it many challenges. Identifying an "optimal" estimator
 from among a collection of candidates can prove a daunting task, one whose
@@ -55,25 +58,38 @@ approaches for selecting an optimal estimator from among estimators belonging to
 certain (limited) classes have been derived, the question of selecting an
 estimator from among a diverse collection of candidates remains unaddressed.
 
+# `cvCovEst` Framework
+
 Our response is a general, cross-validation-based framework for covariance
 matrix estimator selection capable of accomplishing just that. The asymptotic
-optimality of selections are guaranteed based upon extensions of the seminal
-work of @laan_dudoit:2003, @dudoit2005, and @vaart2006 on data-adaptive
-estimator selection to high-dimensional covariance matrix estimation
-[@boileau2021]. The interested reader is invited to review theoretical
-underpinnings of the methodology as described in @boileau2021.
+optimality of selections are guaranteed by extending the seminal work of
+@laan_dudoit:2003, @dudoit2005, and @vaart2006 on data-adaptive estimator
+selection to high-dimensional covariance matrix estimation [@boileau2021].
 
 The `cvCovEst` software package implements this framework for the `R` language
-and environment for statistical computing [@R]. Given that the package was
-specifically designed with high-dimensional datasets in mind, we provide users
-with options to increase the method's computationally efficiency. In
-particular, we make use of the suite of `future` software packages [@future] by
-way of the `origami` software package [@origami] to facilitate parallel
-computation. Finally, `cvCovEst` provides a slew of plotting and summary
-functions. These tools allow users to gauge the algorithm's performance,
-diagnose issues, and gain intuition about the behaviour of the many implemented
-estimators.
+and environment for statistical computing [@R]. Included is the accumulation of
+covariance matrix estimators spanning the work of many researchers [], which
+may be employed independently of the cross-validation procedure. Given that
+the package was designed with high-dimensional datasets in mind,
+we provide users with options to increase the method's computationally
+efficiency. In particular, we rely on the suite of `future` software
+packages [@future] by way of the `origami` software package [@origami] to
+facilitate parallel computation.
 
+`cvCovEst` also provides a slew of plotting and summary functions. These
+diagnostic tools allow users to gauge the algorithm's performance, diagnose
+issues that might arise during the estimation procedure, and build intuition
+about the behaviour of the many estimators.
+
+# Toy Example
+
+# Availability
+
+A stable release of the `cvCovEst` package is freely available via the
+[Comprehensive R Archive Network](https://CRAN.R-project.org/package=cvCovEst);
+its development version can be found on
+[GitHub](https://github.com/PhilBoileau/cvCovEst). Documentation and examples
+are found in the accompanying manual pages and vignette.
 
 # Acknowledgments
 
