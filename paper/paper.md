@@ -1,8 +1,8 @@
 ---
-title: `cvCovEst`: Cross-validated covariance matrix estimation in `R`
+title: "`cvCovEst`: Cross-validated covariance matrix estimation in `R`"
 tags:
   - R
-  - covariance
+  - covariance matrix estimation
   - cross-validation
 authors:
   - name: Philippe Boileau
@@ -29,7 +29,7 @@ affiliations:
     index: 3
   - name: Division of Biostatistics, School of Public Health, University of California, Berkeley
     index: 4
-date: 03 February 2021
+date: 05 March 2021
 bibliography: paper.bib
 ---
 
