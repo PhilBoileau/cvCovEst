@@ -27,7 +27,7 @@ affiliations:
     index: 2
   - name: Department of Statistics, University of California, Berkeley
     index: 3
-  - name: Division of Epidemiology and Biostatistics, School of Public Health, University of California, Berkeley
+  - name: Division of Biostatistics, School of Public Health, University of California, Berkeley
     index: 4
 date: 03 February 2021
 bibliography: paper.bib
@@ -85,4 +85,3 @@ Berkeley.
 We thank Jamarcus Liu for his contributions to the software package.
 
 # References
-
