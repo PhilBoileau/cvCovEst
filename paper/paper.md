@@ -35,6 +35,23 @@ bibliography: paper.bib
 
 # Summary
 
+Covariance matrices play fundamental roles in myriad statistical procedures.
+When the observations in a dataset far outnumber its features, classical
+asymptotic results and empirical evidence suggest that the sample covariance
+matrix is the optimal estimator of this parameter. However, this assertion no
+longer holds true when the number of observations is commensurate or smaller
+than the number of variables. Statisticians have therefore derived many novel
+covariance matrix estimators for this high-dimensional setting, often inspired
+by additional assumptions about the parameter's structural characteristics
+(e.g. sparsity). While they have greatly improved our ability to estimate
+covariance matrices in high-dimensions, objectively selecting the best
+estimator from among the many possible candidates remains a challenge. The
+`cvCovEst` package's addresses this methodological gap through its
+implementation of a cross-validated framework for covariance matrix estimator
+selection. This data-adaptive procedure's selections are provably
+asymptotically optimal in high dimensions, and have demonstrated good
+performance in empirical studies.
+
 # Statement of Need
 
 When the number of observations in a dataset far exceeds the number of
@@ -98,8 +115,64 @@ Table 1: Covariance matrix estimators implemented as of version 0.3.4.
 
 # Toy Dataset Example
 
-We showcase `cvCovEst`'s functionality through a toy example.
+We briefly showcase `cvCovEst`'s functionality through a toy example.
+Multivariate normal data is simulated using a covariance matrix with a Toeplitz
+structure, and then passed to cvCovEst. A summary of the cross-validated
+procedure and its selection is then provided via the `plot` method.
 
+```
+library(MASS)
+library(cvCovEst)
+set.seed(1584)
+
+# function to generate a toeplitz matrix
+toep_sim <- function(p, rho, alpha) {
+    times <- seq_len(p)
+    H <- abs(outer(times, times, "-")) + diag(p)
+    H <- H^-(1 + alpha) * rho
+    covmat <- H + diag(p) * (1 - rho)
+
+    sign_mat <- sapply(
+      times,
+      function(i) {
+        sapply(
+          times,
+          function(j) {
+            (-1)^(abs(i - j))
+          }
+        )
+      }
+    )
+    return(covmat * sign_mat)
+}
+
+# generate a 100 x 100 covariance matrix
+sim_covmat <- toep_sim(p = 100, rho = 0.6, alpha = 0.3)
+
+# sample 75 observations from multivariate normal mean = 0, var = sim_covmat
+sim_dat <-  MASS::mvrnorm(n = 75, mu = rep(0, 100), Sigma = sim_covmat)
+
+# run CV-selector
+cv_cov_est_sim <- cvCovEst(
+  dat = sim_dat,
+  estimators = c(
+    linearShrinkEst, thresholdingEst, bandingEst, thresholdingEst, sampleCovEst
+  ),
+  estimator_params = list(
+    linearShrinkEst = list(alpha = seq(0.25, 0.75, 0.05)),
+    thresholdingEst = list(gamma = seq(0.25, 0.75, 0.05)),
+    bandingEst = list(k = seq(2L, 10L, 2L)
+  ),
+  cv_scheme = "v_fold",
+  v_folds = 5,
+  center = TRUE
+)
+
+# plot a summary of the results
+plot(cv_cov_est_sim)
+```
+
+![Insert plot here](figure.png){ width=20% }
 
 # Availability
 
