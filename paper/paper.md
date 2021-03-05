@@ -127,6 +127,7 @@ set.seed(1584)
 
 # function to generate a toeplitz matrix
 toep_sim <- function(p, rho, alpha) {
+
     times <- seq_len(p)
     H <- abs(outer(times, times, "-")) + diag(p)
     H <- H^-(1 + alpha) * rho
@@ -156,12 +157,13 @@ sim_dat <-  MASS::mvrnorm(n = 75, mu = rep(0, 100), Sigma = sim_covmat)
 cv_cov_est_sim <- cvCovEst(
   dat = sim_dat,
   estimators = c(
-    linearShrinkEst, thresholdingEst, bandingEst, thresholdingEst, sampleCovEst
+    linearShrinkEst, thresholdingEst, bandingEst, taperingEst, sampleCovEst
   ),
   estimator_params = list(
-    linearShrinkEst = list(alpha = seq(0.25, 0.75, 0.05)),
-    thresholdingEst = list(gamma = seq(0.25, 0.75, 0.05)),
-    bandingEst = list(k = seq(2L, 10L, 2L)
+    linearShrinkEst = list(alpha = seq(0.05, 0.25, 0.75)),
+    thresholdingEst = list(gamma = seq(0.05, 0.25, 0.75)),
+    bandingEst = list(k = seq(2L, 10L, 2L)),
+    taperingEst = list(k = seq(2L, 10L, 2L))
   ),
   cv_scheme = "v_fold",
   v_folds = 5,
@@ -169,10 +171,10 @@ cv_cov_est_sim <- cvCovEst(
 )
 
 # plot a summary of the results
-plot(cv_cov_est_sim)
+plot(cv_cov_est_sim, data_in = sim_dat)
 ```
 
-![Insert plot here](figure.png){ width=20% }
+![A summary of the `cvCovEst` procedure's results.](summary_plot.png){ width=80% }
 
 # Availability
 
