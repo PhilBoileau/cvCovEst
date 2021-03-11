@@ -1,9 +1,12 @@
 ---
-title: "`cvCovEst`: Cross-validated covariance matrix estimation in `R`"
+title: "`cvCovEst`: Cross-validated covariance matrix estimator selection and evaluation in `R`"
 tags:
   - R
-  - covariance matrix estimation
+  - covariance matrix
   - cross-validation
+  - high-dimensional statistics
+  - loss-based estimation
+  - multivariate analysis
 authors:
   - name: Philippe Boileau
     orcid: 0000-0002-4850-2507
@@ -29,39 +32,39 @@ affiliations:
     index: 3
   - name: Division of Biostatistics, School of Public Health, University of California, Berkeley
     index: 4
-date: 05 March 2021
+date: 11 March 2021
 bibliography: paper.bib
 ---
 
 # Summary
 
 Covariance matrices play fundamental roles in myriad statistical procedures.
-When the observations in a dataset far outnumber its features, asymptotic
-theory and empirical evidence support that the sample covariance matrix is the
-optimal estimator of this parameter. However, this assertion does not hold when
-the number of observations is commensurate or smaller than the number of
-variables. Statisticians have therefore derived many novel covariance matrix
-estimators for this high-dimensional setting, often relying on additional
-assumptions about the parameter's structural characteristics (e.g.  sparsity).
-While these estimators have greatly improved our ability to estimate covariance
-matrices in high-dimensions, objectively selecting the best one from among the
-many possible candidates remains a challenge. The `cvCovEst` package addresses
-this methodological gap through its implementation of a cross-validated
-framework for covariance matrix estimator selection. This data-adaptive
-procedure's selections are asymptotically optimal under minimal assumptions,
-meaning they are equivalent to the selections one would make if the true data
-generating processes were known.
+When the observations in a dataset far outnumber the features, asymptotic theory
+and empirical evidence have demonstrated the sample covariance matrix to be the
+optimal estimator of this parameter. This assertion does not hold when the
+number of observations is commensurate or smaller than the number of features.
+Consequently, statisticians have derived many novel covariance matrix estimators
+for the high-dimensional regime, often relying on additional assumptions about
+the parameter's structural characteristics (e.g., sparsity). While these
+estimators have greatly improved the ability to estimate covariance matrices in
+high-dimensional settings, objectively selecting the best estimator from among
+the many possible candidates remains a largely unaddressed challenge. The
+`cvCovEst` package addresses this methodological gap through its implementation
+of a cross-validated framework for covariance matrix estimator selection. This
+data-adaptive procedure's selections are asymptotically optimal under minimal
+assumptions, meaning they are equivalent to the selections one would make if the
+true data-generating processes were known [@vdl2003unified].
 
 # Statement of Need
 
-When the number of observations in a dataset far exceeds the number of
-features, the estimator of choice for the covariance matrix is the sample
-covariance matrix. It is efficient under minimal regularity assumptions on the
+When the number of observations in a dataset far exceeds the number of features,
+the estimator of choice for the covariance matrix is the sample covariance
+matrix. It is efficient under minimal regularity assumptions on the
 data-generating distribution. In high-dimensional regimes, however, its
-performance is unsatisfactory: The sample covariance matrix is highly variable,
-and produces estimates with diverging condition numbers and over-dispersed
-eigenvalues. These issues amplify estimation error in the resulting estimates,
-as well as in downstream analyses that rely upon them. 
+performance is unsatisfactory: the sample covariance matrix is highly variable,
+producing estimates with diverging condition numbers and over-dispersed
+eigenvalues [@johnstone2001distribution]. These issues amplify estimation error
+in resultant estimates, as well as in downstream analyses relying upon them.
 
 As high-dimensional data have become widespread, researchers have derived many
 novel covariance matrix estimators to remediate the sample covariance matrix's
@@ -71,21 +74,21 @@ reviews of these estimators are provided by @fan2016 and @pourahmadi2013.
 
 This variety brings with it many challenges. Identifying an "optimal" estimator
 from among a collection of candidates can prove a daunting task, one whose
-objectivity is often compromised by the analyst's decisions. Though data-driven
-approaches for selecting an optimal estimator from among estimators belonging to
-certain (limited) classes have been derived, the question of selecting from a
-diverse collection of candidates remains unaddressed.
+objectivity is often compromised by the data analyst's decisions. Though
+data-driven approaches for selecting an optimal estimator from among estimators
+belonging to certain (limited) classes have been derived, the question of
+selecting from a diverse collection of candidate procedures remains unaddressed.
 
 # `cvCovEst` Framework
 
-Our solution is a general, cross-validation-based framework for covariance
-matrix estimator selection capable of accomplishing just that. The asymptotic
-optimality of selections are guaranteed under a few non-restrictive assumptions
-by extending the seminal work of @laan_dudoit:2003, @dudoit2005, and @vaart2006
-on data-adaptive estimator selection to high-dimensional covariance matrix
-estimation [@boileau2021]. Here, optimality is defined as choosing an estimator
-with an equivalent risk difference to the one that would be selected if the
-underlying data generating distribution were known.
+The solution provided by `cvCovEst` a general, cross-validation-based,
+estimator-agnostic framework for covariance matrix estimator selection. The
+asymptotic optimality of selections are guaranteed under a few non-restrictive
+assumptions by extending the seminal work of @laan_dudoit:2003, @dudoit2005, and
+@vaart2006 on data-adaptive estimator selection to high-dimensional covariance
+matrix estimation [@boileau2021]. Here, optimality is defined as choosing an
+estimator with an equivalent risk difference to that which would have been
+selected were the underlying data-generating distribution _known_.
 
 The `cvCovEst` software package implements this framework for the `R` language
 and environment for statistical computing [@R]. Included is an accumulation of
@@ -183,7 +186,7 @@ plot(cv_cov_est_sim, data_in = sim_dat)
 # Availability
 
 A stable release of the `cvCovEst` package is freely available via the
-[Comprehensive R Archive Network](https://CRAN.R-project.org/package=cvCovEst).
+[Comprehensive `R` Archive Network](https://CRAN.R-project.org/package=cvCovEst).
 Its development version can be found on
 [GitHub](https://github.com/PhilBoileau/cvCovEst). Documentation and examples
 are contained in each version's manual pages and vignette.
@@ -198,3 +201,4 @@ Berkeley.
 We thank Jamarcus Liu for his contributions to the software package.
 
 # References
+
