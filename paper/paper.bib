@@ -1,116 +1,242 @@
-@manual{lun2018singlecellexperiment,
-    title = {SingleCellExperiment: S4 classes for single cell data},
-    author = {{Lun}, Aaron and {Risso}, Davide},
-    year = {2019},
-    note = {R package version 1.6.0},
-    doi = {10.18129/B9.bioc.SingleCellExperiment}
-  }
+@article{fan2016,
+    author = {Fan, Jianqing and Liao, Yuan and Liu, Han},
+    title = {An overview of the estimation of large covariance and precision matrices},
+    journal = {The Econometrics Journal},
+    volume = {19},
+    number = {1},
+    pages = {C1-C32},
+    keywords = {Approximate factor model, Elliptical distribution, Graphical model, Heavy-tailed, High-dimensionality, Low-rank matrix, Principal components, Rank-based methods, Sparse matrix, Thresholding},
+    doi = {10.1111/ectj.12061},
+    url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/ectj.12061},
+    year = {2016}
+}
+
+@techreport{laan_dudoit:2003,
+  author = {Dudoit, Sandrine and {van der Laan}, Mark J},
+  title = {Asymptotics of Cross-Validated Risk Estimation in Estimator Selection and Performance Assessment},
+  series = {U.C. Berkeley Division of Biostatistics Working Paper Series},
+  type = {Working Paper},
+  number = {126},
+  month = {February},
+  year = {2003},
+  institution = {University of California, Berkeley},
+  address = {Berkeley},
+  URL = {https://biostats.bepress.com/ucbbiostat/paper126}
+}
+
+@article{dudoit2005,
+  title={Asymptotics of cross-validated risk estimation in estimator selection and performance assessment},
+  author={Sandrine Dudoit and Mark J. {van der Laan}},
+  journal={Statistical Methodology},
+  volume={2},
+  number={2},
+  pages={131--154},
+  year={2005},
+  publisher={Elsevier}
+}
+
+@article{vaart2006,
+  title={Oracle inequalities for multi-fold cross validation},
+  author={{van der Vaart}, Aad W and Dudoit, Sandrine and {van der Laan}, Mark J},
+  journal={Statistics and Decisions},
+  year={2006},
+  volume={24},
+  pages={351-371}
+}
 
 @manual{R,
   title = {R: A language and environment for statistical computing},
   author = {{R Core Team}},
   organization = {R Foundation for Statistical Computing},
   address = {Vienna, Austria},
-  year = {2020},
+  year = {2021},
   url = {https://www.R-project.org/}
 }
 
-@article{Johnstone2009,
-author = {{Johnstone}, I.~M. and {Lu}, A.~Y. },
-title = {On consistency and sparsity for principal components analysis in high dimensions},
-journal = {Journal of the American Statistical Association},
-volume = {104},
-number = {486},
-pages = {682-693},
-year  = {2009},
-publisher = {Taylor & Francis},
-doi = {10.1198/jasa.2009.0121},
-    note ={PMID: 20617121},
-
-URL = {
-        https://doi.org/10.1198/jasa.2009.0121
-
-},
-eprint = {
-        https://doi.org/10.1198/jasa.2009.0121
-}
+@Misc{future,
+  author = {Henrik Bengtsson},
+  title = {A Unifying Framework for Parallel and Distributed Processing in R using Futures},
+  year = {2020},
+  month = {aug},
+  eprint = {2008.00553},
+  archiveprefix = {arXiv},
+  primaryclass = {cs.DC},
+  url = {https://arxiv.org/abs/2008.00553},
 }
 
-@article{Zou2006,
-author = {{Zou}, H. and {Hastie}, T. and {Tibshirani}, R.},
-title = {Sparse principal component analysis},
-journal = {Journal of Computational and Graphical Statistics},
-volume = {15},
-number = {2},
-pages = {265-286},
-year  = {2006},
-publisher = {Taylor & Francis},
-doi = {10.1198/106186006X113430},
-
-URL = {
-        https://doi.org/10.1198/106186006X113430
-
-},
-eprint = {
-        https://doi.org/10.1198/106186006X113430
-}
+@article{origami,
+  doi = {10.21105/joss.00512},
+  url = {https://doi.org/10.21105/joss.00512},
+  year = {2018},
+  publisher = {The Open Journal},
+  volume = {3},
+  number = {21},
+  pages = {512},
+  author = {Jeremy R. Coyle and Nima S. Hejazi},
+  title = {origami: A Generalized Framework for Cross-Validation in R},
+  journal = {Journal of Open Source Software}
 }
 
-@article{Abid2018,
-author = {{Abid}, A. and {Zhang}, M.~J. and {Bagaria}, V.~K. and {Zou}, J.},
-doi = {10.1038/s41467-018-04608-8},
-issn = {2041-1723},
-journal = {Nature Communications},
-keywords = {Computational biology and bioinformatics,Machine learning,Statistics},
-month = {dec},
-number = {1},
-pages = {2134},
-publisher = {Nature Publishing Group},
-title = {{Exploring patterns enriched in a dataset with contrastive principal component analysis}},
-url = {http://www.nature.com/articles/s41467-018-04608-8},
-volume = {9},
-year = {2018}
+@misc{boileau2021,
+  title={Cross-Validated Loss-Based Covariance Matrix Estimator Selection in High Dimensions}, 
+  author={Philippe Boileau and Nima S. Hejazi and Mark J. van der Laan and Sandrine Dudoit},
+  year={2021},
+  eprint={2102.09715},
+  archivePrefix={arXiv},
+  primaryClass={stat.ME}
 }
 
-@article {Boileau,
-	author = {{Boileau}, P. and {Hejazi}, N.~S. and {Dudoit}, S.},
-	title = {Exploring high-dimensional biological data with sparse contrastive principal component analysis},
-	year = {2019},
-	doi = {10.1101/836650},
-	publisher = {Cold Spring Harbor Laboratory},
-	URL = {https://www.biorxiv.org/content/early/2019/11/09/836650},
-	eprint = {https://www.biorxiv.org/content/early/2019/11/09/836650.full.pdf},
-	journal = {bioRxiv}
+@article{Bickel2008_thresh,
+  author = {Peter J. Bickel and Elizaveta Levita},
+  doi = "10.1214/08-AOS600",
+  journal = "Annals of Statistics",
+  month = "12",
+  number = "6",
+  pages = "2577--2604",
+  publisher = "The Institute of Mathematical Statistics",
+  title = "Covariance regularization by thresholding",
+  url = "https://doi.org/10.1214/08-AOS600",
+  volume = "36",
+  year = "2008"
 }
 
-@article{gentleman2004bioconductor,
-  title = {Bioconductor: open software development for computational biology and bioinformatics},
-  author = {{Gentleman}, R. and {Carey}, V.~J. and {Bates}, D.~M. and {Bolstad}, B. and {Dettling}, M. and {Dudoit}, S. and {Ellis}, B. and {Gautier}, L. and {Ge}, Y. and {Gentry}, J. and {others}},
-  journal = {Genome Biology},
-  volume = {5},
-  number = {10},
-  pages = {R80},
-  year = {2004},
-  publisher = {BioMed Central},
-  doi = {10.1186/gb-2004-5-10-r80}
+@article{bickel2008_banding,
+  author = {Peter J. Bickel and Elizaveta Levita},
+  doi = "10.1214/009053607000000758",
+  journal = "Annals of Statistics",
+  month = "02",
+  number = "1",
+  pages = "199--227",
+  publisher = "The Institute of Mathematical Statistics",
+  title = "Regularized estimation of large covariance matrices",
+  url = "https://doi.org/10.1214/009053607000000758",
+  volume = "36",
+  year = "2008"
 }
 
-@book{gentleman2006bioinformatics,
-  title={Bioinformatics and computational biology solutions using {R} and {B}ioconductor},
-  author={{Gentleman}, R. and {Carey}, V. and {Huber}, W. and {Irizarry}, R. and {Dudoit}, S.},
-  year={2006},
-  publisher={Springer Science \& Business Media},
-  isbn = {ISBN 978-0-387-29362-2}
+@article{Ledoit2004,
+  title = "A well-conditioned estimator for large-dimensional covariance matrices",
+  journal = "Journal of Multivariate Analysis",
+  volume = "88",
+  number = "2",
+  pages = "365 - 411",
+  year = "2004",
+  issn = "0047-259X",
+  doi = "https://doi.org/10.1016/S0047-259X(03)00096-4",
+  url = "http://www.sciencedirect.com/science/article/pii/S0047259X03000964",
+  author = "Olivier Ledoit and Michael Wolf"
 }
 
-@article{huber2015orchestrating,
-  title = {Orchestrating high-throughput genomic analysis with {B}ioconductor},
-  author = {{Huber}, W. and {Carey}, V.~J. and {Gentleman}, R. and {Anders}, S. and {Carlson}, M. and {Carvalho}, B.~S. and {Bravo}, H.~C. and {Davis}, S. and {Gatto}, L. and {Girke}, T. and {others}},
-  journal = {Nature Methods},
-  volume = {12},
-  number = {2},
-  pages = {115},
-  year = {2015},
-  publisher = {Nature Publishing Group},
-  doi = {10.1038/nmeth.3252}
+@article{cai2010,
+  author = "Cai, T. Tony and Zhang, Cun-Hui and Zhou, Harrison H.",
+  doi = "10.1214/09-AOS752",
+  fjournal = "Annals of Statistics",
+  journal = "Ann. Statist.",
+  month = "08",
+  number = "4",
+  pages = "2118--2144",
+  publisher = "The Institute of Mathematical Statistics",
+  title = "Optimal rates of convergence for covariance matrix estimation",
+  url = "https://doi.org/10.1214/09-AOS752",
+  volume = "38",
+  year = "2010"
+}
+
+@techreport{Ledoit2020,
+  title = {Analytical nonlinear shrinkage of large-dimensional covariance matrices},
+  author = {Olivier Ledoit and Michael Wolf},
+  year = {2018},
+  institution = {Department of Economics - University of Zurich},
+  number = {264},
+  url = {https://EconPapers.repec.org/RePEc:zur:econwp:264}
+}
+
+@article{Ledoit2020b,
+    author = {Ledoit, Olivier and Wolf, Michael},
+    title = "{The Power of (Non-)Linear Shrinking: A Review and Guide to Covariance Matrix Estimation}",
+    journal = {Journal of Financial Econometrics},
+    year = {2020},
+    month = {06},
+    issn = {1479-8409},
+    doi = {10.1093/jjfinec/nbaa007},
+    url = {https://doi.org/10.1093/jjfinec/nbaa007},
+    note = {nbaa007},
+    eprint = {https://academic.oup.com/jfec/advance-article-pdf/doi/10.1093/jjfinec/nbaa007/33416890/nbaa007.pdf},
+}
+
+@article{shafer2005,
+    author = "Juliane Schäfer and Korbinian Strimmer",
+    title = "A Shrinkage Approach to Large-Scale Covariance Matrix Estimation and Implications for Functional Genomics",
+    journal = "Statistical Applications in Genetics and Molecular Biology",
+    year = "2005",
+    publisher = "De Gruyter",
+    address = "Berlin, Boston",
+    volume = "4",
+    number = "1",
+    doi = "https://doi.org/10.2202/1544-6115.1175",
+    url = "https://www.degruyter.com/view/journals/sagmb/4/1/article-sagmb.2005.4.1.1175.xml.xml"
+}
+
+@article{fan2001,
+  author = {Jianqing Fan and Runze Li},
+  title = {Variable Selection via Nonconcave Penalized Likelihood and its Oracle Properties},
+  journal = {Journal of the American Statistical Association},
+  volume = {96},
+  number = {456},
+  pages = {1348-1360},
+  year  = {2001},
+  publisher = {Taylor & Francis},
+  doi = {10.1198/016214501753382273},
+  URL = {https://doi.org/10.1198/016214501753382273},
+  eprint = {https://doi.org/10.1198/016214501753382273}
+}
+
+@article{rothman2009,
+  author = {Adam J. Rothman and Elizaveta Levina and Ji Zhu},
+  title = {Generalized Thresholding of Large Covariance Matrices},
+  journal = {Journal of the American Statistical Association},
+  volume = {104},
+  number = {485},
+  pages = {177-186},
+  year  = {2009},
+  publisher = {Taylor & Francis},
+  doi = {10.1198/jasa.2009.0101},
+  URL = {https://doi.org/10.1198/jasa.2009.0101},
+  eprint = {https://doi.org/10.1198/jasa.2009.0101}
+}
+
+@article{fan2013,
+ ISSN = {13697412, 14679868},
+ URL = {http://www.jstor.org/stable/24772450},
+ author = {Jianqing Fan and Yuan Liao and Martina Mincheva},
+ journal = {Journal of the Royal Statistical Society. Series B (Statistical Methodology)},
+ number = {4},
+ pages = {603--680},
+ publisher = {[Royal Statistical Society, Wiley]},
+ title = {Large covariance estimation by thresholding principal orthogonal complements},
+ volume = {75},
+ year = {2013}
+}
+
+@article{fan2018,
+  author = {Fan, Jianqing and Liu, Han and Wang, Weichen},
+  doi = {10.1214/17-AOS1588},
+  fjournal = {Annals of Statistics},
+  journal = {Ann. Statist.},
+  month = {08},
+  number = {4},
+  pages = {1383--1414},
+  publisher = {The Institute of Mathematical Statistics},
+  title = {Large covariance estimation through elliptical factor models},
+  url = {https://doi.org/10.1214/17-AOS1588},
+  volume = {46},
+  year = {2018}
+}
+
+@book{pourahmadi2013,
+  Author = {Pourahmadi, Mohsen},
+  Publisher = {Wiley},
+  Series = {Wiley series in probability and statistics},
+  Title = {High-dimensional covariance estimation},
+  Year = {2013},
 }
