@@ -1,0 +1,30 @@
+template:
+  params:
+    bootswatch: readable
+
+reference:
+  - title: "Covariance Matrix Estimators"
+  - contents:
+    - adaptiveLassoEst
+    - bandingEst
+    - denseLinearShrinkEst
+    - linearShrinkEst
+    - linearShrinkLWEst
+    - nlShrinkLWEst
+    - poesEst
+    - robustPoetEst
+    - sampleCovEst
+    - scadEst
+    - taperingEst
+    - thresholdingEst
+  - title: "Cross-Validation Functions"
+  - contents:
+    - cvCovEst
+    - cvMatrixFrobeniusLoss
+    - cvScaledMatrixFrobeniusLoss
+    - cvFrobeniusLoss
+  - title: "Plotting and Summary Functions"
+  - contents:
+    - plot.cvCovEst
+    - summary.cvCovEst
+    - is.cvCovEst
