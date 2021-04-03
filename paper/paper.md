@@ -32,7 +32,7 @@ affiliations:
     index: 3
   - name: Division of Biostatistics, School of Public Health, University of California, Berkeley
     index: 4
-date: 11 March 2021
+date: "\\today"
 bibliography: paper.bib
 ---
 
@@ -42,7 +42,7 @@ Covariance matrices play fundamental roles in myriad statistical procedures.
 When the observations in a dataset far outnumber the features, asymptotic theory
 and empirical evidence have demonstrated the sample covariance matrix to be the
 optimal estimator of this parameter. This assertion does not hold when the
-number of observations is commensurate or smaller than the number of features.
+number of observations is commensurate with or smaller than the number of features.
 Consequently, statisticians have derived many novel covariance matrix estimators
 for the high-dimensional regime, often relying on additional assumptions about
 the parameter's structural characteristics (e.g., sparsity). While these
@@ -52,8 +52,7 @@ the many possible candidates remains a largely unaddressed challenge. The
 `cvCovEst` package addresses this methodological gap through its implementation
 of a cross-validated framework for covariance matrix estimator selection. This
 data-adaptive procedure's selections are asymptotically optimal under minimal
-assumptions, meaning they are equivalent to the selections one would make if the
-true data-generating processes were known [@vdl2003unified].
+assumptions -- in fact, they are equivalent to the selections that would be made if given access to full knowledge of the true data-generating processes (i.e., an oracle selector) [@vdl2003unified].
 
 # Statement of Need
 
@@ -81,14 +80,14 @@ selecting from a diverse collection of candidate procedures remains unaddressed.
 
 # `cvCovEst` Framework
 
-The solution provided by `cvCovEst` a general, cross-validation-based,
+The solution provided by `cvCovEst` is a general, cross-validation-based,
 estimator-agnostic framework for covariance matrix estimator selection. The
 asymptotic optimality of selections are guaranteed under a few non-restrictive
 assumptions by extending the seminal work of @laan_dudoit:2003, @dudoit2005, and
 @vaart2006 on data-adaptive estimator selection to high-dimensional covariance
 matrix estimation [@boileau2021]. Here, optimality is defined as choosing an
 estimator with an equivalent risk difference to that which would have been
-selected were the underlying data-generating distribution _known_.
+selected were the underlying data-generating distribution _completely known_.
 
 The `cvCovEst` software package implements this framework for the `R` language
 and environment for statistical computing [@R]. Included is an accumulation of
@@ -102,14 +101,14 @@ the cross-validation method's computational efficiency via parallel
 computation. Parallelization relies on the suite of `future` packages
 [@future] by way of the `origami` package [@origami].
 
-Table 1: Covariance matrix estimators implemented as of version 0.3.4.
+Table 1: Covariance matrix estimators implemented as of [version 0.3.4](https://github.com/PhilBoileau/cvCovEst).
 
 |Estimator | Implementation | Description |
 |----------|----------|-------------|
 | Sample covariance matrix | `sampleCovEst()` | The sample covariance matrix. |
-| Hard thresholding [@Bickel2008_thresh] | `thresholdingEst()` | Applies a hard thresholding operator to the entries of the sample covariance matrix |
+| Hard thresholding [@Bickel2008_thresh] | `thresholdingEst()` | Applies a hard thresholding operator to the entries of the sample covariance matrix. |
 | SCAD thresholding [@rothman2009;@fan2001] | `scadEst()` | Applies the SCAD thresholding operator to the entries of the sample covariance matrix.|
-| Adaptive LASSO [@rothman2009] | `adaptiveLassoEst()` | Applies the adaptive LASSO thresholding operator to the entries of the sample covariance matrix |
+| Adaptive LASSO [@rothman2009] | `adaptiveLassoEst()` | Applies the adaptive LASSO thresholding operator to the entries of the sample covariance matrix. |
 | Banding [@bickel2008_banding] | `bandingEst()` | Replaces the sample covariance matrix's off-diagonal bands by zeros. |
 | Tapering [@cai2010] | `taperingEst()` | Tapers the sample covariance matrix's off-diagonal bands, eventually replacing them by zeros. |
 | Optimal Linear Shrinkage [@Ledoit2004] | `linearShrinkLWEst()` | Asymptotically optimal shrinkage of the sample covariance matrix towards the identity. |
@@ -189,7 +188,7 @@ A stable release of the `cvCovEst` package is freely available via the
 [Comprehensive `R` Archive Network](https://CRAN.R-project.org/package=cvCovEst).
 Its development version can be found on
 [GitHub](https://github.com/PhilBoileau/cvCovEst). Documentation and examples
-are contained in each version's manual pages and vignette.
+are contained in each version's manual pages, vignette, and `pkgdown` website (at https://philboileau.github.io/cvCovEst).
 
 # Acknowledgments
 
@@ -201,4 +200,3 @@ Berkeley.
 We thank Jamarcus Liu for his contributions to the software package.
 
 # References
-
