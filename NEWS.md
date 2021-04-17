@@ -1,3 +1,6 @@
+# cvCovEst 0.3.4 (2021-02-24)
+
++ Setting 'LazyLoad' to 'false' in DESCRIPTION to address CRAN checks notes.
 
 # cvCovEst 0.3.4 (2021-02-24)
 
