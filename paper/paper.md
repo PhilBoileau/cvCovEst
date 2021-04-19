@@ -215,10 +215,10 @@ the true PCs when the number of genes exceeds the number of cells. Instead, the
 `cvCovEst` estimate should be used to compute the initial dimensionality
 reduction.
 
-Indeed, when comparing the two approaches using the 1,000 most variable genes
-of 285 mouse visual cortex cells [@tasic2016], we find that the two-dimensional
-embedding resulting from the `cvCovEst`-based approach improves upon the
-standard PCA-based approach. Fewer rare cells are misclustered, resulting in a
+Indeed, we find that the two-dimensional UMAP embedding resulting from the
+`cvCovEst`-based approach improves upon that of the standard PCA-based approach
+when applied to a dataset of 285 mouse visual coretex's cells' 1,000 most
+variable genes [@tasic2016]. Fewer rare cells are misclustered, engendering a
 47\% improvement in average silhouette width.
 
 ![A comparison of UMAP embeddings using the 20 leading PCs from traditional PCA
