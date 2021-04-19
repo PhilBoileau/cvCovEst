@@ -187,11 +187,11 @@ plot(cv_cov_est_sim, data_in = sim_dat)
 
 ![A summary of the `cvCovEst` procedure's results. In the top left corner, the
 selected estmators risk is plotted against its considered hyperparameters. In
-the rop right, the eigenvalues of the selected estimators' estimate are
+the rop right, the eigenvalues of the selected estimator's estimate are
 displayed. The bottom left plot presents the estimated covariance matrix.
 Entries are colored based on their absolute values. Finally, the table in the
 bottom right summarizes the performance of the best estimators from each class.
-](summary_plot.png){ width=80% }
+](summary_plot.png){ width=95% }
 
 
 ## Single Cell Transcriptomic Data
@@ -200,7 +200,7 @@ Single-cell transcriptome sequencing (scRNA-seq) measures the gene expression
 profiles of individual cells within a given population, permitting the
 identification of rare cells types and the study of developmental trajectories.
 The datasets resulting from these experiments are sometimes high-dimensional:
-the expression data for hundreds or thousands of cells is collected for tens of
+expression data for hundreds or thousands of cells are collected for tens of
 thousands of genes. A critical step in most analytic workflows is therefore
 that of dimension reduction. This reduction is thought to have a denoising
 effect. That is, the effects of uninteresting biological variation are
@@ -218,11 +218,11 @@ reduction.
 Indeed, when comparing the two approaches using the 1,000 most variable genes
 of 285 mouse visual cortex cells [@tasic2016], we find that the two-dimensional
 embedding resulting from the `cvCovEst`-based approach improves upon the
-standard PCA-based approach. Fewer rare cells are misclustered, resulting is a
+standard PCA-based approach. Fewer rare cells are misclustered, resulting in a
 47\% improvement in average silhouette width.
 
 ![A comparison of UMAP embeddings using the 20 leading PCs from traditional PCA
-and from `cvCovEst`-based PCA as initializations.](allen-umap.png){ width=80% }
+and from `cvCovEst`-based PCA as initializations.](allen-umap.png){ width=95% }
 
 # Availability
 
