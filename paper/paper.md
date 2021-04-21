@@ -58,18 +58,18 @@ data-generating processes (i.e., an oracle selector) [@vdl2003unified].
 
 # Statement of Need
 
-When the number of observations in a dataset far exceeds the number of features,
-the estimator of choice for the covariance matrix is the sample covariance
-matrix. It is efficient under minimal regularity assumptions on the
+When the number of observations in a dataset far exceeds the number of
+features, the estimator of choice for the covariance matrix is the sample
+covariance matrix. It is efficient under minimal regularity assumptions on the
 data-generating distribution. In high-dimensional regimes, however, its
 performance is unsatisfactory: the sample covariance matrix is highly variable,
-producing estimates with diverging condition numbers and over-dispersed
-eigenvalues [@johnstone2001distribution]. These issues amplify estimation error
-in resultant estimates, as well as in downstream analyses relying upon them.
+and produces estimates with diverging condition numbers and over-dispersed
+eigenvalues [@johnstone2001distribution]. Analyses employing this demonstrably
+poor estimator may be negatively impacted.
 
 As high-dimensional data have become widespread, researchers have derived many
 novel covariance matrix estimators to remediate the sample covariance matrix's
-deficiencies. These estimators come in many flavors, though most are
+shortcomings. These estimators come in many flavors, though most are
 constructed by regularizing the sample covariance matrix. Comprehensive
 reviews of these estimators are provided by @fan2016 and @pourahmadi2013.
 
