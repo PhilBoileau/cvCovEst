@@ -19,10 +19,10 @@ authors:
     affiliation: "1, 2"
   - name: Mark J. van der Laan
     orcid: 0000-0003-1432-5511
-    affiliation: "4, 3, 2"
+    affiliation: "2, 3, 4"
   - name: Sandrine Dudoit
     orcid: 0000-0002-6069-8629
-    affiliation: "3, 4, 2"
+    affiliation: "2, 3, 4"
 affiliations:
   - name: Graduate Group in Biostatistics, University of California, Berkeley
     index: 1
@@ -53,7 +53,7 @@ challenge. The `cvCovEst` package addresses this methodological gap through its
 implementation of a cross-validated framework for covariance matrix estimator
 selection. This data-adaptive procedure's selections are asymptotically optimal
 under minimal assumptions -- in fact, they are equivalent to the selections
-that would be made if given access to full knowledge of the true
+that would be made if given full knowledge of the true
 data-generating processes (i.e., an oracle selector) [@vdl2003unified].
 
 # Statement of Need
@@ -69,7 +69,7 @@ in resultant estimates, as well as in downstream analyses relying upon them.
 
 As high-dimensional data have become widespread, researchers have derived many
 novel covariance matrix estimators to remediate the sample covariance matrix's
-deficiencies. These estimators come in many flavours, though most are
+deficiencies. These estimators come in many flavors, though most are
 constructed by regularizing the sample covariance matrix. Comprehensive
 reviews of these estimators are provided by @fan2016 and @pourahmadi2013.
 
@@ -92,13 +92,13 @@ estimator with an equivalent risk difference to that which would have been
 selected were the underlying data-generating distribution _completely known_.
 
 The `cvCovEst` software package implements this framework for the `R` language
-and environment for statistical computing [@R]. Included is an accumulation of
+and environment for statistical computing [@R]. Included is a collection of
 covariance matrix estimators spanning the work of many researchers (Table 1).
 They may be employed independently of the cross-validation procedure.
-`cvCovEst` also provides a slew of plotting and summary functions. These
+`cvCovEst` also provides a variety of plotting and summary functions. These
 diagnostic tools allow users to gauge the algorithm's performance, diagnose
 issues that might arise during estimation procedures, and build intuition about
-the many estimators' behaviours. Additionally, users have options to increase
+the many estimators' behaviors. Additionally, users have options to increase
 the cross-validation method's computational efficiency via parallel
 computation. Parallelization relies on the suite of `future` packages
 [@future] by way of the `origami` package [@origami].
@@ -115,7 +115,7 @@ Table 1: Covariance matrix estimators implemented as of [version 0.3.4](https://
 | Tapering [@cai2010] | `taperingEst()` | Tapers the sample covariance matrix's off-diagonal bands, eventually replacing them by zeros. |
 | Optimal Linear Shrinkage [@Ledoit2004] | `linearShrinkLWEst()` | Asymptotically optimal shrinkage of the sample covariance matrix towards the identity. |
 | Linear Shrinkage [@Ledoit2004] | `linearShrinkEst()` | Shrinkage of the sample covariance matrix towards the identity, but the shrinkage is controlled by a hyperparameter. |
-| Dense Linear Shrinkage [@shafer2005] | `denseLinearShrinkEst()` | Asymptotically optimal shrinkage of the sample covariance matrix towards a dense matrix whose diagonal elements are the mean of the sample covariance matrix's diagonal, and whose off-diagonal elements are the mean of the sample covariance matrix's off-diagonal elements. |
+| Dense Linear Shrinkage [@shafer2005] | `denseLinearShrinkEst()` | Asymptotically optimal shrinkage of the sample covariance matrix towards a dense matrix whose diagonal elements are the mean of the sample covariance matrix's diagonal and whose off-diagonal elements are the mean of the sample covariance matrix's off-diagonal elements. |
 | Nonlinear Shrinkage [@Ledoit2020] | `nlShrinkLWEst()` | Analytical estimator for the nonlinear shrinkage of the sample covariance matrix. |
 | POET [@fan2013] | `poetEst()` | An estimator based on latent variable estimation and thresholding. |
 | Robust POET [@fan2018] | `robustPoetEst()` | A robust (and more computationally taxing) take on the POET estimator. |
@@ -124,11 +124,11 @@ Table 1: Covariance matrix estimators implemented as of [version 0.3.4](https://
 # Examples
 
 We briefly showcase `cvCovEst`'s functionality through a toy example and an
-application to single cell transcriptomic data.
+application to single-cell transcriptomic data.
 
 ## Toy Dataset Example
 
-Multivariate normal data is simulated using a covariance matrix with a Toeplitz
+Multivariate normal data are simulated using a covariance matrix with a Toeplitz
 structure and then fed to the `cvCovEst` function. A summary of the
 cross-validated estimation procedure is provided via the `plot` method.
 
@@ -198,21 +198,21 @@ bottom right summarizes the performance of the best estimators from each class.
 
 Single-cell transcriptome sequencing (scRNA-seq) measures the gene expression
 profiles of individual cells within a given population, permitting the
-identification of rare cells types and the study of developmental trajectories.
-The datasets resulting from these experiments are sometimes high-dimensional:
+identification of rare cell types and the study of developmental trajectories.
+The datasets resulting from these experiments are typically high-dimensional:
 expression data for hundreds or thousands of cells are collected for tens of
 thousands of genes. A critical step in most analytic workflows is therefore
-that of dimension reduction. This reduction is thought to have a denoising
+that of dimension reduction. In addition to facilitating visualization, this reduction is thought to have a denoising
 effect. That is, the effects of uninteresting biological variation are
 typically mitigated in these lower-dimensional embeddings.
 
-A standard method for the dimensionality-reduction of scRNA-seq is to apply
+A popular method for the dimensionality reduction of scRNA-seq is 
 uniform manifold approximation and projection (UMAP) [@mcinnes2018], capable of
-capturing non-linear relationships between features, to the dataset's leading
+capturing non-linear relationships between features, applied to the dataset's leading
 principal components. Since these principal components (PCs) are derived from
 the sample covariance matrix, however, they are likely to be poor estimates of
 the true PCs when the number of genes exceeds the number of cells. Instead, the
-`cvCovEst` estimate should be used to compute the initial dimensionality
+`cvCovEst` estimate could be used to compute the initial dimensionality
 reduction.
 
 Indeed, we find that the two-dimensional UMAP embedding resulting from the
@@ -226,7 +226,7 @@ and from `cvCovEst`-based PCA as initializations.](allen-umap.png){ width=95% }
 
 # Availability
 
-A stable release of the `cvCovEst` package is freely available via the
+A stable release of the `cvCovEst` package is freely-available via the
 [Comprehensive `R` Archive Network](https://CRAN.R-project.org/package=cvCovEst).
 Its development version can be found on
 [GitHub](https://github.com/PhilBoileau/cvCovEst). Documentation and examples
@@ -236,7 +236,7 @@ at https://philboileau.github.io/cvCovEst.
 # Acknowledgments
 
 Philippe Boileau's contribution to this work was supported by the Fonds de
-recherche du Québec - Nature et technologies (B1X) by the National Institute of
+recherche du Québec - Nature et technologies (B1X) and by the National Institute of
 Environmental Health Sciences [P42ES004705] Superfund Research Program at UC
 Berkeley.
 
