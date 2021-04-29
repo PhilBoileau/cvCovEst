@@ -11,12 +11,12 @@ authors:
   - name: Philippe Boileau
     orcid: 0000-0002-4850-2507
     affiliation: "1, 2"
-  - name: Brian Collica
-    orcid: 0000-0003-1127-2557
-    affiliation: 3
   - name: Nima S. Hejazi
     orcid: 0000-0002-7127-2789
     affiliation: "1, 2"
+  - name: Brian Collica
+    orcid: 0000-0003-1127-2557
+    affiliation: 3
   - name: Mark J. van der Laan
     orcid: 0000-0003-1432-5511
     affiliation: "2, 3, 4"
@@ -103,7 +103,8 @@ the cross-validation method's computational efficiency via parallel
 computation. Parallelization relies on the suite of `future` packages
 [@future] by way of the `origami` package [@origami].
 
-Table 1: Covariance matrix estimators implemented as of [version 0.3.4](https://github.com/PhilBoileau/cvCovEst).
+Table 1: Covariance matrix estimators implemented as of [version
+0.3.5](https://github.com/PhilBoileau/cvCovEst).
 
 |Estimator | Implementation | Description |
 |----------|----------|-------------|
@@ -169,12 +170,14 @@ sim_dat <-  MASS::mvrnorm(n = 75, mu = rep(0, 100), Sigma = sim_covmat)
 cv_cov_est_sim <- cvCovEst(
   dat = sim_dat,
   estimators = c(
-    linearShrinkEst, thresholdingEst, bandingEst, taperingEst, sampleCovEst
+    linearShrinkEst, thresholdingEst, bandingEst, adaptiveLassoEst,
+    sampleCovEst, taperingEst
   ),
   estimator_params = list(
-    linearShrinkEst = list(alpha = seq(0.05, 0.25, 0.75)),
-    thresholdingEst = list(gamma = seq(0.05, 0.25, 0.75)),
+    linearShrinkEst = list(alpha = seq(0.25, 0.75, 0.05)),
+    thresholdingEst = list(gamma = seq(0.25, 0.75, 0.05)),
     bandingEst = list(k = seq(2L, 10L, 2L)),
+    adaptiveLassoEst = list(lambda = c(0.1, 0.25, 0.5, 0.75, 1), n = seq(1, 5)),
     taperingEst = list(k = seq(2L, 10L, 2L))
   ),
   cv_scheme = "v_fold",
@@ -202,18 +205,19 @@ identification of rare cell types and the study of developmental trajectories.
 The datasets resulting from these experiments are typically high-dimensional:
 expression data for hundreds or thousands of cells are collected for tens of
 thousands of genes. A critical step in most analytic workflows is therefore
-that of dimension reduction. In addition to facilitating visualization, this reduction is thought to have a denoising
-effect. That is, the effects of uninteresting biological variation are
-typically mitigated in these lower-dimensional embeddings.
+that of dimension reduction. In addition to facilitating visualization, this
+reduction is thought to have a denoising effect. That is, the effects of
+uninteresting biological variation are typically mitigated in these
+lower-dimensional embeddings.
 
-A popular method for the dimensionality reduction of scRNA-seq is 
-uniform manifold approximation and projection (UMAP) [@mcinnes2018], capable of
-capturing non-linear relationships between features, applied to the dataset's leading
-principal components. Since these principal components (PCs) are derived from
-the sample covariance matrix, however, they are likely to be poor estimates of
-the true PCs when the number of genes exceeds the number of cells. Instead, the
-`cvCovEst` estimate could be used to compute the initial dimensionality
-reduction.
+A popular method for the dimensionality reduction of scRNA-seq is uniform
+manifold approximation and projection (UMAP) [@mcinnes2018], capable of
+capturing non-linear relationships between features, applied to the dataset's
+leading principal components. Since these principal components (PCs) are
+derived from the sample covariance matrix, however, they are likely to be poor
+estimates of the true PCs when the number of genes exceeds the number of cells.
+Instead, the `cvCovEst` estimate could be used to compute the initial
+dimensionality reduction.
 
 Indeed, we find that the two-dimensional UMAP embedding resulting from the
 `cvCovEst`-based approach improves upon that of the standard PCA-based approach
@@ -236,9 +240,9 @@ at https://philboileau.github.io/cvCovEst.
 # Acknowledgments
 
 Philippe Boileau's contribution to this work was supported by the Fonds de
-recherche du Québec - Nature et technologies (B1X) and by the National Institute of
-Environmental Health Sciences [P42ES004705] Superfund Research Program at UC
-Berkeley.
+recherche du Québec - Nature et technologies (B1X) and by the National
+Institute of Environmental Health Sciences [P42ES004705] Superfund Research
+Program at UC Berkeley.
 
 We thank Jamarcus Liu for his contributions to the software package.
 
