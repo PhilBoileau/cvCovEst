@@ -219,11 +219,9 @@ These two additional arguments only apply to estimators with multiple hyperparam
 
 To show how the plot and summary methods can be used, data is simulated from a
 predetermined covariance matrix following a Toeplitz structure.  The data is
-then passed to `cvCovEst` along with a handful of estimator classes.    
+then passed to `cvCovEst` along with a handful of estimators. 
 
 ```{r toep-sim}
-library(MASS)
-library(cvCovEst)
 set.seed(1584)
 
 toep_sim <- function(p, rho, alpha) {
@@ -256,20 +254,18 @@ sim_dat <-  MASS::mvrnorm(n = 75, mu = rep(0, 100), Sigma = sim_covmat)
 cv_cov_est_sim <- cvCovEst(
   dat = sim_dat,
   estimators = c(
-    linearShrinkEst, thresholdingEst,
-    bandingEst, adaptiveLassoEst,
-    sampleCovEst),
+    linearShrinkEst, thresholdingEst, bandingEst, adaptiveLassoEst,
+    sampleCovEst, taperingEst
+  ),
   estimator_params = list(
     linearShrinkEst = list(alpha = seq(0.25, 0.75, 0.05)),
     thresholdingEst = list(gamma = seq(0.25, 0.75, 0.05)),
     bandingEst = list(k = seq(2L, 10L, 2L)),
-    adaptiveLassoEst = list(lambda = c(0.1, 0.25, 0.5, 0.75, 1),
-                            n = seq(1, 5))),
-  cv_loss = cvMatrixFrobeniusLoss,
+    adaptiveLassoEst = list(lambda = c(0.1, 0.25, 0.5, 0.75, 1), n = seq(1, 5)),
+    taperingEst = list(k = seq(2L, 10L, 2L))
+  ),
   cv_scheme = "v_fold",
-  v_folds = 5,
-  center = TRUE,
-  scale = TRUE
+  v_folds = 5
 )
 ```
 
@@ -284,9 +280,10 @@ cv_sum <- summary(cv_cov_est_sim)
 cv_sum$bestInClass
 ```
 
-In this case, the banding estimator with `k = 2` achieves the lowest empirical
-risk.  We can take a closer look at the banding estimators' performance by
-hashing `bandingEst` from the `hyperRisk` list.
+In this case, the tapering estimator with `k = 4` achieves the lowest empirical
+risk.  We can take a closer look at the estimator's performance based on other
+possible hyperparameter values by hashing `taperingEst` from the `hyperRisk`
+list.
 
 ```{r hyperRisk-sim}
 cv_sum$hyperRisk$bandingEst
@@ -306,7 +303,9 @@ plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "risk")
 
 We can also examine the matrix structure as the value of `k` changes.
 Examining the overall sparsity of the resulting estimator can be useful since,
-in some cases, the assumption of sparsity is not warranted.
+in some cases, the assumption of sparsity is not warranted. Note that the
+absolute values of the estimate's entries are displayed to emphasize the
+structural differences between choices of hyperparameters.
 
 
 ```{r multi-heat-sim, fig.height=3.5, fig.width=7}
