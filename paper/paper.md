@@ -223,7 +223,8 @@ Indeed, we find that the two-dimensional UMAP embedding resulting from the
 `cvCovEst`-based approach improves upon that of the standard PCA-based approach
 when applied to a dataset of 285 mouse visual coretex's cells' 1,000 most
 variable genes [@tasic2016]. Fewer rare cells are misclustered, engendering a
-47\% improvement in average silhouette width.
+47\% improvement in average silhouette width. For further discussion, see
+@boileau2021.
 
 ![A comparison of UMAP embeddings using the 20 leading PCs from traditional PCA
 and from `cvCovEst`-based PCA as initializations.](allen-umap.png){ width=95% }
