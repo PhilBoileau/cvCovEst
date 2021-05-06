@@ -54,7 +54,7 @@ implementation of a cross-validated framework for covariance matrix estimator
 selection. This data-adaptive procedure's selections are asymptotically optimal
 under minimal assumptions -- in fact, they are equivalent to the selections
 that would be made if given full knowledge of the true
-data-generating processes (i.e., an oracle selector) [@vdl2003unified].
+data-generating processes (i.e., an oracle selector) [@laan_dudoit:2003].
 
 # Statement of Need
 
