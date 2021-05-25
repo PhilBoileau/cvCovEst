@@ -9,6 +9,7 @@ status](https://travis-ci.com/PhilBoileau/cvCovEst.svg?token=YL3L6rYQtszHibWHgFx
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![status](https://joss.theoj.org/papers/f5b2acdf578c341195b6ec6f25b4f09d/status.svg)](https://joss.theoj.org/papers/f5b2acdf578c341195b6ec6f25b4f09d)
 [![MIT
 license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
