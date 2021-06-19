@@ -89,17 +89,17 @@ cv_cov_est_out <- cvCovEst(
 # NOTE: the estimated covariance matrix is accessible via the `$estimate` slot
 cv_cov_est_out$risk_df
 #> # A tibble: 9 x 3
-#>   estimator            hyperparameters      empirical_risk
-#>   <chr>                <chr>                         <dbl>
-#> 1 linearShrinkLWEst    hyperparameters = NA           357.
-#> 2 poetEst              lambda = 0.2, k = 1            369.
-#> 3 poetEst              lambda = 0.2, k = 2            372.
-#> 4 poetEst              lambda = 0.1, k = 2            375.
-#> 5 poetEst              lambda = 0.1, k = 1            376.
-#> 6 denseLinearShrinkEst hyperparameters = NA           379.
-#> 7 sampleCovEst         hyperparameters = NA           379.
-#> 8 thresholdingEst      gamma = 0.2                    384.
-#> 9 thresholdingEst      gamma = 2                      826.
+#>   estimator            hyperparameters      cv_risk
+#>   <chr>                <chr>                  <dbl>
+#> 1 linearShrinkLWEst    hyperparameters = NA    357.
+#> 2 poetEst              lambda = 0.2, k = 1     369.
+#> 3 poetEst              lambda = 0.2, k = 2     372.
+#> 4 poetEst              lambda = 0.1, k = 2     375.
+#> 5 poetEst              lambda = 0.1, k = 1     376.
+#> 6 denseLinearShrinkEst hyperparameters = NA    379.
+#> 7 sampleCovEst         hyperparameters = NA    379.
+#> 8 thresholdingEst      gamma = 0.2             384.
+#> 9 thresholdingEst      gamma = 2               826.
 ```
 
 ------------------------------------------------------------------------

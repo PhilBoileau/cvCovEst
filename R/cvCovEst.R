@@ -188,11 +188,11 @@ cvCovEst <- function(
   # compute the true cross-validated risk if true_covar_mat is passed in
   if (is.null(true_cov_mat)) {
 
-    # compute empirical risk
+    # compute cv risk
     cv_results <- fold_results_concat %>%
       dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
-      dplyr::summarise(empirical_risk = mean(.data$loss)) %>%
-      dplyr::arrange(.data$empirical_risk) %>%
+      dplyr::summarise(cv_risk = mean(.data$loss)) %>%
+      dplyr::arrange(.data$cv_risk) %>%
       dplyr::ungroup()
 
     # compute the best estimator's estimate
@@ -239,10 +239,10 @@ cvCovEst <- function(
       dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
       dplyr::summarise(
         true_cv_risk = mean(.data$true_loss),
-        empirical_risk = mean(.data$loss),
+        cv_risk = mean(.data$loss),
         full_data_risk = mean(.data$full_mat_loss)
       ) %>%
-      dplyr::arrange(.data$empirical_risk) %>%
+      dplyr::arrange(.data$cv_risk) %>%
       dplyr::ungroup()
 
     # compute the risk difference ratio under the cross-validated risk
