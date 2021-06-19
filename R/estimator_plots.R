@@ -74,7 +74,7 @@ plotRobustPoetEst <- function(
         geom_path(
           aes(
             x = .data$k,
-            y = .data$empirical_risk,
+            y = .data$cv_risk,
             color = .data$lambda
           )
         ) +
@@ -96,7 +96,7 @@ plotRobustPoetEst <- function(
         geom_path(
           aes(
             x = .data$lambda,
-            y = .data$empirical_risk,
+            y = .data$cv_risk,
             color = .data$k
           )
         ) +
@@ -180,7 +180,7 @@ plotPoetEst <- function(
       geom_path(
         aes(
           x = .data$k,
-          y = .data$empirical_risk,
+          y = .data$cv_risk,
           color = .data$lambda
         )
       ) +
@@ -202,7 +202,7 @@ plotPoetEst <- function(
       geom_path(
         aes(
           x = .data$lambda,
-          y = .data$empirical_risk,
+          y = .data$cv_risk,
           color = .data$k
         )
       ) +
@@ -284,7 +284,7 @@ plotAdaptiveLassoEst <- function(
       geom_path(
         aes(
           x = .data$n,
-          y = .data$empirical_risk,
+          y = .data$cv_risk,
           color = .data$lambda
         )
       ) +
@@ -306,7 +306,7 @@ plotAdaptiveLassoEst <- function(
       geom_path(
         aes(
           x = .data$lambda,
-          y = .data$empirical_risk,
+          y = .data$cv_risk,
           color = .data$n
         )
       ) +

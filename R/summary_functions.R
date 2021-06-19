@@ -23,12 +23,12 @@ cvRiskByClass <- function(dat) {
   cv_risk <- dat %>%
     dplyr::group_by(.data$estimator) %>%
     dplyr::summarise(
-      Min = min(.data$empirical_risk),
-      Q1 = quantile(.data$empirical_risk, probs = 0.25, type = 3),
-      Median = quantile(.data$empirical_risk, probs = 0.5, type = 3),
-      Q3 = quantile(.data$empirical_risk, probs = 0.75, type = 3),
-      Max = max(.data$empirical_risk),
-      Mean = mean(.data$empirical_risk),
+      Min = min(.data$cv_risk),
+      Q1 = quantile(.data$cv_risk, probs = 0.25, type = 3),
+      Median = quantile(.data$cv_risk, probs = 0.5, type = 3),
+      Q3 = quantile(.data$cv_risk, probs = 0.75, type = 3),
+      Max = max(.data$cv_risk),
+      Mean = mean(.data$cv_risk),
       .groups = "keep"
     ) %>%
     dplyr::arrange(.data$Mean)
@@ -64,20 +64,20 @@ bestInClass <- function(dat, worst = FALSE) {
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::last(.data$hyperparameters),
-        empirical_risk = dplyr::last(.data$empirical_risk),
+        cv_risk = dplyr::last(.data$cv_risk),
         .groups = "keep"
       ) %>%
-      dplyr::arrange(.data$empirical_risk)
+      dplyr::arrange(.data$cv_risk)
   }
   else {
     inClass <- dat %>%
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::first(.data$hyperparameters),
-        empirical_risk = dplyr::first(.data$empirical_risk),
+        cv_risk = dplyr::first(.data$cv_risk),
         .groups = "keep"
       ) %>%
-      dplyr::arrange(.data$empirical_risk)
+      dplyr::arrange(.data$cv_risk)
   }
   return(inClass)
 }
@@ -116,10 +116,10 @@ hyperRisk <- function(dat) {
     hyper_summ <- lapply(hyper_est, function(est) {
       h <- dat %>%
         dplyr::filter(.data$estimator == est) %>%
-        dplyr::mutate(empirical_risk = round(.data$empirical_risk))
+        dplyr::mutate(cv_risk = round(.data$cv_risk))
 
       risk_stats <- quantile(
-        h$empirical_risk,
+        h$cv_risk,
         probs = c(0, 0.25, 0.50, 0.75, 1),
         type = 3
       )
@@ -127,11 +127,11 @@ hyperRisk <- function(dat) {
       hyper_risk <- sapply(unname(risk_stats), function(r) {
         # Filter by the quantiles of the empirical risk
         hr <- h %>%
-          dplyr::filter(.data$empirical_risk == r)
+          dplyr::filter(.data$cv_risk == r)
 
         vec <- c(
           dplyr::first(hr$hyperparameters),
-          dplyr::first(hr$empirical_risk)
+          dplyr::first(hr$cv_risk)
         )
 
         return(vec)
@@ -142,7 +142,7 @@ hyperRisk <- function(dat) {
         stat = c("min", "Q1", "median", "Q3", "max")
       )
 
-      colnames(df) <- c("hyperparameters", "empirical_risk", "stat")
+      colnames(df) <- c("hyperparameters", "cv_risk", "stat")
       df <- tibble::as_tibble(df)
 
       return(df)

@@ -812,7 +812,7 @@ cvRiskPlot <- function(
       dplyr::arrange(.data$hyperparameters, .by_group = TRUE)
 
     final_plot2 <- ggplot(risk) +
-      geom_path(aes(x = .data$hyperparameters, y = .data$empirical_risk)) +
+      geom_path(aes(x = .data$hyperparameters, y = .data$cv_risk)) +
       facet_wrap(facets = vars(.data$estimator), scales = "free_x") +
       labs(
         title = "Estimator Cross-Validated Risk",

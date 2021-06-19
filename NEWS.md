@@ -1,4 +1,12 @@
-# cvCovEst 0.3.4 (2021-02-24)
+# cvCovEst 0.3.6 (2021-06-19)
+
++ Renamed `empirical_risk` column in `risk_df` table output by `cvCovEst()` to
+  `cv_risk`.
++ Added additional citations of existing R packages for covariance matrix
+  estimation in our JOSS submission.
++ Added more comprehensive tests for the available loss functions.
+
+# cvCovEst 0.3.5 (2021-02-24)
 
 + Setting 'LazyLoad' to 'false' in DESCRIPTION to address CRAN checks notes.
 

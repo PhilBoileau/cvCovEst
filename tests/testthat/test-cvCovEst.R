@@ -9,7 +9,6 @@ Sigma <- matrix(0.5, nrow = 10, ncol = 10) + diag(0.5, nrow = 10)
 # sample 50 observations from multivariate normal with mean = 0, var = Sigma
 dat <- mvrnorm(n = 50, mu = rep(0, 10), Sigma = Sigma)
 
-# simple test
 test_that("cross-validated covariance selector runs silently", {
   expect_silent(cvCovEst(
     dat = dat,

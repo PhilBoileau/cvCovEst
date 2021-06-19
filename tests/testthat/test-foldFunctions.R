@@ -67,6 +67,85 @@ test_that("trueFrobeniusLoss computes the correct validation set loss", {
   expect_equal(trueFrobeniusLoss(est, true_cov), 38)
 })
 
+test_that("cvFrobeniusLoss returns the expected error for the linear shrinkage
+          estimator with alpha 0.5", {
+
+  # compute the error for the given fold using the fold function
+  computed_error <- cvFrobeniusLoss(
+    fold = resub,
+    dat = dat,
+    estimator_funs = rlang::quo(c(linearShrinkEst)),
+    estimator_params = list(linearShrinkEst = list(alpha = 0.5))
+  )[[1]]$loss
+
+  # now compute the error manually:
+
+  # fit the data to the training set
+  estimate_train <- linearShrinkEst(dat[resub$training_set, ], alpha = 0.5)
+
+  # define the validation data
+  valid_data <- dat[resub$validation_set, ]
+
+  # compute the validation observation crossprod matrices
+  rank_one_crossp <- lapply(
+    seq_len(nrow(valid_data)),
+    function(i) {
+      Matrix::tcrossprod(valid_data[i, ])
+    }
+  )
+
+  # compute the sum of element-wise squared outer products
+  elwise_sq_list <- lapply(rank_one_crossp, `^`, 2)
+  elwise_sq_sum <- Reduce(`+`, elwise_sq_list)
+  elwise_sq <- matrixStats::sum2(elwise_sq_sum)
+
+  # compute the sum of cross_products
+  cross_prod <- Reduce(`+`, rank_one_crossp)
+
+  # get the hadamard product and sum
+  had_crossprod <- matrixStats::sum2(cross_prod * estimate_train)
+
+  # get the elementwise square and sum it
+  est_square <- matrixStats::sum2(estimate_train^2)
+
+  # compute the error
+  estimate_error <- 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
+    est_square
+
+  testthat::expect_identical(estimate_error, computed_error)
+
+})
+
+test_that("cvMatrixFrobeniusLoss returns the expected error for the hard
+          thresholding estimator with gamma of 1", {
+
+  # compute the error for the given fold using the fold function
+  computed_error <- cvMatrixFrobeniusLoss(
+    fold = resub,
+    dat = dat,
+    estimator_funs = rlang::quo(c(thresholdingEst)),
+    estimator_params = list(thresholdingEst = list(gamma = 1))
+  )[[1]]$loss
+
+  # now compute the error manually:
+
+  # fit the data to the training set
+  estimate_train <- thresholdingEst(dat[resub$training_set, ], gamma = 1)
+
+  # define the validation data
+  valid_data <- dat[resub$validation_set, ]
+
+  # compute the sample covariance over the validation set
+  sample_cov_valid <- coop::covar(valid_data)
+
+  # compute the error
+  estimate_error <- matrixStats::sum2((estimate_train - sample_cov_valid)^2)
+
+  testthat::expect_identical(estimate_error, computed_error)
+
+})
+
+
 test_that("the true covariance matrix can be passed in", {
   expect_silent(cvFrobeniusLoss(
     fold = resub,
