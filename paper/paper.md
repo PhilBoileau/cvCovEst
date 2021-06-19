@@ -71,7 +71,10 @@ As high-dimensional data have become widespread, researchers have derived many
 novel covariance matrix estimators to remediate the sample covariance matrix's
 shortcomings. These estimators come in many flavors, though most are
 constructed by regularizing the sample covariance matrix. Comprehensive
-reviews of these estimators are provided by @fan2016 and @pourahmadi2013.
+reviews are provided by @fan2016 and @pourahmadi2013, and these estimators are
+implemented across a diversity of R packages: `CovTools`
+[@lee2019], `CVTuningCov` [@wang2014], and `nlshrink` [@ramprasad2016] to name
+but a few.
 
 This variety brings with it many challenges. Identifying an "optimal" estimator
 from among a collection of candidates can prove a daunting task, one whose
