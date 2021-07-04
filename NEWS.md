@@ -1,3 +1,11 @@
+# cvCovEst 0.3.7 (2021-07-03)
+
++ Calling `summary.cvCovEst()` when a single summary function is
+  specified now immediately returns a table instead of a list of length 1 that
+  contains said table.
++ Tables returned by `summary.cvCovEst()` no longer have `dplyr` groups.
++ Fixed typo in Toy Dataset Example section of paper.
+
 # cvCovEst 0.3.6 (2021-06-19)
 
 + Renamed `empirical_risk` column in `risk_df` table output by `cvCovEst()` to

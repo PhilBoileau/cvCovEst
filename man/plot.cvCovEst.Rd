@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_functions.R
 \name{plot.cvCovEst}
 \alias{plot.cvCovEst}
-\title{Generic Plot Method for cvCovest}
+\title{Generic Plot Method for cvCovEst}
 \usage{
 \method{plot}{cvCovEst}(
   x,

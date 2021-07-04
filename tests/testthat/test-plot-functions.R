@@ -222,7 +222,7 @@ test_that("Asking for more k than exist throws an error", {
   )
 })
 
-test_that("Plot method throws other errors where appripriate", {
+test_that("Plot method throws other errors where appropriate", {
   expect_message(
     plot.cvCovEst(
       x = cvTestH,
@@ -232,10 +232,3 @@ test_that("Plot method throws other errors where appripriate", {
     )
   )
 })
-
-plot.cvCovEst(
-  x = cvTestH,
-  dat_orig = dat,
-  estimator = c("linearShrinkEst"),
-  plot_type = ("summary")
-)

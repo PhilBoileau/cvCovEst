@@ -29,7 +29,7 @@ cvRiskByClass <- function(dat) {
       Q3 = quantile(.data$cv_risk, probs = 0.75, type = 3),
       Max = max(.data$cv_risk),
       Mean = mean(.data$cv_risk),
-      .groups = "keep"
+      .groups = "drop"
     ) %>%
     dplyr::arrange(.data$Mean)
 
@@ -65,7 +65,7 @@ bestInClass <- function(dat, worst = FALSE) {
       dplyr::summarise(
         hyperparameter = dplyr::last(.data$hyperparameters),
         cv_risk = dplyr::last(.data$cv_risk),
-        .groups = "keep"
+        .groups = "drop"
       ) %>%
       dplyr::arrange(.data$cv_risk)
   }
@@ -75,7 +75,7 @@ bestInClass <- function(dat, worst = FALSE) {
       dplyr::summarise(
         hyperparameter = dplyr::first(.data$hyperparameters),
         cv_risk = dplyr::first(.data$cv_risk),
-        .groups = "keep"
+        .groups = "drop"
       ) %>%
       dplyr::arrange(.data$cv_risk)
   }
@@ -247,6 +247,10 @@ summary.cvCovEst <- function(
     return(f)
   })
 
-  names(out) <- sums_to_exec
+  if (length(out) == 1)
+    out <- out[[1]]
+  else
+    names(out) <- sums_to_exec
+
   return(out)
 }

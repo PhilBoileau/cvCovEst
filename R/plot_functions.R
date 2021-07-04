@@ -660,7 +660,6 @@ multiHyperRisk <- function(
 #'
 #' @importFrom stringr str_split
 #' @importFrom dplyr group_by filter %>% summarise arrange count
-#' @importFrom stats t.test
 #' @importFrom assertthat assert_that
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom ggpubr ggarrange annotate_figure
@@ -917,7 +916,7 @@ cvSummaryPlot <- function(
     p1 <- summary.cvCovEst(object = dat, summ_fun = "cvRiskByClass")
 
     p1 <- ggpubr::ggtexttable(
-      p1$cvRiskByClass,
+      p1,
       rows = NULL,
       theme = ggpubr::ttheme(
         base_style = "lBlueWhite",
@@ -963,11 +962,11 @@ cvSummaryPlot <- function(
   # Lower Right - Summary Table - bestInClass
   p4_a <- summary.cvCovEst(object = dat, summ_fun = "bestInClass")
 
-  best_est <- p4_a$bestInClass$estimator[1]
+  best_est <- p4_a$estimator[1]
 
-  colnames(p4_a$bestInClass) <- c("Estimator", "Hyperparameter(s)", "CV Risk")
+  colnames(p4_a) <- c("Estimator", "Hyperparameter(s)", "CV Risk")
   p4_a <- ggpubr::ggtexttable(
-    p4_a$bestInClass,
+    p4_a,
     rows = NULL,
     theme = ttheme(
       base_style = "lBlueWhite",
@@ -1009,7 +1008,7 @@ cvSummaryPlot <- function(
 
 
 ################################################################################
-#' Generic Plot Method for cvCovest
+#' Generic Plot Method for cvCovEst
 #'
 #' @description The \code{plot} method is a generic method for plotting objects
 #'  of class, \code{"cvCovEst"}.  The method is designed as a tool for diagnostic
@@ -1142,8 +1141,7 @@ plot.cvCovEst <- function(
 
   if (x$args$cv_scheme == "mc") {
     scheme <- paste(pretty_args$mc, "split", x$args$mc_split, sep = " ")
-  }
-  else {
+  } else {
     scheme <- pretty_args$v_fold
   }
 

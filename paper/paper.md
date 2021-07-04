@@ -188,7 +188,7 @@ cv_cov_est_sim <- cvCovEst(
 )
 
 # plot a summary of the results
-plot(cv_cov_est_sim, data_in = sim_dat)
+plot(cv_cov_est_sim, data_orig = sim_dat)
 ```
 
 ![A summary of the `cvCovEst` procedure's results. In the top left corner, the
