@@ -660,7 +660,6 @@ multiHyperRisk <- function(
 #'
 #' @importFrom stringr str_split
 #' @importFrom dplyr group_by filter %>% summarise arrange count
-#' @importFrom stats t.test
 #' @importFrom assertthat assert_that
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom ggpubr ggarrange annotate_figure
@@ -1142,8 +1141,7 @@ plot.cvCovEst <- function(
 
   if (x$args$cv_scheme == "mc") {
     scheme <- paste(pretty_args$mc, "split", x$args$mc_split, sep = " ")
-  }
-  else {
+  } else {
     scheme <- pretty_args$v_fold
   }
 
