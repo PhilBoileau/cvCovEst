@@ -192,8 +192,8 @@ plot(cv_cov_est_sim, data_orig = sim_dat)
 ```
 
 ![A summary of the `cvCovEst` procedure's results. In the top left corner, the
-selected estmators risk is plotted against its considered hyperparameters. In
-the rop right, the eigenvalues of the selected estimator's estimate are
+selected estimator's risk is plotted against its considered hyperparameters. In
+the top right, the eigenvalues of the selected estimator's estimate are
 displayed. The bottom left plot presents the estimated covariance matrix.
 Entries are colored based on their absolute values. Finally, the table in the
 bottom right summarizes the performance of the best estimators from each class.
@@ -224,7 +224,7 @@ dimensionality reduction.
 
 Indeed, we find that the two-dimensional UMAP embedding resulting from the
 `cvCovEst`-based approach improves upon that of the standard PCA-based approach
-when applied to a dataset of 285 mouse visual coretex's cells' 1,000 most
+when applied to a dataset of 285 mouse visual cortex's cells' 1,000 most
 variable genes [@tasic2016]. Fewer rare cells are misclustered, engendering a
 47\% improvement in average silhouette width. For further discussion, see
 @boileau2021.
@@ -238,8 +238,8 @@ A stable release of the `cvCovEst` package is freely-available via the
 [Comprehensive `R` Archive Network](https://CRAN.R-project.org/package=cvCovEst).
 Its development version can be found on
 [GitHub](https://github.com/PhilBoileau/cvCovEst). Documentation and examples
-are contained in each version's manual pages, vignette, and `pkgdown` website
-at https://philboileau.github.io/cvCovEst.
+are contained in each version's manual pages, vignette, and `pkgdown` [@pkgdown]
+website at https://philboileau.github.io/cvCovEst.
 
 # Acknowledgments
 
