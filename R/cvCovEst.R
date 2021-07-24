@@ -37,13 +37,6 @@
 #' @param parallel A \code{logical} option indicating whether to run the main
 #'  cross-validation loop with \code{\link[future.apply]{future_lapply}()}. This
 #'  is passed directly to \code{\link[origami]{cross_validate}()}.
-#' @param true_cov_mat A \code{matrix}-like object giving the true covariance
-#'  matrix of the data-generating distribution, which is assumed Gaussian. This
-#'  parameter is intended as an aid for use only in simulation studies, and it
-#'  defaults to \code{NULL}. When not \code{NULL}, various conditional risk
-#'  difference ratios of the estimator selected by \code{\link{cvCovEst}()} are
-#'  computed relative to the different oracle selectors. NOTE: This parameter
-#'  will be phased out by the release of version 1.0.0.
 #'
 #' @importFrom origami cross_validate folds_vfold folds_montecarlo
 #' @importFrom dplyr arrange summarise group_by "%>%" ungroup
@@ -66,20 +59,6 @@
 #'     \item \code{args} - A named \code{list} containing arguments passed to
 #'       \code{cvCovEst}.
 #'   }
-#'   If the true covariance matrix is input through \code{true_cov_mat}, then
-#'   three additional elements are returned:
-#'   \itemize{
-#'     \item \code{cv_cv_riskdiff} - A \code{numeric} corresponding to the
-#'       conditional cross-validated risk difference of the cvCovEst selection.
-#'     \item \code{oracle_cv_riskdiff} - A \code{numeric} corresponding to the
-#'       conditional cross-validated risk difference of the oracle selection.
-#'     \item \code{cv_oracle_riskdiff_ratio} - A \code{numeric} corresponding
-#'       to the cross-validated risk difference ratio of the cvCovEst selection
-#'       and the cross-validated dataset oracle selection.
-#'     \item \code{full_data_riskdiff_ratio} - A \code{numeric} corresponding
-#'       to the full data risk difference ratio of the cvCovEst selection and
-#'       the full dataset oracle selection.
-#'   }
 #'
 #' @examples
 #' cvCovEst(
@@ -95,20 +74,20 @@
 #' )
 #' @export
 cvCovEst <- function(
-                     dat,
-                     estimators = c(
-                       linearShrinkEst, thresholdingEst, sampleCovEst
-                     ),
-                     estimator_params = list(
-                       linearShrinkEst = list(alpha = 0),
-                       thresholdingEst = list(gamma = 0)
-                     ),
-                     cv_loss = cvMatrixFrobeniusLoss,
-                     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 10L,
-                     center = TRUE,
-                     scale = FALSE,
-                     parallel = FALSE,
-                     true_cov_mat = NULL) {
+  dat,
+  estimators = c(
+   linearShrinkEst, thresholdingEst, sampleCovEst
+  ),
+  estimator_params = list(
+   linearShrinkEst = list(alpha = 0),
+   thresholdingEst = list(gamma = 0)
+  ),
+  cv_loss = cvMatrixFrobeniusLoss,
+  cv_scheme = "v_fold", mc_split = 0.5, v_folds = 10L,
+  center = TRUE,
+  scale = FALSE,
+  parallel = FALSE
+) {
 
   # grab estimator expression
   estimators <- rlang::enquo(estimators)
@@ -133,8 +112,7 @@ cvCovEst <- function(
     v_folds = v_folds,
     center = center,
     scale = scale,
-    parallel = parallel,
-    true_cov_mat = true_cov_mat
+    parallel = parallel
   )
 
   # center and scale the data, if desired
@@ -147,13 +125,6 @@ cvCovEst <- function(
     }
   } else {
     dat <- safeColScale(X = dat, center = center, scale = scale)
-  }
-
-  # coerce true_cov_mat to matrix if needed
-  if (!is.null(true_cov_mat)) {
-    if (class(true_cov_mat)[1] != "matrix") {
-      true_cov_mat <- as.matrix(true_cov_mat)
-    }
   }
 
   # define the folds based on cross-validation scheme
@@ -177,7 +148,6 @@ cvCovEst <- function(
     folds = folds,
     estimator_funs = estimators,
     estimator_params = estimator_params,
-    true_cov_mat = true_cov_mat,
     use_future = parallel,
     .combine = FALSE
   )
@@ -185,119 +155,44 @@ cvCovEst <- function(
   # convert results to tibble
   fold_results_concat <- dplyr::bind_rows(fold_results[[1]])
 
-  # compute the true cross-validated risk if true_covar_mat is passed in
-  if (is.null(true_cov_mat)) {
+  # compute cv risk
+  cv_results <- fold_results_concat %>%
+    dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
+    dplyr::summarise(cv_risk = mean(.data$loss)) %>%
+    dplyr::arrange(.data$cv_risk) %>%
+    dplyr::ungroup()
 
-    # compute cv risk
-    cv_results <- fold_results_concat %>%
-      dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
-      dplyr::summarise(cv_risk = mean(.data$loss)) %>%
-      dplyr::arrange(.data$cv_risk) %>%
-      dplyr::ungroup()
-
-    # compute the best estimator's estimate
-    best_est_fun <- get(cv_results[1, ]$estimator)
-    best_est_hparams <- cv_results[1, ]$hyperparameters
-    if (best_est_hparams != "hyperparameters = NA") {
-      best_est_hparams_table <- best_est_hparams %>%
-        stringr::str_split(pattern = ", ") %>%
-        purrr::flatten() %>%
-        stringr::str_split(pattern = " = ", simplify = TRUE)
-      best_hparams_list <- as.list(best_est_hparams_table[, 2])
-      names(best_hparams_list) <- best_est_hparams_table[, 1]
-      best_hparams_list <- lapply(best_hparams_list, strToNumber)
-      estimate <- rlang::exec(
-        best_est_fun,
-        dat,
-        !!!best_hparams_list
-      )
-    } else {
-      estimate <- best_est_fun(dat)
-    }
-
-    # prep output and return
-    out <- list(
-      estimate = estimate,
-      estimator = paste0(
-        cv_results[1, ]$estimator, ", ",
-        cv_results[1, ]$hyperparameters
-      ),
-      risk_df = cv_results,
-      cv_df = fold_results_concat,
-      args = args
+  # compute the best estimator's estimate
+  best_est_fun <- get(cv_results[1, ]$estimator)
+  best_est_hparams <- cv_results[1, ]$hyperparameters
+  if (best_est_hparams != "hyperparameters = NA") {
+    best_est_hparams_table <- best_est_hparams %>%
+      stringr::str_split(pattern = ", ") %>%
+      purrr::flatten() %>%
+      stringr::str_split(pattern = " = ", simplify = TRUE)
+    best_hparams_list <- as.list(best_est_hparams_table[, 2])
+    names(best_hparams_list) <- best_est_hparams_table[, 1]
+    best_hparams_list <- lapply(best_hparams_list, strToNumber)
+    estimate <- rlang::exec(
+      best_est_fun,
+      dat,
+      !!!best_hparams_list
     )
   } else {
-
-    # compute the minimum Frobenius risk, assuming Gaussian data
-    d_true_cov <- diag(true_cov_mat)
-    combo_mat <- tcrossprod(d_true_cov, d_true_cov) + true_cov_mat^2
-    min_full_risk <- matrixStats::sum2(combo_mat)
-
-    # compute the true cross-validated risk, full dataset risk,
-    # and the cv-estimated risk
-    cv_results <- fold_results_concat %>%
-      dplyr::group_by(.data$estimator, .data$hyperparameters) %>%
-      dplyr::summarise(
-        true_cv_risk = mean(.data$true_loss),
-        cv_risk = mean(.data$loss),
-        full_data_risk = mean(.data$full_mat_loss)
-      ) %>%
-      dplyr::arrange(.data$cv_risk) %>%
-      dplyr::ungroup()
-
-    # compute the risk difference ratio under the cross-validated risk
-    # of the cross-validated oracle and the cross-validated selection
-    cvCovEst_true_cv_risk <- cv_results$true_cv_risk[1]
-    cvCovEst_true_full_risk <- cv_results$full_data_risk[1]
-    oracle_true_cv_risk <- cv_results %>%
-      dplyr::arrange(.data$true_cv_risk)
-    oracle_true_cv_risk <- oracle_true_cv_risk$true_cv_risk[1]
-    cv_oracle_riskdiff_ratio <- (cvCovEst_true_cv_risk - min_full_risk) /
-      (oracle_true_cv_risk - min_full_risk)
-
-    # compute the full-dataset risk difference of the oracle selector
-    oracle_true_full_risk <- cv_results %>%
-      dplyr::arrange(.data$full_data_risk)
-    oracle_true_full_risk <- oracle_true_full_risk$full_data_risk[1]
-    full_oracle_riskdiff_ratio <- (cvCovEst_true_full_risk - min_full_risk) /
-      (oracle_true_full_risk - min_full_risk)
-
-    # compute the cvCovEst estimator's estimate
-    best_est_fun <- get(cv_results[1, ]$estimator)
-    best_est_hparams <- cv_results[1, ]$hyperparameters
-    if (best_est_hparams != "hyperparameters = NA") {
-      best_est_hparams_table <- best_est_hparams %>%
-        stringr::str_split(pattern = ", ") %>%
-        purrr::flatten() %>%
-        stringr::str_split(pattern = " = ", simplify = TRUE)
-      best_hparams_list <- as.list(best_est_hparams_table[, 2])
-      names(best_hparams_list) <- best_est_hparams_table[, 1]
-      best_hparams_list <- lapply(best_hparams_list, strToNumber)
-      estimate <- rlang::exec(
-        best_est_fun,
-        dat,
-        !!!best_hparams_list
-      )
-    } else {
-      estimate <- best_est_fun(dat)
-    }
-
-    # prep output and return
-    out <- list(
-      estimate = estimate,
-      estimator = paste0(
-        cv_results[1, ]$estimator, ", ",
-        cv_results[1, ]$hyperparameters
-      ),
-      risk_df = cv_results,
-      cv_df = fold_results_concat,
-      args = args,
-      cv_cv_riskdiff = cvCovEst_true_cv_risk - min_full_risk,
-      oracle_cv_riskdiff = oracle_true_cv_risk - min_full_risk,
-      cv_oracle_riskdiff_ratio = cv_oracle_riskdiff_ratio,
-      full_oracle_riskdiff_ratio = full_oracle_riskdiff_ratio
-    )
+    estimate <- best_est_fun(dat)
   }
+
+  # prep output and return
+  out <- list(
+    estimate = estimate,
+    estimator = paste0(
+      cv_results[1, ]$estimator, ", ",
+      cv_results[1, ]$hyperparameters
+    ),
+    risk_df = cv_results,
+    cv_df = fold_results_concat,
+    args = args
+  )
 
   class(out) <- "cvCovEst"
   return(out)

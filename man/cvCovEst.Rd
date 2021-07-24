@@ -15,8 +15,7 @@ cvCovEst(
   v_folds = 10L,
   center = TRUE,
   scale = FALSE,
-  parallel = FALSE,
-  true_cov_mat = NULL
+  parallel = FALSE
 )
 }
 \arguments{
@@ -63,14 +62,6 @@ of the choice of cross-validation scheme.}
 \item{parallel}{A \code{logical} option indicating whether to run the main
 cross-validation loop with \code{\link[future.apply]{future_lapply}()}. This
 is passed directly to \code{\link[origami]{cross_validate}()}.}
-
-\item{true_cov_mat}{A \code{matrix}-like object giving the true covariance
-matrix of the data-generating distribution, which is assumed Gaussian. This
-parameter is intended as an aid for use only in simulation studies, and it
-defaults to \code{NULL}. When not \code{NULL}, various conditional risk
-difference ratios of the estimator selected by \code{\link{cvCovEst}()} are
-computed relative to the different oracle selectors. NOTE: This parameter
-will be phased out by the release of version 1.0.0.}
 }
 \value{
 A \code{list} of results containing the following elements:
@@ -85,20 +76,6 @@ cross-validated risk estimates of each estimator.
 estimators' loss over the folds of the cross-validated procedure.
 \item \code{args} - A named \code{list} containing arguments passed to
 \code{cvCovEst}.
-}
-If the true covariance matrix is input through \code{true_cov_mat}, then
-three additional elements are returned:
-\itemize{
-\item \code{cv_cv_riskdiff} - A \code{numeric} corresponding to the
-conditional cross-validated risk difference of the cvCovEst selection.
-\item \code{oracle_cv_riskdiff} - A \code{numeric} corresponding to the
-conditional cross-validated risk difference of the oracle selection.
-\item \code{cv_oracle_riskdiff_ratio} - A \code{numeric} corresponding
-to the cross-validated risk difference ratio of the cvCovEst selection
-and the cross-validated dataset oracle selection.
-\item \code{full_data_riskdiff_ratio} - A \code{numeric} corresponding
-to the full data risk difference ratio of the cvCovEst selection and
-the full dataset oracle selection.
 }
 }
 \description{

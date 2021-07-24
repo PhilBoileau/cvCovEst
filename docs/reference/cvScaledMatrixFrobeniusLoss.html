@@ -80,7 +80,7 @@ are of different magnitudes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -148,13 +148,7 @@ column variables. This loss should be used instead of
 are of different magnitudes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cvScaledMatrixFrobeniusLoss</span><span class='op'>(</span>
-  <span class='va'>fold</span>,
-  <span class='va'>dat</span>,
-  <span class='va'>estimator_funs</span>,
-  estimator_params <span class='op'>=</span> <span class='cn'>NULL</span>,
-  true_cov_mat <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>cvScaledMatrixFrobeniusLoss</span><span class='op'>(</span><span class='va'>fold</span>, <span class='va'>dat</span>, <span class='va'>estimator_funs</span>, estimator_params <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -184,10 +178,6 @@ itself a named <code>list</code>, with names corresponding to an estimators'
 hyperparameter(s). These hyperparameters may be in the form of a single
 <code>numeric</code> or a <code>numeric</code> vector. If no hyperparameter is needed
 for a given estimator, then the estimator need not be listed.</p></td>
-    </tr>
-    <tr>
-      <th>true_cov_mat</th>
-      <td><p>A <code>NULL</code> kept here for compatibility reasons.</p></td>
     </tr>
     </table>
 

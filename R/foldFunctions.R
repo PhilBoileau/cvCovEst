@@ -18,12 +18,6 @@
 #'  hyperparameter(s). These hyperparameters may be in the form of a single
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
-#' @param true_cov_mat A \code{matrix} like object representing the true
-#'  covariance matrix of the data generating distribution. This parameter
-#'  is intended for use only in simulation studies, and defaults to a value
-#'  of \code{NULL}. If not null, \code{cvFrobeniusLoss} returns the true
-#'  cross-validated Frobenius loss in addition to the cross-validated Frobenius
-#'  loss estimate for the given \code{fold}.
 #'
 #' @importFrom dplyr bind_rows slice
 #' @importFrom origami training validation fold_index
@@ -69,9 +63,12 @@
 #'   )
 #' )
 #' @export
-cvFrobeniusLoss <- function(fold, dat, estimator_funs,
-                            estimator_params = NULL,
-                            true_cov_mat = NULL) {
+cvFrobeniusLoss <- function(
+  fold,
+  dat,
+  estimator_funs,
+  estimator_params = NULL
+) {
 
   # split the data into training and validation
   train_data <- origami::training(dat)
@@ -121,32 +118,13 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
       est_square <- matrixStats::sum2(est_mat^2)
 
       # return the results from the fold
-      if (is.null(true_cov_mat)) {
-        out <- tibble::tibble(
-          estimator = est_name,
-          hyperparameters = estimator_hparam,
-          loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
-            est_square,
-          fold = origami::fold_index(fold = fold)
-        )
-      } else {
-
-        # fit the covariance matrix estimator on the full dataset
-        # NOTE: this is here out of convenience...it is not computationally
-        # efficient, but not all that important since only for simulations,
-        # and this will not be released in the main package.
-        est_mat_full <- est_fun(dat)
-
-        out <- tibble::tibble(
-          estimator = est_name,
-          hyperparameters = estimator_hparam,
-          loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
-            est_square,
-          true_loss = trueFrobeniusLoss(est_mat, true_cov_mat),
-          full_mat_loss = trueFrobeniusLoss(est_mat_full, true_cov_mat),
-          fold = origami::fold_index(fold = fold)
-        )
-      }
+      out <- tibble::tibble(
+        estimator = est_name,
+        hyperparameters = estimator_hparam,
+        loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
+          est_square,
+        fold = origami::fold_index(fold = fold)
+      )
 
       return(out)
     } else {
@@ -179,35 +157,14 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
           est_square <- matrixStats::sum2(est_mat^2)
 
           # return the results from the fold
-          if (is.null(true_cov_mat)) {
-            out <- tibble::tibble(
-              estimator = est_name,
-              hyperparameters = estimator_hparam,
-              loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
-                est_square,
-              fold = origami::fold_index(fold = fold)
-            )
-          } else {
-            # fit the covariance matrix estimator on the full dataset
-            # NOTE: this is here out of convenience...it is not computationally
-            # efficient, but not all that important since only for simulations,
-            # and this will not be released in the main package.
-            est_mat_full <- rlang::exec(
-              est_fun,
-              dat,
-              !!!purrr::flatten(dplyr::slice(hparam_grid, idx))
-            )
+          out <- tibble::tibble(
+            estimator = est_name,
+            hyperparameters = estimator_hparam,
+            loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
+              est_square,
+            fold = origami::fold_index(fold = fold)
+          )
 
-            out <- tibble::tibble(
-              estimator = est_name,
-              hyperparameters = estimator_hparam,
-              loss = 1 / nrow(valid_data) * (elwise_sq - 2 * had_crossprod) +
-                est_square,
-              true_loss = trueFrobeniusLoss(est_mat, true_cov_mat),
-              full_mat_loss = trueFrobeniusLoss(est_mat_full, true_cov_mat),
-              fold = origami::fold_index(fold = fold)
-            )
-          }
           return(out)
         }
       )
@@ -222,48 +179,6 @@ cvFrobeniusLoss <- function(fold, dat, estimator_funs,
   return(list(est_out))
 }
 
-###############################################################################
-
-#' True Cross-Validated Frobenius Loss
-#'
-#' @description \code{trueFrobeniusLoss()} computes the true cross-validated
-#'  Frobenius loss over the validation dataset.
-#'
-#' @param estimate A \code{matrix} corresponding to the estimate of the
-#'  covariance matrix.
-#' @param true_covar A \code{matrix} corresponding to the true covariance
-#'  matrix of the data generating distribution.
-#'
-#' @return The true average Frobenius loss over the validation dataset of
-#'  \code{estimate} as a \code{numeric}.
-#'
-#' @importFrom matrixStats sum2
-#'
-#' @keywords internal
-trueFrobeniusLoss <- function(estimate, true_covar) {
-
-  # compute the matrix of the cross products of variances
-  diag_true_covar <- diag(true_covar)
-  cross_prod_mat <- matrixStats::sum2(base::tcrossprod(
-    diag_true_covar,
-    diag_true_covar
-  ))
-
-  # compute the element-wise square of the true covariance matrix
-  elem_square_true <- matrixStats::sum2(true_covar^2)
-
-  # compute element wise multiplication of the estimate and true covariance
-  elem_mult <- matrixStats::sum2(estimate * true_covar)
-
-  # compute the element-wise square of the estimate
-  elem_square_est <- matrixStats::sum2(estimate^2)
-
-  # combine all loss entries
-  loss <- cross_prod_mat + 2 * elem_square_true -
-    2 * elem_mult + elem_square_est
-
-  return(loss)
-}
 
 ###############################################################################
 
@@ -289,7 +204,6 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
 #'  hyperparameter(s). These hyperparameters may be in the form of a single
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
-#' @param true_cov_mat A \code{NULL} kept here for compatibility reasons.
 #'
 #' @importFrom dplyr bind_rows slice
 #' @importFrom origami training validation fold_index
@@ -334,9 +248,13 @@ trueFrobeniusLoss <- function(estimate, true_covar) {
 #'   )
 #' )
 #' @export
-cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
-                                  estimator_params = NULL,
-                                  true_cov_mat = NULL) {
+cvMatrixFrobeniusLoss <- function(
+  fold,
+  dat,
+  estimator_funs,
+  estimator_params = NULL
+) {
+
   # split the data into training and validation
   train_data <- origami::training(dat)
   valid_data <- origami::validation(dat)
@@ -441,7 +359,6 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
 #'  hyperparameter(s). These hyperparameters may be in the form of a single
 #'  \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 #'  for a given estimator, then the estimator need not be listed.
-#' @param true_cov_mat A \code{NULL} kept here for compatibility reasons.
 #'
 #' @importFrom dplyr bind_rows slice
 #' @importFrom origami training validation fold_index
@@ -486,9 +403,13 @@ cvMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
 #'   )
 #' )
 #' @export
-cvScaledMatrixFrobeniusLoss <- function(fold, dat, estimator_funs,
-                                        estimator_params = NULL,
-                                        true_cov_mat = NULL) {
+cvScaledMatrixFrobeniusLoss <- function(
+  fold,
+  dat,
+  estimator_funs,
+  estimator_params = NULL
+) {
+
   # split the data into training and validation
   train_data <- origami::training(dat)
   valid_data <- origami::validation(dat)

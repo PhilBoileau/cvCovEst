@@ -73,7 +73,7 @@ estimator from among a set of candidate estimators." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -145,8 +145,7 @@ estimator from among a set of candidate estimators.</p>
   v_folds <span class='op'>=</span> <span class='fl'>10L</span>,
   center <span class='op'>=</span> <span class='cn'>TRUE</span>,
   scale <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  parallel <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  true_cov_mat <span class='op'>=</span> <span class='cn'>NULL</span>
+  parallel <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -216,16 +215,6 @@ of the choice of cross-validation scheme.</p></td>
 cross-validation loop with <code><a href='https://rdrr.io/pkg/future.apply/man/future_lapply.html'>future_lapply</a>()</code>. This
 is passed directly to <code><a href='http://tlverse.org/origami/reference/cross_validate.html'>cross_validate</a>()</code>.</p></td>
     </tr>
-    <tr>
-      <th>true_cov_mat</th>
-      <td><p>A <code>matrix</code>-like object giving the true covariance
-matrix of the data-generating distribution, which is assumed Gaussian. This
-parameter is intended as an aid for use only in simulation studies, and it
-defaults to <code>NULL</code>. When not <code>NULL</code>, various conditional risk
-difference ratios of the estimator selected by <code>cvCovEst()</code> are
-computed relative to the different oracle selectors. NOTE: This parameter
-will be phased out by the release of version 1.0.0.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -241,18 +230,6 @@ cross-validated risk estimates of each estimator.</p></li>
 estimators' loss over the folds of the cross-validated procedure.</p></li>
 <li><p><code>args</code> - A named <code>list</code> containing arguments passed to
 <code>cvCovEst</code>.</p></li>
-</ul><p>If the true covariance matrix is input through <code>true_cov_mat</code>, then
-three additional elements are returned:</p><ul>
-<li><p><code>cv_cv_riskdiff</code> - A <code>numeric</code> corresponding to the
-conditional cross-validated risk difference of the cvCovEst selection.</p></li>
-<li><p><code>oracle_cv_riskdiff</code> - A <code>numeric</code> corresponding to the
-conditional cross-validated risk difference of the oracle selection.</p></li>
-<li><p><code>cv_oracle_riskdiff_ratio</code> - A <code>numeric</code> corresponding
-to the cross-validated risk difference ratio of the cvCovEst selection
-and the cross-validated dataset oracle selection.</p></li>
-<li><p><code>full_data_riskdiff_ratio</code> - A <code>numeric</code> corresponding
-to the full data risk difference ratio of the cvCovEst selection and
-the full dataset oracle selection.</p></li>
 </ul>
 
 
@@ -327,7 +304,7 @@ the full dataset oracle selection.</p></li>
 #&gt; $args$cv_loss
 #&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^cvMatrixFrobeniusLoss</span>
-#&gt; env:  <span style='color: #0000BB;'>0x7f96f217daf8</span>
+#&gt; env:  <span style='color: #0000BB;'>0x7fa3ef508758</span>
 #&gt; 
 #&gt; $args$cv_scheme
 #&gt; [1] "v_fold"
@@ -346,9 +323,6 @@ the full dataset oracle selection.</p></li>
 #&gt; 
 #&gt; $args$parallel
 #&gt; [1] FALSE
-#&gt; 
-#&gt; $args$true_cov_mat
-#&gt; NULL
 #&gt; 
 #&gt; 
 #&gt; attr(,"class")

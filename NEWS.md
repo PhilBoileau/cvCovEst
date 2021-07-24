@@ -1,3 +1,8 @@
+# cvCovEst 1.0.0 (2021-07-24)
+
++ `cvCovEst()` no longer accepts the `true_cov_mat` argument.
++ `cvCovEst` is now ready for publication through JOSS.
+
 # cvCovEst 0.3.8 (2021-07-24)
 
 + Fixing formatting errors in `inst/REFERENCES.bib`

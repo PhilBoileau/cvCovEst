@@ -4,13 +4,7 @@
 \alias{cvFrobeniusLoss}
 \title{Cross-Validation Function for Aggregated Frobenius Loss}
 \usage{
-cvFrobeniusLoss(
-  fold,
-  dat,
-  estimator_funs,
-  estimator_params = NULL,
-  true_cov_mat = NULL
-)
+cvFrobeniusLoss(fold, dat, estimator_funs, estimator_params = NULL)
 }
 \arguments{
 \item{fold}{A \code{fold} object (from \code{\link[origami]{make_folds}()})
@@ -30,13 +24,6 @@ itself a named \code{list}, with names corresponding to an estimators'
 hyperparameter(s). These hyperparameters may be in the form of a single
 \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 for a given estimator, then the estimator need not be listed.}
-
-\item{true_cov_mat}{A \code{matrix} like object representing the true
-covariance matrix of the data generating distribution. This parameter
-is intended for use only in simulation studies, and defaults to a value
-of \code{NULL}. If not null, \code{cvFrobeniusLoss} returns the true
-cross-validated Frobenius loss in addition to the cross-validated Frobenius
-loss estimate for the given \code{fold}.}
 }
 \value{
 A \code{\link[tibble]{tibble}} providing information on estimators,
