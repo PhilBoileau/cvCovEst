@@ -14,8 +14,7 @@ checkArgs(
   v_folds,
   center,
   scale,
-  parallel,
-  true_cov_mat = NULL
+  parallel
 )
 }
 \arguments{
@@ -62,14 +61,6 @@ of the choice of cross-validation scheme.}
 \item{parallel}{A \code{logical} option indicating whether to run the main
 cross-validation loop with \code{\link[future.apply]{future_lapply}()}. This
 is passed directly to \code{\link[origami]{cross_validate}()}.}
-
-\item{true_cov_mat}{A \code{matrix}-like object giving the true covariance
-matrix of the data-generating distribution, which is assumed Gaussian. This
-parameter is intended as an aid for use only in simulation studies, and it
-defaults to \code{NULL}. When not \code{NULL}, various conditional risk
-difference ratios of the estimator selected by \code{\link{cvCovEst}()} are
-computed relative to the different oracle selectors. NOTE: This parameter
-will be phased out by the release of version 1.0.0.}
 }
 \value{
 Whether all argument conditions are satisfied

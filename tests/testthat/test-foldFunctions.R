@@ -61,12 +61,6 @@ test_that("Estimators not throw error", {
   ))
 })
 
-test_that("trueFrobeniusLoss computes the correct validation set loss", {
-  est <- matrix(c(1, 2, 3, 2, 1, 2, 3, 2, 1), nrow = 3)
-  true_cov <- matrix(c(1, 2, 2, 2, 1, 2, 2, 2, 1), nrow = 3)
-  expect_equal(trueFrobeniusLoss(est, true_cov), 38)
-})
-
 test_that("cvFrobeniusLoss returns the expected error for the linear shrinkage
           estimator with alpha 0.5", {
 
@@ -143,25 +137,4 @@ test_that("cvMatrixFrobeniusLoss returns the expected error for the hard
 
   testthat::expect_identical(estimate_error, computed_error)
 
-})
-
-
-test_that("the true covariance matrix can be passed in", {
-  expect_silent(cvFrobeniusLoss(
-    fold = resub,
-    dat = dat,
-    estimator_funs = rlang::quo(c(sampleCovEst, poetEst)),
-    estimator_params = list(poetEst = list(k = 5L, lambda = 0.2)),
-    true_cov_mat = Sigma
-  ))
-  output <- cvFrobeniusLoss(
-    fold = resub,
-    dat = dat,
-    estimator_funs = rlang::quo(c(sampleCovEst, poetEst)),
-    estimator_params = list(poetEst = list(k = 5L, lambda = 0.2)),
-    true_cov_mat = Sigma
-  )[[1]]
-  expect_equal(nrow(output), 2)
-  expect_equal(ncol(output), 6)
-  expect_true(!is.null(output$true_loss))
 })

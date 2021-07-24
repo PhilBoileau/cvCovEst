@@ -73,7 +73,7 @@ passed to cvCovEst() function meet its specifications." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -144,8 +144,7 @@ passed to <code><a href='cvCovEst.html'>cvCovEst</a>()</code> function meet its 
   <span class='va'>v_folds</span>,
   <span class='va'>center</span>,
   <span class='va'>scale</span>,
-  <span class='va'>parallel</span>,
-  true_cov_mat <span class='op'>=</span> <span class='cn'>NULL</span>
+  <span class='va'>parallel</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -214,16 +213,6 @@ of the choice of cross-validation scheme.</p></td>
       <td><p>A <code>logical</code> option indicating whether to run the main
 cross-validation loop with <code><a href='https://rdrr.io/pkg/future.apply/man/future_lapply.html'>future_lapply</a>()</code>. This
 is passed directly to <code><a href='http://tlverse.org/origami/reference/cross_validate.html'>cross_validate</a>()</code>.</p></td>
-    </tr>
-    <tr>
-      <th>true_cov_mat</th>
-      <td><p>A <code>matrix</code>-like object giving the true covariance
-matrix of the data-generating distribution, which is assumed Gaussian. This
-parameter is intended as an aid for use only in simulation studies, and it
-defaults to <code>NULL</code>. When not <code>NULL</code>, various conditional risk
-difference ratios of the estimator selected by <code><a href='cvCovEst.html'>cvCovEst</a>()</code> are
-computed relative to the different oracle selectors. NOTE: This parameter
-will be phased out by the release of version 1.0.0.</p></td>
     </tr>
     </table>
 

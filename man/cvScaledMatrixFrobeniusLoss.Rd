@@ -4,13 +4,7 @@
 \alias{cvScaledMatrixFrobeniusLoss}
 \title{Cross-Validation Function for Scaled Matrix Frobenius Loss}
 \usage{
-cvScaledMatrixFrobeniusLoss(
-  fold,
-  dat,
-  estimator_funs,
-  estimator_params = NULL,
-  true_cov_mat = NULL
-)
+cvScaledMatrixFrobeniusLoss(fold, dat, estimator_funs, estimator_params = NULL)
 }
 \arguments{
 \item{fold}{A \code{fold} object (from \code{\link[origami]{make_folds}()})
@@ -30,8 +24,6 @@ itself a named \code{list}, with names corresponding to an estimators'
 hyperparameter(s). These hyperparameters may be in the form of a single
 \code{numeric} or a \code{numeric} vector. If no hyperparameter is needed
 for a given estimator, then the estimator need not be listed.}
-
-\item{true_cov_mat}{A \code{NULL} kept here for compatibility reasons.}
 }
 \value{
 A \code{\link[tibble]{tibble}} providing information on estimators,
