@@ -107,7 +107,7 @@ computation. Parallelization relies on the suite of `future` packages
 [@future] by way of the `origami` package [@origami].
 
 Table 1: Covariance matrix estimators implemented as of [version
-0.3.5](https://github.com/PhilBoileau/cvCovEst).
+1.0.0](https://github.com/PhilBoileau/cvCovEst).
 
 |Estimator | Implementation | Description |
 |----------|----------|-------------|
