@@ -1,3 +1,14 @@
+# cvCovEst 0.3.8 (2021-07-24)
+
++ Fixing formatting errors in `inst/REFERENCES.bib`
++ Addressing typos and bibliography errors in JOSS paper draft
++ Updating `pkgdown` documentation
++ Creating a GitHub release. Subsequent versions of the package won't accept
+  "true" covariance matrices as an argument to `cvCovEst()`. This is the last
+  version of `cvCovEst` that can be used to reproduce the simulation results
+  of the accompanying manuscript, "Cross-Validated Loss-Based Covariance Matrix
+  Estimator Selection in High Dimensions".
+
 # cvCovEst 0.3.7 (2021-07-03)
 
 + Calling `summary.cvCovEst()` when a single summary function is

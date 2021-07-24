@@ -73,7 +73,7 @@ estimator from among a set of candidate estimators." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -298,36 +298,36 @@ the full dataset oracle selection.</p></li>
 #&gt; [1] "sampleCovEst, hyperparameters = NA"
 #&gt; 
 #&gt; $risk_df
-#&gt; <span style='color: #949494;'># A tibble: 5 x 3</span><span>
-#&gt;   estimator         hyperparameters      empirical_risk
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> sampleCovEst      hyperparameters = NA           65.9
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> thresholdingEst   gamma = 0.3                    66.0
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> thresholdingEst   gamma = 0.1                    66.1
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> linearShrinkLWEst hyperparameters = NA           66.2
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> thresholdingEst   gamma = 0.2                    67.0
+#&gt; <span style='color: #949494;'># A tibble: 5 x 3</span>
+#&gt;   estimator         hyperparameters      cv_risk
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> sampleCovEst      hyperparameters = NA    65.9
+#&gt; <span style='color: #BCBCBC;'>2</span> thresholdingEst   gamma = 0.3             66.0
+#&gt; <span style='color: #BCBCBC;'>3</span> thresholdingEst   gamma = 0.1             66.1
+#&gt; <span style='color: #BCBCBC;'>4</span> linearShrinkLWEst hyperparameters = NA    66.2
+#&gt; <span style='color: #BCBCBC;'>5</span> thresholdingEst   gamma = 0.2             67.0
 #&gt; 
 #&gt; $cv_df
-#&gt; </span><span style='color: #949494;'># A tibble: 50 x 4</span><span>
+#&gt; <span style='color: #949494;'># A tibble: 50 x 4</span>
 #&gt;    estimator         hyperparameters       loss  fold
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> linearShrinkLWEst hyperparameters = NA 112.      1
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> thresholdingEst   gamma = 0.1          107.      1
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> thresholdingEst   gamma = 0.2          107.      1
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> thresholdingEst   gamma = 0.3          106.      1
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> sampleCovEst      hyperparameters = NA 106.      1
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> linearShrinkLWEst hyperparameters = NA  21.3     2
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> thresholdingEst   gamma = 0.1           20.9     2
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> thresholdingEst   gamma = 0.2           21.3     2
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> thresholdingEst   gamma = 0.3           20.6     2
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> sampleCovEst      hyperparameters = NA  20.4     2
-#&gt; </span><span style='color: #949494;'># … with 40 more rows</span><span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> linearShrinkLWEst hyperparameters = NA 112.      1
+#&gt; <span style='color: #BCBCBC;'> 2</span> thresholdingEst   gamma = 0.1          107.      1
+#&gt; <span style='color: #BCBCBC;'> 3</span> thresholdingEst   gamma = 0.2          107.      1
+#&gt; <span style='color: #BCBCBC;'> 4</span> thresholdingEst   gamma = 0.3          106.      1
+#&gt; <span style='color: #BCBCBC;'> 5</span> sampleCovEst      hyperparameters = NA 106.      1
+#&gt; <span style='color: #BCBCBC;'> 6</span> linearShrinkLWEst hyperparameters = NA  21.3     2
+#&gt; <span style='color: #BCBCBC;'> 7</span> thresholdingEst   gamma = 0.1           20.9     2
+#&gt; <span style='color: #BCBCBC;'> 8</span> thresholdingEst   gamma = 0.2           21.3     2
+#&gt; <span style='color: #BCBCBC;'> 9</span> thresholdingEst   gamma = 0.3           20.6     2
+#&gt; <span style='color: #BCBCBC;'>10</span> sampleCovEst      hyperparameters = NA  20.4     2
+#&gt; <span style='color: #949494;'># … with 40 more rows</span>
 #&gt; 
 #&gt; $args
 #&gt; $args$cv_loss
-#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
-#&gt; expr: </span><span style='color: #0000BB;'>^cvMatrixFrobeniusLoss</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f80995a34e8</span><span>
+#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
+#&gt; expr: <span style='color: #0000BB;'>^cvMatrixFrobeniusLoss</span>
+#&gt; env:  <span style='color: #0000BB;'>0x7f96f217daf8</span>
 #&gt; 
 #&gt; $args$cv_scheme
 #&gt; [1] "v_fold"
@@ -352,7 +352,7 @@ the full dataset oracle selection.</p></li>
 #&gt; 
 #&gt; 
 #&gt; attr(,"class")
-#&gt; [1] "cvCovEst"</div></span></pre>
+#&gt; [1] "cvCovEst"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -126,6 +126,46 @@
       <small>Source: <a href='https://github.com/PhilBoileau/cvCovEst/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="cvcovest-038-2021-07-24" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.8">
+<a href="#cvcovest-038-2021-07-24" class="anchor"></a>cvCovEst 0.3.8 (2021-07-24)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Fixing formatting errors in <code>inst/REFERENCES.bib</code>
+</li>
+<li>Addressing typos and bibliography errors in JOSS paper draft</li>
+<li>Updating <code>pkgdown</code> documentation</li>
+<li>Creating a GitHub release. Subsequent versions of the package won’t accept “true” covariance matrices as an argument to <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code>. This is the last version of <code>cvCovEst</code> that can be used to reproduce the simulation results of the accompanying manuscript, “Cross-Validated Loss-Based Covariance Matrix Estimator Selection in High Dimensions”.</li>
+</ul>
+</div>
+    <div id="cvcovest-037-2021-07-03" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.7">
+<a href="#cvcovest-037-2021-07-03" class="anchor"></a>cvCovEst 0.3.7 (2021-07-03)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Calling <code><a href="../reference/summary.cvCovEst.html">summary.cvCovEst()</a></code> when a single summary function is specified now immediately returns a table instead of a list of length 1 that contains said table.</li>
+<li>Tables returned by <code><a href="../reference/summary.cvCovEst.html">summary.cvCovEst()</a></code> no longer have <code>dplyr</code> groups.</li>
+<li>Fixed typo in Toy Dataset Example section of paper.</li>
+</ul>
+</div>
+    <div id="cvcovest-036-2021-06-19" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.6">
+<a href="#cvcovest-036-2021-06-19" class="anchor"></a>cvCovEst 0.3.6 (2021-06-19)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Renamed <code>empirical_risk</code> column in <code>risk_df</code> table output by <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code> to <code>cv_risk</code>.</li>
+<li>Added additional citations of existing R packages for covariance matrix estimation in our JOSS submission.</li>
+<li>Added more comprehensive tests for the available loss functions.</li>
+</ul>
+</div>
+    <div id="cvcovest-035-2021-02-24" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.5">
+<a href="#cvcovest-035-2021-02-24" class="anchor"></a>cvCovEst 0.3.5 (2021-02-24)<small> 2021-04-18 </small>
+</h1>
+<ul>
+<li>Setting ‘LazyLoad’ to ‘false’ in DESCRIPTION to address CRAN checks notes.</li>
+</ul>
+</div>
     <div id="cvcovest-034-2021-02-24" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.4">
 <a href="#cvcovest-034-2021-02-24" class="anchor"></a>cvCovEst 0.3.4 (2021-02-24)<small> 2021-03-06 </small>
