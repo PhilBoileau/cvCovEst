@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
 
       
 
-      </header><script src="using_cvCovEst_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="using_cvCovEst_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>
@@ -88,9 +88,9 @@
 <a href="https://pboileau.ca">Philippe Boileau</a>, <a href="https://github.com/bcollica">Brian Collica</a>, <a href="https://nimahejazi.org">Nima Hejazi</a>
 </h4>
             
-            <h4 class="date">2021-03-13</h4>
+            <h4 class="date">2021-07-24</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/PhilBoileau/cvCovEst/blob/master/R/vignettes/using_cvCovEst.Rmd"><code>R/vignettes/using_cvCovEst.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/PhilBoileau/cvCovEst/blob/master/vignettes/using_cvCovEst.Rmd"><code>vignettes/using_cvCovEst.Rmd</code></a></small>
       <div class="hidden name"><code>using_cvCovEst.Rmd</code></div>
 
     </div>
@@ -113,7 +113,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/PhilBoileau/cvCovEst">cvCovEst</a></span><span class="op">)</span></code></pre></div>
-<pre><code>## cvCovEst v0.3.4: Cross-Validated Covariance Matrix Estimation</code></pre>
+<pre><code>## cvCovEst v0.3.8: Cross-Validated Covariance Matrix Estimation</code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1584</span><span class="op">)</span>
 
@@ -143,17 +143,17 @@
 <span class="co"># print the table of risk estimates</span>
 <span class="va">cv_cov_est_out</span><span class="op">$</span><span class="va">risk_df</span></code></pre></div>
 <pre><code>## # A tibble: 9 x 3
-##   estimator            hyperparameters      empirical_risk
-##   &lt;chr&gt;                &lt;chr&gt;                         &lt;dbl&gt;
-## 1 linearShrinkLWEst    hyperparameters = NA           357.
-## 2 poetEst              lambda = 0.2, k = 1            369.
-## 3 poetEst              lambda = 0.2, k = 2            372.
-## 4 poetEst              lambda = 0.1, k = 2            375.
-## 5 poetEst              lambda = 0.1, k = 1            376.
-## 6 denseLinearShrinkEst hyperparameters = NA           379.
-## 7 sampleCovEst         hyperparameters = NA           379.
-## 8 thresholdingEst      gamma = 0.2                    384.
-## 9 thresholdingEst      gamma = 0.4                    505.</code></pre>
+##   estimator            hyperparameters      cv_risk
+##   &lt;chr&gt;                &lt;chr&gt;                  &lt;dbl&gt;
+## 1 linearShrinkLWEst    hyperparameters = NA    357.
+## 2 poetEst              lambda = 0.2, k = 1     369.
+## 3 poetEst              lambda = 0.2, k = 2     372.
+## 4 poetEst              lambda = 0.1, k = 2     375.
+## 5 poetEst              lambda = 0.1, k = 1     376.
+## 6 denseLinearShrinkEst hyperparameters = NA    379.
+## 7 sampleCovEst         hyperparameters = NA    379.
+## 8 thresholdingEst      gamma = 0.2             384.
+## 9 thresholdingEst      gamma = 0.4             505.</code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># print a subset of the selected estimator's estimate</span>
 <span class="va">cv_cov_est_out</span><span class="op">$</span><span class="va">estimate</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></code></pre></div>
@@ -185,7 +185,7 @@
 <td>The sample covariance matrix.</td>
 </tr>
 <tr class="even">
-<td>Hard thresholding <span class="citation">(Bickel and Levita 2008b)</span>
+<td>Hard thresholding <span class="citation">(Bickel and Levina 2008b)</span>
 </td>
 <td><code>thresholdingEst</code></td>
 <td>Applies a hard thresholding operator to the entries of the sample covariance matrix</td>
@@ -203,7 +203,7 @@
 <td>Applies the adaptive LASSO thresholding operator to the entries of the sample covariance matrix</td>
 </tr>
 <tr class="odd">
-<td>Banding <span class="citation">(Bickel and Levita 2008a)</span>
+<td>Banding <span class="citation">(Bickel and Levina 2008a)</span>
 </td>
 <td><code>bandingEst</code></td>
 <td>Replaces the sample covariance matrix’s off-diagonal bands by zeros.</td>
@@ -437,11 +437,9 @@
 <div id="simulated-data-analysis-example" class="section level1">
 <h1 class="hasAnchor">
 <a href="#simulated-data-analysis-example" class="anchor"></a>Simulated Data Analysis Example</h1>
-<p>To show how the plot and summary methods can be used, data is simulated from a predetermined covariance matrix following a Toeplitz structure. The data is then passed to <code>cvCovEst</code> along with a handful of estimator classes.</p>
+<p>To show how the plot and summary methods can be used, data is simulated from a predetermined covariance matrix following a Toeplitz structure. The data is then passed to <code>cvCovEst</code> along with a handful of estimators.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/PhilBoileau/cvCovEst">cvCovEst</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1584</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1584</span><span class="op">)</span>
 
 <span class="va">toep_sim</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">p</span>, <span class="va">rho</span>, <span class="va">alpha</span><span class="op">)</span> <span class="op">{</span>
     <span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
@@ -473,20 +471,18 @@
 <span class="va">cv_cov_est_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cvCovEst.html">cvCovEst</a></span><span class="op">(</span>
   dat <span class="op">=</span> <span class="va">sim_dat</span>,
   estimators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
-    <span class="va">linearShrinkEst</span>, <span class="va">thresholdingEst</span>,
-    <span class="va">bandingEst</span>, <span class="va">adaptiveLassoEst</span>,
-    <span class="va">sampleCovEst</span><span class="op">)</span>,
+    <span class="va">linearShrinkEst</span>, <span class="va">thresholdingEst</span>, <span class="va">bandingEst</span>, <span class="va">adaptiveLassoEst</span>,
+    <span class="va">sampleCovEst</span>, <span class="va">taperingEst</span>
+  <span class="op">)</span>,
   estimator_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
     linearShrinkEst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.75</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span>,
     thresholdingEst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.75</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span>,
     bandingEst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">10L</span>, <span class="fl">2L</span><span class="op">)</span><span class="op">)</span>,
-    adaptiveLassoEst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>lambda <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">1</span><span class="op">)</span>,
-                            n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
-  cv_loss <span class="op">=</span> <span class="va">cvMatrixFrobeniusLoss</span>,
+    adaptiveLassoEst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>lambda <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">1</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>,
+    taperingEst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">10L</span>, <span class="fl">2L</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">)</span>,
   cv_scheme <span class="op">=</span> <span class="st">"v_fold"</span>,
-  v_folds <span class="op">=</span> <span class="fl">5</span>,
-  center <span class="op">=</span> <span class="cn">TRUE</span>,
-  scale <span class="op">=</span> <span class="cn">TRUE</span>
+  v_folds <span class="op">=</span> <span class="fl">5</span>
 <span class="op">)</span></code></pre></div>
 <div id="summary-method-1" class="section level3">
 <h3 class="hasAnchor">
@@ -495,26 +491,26 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cv_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">cv_cov_est_sim</span><span class="op">)</span>
 <span class="va">cv_sum</span><span class="op">$</span><span class="va">bestInClass</span></code></pre></div>
-<pre><code>## # A tibble: 5 x 3
-## # Groups:   estimator [5]
-##   estimator        hyperparameter       empirical_risk
-##   &lt;chr&gt;            &lt;chr&gt;                         &lt;dbl&gt;
-## 1 bandingEst       k = 2                          756.
-## 2 adaptiveLassoEst lambda = 0.25, n = 1           772.
-## 3 thresholdingEst  gamma = 0.45                   774.
-## 4 linearShrinkEst  alpha = 0.35                   794.
-## 5 sampleCovEst     hyperparameters = NA           905.</code></pre>
-<p>In this case, the banding estimator with <code>k = 2</code> achieves the lowest empirical risk. We can take a closer look at the banding estimators’ performance by hashing <code>bandingEst</code> from the <code>hyperRisk</code> list.</p>
+<pre><code>## # A tibble: 6 x 3
+##   estimator        hyperparameter       cv_risk
+##   &lt;chr&gt;            &lt;chr&gt;                  &lt;dbl&gt;
+## 1 taperingEst      k = 4                   789.
+## 2 bandingEst       k = 2                   792.
+## 3 adaptiveLassoEst lambda = 0.25, n = 1    812.
+## 4 thresholdingEst  gamma = 0.4             817.
+## 5 linearShrinkEst  alpha = 0.35            836.
+## 6 sampleCovEst     hyperparameters = NA    949.</code></pre>
+<p>In this case, the tapering estimator with <code>k = 4</code> achieves the lowest empirical risk. We can take a closer look at the estimator’s performance based on other possible hyperparameter values by hashing <code>taperingEst</code> from the <code>hyperRisk</code> list.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cv_sum</span><span class="op">$</span><span class="va">hyperRisk</span><span class="op">$</span><span class="va">bandingEst</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 3
-##   hyperparameters empirical_risk stat  
-##   &lt;chr&gt;           &lt;chr&gt;          &lt;chr&gt; 
-## 1 k = 2           756            min   
-## 2 k = 2           756            Q1    
-## 3 k = 4           757            median
-## 4 k = 8           765            Q3    
-## 5 k = 10          772            max</code></pre>
+##   hyperparameters cv_risk stat  
+##   &lt;chr&gt;           &lt;chr&gt;   &lt;chr&gt; 
+## 1 k = 2           792     min   
+## 2 k = 2           792     Q1    
+## 3 k = 2           792     median
+## 4 k = 8           801     Q3    
+## 5 k = 10          807     max</code></pre>
 </div>
 <div id="plot-method-1" class="section level3">
 <h3 class="hasAnchor">
@@ -523,7 +519,7 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">cv_cov_est_sim</span>, dat_orig <span class="op">=</span> <span class="va">sim_dat</span>, plot_type <span class="op">=</span> <span class="st">"risk"</span><span class="op">)</span></code></pre></div>
 <p><img src="using_cvCovEst_files/figure-html/risk-sim-1.png" width="384"></p>
-<p>We can also examine the matrix structure as the value of <code>k</code> changes. Examining the overall sparsity of the resulting estimator can be useful since, in some cases, the assumption of sparsity is not warranted.</p>
+<p>We can also examine the matrix structure as the value of <code>k</code> changes. Examining the overall sparsity of the resulting estimator can be useful since, in some cases, the assumption of sparsity is not warranted. Note that the absolute values of the estimate’s entries are displayed to emphasize the structural differences between choices of hyperparameters.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">cv_cov_est_sim</span>, dat_orig <span class="op">=</span> <span class="va">sim_dat</span>, plot_type <span class="op">=</span> <span class="st">"heatmap"</span>,
      stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"min"</span>, <span class="st">"median"</span>, <span class="st">"max"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -561,7 +557,7 @@
 <a href="#references" class="anchor"></a>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-bickel2008_banding" class="csl-entry">
-Bickel, Peter J., and Elizaveta Levita. 2008a. <span>“Regularized Estimation of Large Covariance Matrices.”</span> <em>Annals of Statistics</em> 36 (1): 199–227. <a href="https://doi.org/10.1214/009053607000000758">https://doi.org/10.1214/009053607000000758</a>.
+Bickel, Peter J., and Elizaveta Levina. 2008a. <span>“Regularized Estimation of Large Covariance Matrices.”</span> <em>Annals of Statistics</em> 36 (1): 199–227. <a href="https://doi.org/10.1214/009053607000000758">https://doi.org/10.1214/009053607000000758</a>.
 </div>
 <div id="ref-Bickel2008_thresh" class="csl-entry">
 ———. 2008b. <span>“Covariance Regularization by Thresholding.”</span> <em>Annals of Statistics</em> 36 (6): 2577–2604. <a href="https://doi.org/10.1214/08-AOS600">https://doi.org/10.1214/08-AOS600</a>.
