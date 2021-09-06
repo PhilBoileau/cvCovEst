@@ -1,6 +1,6 @@
 #' Smoothly Clipped Absolute Deviation Thresholding Function
-#' 
-#' @description \code{scadThreshold()} applies the smoothly clipped absolute 
+#'
+#' @description \code{scadThreshold()} applies the smoothly clipped absolute
 #'   deviation thresholding function to the entries of a \code{matrix}.
 #'   In particular, it is meant to be applied to the sample covariance matrix.
 #'
@@ -21,22 +21,16 @@ scadThreshold <- function(entry, lambda, a) {
   # size safety of equivalence between SCAD and hard thresholding
   assertthat::assert_that(a >= 2)
 
-  # conditional thresholding
-  if (abs(entry) <= 2 * lambda) {
-    reg_entry <- abs(entry) - lambda
-    if (reg_entry > 0) {
-      reg_entry <- sign(entry) * reg_entry
-    } else {
-      reg_entry <- 0
-    }
-  } else if (abs(entry) <= a * lambda) {
-    reg_entry <- ((a - 1) * entry - sign(entry) * a * lambda) / (a - 2)
-  } else {
-    reg_entry <- entry
-  }
+  # Vectorized Version
+  e1 <- abs(entry) <= 2*lambda
+  e2 <- abs(entry) > 2*lambda & abs(entry) <= a*lambda
 
-  # output regularized entry
-  return(reg_entry)
+  entry[e1] <- ifelse(
+    abs(entry[e1]) - lambda > 0, sign(entry[e1])*(abs(entry[e1]) - lambda), 0)
+
+  entry[e2] <- ((a - 1) * entry[e2] - sign(entry[e2]) * a * lambda) / (a - 2)
+
+  return(entry)
 }
 
 ###############################################################################
@@ -45,7 +39,7 @@ scadThreshold <- function(entry, lambda, a) {
 #'
 #' @description \code{adaptiveLassoThreshold()} applies the adaptive LASSO
 #'  thresholding function to the entries of a \code{matrix}. In particular, it
-#'  is meant to be applied to sample covariance matrix 
+#'  is meant to be applied to sample covariance matrix
 #'
 #' @param entry A \code{numeric} entry in a covariance matrix estimate.
 #' @param lambda A non-negative \code{numeric} defining the amount of
