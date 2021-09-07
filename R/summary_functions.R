@@ -159,6 +159,126 @@ hyperRisk <- function(dat) {
 }
 
 ################################################################################
+#' General Matrix Metrics
+#'
+#' @description \code{matrixMetrics} computes the condition number, sparsity,
+#'  and sign of a covariance matrix estimator.
+#'
+#' @param estimator A \code{matrix} corresponding to a single covariance matrix
+#'  estimator.
+#'
+#' @return A named \code{list} containing the three values.
+#'
+#' @keywords internal
+matrixMetrics <- function(estimate) {
+  # Compute the Eigenvalues
+  e_vals <- eigen(estimate, symmetric = TRUE, only.values = TRUE)$values
+  n <- length(e_vals)
+
+  # Calculate Condition Number
+  if (e_vals[n] != 0){
+    cn <- round(e_vals[1]/e_vals[n], digits = 3)
+  }
+  else{
+    cn <- 0
+  }
+
+  # Determine Matrix "Sign" (positive-definite, positive-semi-definite, etc)
+  if (all(e_vals > 0)) {
+    sign <- "PD"
+  }
+  if (any(e_vals == 0) & any(e_vals > 0) & !any(e_vals < 0)) {
+    sign <- "PSD"
+  }
+  if (all(e_vals < 0)) {
+    sign <- "ND"
+  }
+  if (any(e_vals == 0) & any(e_vals < 0) & !any(e_vals > 0)) {
+    sign <- "NSD"
+  }
+  if (any(e_vals > 0) & any(e_vals < 0)) {
+    sign <- "IND"
+  }
+
+  if (all(estimate == 0)){
+    sign <- "NA"
+  }
+
+  # Calculate Sparsity Measure
+  sp <- round(sum(estimate == 0)/length(estimate), digits = 3)
+
+  metrics <- list(cond_num = cn, sign = sign, sparsity = sp)
+
+  return(metrics)
+}
+
+
+################################################################################
+#' Matrix Metrics for cvCovEst Object
+#'
+#' @description \code{cvMatrixMetrics} computes various metrics and properties
+#'  for each covariance matrix estimator candidate passed to \code{cvCovEst}.
+#'
+#' @param dat A named list of class \code{"cvCovEst"} containing the
+#'  cross-validated risk assessment.
+#'
+#' @param dat_orig The \code{numeric data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{\link{cvCovEst}()}.
+#'
+#' @return A grouped and ordered \code{\link[tibble]{tibble}} containing each
+#'  estimator candidate, the cross-validated risk, and the corresponding
+#'  metrics.  The output is grouped by estimator and ordered by the primary
+#'  hyperparameter if applicable.
+#'
+#'  @importFrom rlang exec .data
+#'  @importFrom dplyr bind_rows bind_cols group_by arrange %>%
+#'
+#' @keywords internal
+cvMatrixMetrics <- function(dat, dat_orig) {
+
+  mat_mets <- lapply(1:nrow(dat$risk_df), function(e){
+    # Subset by individual estimator
+    est_dat <- dat$risk_df[e, ]
+    estimator <- as.character(est_dat[1, "estimator"])
+    est_args <- list(dat = dat_orig)
+    est_attr <- estAttributes(estimator)
+    # Get Hypers if Applicable
+    if (est_attr[[estimator]][["has_hypers"]]){
+      est_hypers <- getHypers(est_dat, summ_stat = NULL)
+      est_args <- append(est_args, est_hypers$hyper_values)
+      names(est_args) <- c("dat", est_hypers$hyper_names)
+      h1 <- as.numeric(est_hypers$hyper_values[1])
+      if (est_attr[[estimator]][["n_hypers"]] == 2) {
+        h2 <- as.numeric(est_hypers$hyper_values[2])
+      }
+      else{
+        h2 <- NA
+      }
+    }
+    else{
+      h1 <- NA
+      h2 <- NA
+    }
+    # Compute Estimator
+    est <- rlang::exec(estimator, !!!est_args)
+    # Compute Metrics
+    est_metrics <- matrixMetrics(est)
+    met_names <- names(est_metrics)
+    est_metrics <- append(est_metrics, c(h1, h2))
+    names(est_metrics) <- c(met_names, "hyper1", "hyper2")
+
+    return(est_metrics)
+  })
+
+  mat_mets <- dplyr::bind_rows(mat_mets) %>%
+    dplyr::bind_cols(dat$risk_df) %>%
+    dplyr::group_by(rlang::.data$estimator) %>%
+    dplyr::arrange(rlang::.data$hyper1, by_group = TRUE)
+
+  return(mat_mets)
+}
+
+################################################################################
 #' Generic Summary Method for cvCovEst
 #'
 #' @description \code{summary()} provides summary statistics regarding
