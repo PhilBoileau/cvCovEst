@@ -4,23 +4,21 @@
 \alias{cvMatrixMetrics}
 \title{Matrix Metrics for cvCovEst Object}
 \usage{
-cvMatrixMetrics(dat, dat_orig)
+cvMatrixMetrics(object, dat_orig)
 }
 \arguments{
-\item{dat}{A named list of class \code{"cvCovEst"} containing the
+\item{object}{A named list of class \code{"cvCovEst"} containing the
 cross-validated risk assessment.}
 
 \item{dat_orig}{The \code{numeric data.frame}, \code{matrix}, or similar
 object originally passed to \code{\link{cvCovEst}()}.}
 }
 \value{
-A grouped and ordered \code{\link[tibble]{tibble}} containing each
-estimator candidate, the cross-validated risk, and the corresponding
-metrics.  The output is grouped by estimator and ordered by the primary
-hyperparameter if applicable.
-
-@importFrom rlang exec .data
-@importFrom dplyr bind_rows bind_cols group_by arrange \%>\%
+A named list of class \code{"cvCovEst"} whose cross-validated risk
+assessment is now a \code{\link[tibble]{tibble}} containing the
+corresponding metrics for each estimator.  The \code{\link[tibble]{tibble}}
+is grouped by estimator and ordered by the primary hyperparameter if
+applicable.
 }
 \description{
 \code{cvMatrixMetrics} computes various metrics and properties

@@ -219,26 +219,27 @@ matrixMetrics <- function(estimate) {
 #' @description \code{cvMatrixMetrics} computes various metrics and properties
 #'  for each covariance matrix estimator candidate passed to \code{cvCovEst}.
 #'
-#' @param dat A named list of class \code{"cvCovEst"} containing the
+#' @param object A named list of class \code{"cvCovEst"} containing the
 #'  cross-validated risk assessment.
 #'
 #' @param dat_orig The \code{numeric data.frame}, \code{matrix}, or similar
 #'  object originally passed to \code{\link{cvCovEst}()}.
 #'
-#' @return A grouped and ordered \code{\link[tibble]{tibble}} containing each
-#'  estimator candidate, the cross-validated risk, and the corresponding
-#'  metrics.  The output is grouped by estimator and ordered by the primary
-#'  hyperparameter if applicable.
+#' @return A named list of class \code{"cvCovEst"} whose cross-validated risk
+#'  assessment is now a \code{\link[tibble]{tibble}} containing the
+#'  corresponding metrics for each estimator.  The \code{\link[tibble]{tibble}}
+#'  is grouped by estimator and ordered by the primary hyperparameter if
+#'  applicable.
 #'
-#'  @importFrom rlang exec .data
-#'  @importFrom dplyr bind_rows bind_cols group_by arrange %>%
+#' @importFrom rlang exec .data
+#' @importFrom dplyr bind_rows bind_cols group_by arrange %>%
 #'
 #' @keywords internal
-cvMatrixMetrics <- function(dat, dat_orig) {
+cvMatrixMetrics <- function(object, dat_orig) {
 
-  mat_mets <- lapply(1:nrow(dat$risk_df), function(e){
+  mat_mets <- lapply(1:nrow(object$risk_df), function(e){
     # Subset by individual estimator
-    est_dat <- dat$risk_df[e, ]
+    est_dat <- object$risk_df[e, ]
     estimator <- as.character(est_dat[1, "estimator"])
     est_args <- list(dat = dat_orig)
     est_attr <- estAttributes(estimator)
@@ -271,11 +272,12 @@ cvMatrixMetrics <- function(dat, dat_orig) {
   })
 
   mat_mets <- dplyr::bind_rows(mat_mets) %>%
-    dplyr::bind_cols(dat$risk_df) %>%
+    dplyr::bind_cols(object$risk_df) %>%
     dplyr::group_by(rlang::.data$estimator) %>%
     dplyr::arrange(rlang::.data$hyper1, by_group = TRUE)
+  object$risk_df <- mat_mets
 
-  return(mat_mets)
+  return(object)
 }
 
 ################################################################################
