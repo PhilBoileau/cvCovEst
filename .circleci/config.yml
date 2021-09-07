@@ -1,0 +1,36 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/master
+    docker:
+      - image: rocker/verse:4.0.3
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - r403-{{ .Branch }}-{{ checksum "DESCRIPTION" }}
+            - r403-{{ .Branch }}
+            - r403-
+      - run:
+          command: |
+            R -e 'install.packages(c("covr", "matrixStats", "origami", "tidyverse", "assertthat", "testthat", "RSpectra", "spelling"))'
+      - run:
+          command: |
+            R -e 'remotes::install_github("r-lib/sessioninfo")'
+      - run:
+          command: |
+            R -e 'devtools::install_deps(dependencies = TRUE)'
+      - save_cache:
+          key: r403-{{ .Branch }}-{{ checksum "DESCRIPTION" }}
+          paths:
+            - "/usr/local/lib/R/site-library"
+      - run:
+          command: |
+            R -e 'devtools::check(args = "--as-cran")'
+      - run:
+          command: |
+            R -e 'covr::codecov()'
+      - store_artifacts:
+          path: man/
+          destination: man
+
