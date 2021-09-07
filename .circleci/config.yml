@@ -23,7 +23,7 @@ jobs:
             - "/usr/local/lib/R/site-library"
       - run:
           command: |
-            R -e 'devtools::check(args = "--as-cran")'
+            R -e 'devtools::check(args = "--as-cran", vignettes = FALSE)'
       - run:
           command: |
             R -e 'covr::codecov()'

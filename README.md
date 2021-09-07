@@ -3,8 +3,7 @@
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.com/PhilBoileau/cvCovEst.svg?token=YL3L6rYQtszHibWHgFxU&branch=master)](https://travis-ci.com/PhilBoileau/cvCovEst)
+[![CircleCI](https://circleci.com/gh/PhilBoileau/cvCovEst/tree/master.svg?style=svg)](https://circleci.com/gh/PhilBoileau/cvCovEst/tree/master)
 [![codecov](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ)](https://codecov.io/gh/PhilBoileau/cvCovEst)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
