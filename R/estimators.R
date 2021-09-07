@@ -471,8 +471,8 @@ scadEst <- function(dat, lambda) {
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
-  estimate <- apply(sample_cov_mat, 2, scadThreshold,
-                    lambda = lambda, a = 3.7
+  estimate <- apply(
+    sample_cov_mat, 2, scadThreshold, lambda = lambda, a = 3.7
   )
   return(estimate)
 }

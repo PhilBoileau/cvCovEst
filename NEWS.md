@@ -1,3 +1,8 @@
+# cvCovEst 1.0.1 (2021-09-07)
+
++ `scadEst()` and `adaptiveLassoEst()` are now vectorized, greatly improving
+  their computational efficiency. Thanks, Brian!
+
 # cvCovEst 1.0.0 (2021-07-24)
 
 + `cvCovEst()` no longer accepts the `true_cov_mat` argument.

@@ -22,11 +22,12 @@ scadThreshold <- function(entry, lambda, a) {
   assertthat::assert_that(a >= 2)
 
   # Vectorized Version
-  e1 <- abs(entry) <= 2*lambda
-  e2 <- abs(entry) > 2*lambda & abs(entry) <= a*lambda
+  e1 <- abs(entry) <= 2 * lambda
+  e2 <- abs(entry) > 2 * lambda & abs(entry) <= a * lambda
 
   entry[e1] <- ifelse(
-    abs(entry[e1]) - lambda > 0, sign(entry[e1])*(abs(entry[e1]) - lambda), 0)
+    abs(entry[e1]) - lambda > 0, sign(entry[e1]) * (abs(entry[e1]) - lambda), 0
+  )
 
   entry[e2] <- ((a - 1) * entry[e2] - sign(entry[e2]) * a * lambda) / (a - 2)
 
