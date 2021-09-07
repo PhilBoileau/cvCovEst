@@ -471,10 +471,8 @@ scadEst <- function(dat, lambda) {
   # compute the sample covariance matrix
   sample_cov_mat <- coop::covar(dat)
 
-  # apply threshold by removing all elements smaller than gamma
-  # TODO: Create a symmertric apply for covariance matrices
-  estimate <- apply(sample_cov_mat, c(1, 2), scadThreshold,
-    lambda = lambda, a = 3.7
+  estimate <- apply(
+    sample_cov_mat, 2, scadThreshold, lambda = lambda, a = 3.7
   )
   return(estimate)
 }
@@ -707,7 +705,7 @@ adaptiveLassoEst <- function(dat, lambda, n) {
 
   # apply adaptive thresholding to the sample covariance matrix
   adaptive_cov_mat <- apply(
-    sample_cov_mat, c(1, 2),
+    sample_cov_mat, 2,
     adaptiveLassoThreshold,
     lambda = lambda, n = n
   )
