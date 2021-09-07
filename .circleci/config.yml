@@ -13,10 +13,7 @@ jobs:
             - r403-
       - run:
           command: |
-            R -e 'install.packages(c("covr", "matrixStats", "origami", "tidyverse", "assertthat", "testthat", "RSpectra", "spelling"))'
-      - run:
-          command: |
-            R -e 'remotes::install_github("r-lib/sessioninfo")'
+            R -e 'install.packages(c("covr", "matrixStats", "origami", "tidyverse", "assertthat", "testthat", "RSpectra", "spelling", "sessioninfo"))'
       - run:
           command: |
             R -e 'devtools::install_deps(dependencies = TRUE)'
