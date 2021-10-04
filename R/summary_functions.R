@@ -232,7 +232,7 @@ matrixMetrics <- function(estimate) {
 #'  applicable.
 #'
 #' @importFrom rlang exec .data
-#' @importFrom dplyr bind_rows bind_cols group_by arrange %>%
+#' @importFrom dplyr bind_rows bind_cols group_by arrange %>% select
 #'
 #' @keywords internal
 cvMatrixMetrics <- function(object, dat_orig) {
@@ -274,7 +274,9 @@ cvMatrixMetrics <- function(object, dat_orig) {
   mat_mets <- dplyr::bind_rows(mat_mets) %>%
     dplyr::bind_cols(object$risk_df) %>%
     dplyr::group_by(rlang::.data$estimator) %>%
-    dplyr::arrange(rlang::.data$hyper1, by_group = TRUE)
+    dplyr::arrange(rlang::.data$hyper1, by_group = TRUE) %>%
+    dplyr::select(estimator, hyperparameters, cv_risk, cond_num, sign, sparsity,
+                  hyper1, hyper2)
   object$risk_df <- mat_mets
 
   return(object)
