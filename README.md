@@ -87,7 +87,7 @@ cv_cov_est_out <- cvCovEst(
 # print the table of risk estimates
 # NOTE: the estimated covariance matrix is accessible via the `$estimate` slot
 cv_cov_est_out$risk_df
-#> # A tibble: 9 x 3
+#> # A tibble: 9 × 3
 #>   estimator            hyperparameters      cv_risk
 #>   <chr>                <chr>                  <dbl>
 #> 1 linearShrinkLWEst    hyperparameters = NA    357.
@@ -123,6 +123,22 @@ prior to submitting a pull request.
 
 Please cite the following paper when using the `cvCovEst` R software
 package.
+
+    @article{cvCovEst2021,
+      doi = {10.21105/joss.03273},
+      url = {https://doi.org/10.21105/joss.03273},
+      year = {2021},
+      publisher = {The Open Journal},
+      volume = {6},
+      number = {63},
+      pages = {3273},
+      author = {Philippe Boileau and Nima S. Hejazi and Brian Collica and Mark J. van der Laan and Sandrine Dudoit},
+      title = {cvCovEst: Cross-validated covariance matrix estimator selection and evaluation in `R`},
+      journal = {Journal of Open Source Software}
+    }
+
+When describing or discussing the theory underlying the `cvCovEst`
+method, please cite the pre-print below.
 
     @misc{boileau2021,
           title={Cross-Validated Loss-Based Covariance Matrix Estimator Selection in High Dimensions}, 
