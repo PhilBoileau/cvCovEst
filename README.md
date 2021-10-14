@@ -4,11 +4,11 @@
 <!-- badges: start -->
 
 [![CircleCI](https://circleci.com/gh/PhilBoileau/cvCovEst/tree/master.svg?style=svg)](https://circleci.com/gh/PhilBoileau/cvCovEst/tree/master)
-[![codecov](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ)](https://codecov.io/gh/PhilBoileau/cvCovEst)
+[![codecov](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ)](https://app.codecov.io/gh/PhilBoileau/cvCovEst)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![status](https://joss.theoj.org/papers/f5b2acdf578c341195b6ec6f25b4f09d/status.svg)](https://joss.theoj.org/papers/f5b2acdf578c341195b6ec6f25b4f09d)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.03273/status.svg)](https://doi.org/10.21105/joss.03273)
 [![MIT
 license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
