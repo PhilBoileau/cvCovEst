@@ -119,6 +119,25 @@ prior to submitting a pull request.
 Please cite the following paper when using the `cvCovEst` R software package.
 
 ```
+@article{cvCovEst2021,
+  doi = {10.21105/joss.03273},
+  url = {https://doi.org/10.21105/joss.03273},
+  year = {2021},
+  publisher = {The Open Journal},
+  volume = {6},
+  number = {63},
+  pages = {3273},
+  author = {Philippe Boileau and Nima S. Hejazi and Brian Collica and Mark J. van der Laan and Sandrine Dudoit},
+  title = {cvCovEst: Cross-validated covariance matrix estimator selection and evaluation in `R`},
+  journal = {Journal of Open Source Software}
+}
+
+```
+
+When describing or discussing the theory underlying the `cvCovEst` method,
+please cite the pre-print below.
+
+```
 @misc{boileau2021,
       title={Cross-Validated Loss-Based Covariance Matrix Estimator Selection in High Dimensions}, 
       author={Philippe Boileau and Nima S. Hejazi and Mark J. van der Laan and Sandrine Dudoit},

@@ -212,7 +212,7 @@ of the choice of cross-validation scheme.</p></td>
     <tr>
       <th>parallel</th>
       <td><p>A <code>logical</code> option indicating whether to run the main
-cross-validation loop with <code><a href='https://rdrr.io/pkg/future.apply/man/future_lapply.html'>future_lapply</a>()</code>. This
+cross-validation loop with <code><a href='https://future.apply.futureverse.org/reference/future_lapply.html'>future_lapply</a>()</code>. This
 is passed directly to <code><a href='http://tlverse.org/origami/reference/cross_validate.html'>cross_validate</a>()</code>.</p></td>
     </tr>
     </table>
@@ -275,7 +275,7 @@ estimators' loss over the folds of the cross-validated procedure.</p></li>
 #&gt; [1] "sampleCovEst, hyperparameters = NA"
 #&gt; 
 #&gt; $risk_df
-#&gt; <span style='color: #949494;'># A tibble: 5 x 3</span>
+#&gt; <span style='color: #949494;'># A tibble: 5 × 3</span>
 #&gt;   estimator         hyperparameters      cv_risk
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> sampleCovEst      hyperparameters = NA    65.9
@@ -285,7 +285,7 @@ estimators' loss over the folds of the cross-validated procedure.</p></li>
 #&gt; <span style='color: #BCBCBC;'>5</span> thresholdingEst   gamma = 0.2             67.0
 #&gt; 
 #&gt; $cv_df
-#&gt; <span style='color: #949494;'># A tibble: 50 x 4</span>
+#&gt; <span style='color: #949494;'># A tibble: 50 × 4</span>
 #&gt;    estimator         hyperparameters       loss  fold
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span> linearShrinkLWEst hyperparameters = NA 112.      1
@@ -304,7 +304,7 @@ estimators' loss over the folds of the cross-validated procedure.</p></li>
 #&gt; $args$cv_loss
 #&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^cvMatrixFrobeniusLoss</span>
-#&gt; env:  <span style='color: #0000BB;'>0x7f9bfc30a138</span>
+#&gt; env:  <span style='color: #0000BB;'>0x7f86a35b59c8</span>
 #&gt; 
 #&gt; $args$cv_scheme
 #&gt; [1] "v_fold"
