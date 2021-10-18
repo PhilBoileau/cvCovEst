@@ -51,8 +51,8 @@ cvRiskByClass <- function(dat) {
 #'  estimator in each class.  Default is \code{FALSE}.
 #'
 #' @return \code{\link[tibble]{tibble}} with rows corresponding to estimator
-#'  classes and columns for hyperparameter values and cross-validated risk for
-#'  the best estimator in that class.
+#'  classes and columns for hyperparameter values, cross-validated risk, and
+#'  other summary metrics for the best (or worst) estimator in that class.
 #'
 #' @importFrom dplyr group_by summarize arrange first %>%
 #' @importFrom rlang .data
@@ -65,6 +65,9 @@ bestInClass <- function(dat, worst = FALSE) {
       dplyr::summarise(
         hyperparameter = dplyr::last(.data$hyperparameters),
         cv_risk = dplyr::last(.data$cv_risk),
+        cond_num = dplyr::last(.data$cond_num),
+        sign = dplyr::last(.data$sign),
+        sparsity = dplyr::last(.data$sparsity),
         .groups = "drop"
       ) %>%
       dplyr::arrange(.data$cv_risk)
@@ -75,6 +78,9 @@ bestInClass <- function(dat, worst = FALSE) {
       dplyr::summarise(
         hyperparameter = dplyr::first(.data$hyperparameters),
         cv_risk = dplyr::first(.data$cv_risk),
+        cond_num = dplyr::first(.data$cond_num),
+        sign = dplyr::first(.data$sign),
+        sparsity = dplyr::first(.data$sparsity),
         .groups = "drop"
       ) %>%
       dplyr::arrange(.data$cv_risk)
@@ -290,6 +296,8 @@ cvMatrixMetrics <- function(object, dat_orig) {
 #'  plotting.
 #'
 #' @param object A named \code{list} of class \code{"cvCovEst"}.
+#' @param dat_orig The \code{numeric data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{\link{cvCovEst}()}.
 #' @param summ_fun A \code{character} vector specifying which summaries to
 #'  output.  See Details for function descriptions.
 #' @param ... Additional arguments passed to \code{summary()}These are not
@@ -333,10 +341,11 @@ cvMatrixMetrics <- function(object, dat_orig) {
 #'   scale = TRUE
 #' )
 #'
-#' summary(cv_dat)
+#' summary(cv_dat, mtcars)
 #' @export
 summary.cvCovEst <- function(
                              object,
+                             dat_orig,
                              summ_fun = c(
                                "cvRiskByClass",
                                "bestInClass",
@@ -355,6 +364,7 @@ summary.cvCovEst <- function(
     summ_fun = summ_fun
   )
 
+  object <- cvMatrixMetrics(object, dat_orig)
   risk_dat <- object$risk_df
 
   sums_to_exec <- summary_functions[which(

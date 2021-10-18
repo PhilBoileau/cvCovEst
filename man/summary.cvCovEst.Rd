@@ -6,12 +6,16 @@
 \usage{
 \method{summary}{cvCovEst}(
   object,
+  dat_orig,
   summ_fun = c("cvRiskByClass", "bestInClass", "worstInClass", "hyperRisk"),
   ...
 )
 }
 \arguments{
 \item{object}{A named \code{list} of class \code{"cvCovEst"}.}
+
+\item{dat_orig}{The \code{numeric data.frame}, \code{matrix}, or similar
+object originally passed to \code{\link{cvCovEst}()}.}
 
 \item{summ_fun}{A \code{character} vector specifying which summaries to
 output.  See Details for function descriptions.}
@@ -62,5 +66,5 @@ cv_dat <- cvCovEst(
   scale = TRUE
 )
 
-summary(cv_dat)
+summary(cv_dat, mtcars)
 }
