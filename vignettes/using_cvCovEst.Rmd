@@ -162,7 +162,7 @@ allows for the evaluation of their performance over varying inputs.
 ### Summary Method 
 
 The `summary` method for `cvCovEst` accepts an `object` argument, a named
-`list` of class `cvCovEst`, and a `summ_fun` argument, a character vector
+`list` of class `cvCovEst`, a `dat_orig` argument, the original data used to calculate the covariance matrix estimators, and a `summ_fun` argument, a character vector
 specifying the type of summary function to use.
 
 These summary functions allow the user to quickly compare the performance of
@@ -172,9 +172,11 @@ choices of `summ_fun` and their outputs are described below:
 | Summary | Implementation | Description |
 |---------|----------------|-------------|
 | Empirical Risk by Estimator Class | `empRiskByClass` | Returns the minimum, 1^st^ quartile, median, 3^rd^ quartile, and maximum of the empirical risk associated with each class of estimator passed to `cvCovEst`. |
-| Best Performing Estimator by Class | `bestInClass` | Returns the specific hyperparameters, if applicable, of the best performing estimator within each class. |
-| Worst Performing Estimator by Class | `worstInClass` | Returns the specific hyperparameters, if applicable, of the worst performing estimator within each class. | 
+| Best Performing Estimator by Class | `bestInClass` | Returns the specific hyperparameters, if applicable, of the best performing estimator within each class along with additional estimator metrics. |
+| Worst Performing Estimator by Class | `worstInClass` | Returns the specific hyperparameters, if applicable, of the worst performing estimator within each class along with additional estimator metrics. | 
 | Empirical Risk by Hyperparameter | `hyperRisk` | For estimators that take hyperparameters as arguments, this returns the hyperparameters associated with the minimum, 1^st^ quartile, median, 3^rd^ quartile, and maximum of the empirical risk within each class of estimator.  Each class has its own `tibble` which are returned as a `list`. |
+
+When either `bestInClass` or `worstInClass` is specified, the additional estimator metrics are the condition number, the sign, and the sparsity.  Sign refers to the matrix sign and is one of positive-definite (`"PD"`), positive-semi-definite ("PSD"), negative-definite ("ND"), negative-semi-definite ("NSD"), or indefinite ("IND").  If the estimator results in the zero matrix, then the sign is returned as `"NA"`.  Sparsity is calculated at the proportion of total matrix entries which are estimated to be 0.
 
 ### Plot Method
 

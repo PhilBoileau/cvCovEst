@@ -43,7 +43,7 @@ cvRiskByClass <- function(dat) {
 #'
 #' @description \code{bestInClass()} finds the best performing estimator within
 #'  each class of estimator passed to \code{\link{cvCovEst}()} and
-#'  finds the associated hyper-parameters if applicable.
+#'  finds the associated hyperparameters if applicable.
 #'
 #' @param dat The \code{\link[tibble]{tibble}} of cross-validated risks which is
 #'  output by \code{\link{cvCovEst}()}.
@@ -311,9 +311,11 @@ cvMatrixMetrics <- function(object, dat_orig) {
 #'       associated with each class of estimator passed to
 #'       \code{\link{cvCovEst}()}.
 #'     \item \code{"bestInClass"} - Returns the specific hyperparameters, if
-#'       applicable, of the best performing estimator within each class.
+#'       applicable, of the best performing estimator within each class along
+#'       with other estimator metrics.
 #'     \item \code{"worstInClass"} - Returns the specific hyperparameters, if
-#'       applicable, of the worst performing estimator within each class.
+#'       applicable, of the worst performing estimator within each class along
+#'       with other estimator metrics.
 #'     \item \code{"hyperRisk"} - For estimators that take hyperparameters as
 #'       arguments, this function returns the hyperparameters associated with
 #'       the minimum, first quartile, median, third quartile, and maximum of the

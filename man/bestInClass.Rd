@@ -21,6 +21,6 @@ other summary metrics for the best (or worst) estimator in that class.
 \description{
 \code{bestInClass()} finds the best performing estimator within
 each class of estimator passed to \code{\link{cvCovEst}()} and
-finds the associated hyper-parameters if applicable.
+finds the associated hyperparameters if applicable.
 }
 \keyword{internal}
