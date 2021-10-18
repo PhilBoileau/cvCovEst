@@ -281,8 +281,8 @@ cvMatrixMetrics <- function(object, dat_orig) {
     dplyr::bind_cols(object$risk_df) %>%
     dplyr::group_by(rlang::.data$estimator) %>%
     dplyr::arrange(rlang::.data$hyper1, by_group = TRUE) %>%
-    dplyr::select(estimator, hyperparameters, cv_risk, cond_num, sign, sparsity,
-                  hyper1, hyper2)
+    dplyr::select(estimator, hyperparameters, cv_risk, cond_num, sign,
+                  sparsity, hyper1, hyper2)
   object$risk_df <- mat_mets
 
   return(object)
