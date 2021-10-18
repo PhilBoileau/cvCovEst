@@ -276,12 +276,12 @@ The `summary` method is then used to compare the best performing estimators in
 each class:
 
 ```{r summary-sim}
-cv_sum <- summary(cv_cov_est_sim)
+cv_sum <- summary(cv_cov_est_sim, dat_orig = sim_dat)
 cv_sum$bestInClass
 ```
 
 In this case, the tapering estimator with `k = 4` achieves the lowest empirical
-risk.  We can take a closer look at the estimator's performance based on other
+risk.  It is also one of the only positive-definite estimators along with the linear shrinkage estimator, although linear shrinkage yields a better conditioned estimator in this case.  We can take a closer look at the estimator's performance based on other
 possible hyperparameter values by hashing `taperingEst` from the `hyperRisk`
 list.
 
