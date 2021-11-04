@@ -42,10 +42,10 @@ associated with each class of estimator passed to
 \code{\link{cvCovEst}()}.
 \item \code{"bestInClass"} - Returns the specific hyperparameters, if
 applicable, of the best performing estimator within each class along
-with other estimator metrics.
+with other metrics.
 \item \code{"worstInClass"} - Returns the specific hyperparameters, if
 applicable, of the worst performing estimator within each class along
-with other estimator metrics.
+with other metrics.
 \item \code{"hyperRisk"} - For estimators that take hyperparameters as
 arguments, this function returns the hyperparameters associated with
 the minimum, first quartile, median, third quartile, and maximum of the

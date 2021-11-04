@@ -15,6 +15,6 @@ A named \code{list} containing the three values.
 }
 \description{
 \code{matrixMetrics} computes the condition number, sparsity,
-and sign of a covariance matrix estimator.
+and sign of a covariance matrix estimate.
 }
 \keyword{internal}

@@ -16,12 +16,12 @@ object originally passed to \code{\link{cvCovEst}()}.}
 \value{
 A named list of class \code{"cvCovEst"} whose cross-validated risk
 assessment is now a \code{\link[tibble]{tibble}} containing the
-corresponding metrics for each estimator.  The \code{\link[tibble]{tibble}}
+corresponding metrics for each estimate.  The \code{\link[tibble]{tibble}}
 is grouped by estimator and ordered by the primary hyperparameter if
 applicable.
 }
 \description{
 \code{cvMatrixMetrics} computes various metrics and properties
-for each covariance matrix estimator candidate passed to \code{cvCovEst}.
+for each covariance matrix estimator candidate's estimate.
 }
 \keyword{internal}
