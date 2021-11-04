@@ -6,12 +6,16 @@
 \usage{
 \method{summary}{cvCovEst}(
   object,
+  dat_orig,
   summ_fun = c("cvRiskByClass", "bestInClass", "worstInClass", "hyperRisk"),
   ...
 )
 }
 \arguments{
 \item{object}{A named \code{list} of class \code{"cvCovEst"}.}
+
+\item{dat_orig}{The \code{numeric data.frame}, \code{matrix}, or similar
+object originally passed to \code{\link{cvCovEst}()}.}
 
 \item{summ_fun}{A \code{character} vector specifying which summaries to
 output.  See Details for function descriptions.}
@@ -37,9 +41,11 @@ median, third quartile, and maximum of the cross-validated risk
 associated with each class of estimator passed to
 \code{\link{cvCovEst}()}.
 \item \code{"bestInClass"} - Returns the specific hyperparameters, if
-applicable, of the best performing estimator within each class.
+applicable, of the best performing estimator within each class along
+with other metrics.
 \item \code{"worstInClass"} - Returns the specific hyperparameters, if
-applicable, of the worst performing estimator within each class.
+applicable, of the worst performing estimator within each class along
+with other metrics.
 \item \code{"hyperRisk"} - For estimators that take hyperparameters as
 arguments, this function returns the hyperparameters associated with
 the minimum, first quartile, median, third quartile, and maximum of the
@@ -62,5 +68,5 @@ cv_dat <- cvCovEst(
   scale = TRUE
 )
 
-summary(cv_dat)
+summary(cv_dat, mtcars)
 }

@@ -43,7 +43,7 @@ cvRiskByClass <- function(dat) {
 #'
 #' @description \code{bestInClass()} finds the best performing estimator within
 #'  each class of estimator passed to \code{\link{cvCovEst}()} and
-#'  finds the associated hyper-parameters if applicable.
+#'  finds the associated hyperparameters if applicable.
 #'
 #' @param dat The \code{\link[tibble]{tibble}} of cross-validated risks which is
 #'  output by \code{\link{cvCovEst}()}.
@@ -51,8 +51,8 @@ cvRiskByClass <- function(dat) {
 #'  estimator in each class.  Default is \code{FALSE}.
 #'
 #' @return \code{\link[tibble]{tibble}} with rows corresponding to estimator
-#'  classes and columns for hyperparameter values and cross-validated risk for
-#'  the best estimator in that class.
+#'  classes and columns for hyperparameter values, cross-validated risk, and
+#'  other summary metrics for the best (or worst) estimator in that class.
 #'
 #' @importFrom dplyr group_by summarize arrange first %>%
 #' @importFrom rlang .data
@@ -65,6 +65,9 @@ bestInClass <- function(dat, worst = FALSE) {
       dplyr::summarise(
         hyperparameter = dplyr::last(.data$hyperparameters),
         cv_risk = dplyr::last(.data$cv_risk),
+        cond_num = dplyr::last(.data$cond_num),
+        sign = dplyr::last(.data$sign),
+        sparsity = dplyr::last(.data$sparsity),
         .groups = "drop"
       ) %>%
       dplyr::arrange(.data$cv_risk)
@@ -75,6 +78,9 @@ bestInClass <- function(dat, worst = FALSE) {
       dplyr::summarise(
         hyperparameter = dplyr::first(.data$hyperparameters),
         cv_risk = dplyr::first(.data$cv_risk),
+        cond_num = dplyr::first(.data$cond_num),
+        sign = dplyr::first(.data$sign),
+        sparsity = dplyr::first(.data$sparsity),
         .groups = "drop"
       ) %>%
       dplyr::arrange(.data$cv_risk)
@@ -159,6 +165,131 @@ hyperRisk <- function(dat) {
 }
 
 ################################################################################
+#' General Matrix Metrics
+#'
+#' @description \code{matrixMetrics} computes the condition number, sparsity,
+#'  and sign of a covariance matrix estimate.
+#'
+#' @param estimator A \code{matrix} corresponding to a single covariance matrix
+#'  estimator.
+#'
+#' @return A named \code{list} containing the three values.
+#'
+#' @keywords internal
+matrixMetrics <- function(estimate) {
+  # Compute the Eigenvalues
+  e_vals <- eigen(estimate, symmetric = TRUE, only.values = TRUE)$values
+  n <- length(e_vals)
+
+  # Calculate Condition Number
+  if (e_vals[n] != 0){
+    cn <- round(e_vals[1]/e_vals[n], digits = 3)
+  }
+  else{
+    cn <- 0
+  }
+
+  # Determine Matrix "Sign" (positive-definite, positive-semi-definite, etc)
+  if (all(e_vals > 0)) {
+    sign <- "PD"
+  }
+  if (any(e_vals == 0) & any(e_vals > 0) & !any(e_vals < 0)) {
+    sign <- "PSD"
+  }
+  if (all(e_vals < 0)) {
+    sign <- "ND"
+  }
+  if (any(e_vals == 0) & any(e_vals < 0) & !any(e_vals > 0)) {
+    sign <- "NSD"
+  }
+  if (any(e_vals > 0) & any(e_vals < 0)) {
+    sign <- "IND"
+  }
+
+  if (all(estimate == 0)){
+    sign <- "NA"
+  }
+
+  # Calculate Sparsity Measure
+  sp <- round(sum(estimate == 0)/length(estimate), digits = 3)
+
+  metrics <- list(cond_num = cn, sign = sign, sparsity = sp)
+
+  return(metrics)
+}
+
+
+################################################################################
+#' Matrix Metrics for cvCovEst Object
+#'
+#' @description \code{cvMatrixMetrics} computes various metrics and properties
+#'  for each covariance matrix estimator candidate's estimate.
+#'
+#' @param object A named list of class \code{"cvCovEst"} containing the
+#'  cross-validated risk assessment.
+#'
+#' @param dat_orig The \code{numeric data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{\link{cvCovEst}()}.
+#'
+#' @return A named list of class \code{"cvCovEst"} whose cross-validated risk
+#'  assessment is now a \code{\link[tibble]{tibble}} containing the
+#'  corresponding metrics for each estimate.  The \code{\link[tibble]{tibble}}
+#'  is grouped by estimator and ordered by the primary hyperparameter if
+#'  applicable.
+#'
+#' @importFrom rlang exec .data
+#' @importFrom dplyr bind_rows bind_cols group_by arrange %>% select
+#'
+#' @keywords internal
+cvMatrixMetrics <- function(object, dat_orig) {
+
+  mat_mets <- lapply(1:nrow(object$risk_df), function(e){
+    # Subset by individual estimator
+    est_dat <- object$risk_df[e, ]
+    estimator <- as.character(est_dat[1, "estimator"])
+    est_args <- list(dat = dat_orig)
+    est_attr <- estAttributes(estimator)
+    # Get Hypers if Applicable
+    if (est_attr[[estimator]][["has_hypers"]]) {
+      est_hypers <- getHypers(est_dat, summ_stat = NULL)
+      est_args <- append(est_args, est_hypers$hyper_values)
+      names(est_args) <- c("dat", est_hypers$hyper_names)
+      h1 <- as.numeric(est_hypers$hyper_values[1])
+      if (est_attr[[estimator]][["n_hypers"]] == 2) {
+        h2 <- as.numeric(est_hypers$hyper_values[2])
+      }
+      else{
+        h2 <- NA
+      }
+    }
+    else{
+      h1 <- NA
+      h2 <- NA
+    }
+    # Compute estimate
+    est <- rlang::exec(estimator, !!!est_args)
+    # Compute metrics
+    est_metrics <- matrixMetrics(est)
+    met_names <- names(est_metrics)
+    est_metrics <- append(est_metrics, c(h1, h2))
+    names(est_metrics) <- c(met_names, "hyper1", "hyper2")
+
+    return(est_metrics)
+  })
+
+  mat_mets <- dplyr::bind_rows(mat_mets) %>%
+    dplyr::bind_cols(object$risk_df) %>%
+    dplyr::group_by(.data$estimator) %>%
+    dplyr::arrange(.data$hyper1, by_group = TRUE) %>%
+    dplyr::select(.data$estimator, .data$hyperparameters, .data$cv_risk,
+                  .data$cond_num, .data$sign, .data$sparsity, .data$hyper1,
+                  .data$hyper2)
+  object$risk_df <- mat_mets
+
+  return(object)
+}
+
+################################################################################
 #' Generic Summary Method for cvCovEst
 #'
 #' @description \code{summary()} provides summary statistics regarding
@@ -166,6 +297,8 @@ hyperRisk <- function(dat) {
 #'  plotting.
 #'
 #' @param object A named \code{list} of class \code{"cvCovEst"}.
+#' @param dat_orig The \code{numeric data.frame}, \code{matrix}, or similar
+#'  object originally passed to \code{\link{cvCovEst}()}.
 #' @param summ_fun A \code{character} vector specifying which summaries to
 #'  output.  See Details for function descriptions.
 #' @param ... Additional arguments passed to \code{summary()}These are not
@@ -179,9 +312,11 @@ hyperRisk <- function(dat) {
 #'       associated with each class of estimator passed to
 #'       \code{\link{cvCovEst}()}.
 #'     \item \code{"bestInClass"} - Returns the specific hyperparameters, if
-#'       applicable, of the best performing estimator within each class.
+#'       applicable, of the best performing estimator within each class along
+#'       with other metrics.
 #'     \item \code{"worstInClass"} - Returns the specific hyperparameters, if
-#'       applicable, of the worst performing estimator within each class.
+#'       applicable, of the worst performing estimator within each class along
+#'       with other metrics.
 #'     \item \code{"hyperRisk"} - For estimators that take hyperparameters as
 #'       arguments, this function returns the hyperparameters associated with
 #'       the minimum, first quartile, median, third quartile, and maximum of the
@@ -209,10 +344,11 @@ hyperRisk <- function(dat) {
 #'   scale = TRUE
 #' )
 #'
-#' summary(cv_dat)
+#' summary(cv_dat, mtcars)
 #' @export
 summary.cvCovEst <- function(
                              object,
+                             dat_orig,
                              summ_fun = c(
                                "cvRiskByClass",
                                "bestInClass",
@@ -231,6 +367,7 @@ summary.cvCovEst <- function(
     summ_fun = summ_fun
   )
 
+  object <- cvMatrixMetrics(object, dat_orig)
   risk_dat <- object$risk_df
 
   sums_to_exec <- summary_functions[which(

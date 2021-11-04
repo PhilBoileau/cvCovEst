@@ -42,7 +42,7 @@
 <meta property="og:title" content="Showing Best Estimator Within Each Class of Estimators — bestInClass" />
 <meta property="og:description" content="bestInClass() finds the best performing estimator within
 each class of estimator passed to cvCovEst() and
-finds the associated hyper-parameters if applicable." />
+finds the associated hyperparameters if applicable." />
 
 
 
@@ -74,7 +74,7 @@ finds the associated hyper-parameters if applicable." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -133,7 +133,7 @@ finds the associated hyper-parameters if applicable." />
     <div class="ref-description">
     <p><code>bestInClass()</code> finds the best performing estimator within
 each class of estimator passed to <code><a href='cvCovEst.html'>cvCovEst</a>()</code> and
-finds the associated hyper-parameters if applicable.</p>
+finds the associated hyperparameters if applicable.</p>
     </div>
 
     <pre class="usage"><span class='fu'>bestInClass</span><span class='op'>(</span><span class='va'>dat</span>, worst <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
@@ -156,8 +156,8 @@ estimator in each class.  Default is <code>FALSE</code>.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></code> with rows corresponding to estimator
-classes and columns for hyperparameter values and cross-validated risk for
-the best estimator in that class.</p>
+classes and columns for hyperparameter values, cross-validated risk, and
+other summary metrics for the best (or worst) estimator in that class.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

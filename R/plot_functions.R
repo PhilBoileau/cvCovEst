@@ -60,7 +60,7 @@ cvMultiMelt <- function(
     unname()
 
   # Call cvSummary
-  cv_sum <- summary.cvCovEst(dat)
+  cv_sum <- summary.cvCovEst(dat, dat_orig)
 
   # Setup Values
   blues <- RColorBrewer::brewer.pal(n = 9, name = "Blues")
@@ -369,7 +369,7 @@ cvEigenPlot <- function(
   }
 
   # Get Summary Output
-  cv_sum <- summary.cvCovEst(dat)
+  cv_sum <- summary.cvCovEst(dat, dat_orig)
   blues <- RColorBrewer::brewer.pal(9, "Blues")
   b <- ifelse(leading, "1", as.character(p))
 
@@ -913,7 +913,8 @@ cvSummaryPlot <- function(
     }
   }
   else {
-    p1 <- summary.cvCovEst(object = dat, summ_fun = "cvRiskByClass")
+    p1 <- summary.cvCovEst(
+      object = dat, dat_orig = dat_orig, summ_fun = "cvRiskByClass")
 
     p1 <- ggpubr::ggtexttable(
       p1,
@@ -960,11 +961,13 @@ cvSummaryPlot <- function(
   )
 
   # Lower Right - Summary Table - bestInClass
-  p4_a <- summary.cvCovEst(object = dat, summ_fun = "bestInClass")
+  p4_a <- summary.cvCovEst(
+    object = dat, dat_orig = dat_orig, summ_fun = "bestInClass")
 
   best_est <- p4_a$estimator[1]
 
-  colnames(p4_a) <- c("Estimator", "Hyperparameter(s)", "CV Risk")
+  colnames(p4_a) <- c("Estimator", "Hyperparameter(s)", "CV Risk",
+                      "Condition Num.", "Sign", "Sparsity")
   p4_a <- ggpubr::ggtexttable(
     p4_a,
     rows = NULL,

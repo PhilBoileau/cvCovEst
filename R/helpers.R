@@ -174,9 +174,14 @@ getHypers <- function(dat, summ_stat, new_df = FALSE) {
     hypers <- cbind(dat[, 1], hypers, dat[, (3:n)])
   }
   else {
-    ws <- which(dat$stat == summ_stat)
+    if (is.null(summ_stat)){
+      ws <- 1
+    }
+    else{
+      ws <- which(dat$stat == summ_stat)
+    }
     hyper_list <- as.list(
-      stringr::str_split(dat[ws, 1], ", ") %>% unlist()
+      stringr::str_split(dat[ws, "hyperparameters"], ", ") %>% unlist()
     )
 
     hyper_values <- lapply(hyper_list, function(s) {

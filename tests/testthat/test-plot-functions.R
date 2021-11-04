@@ -67,36 +67,36 @@ has_hypers <- c(
 
 # Class Test
 test_that("Objects of other known classes throw an error", {
-  # cvCovest class
+  # cvCovEst class
   expect_s3_class(cvTestH, "cvCovEst")
   expect_silent(
-    summary(cvTestH)
+    summary(cvTestH, dat)
   )
   expect_silent(
-    cvTestH %>% summary()
+    cvTestH %>% summary(dat_orig = dat)
   )
   # different class
   class(cvTestH) <- "lm"
   expect_error(
-    summary(cvTestH)
+    summary(cvTestH, dat)
   )
   expect_error(
-    cvTestH %>% summary()
+    cvTestH %>% summary(dat_orig = dat)
   )
   # other object disguised as cvCovEst object
   disguise <- c("disguise")
   class(disguise) <- "cvCovEst"
   expect_error(
-    summary(disguise)
+    summary(disguise, dat_orig = dat)
   )
 })
 
 test_that("Only current implemented summary functions are allowed", {
   expect_silent(
-    summary(cvTestH, summ_fun = "bestInClass")
+    summary(cvTestH, dat, summ_fun = "bestInClass")
   )
   expect_error(
-    summary(cvTestH, summ_fun = "other")
+    summary(cvTestH, dat, summ_fun = "other")
   )
 })
 

@@ -3,5 +3,9 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   using_cvCovEst: using_cvCovEst.html
-last_built: 2021-10-14T13:40Z
+<<<<<<< HEAD
+last_built: 2021-11-04T18:42Z
 
+=======
+last_built: 2021-11-04T18:31Z
+>>>>>>> 127118f5543fd49a59d548d05ec5bb617e4284ca

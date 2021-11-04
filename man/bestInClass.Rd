@@ -15,12 +15,12 @@ estimator in each class.  Default is \code{FALSE}.}
 }
 \value{
 \code{\link[tibble]{tibble}} with rows corresponding to estimator
-classes and columns for hyperparameter values and cross-validated risk for
-the best estimator in that class.
+classes and columns for hyperparameter values, cross-validated risk, and
+other summary metrics for the best (or worst) estimator in that class.
 }
 \description{
 \code{bestInClass()} finds the best performing estimator within
 each class of estimator passed to \code{\link{cvCovEst}()} and
-finds the associated hyper-parameters if applicable.
+finds the associated hyperparameters if applicable.
 }
 \keyword{internal}

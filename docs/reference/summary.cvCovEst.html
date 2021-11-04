@@ -74,7 +74,7 @@ plotting." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -139,6 +139,7 @@ plotting.</p>
     <pre class="usage"><span class='co'># S3 method for cvCovEst</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span>
   <span class='va'>object</span>,
+  <span class='va'>dat_orig</span>,
   summ_fun <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cvRiskByClass"</span>, <span class='st'>"bestInClass"</span>, <span class='st'>"worstInClass"</span>, <span class='st'>"hyperRisk"</span><span class='op'>)</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -149,6 +150,11 @@ plotting.</p>
     <tr>
       <th>object</th>
       <td><p>A named <code>list</code> of class <code>"cvCovEst"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>dat_orig</th>
+      <td><p>The <code>numeric data.frame</code>, <code>matrix</code>, or similar
+object originally passed to <code><a href='cvCovEst.html'>cvCovEst</a>()</code>.</p></td>
     </tr>
     <tr>
       <th>summ_fun</th>
@@ -175,9 +181,11 @@ median, third quartile, and maximum of the cross-validated risk
 associated with each class of estimator passed to
 <code><a href='cvCovEst.html'>cvCovEst</a>()</code>.</p></li>
 <li><p><code>"bestInClass"</code> - Returns the specific hyperparameters, if
-applicable, of the best performing estimator within each class.</p></li>
+applicable, of the best performing estimator within each class along
+with other metrics.</p></li>
 <li><p><code>"worstInClass"</code> - Returns the specific hyperparameters, if
-applicable, of the worst performing estimator within each class.</p></li>
+applicable, of the worst performing estimator within each class along
+with other metrics.</p></li>
 <li><p><code>"hyperRisk"</code> - For estimators that take hyperparameters as
 arguments, this function returns the hyperparameters associated with
 the minimum, first quartile, median, third quartile, and maximum of the
@@ -201,7 +209,7 @@ its own <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbl
   scale <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>cv_dat</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>cv_dat</span>, <span class='va'>mtcars</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $cvRiskByClass
 #&gt; <span style='color: #949494;'># A tibble: 3 × 7</span>
 #&gt;   Estimator         Min    Q1 Median    Q3   Max  Mean
@@ -211,41 +219,41 @@ its own <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbl
 #&gt; <span style='color: #BCBCBC;'>3</span> thresholdingEst  60.7  61.4   61.6  78.0  90.3  70.5
 #&gt; 
 #&gt; $bestInClass
-#&gt; <span style='color: #949494;'># A tibble: 3 × 3</span>
-#&gt;   estimator       hyperparameter       cv_risk
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> linearShrinkEst alpha = 0.8             59.1
-#&gt; <span style='color: #BCBCBC;'>2</span> thresholdingEst gamma = 0.3             60.7
-#&gt; <span style='color: #BCBCBC;'>3</span> sampleCovEst    hyperparameters = NA    61.0
+#&gt; <span style='color: #949494;'># A tibble: 3 × 6</span>
+#&gt;   estimator       hyperparameter       cv_risk  cond_num sign  sparsity
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> sampleCovEst    hyperparameters = NA    61.0   <span style='text-decoration: underline;'>473</span>465. PD       0    
+#&gt; <span style='color: #BCBCBC;'>2</span> thresholdingEst gamma = 0.1             61.4 -<span style='color: #BB0000;'>1</span><span style='color: #BB0000; text-decoration: underline;'>396</span><span style='color: #BB0000;'>043.</span> IND      0.083
+#&gt; <span style='color: #BCBCBC;'>3</span> linearShrinkEst alpha = 0.1             78.2     <span style='text-decoration: underline;'>2</span>063. PD       0    
 #&gt; 
 #&gt; $worstInClass
-#&gt; <span style='color: #949494;'># A tibble: 3 × 3</span>
-#&gt;   estimator       hyperparameter       cv_risk
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> sampleCovEst    hyperparameters = NA    61.0
-#&gt; <span style='color: #BCBCBC;'>2</span> linearShrinkEst alpha = 0.1             78.2
-#&gt; <span style='color: #BCBCBC;'>3</span> thresholdingEst gamma = 0.9             90.3
+#&gt; <span style='color: #949494;'># A tibble: 3 × 6</span>
+#&gt;   estimator       hyperparameter       cv_risk cond_num sign  sparsity
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> linearShrinkEst alpha = 0.9             59.7  <span style='text-decoration: underline;'>123</span>877. PD        0   
+#&gt; <span style='color: #BCBCBC;'>2</span> sampleCovEst    hyperparameters = NA    61.0  <span style='text-decoration: underline;'>473</span>465. PD        0   
+#&gt; <span style='color: #BCBCBC;'>3</span> thresholdingEst gamma = 0.9             90.3  -<span style='color: #BB0000; text-decoration: underline;'>11</span><span style='color: #BB0000;'>427.</span> IND       0.43
 #&gt; 
 #&gt; $hyperRisk
-#&gt; $hyperRisk$linearShrinkEst
-#&gt; <span style='color: #949494;'># A tibble: 5 × 3</span>
-#&gt;   hyperparameters cv_risk stat  
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> 
-#&gt; <span style='color: #BCBCBC;'>1</span> alpha = 0.8     59      min   
-#&gt; <span style='color: #BCBCBC;'>2</span> alpha = 0.8     59      Q1    
-#&gt; <span style='color: #BCBCBC;'>3</span> alpha = 0.6     61      median
-#&gt; <span style='color: #BCBCBC;'>4</span> alpha = 0.3     69      Q3    
-#&gt; <span style='color: #BCBCBC;'>5</span> alpha = 0.1     78      max   
-#&gt; 
 #&gt; $hyperRisk$thresholdingEst
 #&gt; <span style='color: #949494;'># A tibble: 5 × 3</span>
 #&gt;   hyperparameters cv_risk stat  
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> 
-#&gt; <span style='color: #BCBCBC;'>1</span> gamma = 0.3     61      min   
-#&gt; <span style='color: #BCBCBC;'>2</span> gamma = 0.3     61      Q1    
+#&gt; <span style='color: #BCBCBC;'>1</span> gamma = 0.1     61      min   
+#&gt; <span style='color: #BCBCBC;'>2</span> gamma = 0.1     61      Q1    
 #&gt; <span style='color: #BCBCBC;'>3</span> gamma = 0.4     62      median
 #&gt; <span style='color: #BCBCBC;'>4</span> gamma = 0.7     78      Q3    
 #&gt; <span style='color: #BCBCBC;'>5</span> gamma = 0.9     90      max   
+#&gt; 
+#&gt; $hyperRisk$linearShrinkEst
+#&gt; <span style='color: #949494;'># A tibble: 5 × 3</span>
+#&gt;   hyperparameters cv_risk stat  
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> 
+#&gt; <span style='color: #BCBCBC;'>1</span> alpha = 0.7     59      min   
+#&gt; <span style='color: #BCBCBC;'>2</span> alpha = 0.7     59      Q1    
+#&gt; <span style='color: #BCBCBC;'>3</span> alpha = 0.6     61      median
+#&gt; <span style='color: #BCBCBC;'>4</span> alpha = 0.3     69      Q3    
+#&gt; <span style='color: #BCBCBC;'>5</span> alpha = 0.1     78      max   
 #&gt; 
 #&gt; </div></pre>
   </div>

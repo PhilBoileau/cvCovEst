@@ -1,3 +1,8 @@
+# cvCovEst 1.0.2 (2021-11-04)
+
++ `summary()` now reports metrics about the candidate estimators' estimates,
+  like their condition numbers, signw, and sparsity levels.
+
 # cvCovEst 1.0.1 (2021-09-07)
 
 + `scadEst()` and `adaptiveLassoEst()` are now vectorized, greatly improving
