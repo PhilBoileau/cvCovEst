@@ -502,6 +502,7 @@
 ## 5 adaptiveLassoEst lambda = 0.1, n = 1     873. -1.85e 1 IND      0.558
 ## 6 sampleCovEst     hyperparameters = NA    949. -4.68e15 IND      0</code></pre>
 <p>In this case, the tapering estimator with <code>k = 4</code> achieves the lowest empirical risk. It is also one of the only estimators to produce a positive-definite estimate, along with the linear shrinkage estimator, although the linear shrinkage estiator yields a better conditioned estimate in this case. We can take a closer look at the estimator’s performance based on other possible hyperparameter values by hashing <code>taperingEst</code> from the <code>hyperRisk</code> list.</p>
+
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cv_sum</span><span class="op">$</span><span class="va">hyperRisk</span><span class="op">$</span><span class="va">bandingEst</span></code></pre></div>
 <pre><code>## # A tibble: 5 × 3
