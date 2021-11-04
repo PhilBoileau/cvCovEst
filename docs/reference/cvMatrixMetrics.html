@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Multiple Heat Map Plot — cvMultiMelt • cvCovEst</title>
+<title>Matrix Metrics for cvCovEst Object — cvMatrixMetrics • cvCovEst</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,9 @@
 
 
 
-<meta property="og:title" content="Multiple Heat Map Plot — cvMultiMelt" />
-<meta property="og:description" content="cvMultiMelt() visualizes the structure of one or more
-covariance matrix estimators through a grid of heat maps, where each heat
-map corresponds to a different estimator." />
+<meta property="og:title" content="Matrix Metrics for cvCovEst Object — cvMatrixMetrics" />
+<meta property="og:description" content="cvMatrixMetrics computes various metrics and properties
+for each covariance matrix estimator candidate's estimate." />
 
 
 
@@ -125,79 +124,40 @@ map corresponds to a different estimator." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Multiple Heat Map Plot</h1>
-    <small class="dont-index">Source: <a href='https://github.com/PhilBoileau/cvCovEst/blob/master/R/plot_functions.R'><code>R/plot_functions.R</code></a></small>
-    <div class="hidden name"><code>cvMultiMelt.Rd</code></div>
+    <h1>Matrix Metrics for cvCovEst Object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/PhilBoileau/cvCovEst/blob/master/R/summary_functions.R'><code>R/summary_functions.R</code></a></small>
+    <div class="hidden name"><code>cvMatrixMetrics.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>cvMultiMelt()</code> visualizes the structure of one or more
-covariance matrix estimators through a grid of heat maps, where each heat
-map corresponds to a different estimator.</p>
+    <p><code>cvMatrixMetrics</code> computes various metrics and properties
+for each covariance matrix estimator candidate's estimate.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cvMultiMelt</span><span class='op'>(</span>
-  <span class='va'>dat</span>,
-  <span class='va'>estimator</span>,
-  stat <span class='op'>=</span> <span class='st'>"min"</span>,
-  <span class='va'>dat_orig</span>,
-  plot_type <span class='op'>=</span> <span class='st'>"heatmap"</span>,
-  <span class='va'>cv_details</span>,
-  <span class='va'>has_hypers</span>,
-  abs_v <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>cvMatrixMetrics</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>dat_orig</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dat</th>
-      <td><p>A named <code>list</code>.  Specifically, this is the standard output of
-<code>cvCovEst</code>.</p></td>
-    </tr>
-    <tr>
-      <th>estimator</th>
-      <td><p>A <code>character</code> vector specifying one or more classes of
-estimators to visualize and compare.</p></td>
-    </tr>
-    <tr>
-      <th>stat</th>
-      <td><p>A <code>character</code> vector containing the names of various
-cross-validated risk summary statistics. Estimators corresponding to each
-statistics will be visualized with a different heatmap. Default is
-<code>'min'</code> for minimum cross-validated risk.</p></td>
+      <th>object</th>
+      <td><p>A named list of class <code>"cvCovEst"</code> containing the
+cross-validated risk assessment.</p></td>
     </tr>
     <tr>
       <th>dat_orig</th>
       <td><p>The <code>numeric data.frame</code>, <code>matrix</code>, or similar
 object originally passed to <code><a href='cvCovEst.html'>cvCovEst</a>()</code>.</p></td>
     </tr>
-    <tr>
-      <th>plot_type</th>
-      <td><p>A <code>character</code> detailing the type of plot. Passed to
-<code>theme_cvCovEst</code>, defaults to <code>"risk"</code></p></td>
-    </tr>
-    <tr>
-      <th>cv_details</th>
-      <td><p>A <code>character</code> vector summarizing key arguments passed
-to <code><a href='cvCovEst.html'>cvCovEst</a>()</code>.</p></td>
-    </tr>
-    <tr>
-      <th>has_hypers</th>
-      <td><p>A <code>character</code> vector containing the names of current
-estimators with hyperparameters.</p></td>
-    </tr>
-    <tr>
-      <th>abs_v</th>
-      <td><p>A <code>logical</code> determining if the absolute value of the matrix
-entries should be displayed versus the signed value. Default is <code>TRUE</code>.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A grid of heat map plots comparing the desired covariance matrix
-estimators.</p>
+    <p>A named list of class <code>"cvCovEst"</code> whose cross-validated risk
+assessment is now a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></code> containing the
+corresponding metrics for each estimate.  The <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></code>
+is grouped by estimator and ordered by the primary hyperparameter if
+applicable.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
