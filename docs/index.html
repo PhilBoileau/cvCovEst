@@ -146,7 +146,7 @@
 <span class="co"># print the table of risk estimates</span>
 <span class="co"># NOTE: the estimated covariance matrix is accessible via the `$estimate` slot</span>
 <span class="va">cv_cov_est_out</span><span class="op">$</span><span class="va">risk_df</span>
-<span class="co">#&gt; # A tibble: 9 x 3</span>
+<span class="co">#&gt; # A tibble: 9 × 3</span>
 <span class="co">#&gt;   estimator            hyperparameters      cv_risk</span>
 <span class="co">#&gt;   &lt;chr&gt;                &lt;chr&gt;                  &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 linearShrinkLWEst    hyperparameters = NA    357.</span>
@@ -176,14 +176,27 @@
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h2>
 <p>Please cite the following paper when using the <code>cvCovEst</code> R software package.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>misc{boileau2021,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>      title<span class="ot">=</span>{Cross<span class="sc">-</span>Validated Loss<span class="sc">-</span>Based Covariance Matrix Estimator Selection <span class="cf">in</span> High Dimensions}, </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>      author<span class="ot">=</span>{Philippe Boileau and Nima S. Hejazi and Mark J. van der Laan and Sandrine Dudoit},</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      year<span class="ot">=</span>{<span class="dv">2021</span>},</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      eprint<span class="ot">=</span>{<span class="fl">2102.09715</span>},</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      archivePrefix<span class="ot">=</span>{arXiv},</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      primaryClass<span class="ot">=</span>{stat.ME}</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>article{cvCovEst2021,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  doi <span class="ot">=</span> {<span class="fl">10.21105</span><span class="sc">/</span>joss<span class="fl">.03273</span>},</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>doi.org<span class="sc">/</span><span class="fl">10.21105</span><span class="sc">/</span>joss<span class="fl">.03273</span>},</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  year <span class="ot">=</span> {<span class="dv">2021</span>},</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  publisher <span class="ot">=</span> {The Open Journal},</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  volume <span class="ot">=</span> {<span class="dv">6</span>},</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  number <span class="ot">=</span> {<span class="dv">63</span>},</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  pages <span class="ot">=</span> {<span class="dv">3273</span>},</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  author <span class="ot">=</span> {Philippe Boileau and Nima S. Hejazi and Brian Collica and Mark J. van der Laan and Sandrine Dudoit},</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  title <span class="ot">=</span> {cvCovEst<span class="sc">:</span> Cross<span class="sc">-</span>validated covariance matrix estimator selection and evaluation <span class="cf">in</span> <span class="st">`</span><span class="at">R</span><span class="st">`</span>},</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  journal <span class="ot">=</span> {Journal of Open Source Software}</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>When describing or discussing the theory underlying the <code>cvCovEst</code> method, please cite the pre-print below.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>misc{boileau2021,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>      title<span class="ot">=</span>{Cross<span class="sc">-</span>Validated Loss<span class="sc">-</span>Based Covariance Matrix Estimator Selection <span class="cf">in</span> High Dimensions}, </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>      author<span class="ot">=</span>{Philippe Boileau and Nima S. Hejazi and Mark J. van der Laan and Sandrine Dudoit},</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      year<span class="ot">=</span>{<span class="dv">2021</span>},</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      eprint<span class="ot">=</span>{<span class="fl">2102.09715</span>},</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      archivePrefix<span class="ot">=</span>{arXiv},</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      primaryClass<span class="ot">=</span>{stat.ME}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <hr>
 </div>
 <div id="license" class="section level2">

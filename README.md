@@ -4,11 +4,11 @@
 <!-- badges: start -->
 
 [![CircleCI](https://circleci.com/gh/PhilBoileau/cvCovEst/tree/master.svg?style=svg)](https://circleci.com/gh/PhilBoileau/cvCovEst/tree/master)
-[![codecov](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ)](https://codecov.io/gh/PhilBoileau/cvCovEst)
+[![codecov](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ)](https://app.codecov.io/gh/PhilBoileau/cvCovEst)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![status](https://joss.theoj.org/papers/f5b2acdf578c341195b6ec6f25b4f09d/status.svg)](https://joss.theoj.org/papers/f5b2acdf578c341195b6ec6f25b4f09d)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.03273/status.svg)](https://doi.org/10.21105/joss.03273)
 [![MIT
 license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
@@ -87,7 +87,7 @@ cv_cov_est_out <- cvCovEst(
 # print the table of risk estimates
 # NOTE: the estimated covariance matrix is accessible via the `$estimate` slot
 cv_cov_est_out$risk_df
-#> # A tibble: 9 x 3
+#> # A tibble: 9 × 3
 #>   estimator            hyperparameters      cv_risk
 #>   <chr>                <chr>                  <dbl>
 #> 1 linearShrinkLWEst    hyperparameters = NA    357.
@@ -123,6 +123,22 @@ prior to submitting a pull request.
 
 Please cite the following paper when using the `cvCovEst` R software
 package.
+
+    @article{cvCovEst2021,
+      doi = {10.21105/joss.03273},
+      url = {https://doi.org/10.21105/joss.03273},
+      year = {2021},
+      publisher = {The Open Journal},
+      volume = {6},
+      number = {63},
+      pages = {3273},
+      author = {Philippe Boileau and Nima S. Hejazi and Brian Collica and Mark J. van der Laan and Sandrine Dudoit},
+      title = {cvCovEst: Cross-validated covariance matrix estimator selection and evaluation in `R`},
+      journal = {Journal of Open Source Software}
+    }
+
+When describing or discussing the theory underlying the `cvCovEst`
+method, please cite the pre-print below.
 
     @misc{boileau2021,
           title={Cross-Validated Loss-Based Covariance Matrix Estimator Selection in High Dimensions}, 
