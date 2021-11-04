@@ -168,7 +168,7 @@ hyperRisk <- function(dat) {
 #' General Matrix Metrics
 #'
 #' @description \code{matrixMetrics} computes the condition number, sparsity,
-#'  and sign of a covariance matrix estimator.
+#'  and sign of a covariance matrix estimate.
 #'
 #' @param estimator A \code{matrix} corresponding to a single covariance matrix
 #'  estimator.
@@ -223,7 +223,7 @@ matrixMetrics <- function(estimate) {
 #' Matrix Metrics for cvCovEst Object
 #'
 #' @description \code{cvMatrixMetrics} computes various metrics and properties
-#'  for each covariance matrix estimator candidate passed to \code{cvCovEst}.
+#'  for each covariance matrix estimator candidate's estimate.
 #'
 #' @param object A named list of class \code{"cvCovEst"} containing the
 #'  cross-validated risk assessment.
@@ -233,7 +233,7 @@ matrixMetrics <- function(estimate) {
 #'
 #' @return A named list of class \code{"cvCovEst"} whose cross-validated risk
 #'  assessment is now a \code{\link[tibble]{tibble}} containing the
-#'  corresponding metrics for each estimator.  The \code{\link[tibble]{tibble}}
+#'  corresponding metrics for each estimate.  The \code{\link[tibble]{tibble}}
 #'  is grouped by estimator and ordered by the primary hyperparameter if
 #'  applicable.
 #'
@@ -250,7 +250,7 @@ cvMatrixMetrics <- function(object, dat_orig) {
     est_args <- list(dat = dat_orig)
     est_attr <- estAttributes(estimator)
     # Get Hypers if Applicable
-    if (est_attr[[estimator]][["has_hypers"]]){
+    if (est_attr[[estimator]][["has_hypers"]]) {
       est_hypers <- getHypers(est_dat, summ_stat = NULL)
       est_args <- append(est_args, est_hypers$hyper_values)
       names(est_args) <- c("dat", est_hypers$hyper_names)
@@ -266,9 +266,9 @@ cvMatrixMetrics <- function(object, dat_orig) {
       h1 <- NA
       h2 <- NA
     }
-    # Compute Estimator
+    # Compute estimate
     est <- rlang::exec(estimator, !!!est_args)
-    # Compute Metrics
+    # Compute metrics
     est_metrics <- matrixMetrics(est)
     met_names <- names(est_metrics)
     est_metrics <- append(est_metrics, c(h1, h2))
@@ -279,10 +279,11 @@ cvMatrixMetrics <- function(object, dat_orig) {
 
   mat_mets <- dplyr::bind_rows(mat_mets) %>%
     dplyr::bind_cols(object$risk_df) %>%
-    dplyr::group_by(rlang::.data$estimator) %>%
-    dplyr::arrange(rlang::.data$hyper1, by_group = TRUE) %>%
-    dplyr::select(estimator, hyperparameters, cv_risk, cond_num, sign,
-                  sparsity, hyper1, hyper2)
+    dplyr::group_by(.data$estimator) %>%
+    dplyr::arrange(.data$hyper1, by_group = TRUE) %>%
+    dplyr::select(.data$estimator, .data$hyperparameters, .data$cv_risk,
+                  .data$cond_num, .data$sign, .data$sparsity, .data$hyper1,
+                  .data$hyper2)
   object$risk_df <- mat_mets
 
   return(object)
@@ -312,10 +313,10 @@ cvMatrixMetrics <- function(object, dat_orig) {
 #'       \code{\link{cvCovEst}()}.
 #'     \item \code{"bestInClass"} - Returns the specific hyperparameters, if
 #'       applicable, of the best performing estimator within each class along
-#'       with other estimator metrics.
+#'       with other metrics.
 #'     \item \code{"worstInClass"} - Returns the specific hyperparameters, if
 #'       applicable, of the worst performing estimator within each class along
-#'       with other estimator metrics.
+#'       with other metrics.
 #'     \item \code{"hyperRisk"} - For estimators that take hyperparameters as
 #'       arguments, this function returns the hyperparameters associated with
 #'       the minimum, first quartile, median, third quartile, and maximum of the
