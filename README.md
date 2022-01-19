@@ -153,7 +153,7 @@ method, please cite the pre-print below.
 
 ## License
 
-© 2020-2021 [Philippe Boileau](https://pboileau.ca)
+© 2020-2022 [Philippe Boileau](https://pboileau.ca)
 
 The contents of this repository are distributed under the MIT license.
 See file

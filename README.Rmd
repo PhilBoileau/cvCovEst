@@ -152,7 +152,7 @@ please cite the pre-print below.
 
 ## License
 
-&copy; 2020-2021 [Philippe Boileau](https://pboileau.ca)
+&copy; 2020-2022 [Philippe Boileau](https://pboileau.ca)
 
 The contents of this repository are distributed under the MIT license. See file
 [`LICENSE.md`](https://github.com/PhilBoileau/cvCovEst/blob/master/LICENSE.md)
