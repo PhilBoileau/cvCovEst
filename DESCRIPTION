@@ -43,7 +43,8 @@ Imports:
     RSpectra,
     ggplot2,
     ggpubr,
-    RColorBrewer
+    RColorBrewer,
+    RMTstat
 Suggests:
     future,
     future.apply,
