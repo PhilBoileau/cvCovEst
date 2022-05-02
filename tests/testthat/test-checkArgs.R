@@ -14,7 +14,8 @@ estimators <- rlang::expr(c(
   linearShrinkLWEst, bandingEst, taperingEst,
   nlShrinkLWEst, denseLinearShrinkEst, scadEst,
   poetEst, robustPoetEst, adaptiveLassoEst,
-  spikedOperatorShrinkEst
+  spikedOperatorShrinkEst, spikedFrobeniusShrinkEst,
+  spikedSteinShrinkEst
 ))
 estimator_params <- list(
   linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -29,6 +30,12 @@ estimator_params <- list(
     var_est = "sample"
   ),
   spikedOperatorShrinkEst = list(
+    p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L), noise = c(NULL, 0.5)
+  ),
+  spikedFrobeniusShrinkEst = list(
+    p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L), noise = c(NULL, 0.5)
+  ),
+  spikedSteinShrinkEst = list(
     p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L), noise = c(NULL, 0.5)
   )
 )
@@ -185,6 +192,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -211,6 +226,14 @@ test_that("Only reasonable hyperparameters pass checks", {
         var_est = "sample"
       ),
       spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
       )
@@ -241,6 +264,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -267,6 +298,14 @@ test_that("Only reasonable hyperparameters pass checks", {
         var_est = "sample"
       ),
       spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
       )
@@ -297,6 +336,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -323,6 +370,14 @@ test_that("Only reasonable hyperparameters pass checks", {
         var_est = "sample"
       ),
       spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
       )
@@ -353,6 +408,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -379,6 +442,14 @@ test_that("Only reasonable hyperparameters pass checks", {
         var_est = "sample"
       ),
       spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
       )
@@ -409,6 +480,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -435,6 +514,14 @@ test_that("Only reasonable hyperparameters pass checks", {
         var_est = "sample"
       ),
       spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
       )
@@ -465,6 +552,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -491,6 +586,14 @@ test_that("Only reasonable hyperparameters pass checks", {
         var_est = "sample"
       ),
       spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
       )
@@ -521,6 +624,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -547,6 +658,14 @@ test_that("Only reasonable hyperparameters pass checks", {
         var_est = "sample"
       ),
       spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
       )
@@ -577,6 +696,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -605,6 +732,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -631,6 +766,14 @@ test_that("Only reasonable hyperparameters pass checks", {
         var_est = "sample"
       ),
       spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
       )
@@ -661,6 +804,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -687,6 +838,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       ),
       adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
       spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
       )
@@ -717,6 +876,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -743,6 +910,14 @@ test_that("Only reasonable hyperparameters pass checks", {
         var_est = "sample"
       ),
       spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
         p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
       )
@@ -773,6 +948,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(-1, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,
@@ -800,6 +983,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       ),
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.1, 0.8), num_spikes = c(NULL, 1L, 2.5),
+        noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
         noise = c(NULL, 0.5)
       )
     ),
@@ -829,6 +1020,14 @@ test_that("Only reasonable hyperparameters pass checks", {
       spikedOperatorShrinkEst = list(
         p_n_ratio = c(0.1, 0.8), num_spikes = c(NULL, 1L),
         noise = c(NULL, -0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
       )
     ),
     cv_loss = cv_loss,

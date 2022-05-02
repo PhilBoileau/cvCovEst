@@ -930,7 +930,7 @@ spikedSteinShrinkEst <- function(
     s_donoho <- computeS(c_donoho)
 
     # compute shrinkage factor
-    shrink_factor <- noise * (ell / (c_donoho^2 + ell * s_donoho))
+    shrink_factor <- noise * (ell / (c_donoho^2 + ell * s_donoho^2))
 
     # compute the estimate
     eigvect_mat <- eig_decomp$vectors
