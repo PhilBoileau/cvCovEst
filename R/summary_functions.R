@@ -61,6 +61,7 @@ cvRiskByClass <- function(dat) {
 bestInClass <- function(dat, worst = FALSE) {
   if (worst) {
     inClass <- dat %>%
+      dplyr::arrange(.data$cv_risk) %>%
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::last(.data$hyperparameters),
@@ -74,6 +75,7 @@ bestInClass <- function(dat, worst = FALSE) {
   }
   else {
     inClass <- dat %>%
+      dplyr::arrange(.data$cv_risk) %>%
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::first(.data$hyperparameters),
