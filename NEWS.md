@@ -1,7 +1,17 @@
+# cvCovEst 1.1.0 (2022-05-01)
+
++ This minor release sees the addition of three new estimators for Gaussian
+  spiked covariance models. These estimators are `spikedOperatorShrinkEst()`,
+  `spikedFrobeniusShrinkEst()` and `spikedSteinShrinkEst()`, and apply the
+  asymptotically optimal amount of shrinkage on the sample covariance matrix's
+  eigenvalues with respect to their respective loss functions. For more
+  information on these estimators, see Donoho et al.'s Annals of Statistics
+  article "Optimal Shrinkage of Eigenvalues in the Spiked Covariance Model".
+
 # cvCovEst 1.0.2 (2021-11-04)
 
 + `summary()` now reports metrics about the candidate estimators' estimates,
-  like their condition numbers, signw, and sparsity levels.
+  like their condition numbers, signe, and sparsity levels.
 
 # cvCovEst 1.0.1 (2021-09-07)
 
