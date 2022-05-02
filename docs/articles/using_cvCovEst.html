@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@
 <a href="https://pboileau.ca" class="external-link">Philippe Boileau</a>, <a href="https://github.com/bcollica" class="external-link">Brian Collica</a>, <a href="https://nimahejazi.org" class="external-link">Nima Hejazi</a>
 </h4>
             
-            <h4 data-toc-skip class="date">2022-01-19</h4>
+            <h4 data-toc-skip class="date">2022-05-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/PhilBoileau/cvCovEst/blob/HEAD/vignettes/using_cvCovEst.Rmd" class="external-link"><code>vignettes/using_cvCovEst.Rmd</code></a></small>
       <div class="hidden name"><code>using_cvCovEst.Rmd</code></div>
@@ -93,24 +93,26 @@
 
     
     
-<div class="section level2">
-<h2 id="background-and-motivation">Background and Motivation<a class="anchor" aria-label="anchor" href="#background-and-motivation"></a>
-</h2>
+<div class="section level3">
+<h3 id="background-and-motivation">Background and Motivation<a class="anchor" aria-label="anchor" href="#background-and-motivation"></a>
+</h3>
 <p>When the number of observations in a dataset far exceeds the number of features, the estimator of choice for the covariance matrix is the sample covariance matrix. It is an efficient estimator under minimal regularity assumptions on the data-generating distribution. In high-dimensional regimes, however, this estimator leaves much to be desired: The sample covariance matrix is either singular, numerically unstable, or both, thereby amplifying estimation error.</p>
 <p>As high-dimensional data have become widespread, researchers have derived many novel covariance matrix estimators to remediate the sample covariance matrix’s deficiencies. These estimators come in many flavours, though most are constructed by regularizing the sample covariance matrix, or through the estimation of latent factors. A comprehensive review is provided by <span class="citation">Fan, Liao, and Liu (2016)</span>.</p>
 <p>This variety brings with it many challenges. Identifying an “optimal” estimator from among a collection of candidates can prove a daunting task, one whose objectivity is often compromised by the analyst’s decisions. Though data-driven approaches for selecting an optimal estimator from among estimators belonging to certain (limited) classes have been derived, the question of selecting an estimator from among a diverse collection of candidates remains unaddressed.</p>
 <p>We therefore offer a general, cross-validation-based framework for covariance matrix estimator selection to tackle just that. The high-dimensional asymptotic optimality of selections are guaranteed based upon extensions of the seminal work of <span class="citation">Dudoit and van der Laan (2003)</span>, <span class="citation">Dudoit and van der Laan (2005)</span>, and <span class="citation">van der Vaart, Dudoit, and van der Laan (2006)</span> on data-adaptive estimator selection to high-dimensional covariance matrix estimation <span class="citation">(Boileau et al. 2021)</span>. The interested reader is invited to review theoretical underpinnings of the methodology as described in <span class="citation">Boileau et al. (2021)</span>.</p>
 </div>
-<div class="section level2">
-<h2 id="cross-validated-covariance-matrix-estimation">Cross-validated Covariance Matrix Estimation<a class="anchor" aria-label="anchor" href="#cross-validated-covariance-matrix-estimation"></a>
-</h2>
+<div class="section level3">
+<h3 id="cross-validated-covariance-matrix-estimation">Cross-validated Covariance Matrix Estimation<a class="anchor" aria-label="anchor" href="#cross-validated-covariance-matrix-estimation"></a>
+</h3>
 <p>Let there be a high-dimensional dataset comprising <span class="math inline">\(n\)</span> realizations of <span class="math inline">\(i.i.d.\)</span> <span class="math inline">\(p\)</span>-length random vectors with a possibly nonparametric data-generating distribution. Our goal is to estimate these random vectors’ covariance matrix, which may be accomplished using our general cross-validated estimator selection framework.</p>
-<p>Given a library of candidate estimators, a loss function, and a choice of cross-validation scheme, <code>cvCovEst</code> will identify the asymptotically optimal estimator of the covariance matrix from among all candidates. It subsequently estimates this parameter using the selected candidate. An example is provided below. Lists and brief descriptions of implemented candidate estimators, loss functions, and cross-validation schemes are provided in the sequel.</p>
+<p>Given a library of candidate estimators, a loss function, and a choice of cross-validation scheme, <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code> will identify the asymptotically optimal estimator of the covariance matrix from among all candidates. It subsequently estimates this parameter using the selected candidate. An example is provided below. Lists and brief descriptions of implemented candidate estimators, loss functions, and cross-validation schemes are provided in the sequel.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/PhilBoileau/cvCovEst" class="external-link">cvCovEst</a></span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## cvCovEst v1.0.2: Cross-Validated Covariance Matrix Estimation</span></code></pre>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning: package 'MASS' was built under R version 4.1.2</span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/PhilBoileau/cvCovEst" class="external-link">cvCovEst</a></span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## cvCovEst v1.1.0: Cross-Validated Covariance Matrix Estimation</span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1584</span><span class="op">)</span>
 
 <span class="co"># generate a 50x50 covariance matrix with unit variances and off-diagonal</span>
@@ -150,7 +152,7 @@
 <span class="co">## <span style="color: #BCBCBC;">7</span> sampleCovEst         hyperparameters = NA    379.</span>
 <span class="co">## <span style="color: #BCBCBC;">8</span> thresholdingEst      gamma = 0.2             384.</span>
 <span class="co">## <span style="color: #BCBCBC;">9</span> thresholdingEst      gamma = 0.4             505.</span></code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># print a subset of the selected estimator's estimate</span>
 <span class="va">cv_cov_est_out</span><span class="op">$</span><span class="va">estimate</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></code></pre></div>
 <pre><code><span class="co">##           [,1]      [,2]      [,3]      [,4]      [,5]</span>
@@ -159,10 +161,10 @@
 <span class="co">## [3,] 0.4813226 0.5591108 1.0150440 0.4052703 0.6436765</span>
 <span class="co">## [4,] 0.5576840 0.4390799 0.4052703 0.9826984 0.4304168</span>
 <span class="co">## [5,] 0.6719526 0.6766744 0.6436765 0.4304168 1.0883278</span></code></pre>
-<div class="section level3">
-<h3 id="candidate-estimators">Candidate Estimators<a class="anchor" aria-label="anchor" href="#candidate-estimators"></a>
-</h3>
-<p>Covariance matrix estimators implemented in the <code>cvCovEst</code> package are catalogued in the following table. These estimators are fed to the <code>cvCovEst</code> function through the <code>estimators</code> argument as a vector. If these estimators rely on hyperparameters, then they must be passed to the <code>estimator_params</code> as a list. Depending on one’s assumptions — or lack thereof — about the true covariance matrix, one may choose to use a subset of these estimators or all of them. Of course, they may also be used as standalone functions.</p>
+<div class="section level4">
+<h4 id="candidate-estimators">Candidate Estimators<a class="anchor" aria-label="anchor" href="#candidate-estimators"></a>
+</h4>
+<p>Covariance matrix estimators implemented in the <code>cvCovEst</code> package are catalogued in the following table. These estimators are fed to the <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code> function through the <code>estimators</code> argument as a vector. If these estimators rely on hyperparameters, then they must be passed to the <code>estimator_params</code> as a list. Depending on one’s assumptions — or lack thereof — about the true covariance matrix, one may choose to use a subset of these estimators or all of them. Of course, they may also be used as standalone functions.</p>
 <table class="table">
 <colgroup>
 <col width="30%">
@@ -177,83 +179,101 @@
 <tbody>
 <tr class="odd">
 <td>Sample covariance matrix</td>
-<td><code>sampleCovEst</code></td>
+<td><code><a href="../reference/sampleCovEst.html">sampleCovEst()</a></code></td>
 <td>The sample covariance matrix.</td>
 </tr>
 <tr class="even">
 <td>Hard thresholding <span class="citation">(Bickel and Levina 2008b)</span>
 </td>
-<td><code>thresholdingEst</code></td>
-<td>Applies a hard thresholding operator to the entries of the sample covariance matrix</td>
+<td><code><a href="../reference/thresholdingEst.html">thresholdingEst()</a></code></td>
+<td>Applies a hard thresholding operator to the entries of the sample covariance matrix.</td>
 </tr>
 <tr class="odd">
 <td>SCAD thresholding <span class="citation">(Rothman, Levina, and Zhu 2009; Fan and Li 2001)</span>
 </td>
-<td><code>scadEst</code></td>
+<td><code><a href="../reference/scadEst.html">scadEst()</a></code></td>
 <td>Applies the SCAD thresholding operator to the entries of the sample covariance matrix.</td>
 </tr>
 <tr class="even">
 <td>Adaptive LASSO <span class="citation">(Rothman, Levina, and Zhu 2009)</span>
 </td>
-<td><code>adaptiveLassoEst</code></td>
-<td>Applies the adaptive LASSO thresholding operator to the entries of the sample covariance matrix</td>
+<td><code><a href="../reference/adaptiveLassoEst.html">adaptiveLassoEst()</a></code></td>
+<td>Applies the adaptive LASSO thresholding operator to the entries of the sample covariance matrix.</td>
 </tr>
 <tr class="odd">
 <td>Banding <span class="citation">(Bickel and Levina 2008a)</span>
 </td>
-<td><code>bandingEst</code></td>
+<td><code><a href="../reference/bandingEst.html">bandingEst()</a></code></td>
 <td>Replaces the sample covariance matrix’s off-diagonal bands by zeros.</td>
 </tr>
 <tr class="even">
 <td>Tapering <span class="citation">(Cai, Zhang, and Zhou 2010)</span>
 </td>
-<td><code>taperingEst</code></td>
+<td><code><a href="../reference/taperingEst.html">taperingEst()</a></code></td>
 <td>Tapers the sample covariance matrix’s off-diagonal bands, eventually replacing them by zeros.</td>
 </tr>
 <tr class="odd">
 <td>Optimal Linear Shrinkage <span class="citation">(Ledoit and Wolf 2004)</span>
 </td>
-<td><code>linearShrinkLWEst</code></td>
+<td><code><a href="../reference/linearShrinkLWEst.html">linearShrinkLWEst()</a></code></td>
 <td>Asymptotically optimal shrinkage of the sample covariance matrix towards the identity.</td>
 </tr>
 <tr class="even">
 <td>Linear Shrinkage <span class="citation">(Ledoit and Wolf 2004)</span>
 </td>
-<td><code>linearShrinkEst</code></td>
+<td><code><a href="../reference/linearShrinkEst.html">linearShrinkEst()</a></code></td>
 <td>Shrinkage of the sample covariance matrix towards the identity, but the shrinkage is controlled by a hyperparameter.</td>
 </tr>
 <tr class="odd">
 <td>Dense Linear Shrinkage <span class="citation">(Schäfer and Strimmer 2005)</span>
 </td>
-<td><code>denseLinearShrinkEst</code></td>
+<td><code><a href="../reference/denseLinearShrinkEst.html">denseLinearShrinkEst()</a></code></td>
 <td>Asymptotically optimal shrinkage of the sample covariance matrix towards a dense matrix whose diagonal elements are the mean of the sample covariance matrix’s diagonal, and whose off-diagonal elements are the mean of the sample covariance matrix’s off-diagonal elements.</td>
 </tr>
 <tr class="even">
 <td>Nonlinear Shrinkage <span class="citation">(Ledoit and Wolf 2018)</span>
 </td>
-<td><code>nlShrinkLWEst</code></td>
+<td><code><a href="../reference/nlShrinkLWEst.html">nlShrinkLWEst()</a></code></td>
 <td>Analytical estimator for the nonlinear shrinkage of the sample covariance matrix.</td>
 </tr>
 <tr class="odd">
 <td>POET <span class="citation">(Fan, Liao, and Mincheva 2013)</span>
 </td>
-<td><code>poetEst</code></td>
+<td><code><a href="../reference/poetEst.html">poetEst()</a></code></td>
 <td>An estimator based on latent variable estimation and thresholding.</td>
 </tr>
 <tr class="even">
 <td>Robust POET <span class="citation">(Fan, Liu, and Wang 2018)</span>
 </td>
-<td><code>robustPoetEst</code></td>
+<td><code><a href="../reference/robustPoetEst.html">robustPoetEst()</a></code></td>
 <td>A robust (and more computationally taxing) take on the POET estimator.</td>
+</tr>
+<tr class="odd">
+<td>Spiked Operator Loss Shrinkage <span class="citation">(Donoho, Gavish, and Johnstone 2018)</span>
+</td>
+<td><code><a href="../reference/spikedOperatorShrinkEst.html">spikedOperatorShrinkEst()</a></code></td>
+<td>The asymptotically optimal shrinkage estimator based on the operator loss in a Gaussian spiked covariance model.</td>
+</tr>
+<tr class="even">
+<td>Spiked Frobenius Loss Shrinkage <span class="citation">(Donoho, Gavish, and Johnstone 2018)</span>
+</td>
+<td><code><a href="../reference/spikedFrobeniusShrinkEst.html">spikedFrobeniusShrinkEst()</a></code></td>
+<td>The asymptotically optimal shrinkage estimator based on the Frobenius loss in a Gaussian spiked covariance model.</td>
+</tr>
+<tr class="odd">
+<td>Spiked Stein Loss Shrinkage <span class="citation">(Donoho, Gavish, and Johnstone 2018)</span>
+</td>
+<td><code><a href="../reference/spikedSteinShrinkEst.html">spikedSteinShrinkEst()</a></code></td>
+<td>The asymptotically optimal shrinkage estimator based on the Stein loss in a Gaussian spiked covariance model.</td>
 </tr>
 </tbody>
 </table>
-<p>Note that <code>cvCovEst</code> only functions with estimators native to this package. If you’d like to request a new estimator implementation, please submit an <a href="https://github.com/PhilBoileau/cvCovEst/issues" class="external-link">issue</a> to the queue.</p>
+<p>Note that <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code> only functions with estimators native to this package. If you’d like to request a new estimator implementation, please submit an <a href="https://github.com/PhilBoileau/cvCovEst/issues" class="external-link">issue</a> to the queue.</p>
 </div>
-<div class="section level3">
-<h3 id="loss-functions">Loss Functions<a class="anchor" aria-label="anchor" href="#loss-functions"></a>
-</h3>
-<p>Given a collection of candidate estimators, <code>cvCovEst</code> compares their conditional cross-validated risks to identify the optimal selection. The loss function used to compute these risks should reflect both aspects of the data-generating distribution and the goal of the estimation procedure. This package currently implements three loss functions:</p>
+<div class="section level4">
+<h4 id="loss-functions">Loss Functions<a class="anchor" aria-label="anchor" href="#loss-functions"></a>
+</h4>
+<p>Given a collection of candidate estimators, <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code> compares their conditional cross-validated risks to identify the optimal selection. The loss function used to compute these risks should reflect both aspects of the data-generating distribution and the goal of the estimation procedure. This package currently implements three loss functions:</p>
 <table class="table">
 <colgroup>
 <col width="17%">
@@ -268,27 +288,27 @@
 <tbody>
 <tr class="odd">
 <td>Matrix-based Frobenius</td>
-<td><code>cvMatrixFrobeniusLoss</code></td>
+<td><code><a href="../reference/cvMatrixFrobeniusLoss.html">cvMatrixFrobeniusLoss()</a></code></td>
 <td>The default, based on the Frobenius norm. Appropriate when the dataset’s features are of similar magnitudes.</td>
 </tr>
 <tr class="even">
 <td>Variance-scaled matrix-based Frobenius</td>
-<td><code>cvScaledMatrixFrobeniusLoss</code></td>
+<td><code><a href="../reference/cvScaledMatrixFrobeniusLoss.html">cvScaledMatrixFrobeniusLoss()</a></code></td>
 <td>A scaled version of the matrix-based Frobenius loss, where weights are the inverse of products from the sample covariance matrix’s diagonal. Appropriate when the features of the dataset are of different magnitudes.</td>
 </tr>
 <tr class="odd">
 <td>Observation-based Frobenius</td>
-<td><code>cvFrobeniusLoss</code></td>
+<td><code><a href="../reference/cvFrobeniusLoss.html">cvFrobeniusLoss()</a></code></td>
 <td>Based on the Frobenius norm and the rank-1, observation-level estimates of the sample covariance matrix. Its selections are equivalent to that of the matrix-based Frobenius, though less computationally efficient. However, the optimality results of <span class="citation">Boileau et al. (2021)</span> rely on it.</td>
 </tr>
 </tbody>
 </table>
-<p>The choice of loss function is set trough the <code>cv_loss</code> argument. Like the candidate estimators, <code>cvCovEst</code> only supports loss functions implemented in this package. Please submit suggestions to the <a href="https://github.com/PhilBoileau/cvCovEst/issues" class="external-link">issue</a> queue.</p>
+<p>The choice of loss function is set trough the <code>cv_loss</code> argument. Like the candidate estimators, <code>cvCovEst(0</code> only supports loss functions implemented in this package. Please submit suggestions to the <a href="https://github.com/PhilBoileau/cvCovEst/issues" class="external-link">issue</a> queue.</p>
 </div>
-<div class="section level3">
-<h3 id="supported-cross-validation-schemes">Supported Cross-Validation Schemes<a class="anchor" aria-label="anchor" href="#supported-cross-validation-schemes"></a>
-</h3>
-<p>Two cross-validation schemes are currently supported by <code>cvCovEst</code>. Please consider filing an <a href="https://github.com/PhilBoileau/cvCovEst/issues" class="external-link">issue</a> in the queue to request the implementation of another cross-validation scheme.</p>
+<div class="section level4">
+<h4 id="supported-cross-validation-schemes">Supported Cross-Validation Schemes<a class="anchor" aria-label="anchor" href="#supported-cross-validation-schemes"></a>
+</h4>
+<p>Two cross-validation schemes are currently supported by <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code>. Please consider filing an <a href="https://github.com/PhilBoileau/cvCovEst/issues" class="external-link">issue</a> in the queue to request the implementation of another cross-validation scheme.</p>
 <table class="table">
 <colgroup>
 <col width="47%">
@@ -301,7 +321,7 @@
 <tbody>
 <tr class="odd">
 <td>V-fold</td>
-<td>To use V-fold cross-validation, set the <code>cv_scheme</code> argument in <code>cvCovEst</code> to <code>"v_fold"</code>, and set the number of folds through the <code>v_folds</code> argument. <code>cvCovEst</code> defaults to 5-fold cross-validation.</td>
+<td>To use V-fold cross-validation, set the <code>cv_scheme</code> argument in <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code> to <code>"v_fold"</code>, and set the number of folds through the <code>v_folds</code> argument. <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code> defaults to 5-fold cross-validation.</td>
 </tr>
 <tr class="even">
 <td>Monte-Carlo</td>
@@ -311,14 +331,14 @@
 </table>
 </div>
 </div>
-<div class="section level2">
-<h2 id="diagnostic-tools">Diagnostic Tools<a class="anchor" aria-label="anchor" href="#diagnostic-tools"></a>
-</h2>
-<p>In addition to selecting an optimal estimator, the <code>cvCovEst</code> package contains summary and plotting methods which highlight the statistical properties of the candidate estimators, and inform the performance of the selection framework. These tools help build intuition about these estimators’ behavior and allows for the evaluation of their performance over varying inputs.</p>
 <div class="section level3">
-<h3 id="summary-method">Summary Method<a class="anchor" aria-label="anchor" href="#summary-method"></a>
+<h3 id="diagnostic-tools">Diagnostic Tools<a class="anchor" aria-label="anchor" href="#diagnostic-tools"></a>
 </h3>
-<p>The <code>summary</code> method for <code>cvCovEst</code> accepts an <code>object</code> argument, a named <code>list</code> of class <code>cvCovEst</code>, a <code>dat_orig</code> argument, the original data used to calculate the covariance matrix estimates, and a <code>summ_fun</code> argument, a character vector specifying the type of summary function to use.</p>
+<p>In addition to selecting an optimal estimator, the <code>cvCovEst</code> package contains summary and plotting methods which highlight the statistical properties of the candidate estimators, and inform the performance of the selection framework. These tools help build intuition about these estimators’ behavior and allows for the evaluation of their performance over varying inputs.</p>
+<div class="section level4">
+<h4 id="summary-method">Summary Method<a class="anchor" aria-label="anchor" href="#summary-method"></a>
+</h4>
+<p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method for <code>cvCovEst</code> accepts an <code>object</code> argument, a named <code>list</code> of class <code>cvCovEst</code>, a <code>dat_orig</code> argument, the original data used to calculate the covariance matrix estimates, and a <code>summ_fun</code> argument, a character vector specifying the type of summary function to use.</p>
 <p>These summary functions allow the user to quickly compare the performance of several classes of estimators and compute other metrics of interest. The choices of <code>summ_fun</code> and their outputs are described below:</p>
 <table class="table">
 <colgroup>
@@ -335,7 +355,7 @@
 <tr class="odd">
 <td>Empirical Risk by Estimator Class</td>
 <td><code>empRiskByClass</code></td>
-<td>Returns the minimum, 1<sup>st</sup> quartile, median, 3<sup>rd</sup> quartile, and maximum of the empirical risk associated with each class of estimator passed to <code>cvCovEst</code>.</td>
+<td>Returns the minimum, 1<sup>st</sup> quartile, median, 3<sup>rd</sup> quartile, and maximum of the empirical risk associated with each class of estimator passed to <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code>.</td>
 </tr>
 <tr class="even">
 <td>Best Performing Estimator by Class</td>
@@ -356,15 +376,15 @@
 </table>
 <p>When either <code>bestInClass</code> or <code>worstInClass</code> is specified, the additional metrics are the condition number, the sign, and the sparsity. Sign refers to the estimate’s sign and is one of positive-definite (<code>"PD"</code>), positive-semi-definite (“PSD”), negative-definite (“ND”), negative-semi-definite (“NSD”), or indefinite (“IND”). If an estimate results in a zero matrix, then the sign is returned as <code>"NA"</code>. Sparsity is calculated at the proportion of total entries in the estimate which are equal to zero.</p>
 </div>
-<div class="section level3">
-<h3 id="plot-method">Plot Method<a class="anchor" aria-label="anchor" href="#plot-method"></a>
-</h3>
-<p>The <code>plot</code> method for <code>cvCovEst</code> allows users to visualize three main <code>plot_type</code>s of the candidate estimators: covariance heat maps (<code>heatmap</code>), eigenvalue plots (<code>eigen</code>), and the empirical risk (<code>risk</code>) as a function of the hyperparameters (for applicable estimator classes). If users do not specify a plot type, then all three plots are combined into one figure for the optimal estimator selected by <code>cvCovEst</code>. Users can also achieve this by setting <code>plot_type = "summary"</code>.</p>
+<div class="section level4">
+<h4 id="plot-method">Plot Method<a class="anchor" aria-label="anchor" href="#plot-method"></a>
+</h4>
+<p>The <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method for <code>cvCovEst</code> allows users to visualize three main <code>plot_type</code>s of the candidate estimators: covariance heat maps (<code>heatmap</code>), eigenvalue plots (<code>eigen</code>), and the empirical risk (<code>risk</code>) as a function of the hyperparameters (for applicable estimator classes). If users do not specify a plot type, then all three plots are combined into one figure for the optimal estimator selected by <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code>. Users can also achieve this by setting <code>plot_type = "summary"</code>.</p>
 <p>The heat maps and eigenvalue plots facilitate comparisons both within and between estimator classes by allowing multiple values to be passed as <code>estimator</code> and <code>stat</code> arguments.</p>
 <p>Additional arguments specific to each <code>plot_type</code> are outlined below:</p>
-<div class="section level4">
-<h4 id="heat-map">Heat Map<a class="anchor" aria-label="anchor" href="#heat-map"></a>
-</h4>
+<div class="section level5">
+<h5 id="heat-map">Heat Map<a class="anchor" aria-label="anchor" href="#heat-map"></a>
+</h5>
 <table class="table">
 <colgroup>
 <col width="43%">
@@ -380,9 +400,9 @@
 </tr></tbody>
 </table>
 </div>
-<div class="section level4">
-<h4 id="eigenvalue-plot">Eigenvalue Plot<a class="anchor" aria-label="anchor" href="#eigenvalue-plot"></a>
-</h4>
+<div class="section level5">
+<h5 id="eigenvalue-plot">Eigenvalue Plot<a class="anchor" aria-label="anchor" href="#eigenvalue-plot"></a>
+</h5>
 <table class="table">
 <colgroup>
 <col width="43%">
@@ -404,9 +424,9 @@
 </tbody>
 </table>
 </div>
-<div class="section level4">
-<h4 id="empirical-risk">Empirical Risk<a class="anchor" aria-label="anchor" href="#empirical-risk"></a>
-</h4>
+<div class="section level5">
+<h5 id="empirical-risk">Empirical Risk<a class="anchor" aria-label="anchor" href="#empirical-risk"></a>
+</h5>
 <p>These two additional arguments only apply to estimators with multiple hyperparameters:</p>
 <table class="table">
 <colgroup>
@@ -431,11 +451,11 @@
 </div>
 </div>
 </div>
-<div class="section level1">
-<h1 id="simulated-data-analysis-example">Simulated Data Analysis Example<a class="anchor" aria-label="anchor" href="#simulated-data-analysis-example"></a>
-</h1>
-<p>To show how the plot and summary methods can be used, data is simulated from a predetermined covariance matrix following a Toeplitz structure. The data is then passed to <code>cvCovEst</code> along with a handful of estimators.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="section level2">
+<h2 id="simulated-data-analysis-example">Simulated Data Analysis Example<a class="anchor" aria-label="anchor" href="#simulated-data-analysis-example"></a>
+</h2>
+<p>To show how the plot and summary methods can be used, data is simulated from a predetermined covariance matrix following a Toeplitz structure. The data is then passed to <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code> along with a handful of estimators.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1584</span><span class="op">)</span>
 
 <span class="va">toep_sim</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">p</span>, <span class="va">rho</span>, <span class="va">alpha</span><span class="op">)</span> <span class="op">{</span>
@@ -462,7 +482,7 @@
 <span class="va">sim_covmat</span> <span class="op">&lt;-</span> <span class="fu">toep_sim</span><span class="op">(</span>p <span class="op">=</span> <span class="fl">100</span>, rho <span class="op">=</span> <span class="fl">0.6</span>, alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>
 
 <span class="co"># sample 75 observations from multivariate normal mean = 0, var = sim_covmat</span>
-<span class="va">sim_dat</span> <span class="op">&lt;-</span>  <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html" class="external-link">mvrnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">75</span>, mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, Sigma <span class="op">=</span> <span class="va">sim_covmat</span><span class="op">)</span>
+<span class="va">sim_dat</span> <span class="op">&lt;-</span>  <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html" class="external-link">mvrnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, Sigma <span class="op">=</span> <span class="va">sim_covmat</span><span class="op">)</span>
 
 <span class="co"># run CV-selector</span>
 <span class="va">cv_cov_est_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cvCovEst.html">cvCovEst</a></span><span class="op">(</span>
@@ -481,77 +501,78 @@
   cv_scheme <span class="op">=</span> <span class="st">"v_fold"</span>,
   v_folds <span class="op">=</span> <span class="fl">5</span>
 <span class="op">)</span></code></pre></div>
-<div class="section level3">
-<h3 id="summary-method-1">Summary Method<a class="anchor" aria-label="anchor" href="#summary-method-1"></a>
-</h3>
-<p>The <code>summary</code> method is then used to compare the best performing estimators in each class:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="section level4">
+<h4 id="summary-method-1">Summary Method<a class="anchor" aria-label="anchor" href="#summary-method-1"></a>
+</h4>
+<p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method is then used to compare the best performing estimators in each class:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cv_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">cv_cov_est_sim</span>, dat_orig <span class="op">=</span> <span class="va">sim_dat</span><span class="op">)</span>
 <span class="va">cv_sum</span><span class="op">$</span><span class="va">bestInClass</span></code></pre></div>
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 6 × 6</span></span>
 <span class="co">##   estimator        hyperparameter       cv_risk cond_num sign  sparsity</span>
 <span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> bandingEst       k = 2                   792. -<span style="color: #BB0000;">6.70</span><span style="color: #949494;">e</span> 1 IND      0.951</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> taperingEst      k = 2                   802. -<span style="color: #BB0000;">8.09</span><span style="color: #949494;">e</span> 0 IND      0.97 </span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> linearShrinkEst  alpha = 0.25            839.  3.32<span style="color: #949494;">e</span> 0 PD       0    </span>
-<span class="co">## <span style="color: #BCBCBC;">4</span> thresholdingEst  gamma = 0.25            851. -<span style="color: #BB0000;">1.04</span><span style="color: #949494;">e</span> 1 IND      0.917</span>
-<span class="co">## <span style="color: #BCBCBC;">5</span> adaptiveLassoEst lambda = 0.1, n = 1     873. -<span style="color: #BB0000;">1.85</span><span style="color: #949494;">e</span> 1 IND      0.558</span>
-<span class="co">## <span style="color: #BCBCBC;">6</span> sampleCovEst     hyperparameters = NA    949. -<span style="color: #BB0000;">4.68</span><span style="color: #949494;">e</span>15 IND      0</span></code></pre>
-<p>In this case, the tapering estimator with <code>k = 4</code> achieves the lowest empirical risk. It is also one of the only estimators to produce a positive-definite estimate, along with the linear shrinkage estimator, although the linear shrinkage estiator yields a better conditioned estimate in this case. We can take a closer look at the estimator’s performance based on other possible hyperparameter values by hashing <code>taperingEst</code> from the <code>hyperRisk</code> list.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cv_sum</span><span class="op">$</span><span class="va">hyperRisk</span><span class="op">$</span><span class="va">bandingEst</span></code></pre></div>
+<span class="co">## <span style="color: #BCBCBC;">1</span> taperingEst      k = 6                   555.  9.26<span style="color: #949494;">e</span> 1 PD        0.89</span>
+<span class="co">## <span style="color: #BCBCBC;">2</span> bandingEst       k = 4                   557. -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span> 2 IND       0.91</span>
+<span class="co">## <span style="color: #BCBCBC;">3</span> adaptiveLassoEst lambda = 0.25, n = 2    570. -<span style="color: #BB0000;">3.3</span> <span style="color: #949494;">e</span> 1 IND       0.93</span>
+<span class="co">## <span style="color: #BCBCBC;">4</span> thresholdingEst  gamma = 0.35            574. -<span style="color: #BB0000;">1.48</span><span style="color: #949494;">e</span> 1 IND       0.96</span>
+<span class="co">## <span style="color: #BCBCBC;">5</span> linearShrinkEst  alpha = 0.45            593.  6.65<span style="color: #949494;">e</span> 0 PD        0   </span>
+<span class="co">## <span style="color: #BCBCBC;">6</span> sampleCovEst     hyperparameters = NA    667.  2.14<span style="color: #949494;">e</span>16 PD        0</span></code></pre>
+<p>In this case, the tapering estimator with <code>k = 6</code> achieves the lowest empirical risk. It is also one of the few positive definite matrices, though its condition number is worse than that of the linear shrinkage estimator’s estimate. The resulting estimate is also less sparse than that of the other sparsity-enforcing estimators “best” estimates.</p>
+<p>We can take a closer look at the estimator’s performance based on other possible hyperparameter values by hashing <code>taperingEst</code> from the <code>hyperRisk</code> list.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cv_sum</span><span class="op">$</span><span class="va">hyperRisk</span><span class="op">$</span><span class="va">taperingEst</span></code></pre></div>
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 5 × 3</span></span>
 <span class="co">##   hyperparameters cv_risk stat  </span>
 <span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> k = 2           792     min   </span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> k = 2           792     Q1    </span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> k = 2           792     median</span>
-<span class="co">## <span style="color: #BCBCBC;">4</span> k = 8           801     Q3    </span>
-<span class="co">## <span style="color: #BCBCBC;">5</span> k = 10          807     max</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span> k = 6           555     min   </span>
+<span class="co">## <span style="color: #BCBCBC;">2</span> k = 6           555     Q1    </span>
+<span class="co">## <span style="color: #BCBCBC;">3</span> k = 6           555     median</span>
+<span class="co">## <span style="color: #BCBCBC;">4</span> k = 4           558     Q3    </span>
+<span class="co">## <span style="color: #BCBCBC;">5</span> k = 2           572     max</span></code></pre>
 </div>
-<div class="section level3">
-<h3 id="plot-method-1">Plot Method<a class="anchor" aria-label="anchor" href="#plot-method-1"></a>
-</h3>
+<div class="section level4">
+<h4 id="plot-method-1">Plot Method<a class="anchor" aria-label="anchor" href="#plot-method-1"></a>
+</h4>
 <p>By specifying <code>plot_type = "risk"</code>, we can see the change in empirical risk as the value of <code>k</code> changes. A summary of the cross-validation scheme and loss function is displayed at the bottom of all <code>cvCovEst</code> plot outputs.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cv_cov_est_sim</span>, dat_orig <span class="op">=</span> <span class="va">sim_dat</span>, plot_type <span class="op">=</span> <span class="st">"risk"</span><span class="op">)</span></code></pre></div>
 <p><img src="using_cvCovEst_files/figure-html/risk-sim-1.png" width="384"></p>
 <p>We can also examine the matrix structure as the value of <code>k</code> changes. Examining the overall sparsity of the resulting estimator can be useful since, in some cases, the assumption of sparsity is not warranted. Note that the absolute values of the estimate’s entries are displayed to emphasize the structural differences between choices of hyperparameters.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cv_cov_est_sim</span>, dat_orig <span class="op">=</span> <span class="va">sim_dat</span>, plot_type <span class="op">=</span> <span class="st">"heatmap"</span>,
      stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"min"</span>, <span class="st">"median"</span>, <span class="st">"max"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="using_cvCovEst_files/figure-html/multi-heat-sim-1.png" width="672"></p>
 <p>If the signs of the covariances are of interest, they can be displayed by setting <code>abs_v = FALSE</code>:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cv_cov_est_sim</span>, dat_orig <span class="op">=</span> <span class="va">sim_dat</span>, plot_type <span class="op">=</span> <span class="st">"heatmap"</span>,
      stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"min"</span>, <span class="st">"median"</span>, <span class="st">"max"</span><span class="op">)</span>, abs_v <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="using_cvCovEst_files/figure-html/sign-multi-heat-sim-1.png" width="672"></p>
-<p>The difference between the optimal estimator selected by <code>cvCovEst</code> and the sample covariance matrix is clear when displaying their respective heat maps side by side.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p>The difference between the optimal estimator selected by <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code> and the sample covariance matrix is clear when displaying their respective heat maps side by side.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cv_cov_est_sim</span>, dat_orig <span class="op">=</span> <span class="va">sim_dat</span>, plot_type <span class="op">=</span> <span class="st">"heatmap"</span>,
-     estimator <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bandingEst"</span>, <span class="st">"sampleCovEst"</span><span class="op">)</span>,
+     estimator <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"taperingEst"</span>, <span class="st">"sampleCovEst"</span><span class="op">)</span>,
      stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"min"</span><span class="op">)</span>, abs_v <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="using_cvCovEst_files/figure-html/samp-heat-sim-1.png" width="480"></p>
-<p>We may also be interested in the eigenvalues of the various banding estimators. The distribution of eigenvalues relays information such as the condition number or the positive-definiteness of the resulting estimator. As with the other plot types, if the <code>estimator</code> argument is not specified, the default is to display the optimal estimator selected by <code>cvCovEst</code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<p>We may also be interested in the eigenvalues of the various banding estimators. The distribution of eigenvalues relays information such as the condition number or the positive-definiteness of the resulting estimator. As with the other plot types, if the <code>estimator</code> argument is not specified, the default is to display the optimal estimator selected by <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code>.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cv_cov_est_sim</span>, dat_orig <span class="op">=</span> <span class="va">sim_dat</span>, plot_type <span class="op">=</span> <span class="st">"eigen"</span>,
      stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"min"</span>, <span class="st">"median"</span>, <span class="st">"max"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="using_cvCovEst_files/figure-html/eigen-sim-1.png" width="480"></p>
 <p>Specifying multiple values in the <code>estimator</code> argument allows us compare the eigenvalues of the other estimator classes as well.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cv_cov_est_sim</span>, dat_orig <span class="op">=</span> <span class="va">sim_dat</span>, plot_type <span class="op">=</span> <span class="st">"eigen"</span>,
      stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"min"</span>, <span class="st">"median"</span>, <span class="st">"max"</span><span class="op">)</span>,
-     estimator <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bandingEst"</span>, <span class="st">"thresholdingEst"</span>, <span class="st">"linearShrinkEst"</span>,
+     estimator <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"taperingEst"</span>, <span class="st">"bandingEst"</span>, <span class="st">"linearShrinkEst"</span>,
                     <span class="st">"adaptiveLassoEst"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="using_cvCovEst_files/figure-html/multi-eigen-sim-1.png" width="576"></p>
-<p>As previously mentioned, simply calling the <code>plot</code> method on the output of <code>cvCovEst</code> and providing the original data will result in a visual summary of the selected estimator.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<p>As previously mentioned, simply calling the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on the output of <code><a href="../reference/cvCovEst.html">cvCovEst()</a></code> and providing the original data will result in a visual summary of the selected estimator.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cv_cov_est_sim</span>, dat_orig <span class="op">=</span> <span class="va">sim_dat</span><span class="op">)</span></code></pre></div>
-<p><img src="using_cvCovEst_files/figure-html/plot-summary-1.png" width="720"></p>
+<p><img src="using_cvCovEst_files/figure-html/plot-summary-1.png" width="816"></p>
 </div>
-<div class="section level2 unnumbered">
-<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h2>
+<div class="section level3">
+<h3 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-bickel2008_banding" class="csl-entry">
 Bickel, Peter J., and Elizaveta Levina. 2008a. <span>“Regularized Estimation of Large Covariance Matrices.”</span> <em>Annals of Statistics</em> 36 (1): 199–227. <a href="https://doi.org/10.1214/009053607000000758" class="external-link">https://doi.org/10.1214/009053607000000758</a>.
@@ -564,6 +585,9 @@ Boileau, Philippe, Nima S. Hejazi, Mark J. van der Laan, and Sandrine Dudoit. 20
 </div>
 <div id="ref-cai2010" class="csl-entry">
 Cai, T. Tony, Cun-Hui Zhang, and Harrison H. Zhou. 2010. <span>“Optimal Rates of Convergence for Covariance Matrix Estimation.”</span> <em>Ann. Statist.</em> 38 (4): 2118–44. <a href="https://doi.org/10.1214/09-AOS752" class="external-link">https://doi.org/10.1214/09-AOS752</a>.
+</div>
+<div id="ref-donoho2018" class="csl-entry">
+Donoho, David, Matan Gavish, and Iain Johnstone. 2018. <span>“<span class="nocase">Optimal shrinkage of eigenvalues in the spiked covariance model</span>.”</span> <em>The Annals of Statistics</em> 46 (4): 1742–78.
 </div>
 <div id="ref-laan_dudoit:2003" class="csl-entry">
 Dudoit, Sandrine, and Mark J van der Laan. 2003. <span>“Asymptotics of Cross-Validated Risk Estimation in Estimator Selection and Performance Assessment.”</span> Working Paper 126. U.c. Berkeley Division of Biostatistics Working Paper Series. Berkeley: University of California, Berkeley. <a href="https://biostats.bepress.com/ucbbiostat/paper126/" class="external-link">https://biostats.bepress.com/ucbbiostat/paper126/</a>.
@@ -620,7 +644,7 @@ van der Vaart, Aad W, Sandrine Dudoit, and Mark J van der Laan. 2006. <span>“O
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

@@ -1,6 +1,6 @@
 Package: cvCovEst
 Title: Cross-Validated Covariance Matrix Estimation
-Version: 1.0.2
+Version: 1.1.0
 Authors@R: c(
     person("Philippe", "Boileau", email = "philippe_boileau@berkeley.edu",
            role = c("aut", "cre", "cph"),
@@ -43,7 +43,8 @@ Imports:
     RSpectra,
     ggplot2,
     ggpubr,
-    RColorBrewer
+    RColorBrewer,
+    RMTstat
 Suggests:
     future,
     future.apply,

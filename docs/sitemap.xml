@@ -46,6 +46,15 @@
     <loc>/reference/checkPlotSumArgs.html</loc>
   </url>
   <url>
+    <loc>/reference/computeC.html</loc>
+  </url>
+  <url>
+    <loc>/reference/computeEll.html</loc>
+  </url>
+  <url>
+    <loc>/reference/computeS.html</loc>
+  </url>
+  <url>
     <loc>/reference/cvCovEst.html</loc>
   </url>
   <url>
@@ -80,6 +89,9 @@
   </url>
   <url>
     <loc>/reference/estAttributes.html</loc>
+  </url>
+  <url>
+    <loc>/reference/estimateNoise.html</loc>
   </url>
   <url>
     <loc>/reference/getHypers.html</loc>
@@ -137,6 +149,18 @@
   </url>
   <url>
     <loc>/reference/scadThreshold.html</loc>
+  </url>
+  <url>
+    <loc>/reference/scaleEigVals.html</loc>
+  </url>
+  <url>
+    <loc>/reference/spikedFrobeniusShrinkEst.html</loc>
+  </url>
+  <url>
+    <loc>/reference/spikedOperatorShrinkEst.html</loc>
+  </url>
+  <url>
+    <loc>/reference/spikedSteinShrinkEst.html</loc>
   </url>
   <url>
     <loc>/reference/strToNumber.html</loc>

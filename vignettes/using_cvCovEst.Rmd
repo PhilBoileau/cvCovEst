@@ -50,7 +50,7 @@ which may be accomplished using our general cross-validated estimator selection
 framework.
 
 Given a library of candidate estimators, a loss function, and a choice of
-cross-validation scheme, `cvCovEst` will identify the asymptotically optimal
+cross-validation scheme, `cvCovEst()` will identify the asymptotically optimal
 estimator of the covariance matrix from among all candidates. It subsequently
 estimates this parameter using the selected candidate. An example is provided
 below. Lists and brief descriptions of implemented candidate estimators, loss
@@ -94,7 +94,7 @@ cv_cov_est_out$estimate[1:5, 1:5]
 ### Candidate Estimators
 
 Covariance matrix estimators implemented in the `cvCovEst` package are
-catalogued in the following table. These estimators are fed to the `cvCovEst`
+catalogued in the following table. These estimators are fed to the `cvCovEst()`
 function through the `estimators` argument as a vector. If these estimators rely
 on hyperparameters, then they must be passed to the `estimator_params` as a
 list. Depending on one's assumptions --- or lack thereof --- about the true
@@ -103,26 +103,29 @@ them. Of course, they may also be used as standalone functions.
 
 |Estimator | Implementation | Description |
 |----------|----------|-------------|
-| Sample covariance matrix | `sampleCovEst` | The sample covariance matrix. |
-| Hard thresholding [@Bickel2008_thresh] | `thresholdingEst` | Applies a hard thresholding operator to the entries of the sample covariance matrix |
-| SCAD thresholding [@rothman2009;@fan2001] | `scadEst` | Applies the SCAD thresholding operator to the entries of the sample covariance matrix.|
-| Adaptive LASSO [@rothman2009] | `adaptiveLassoEst` | Applies the adaptive LASSO thresholding operator to the entries of the sample covariance matrix |
-| Banding [@bickel2008_banding] | `bandingEst` | Replaces the sample covariance matrix's off-diagonal bands by zeros. |
-| Tapering [@cai2010] | `taperingEst` | Tapers the sample covariance matrix's off-diagonal bands, eventually replacing them by zeros. |
-| Optimal Linear Shrinkage [@Ledoit2004] | `linearShrinkLWEst` | Asymptotically optimal shrinkage of the sample covariance matrix towards the identity. |
-| Linear Shrinkage [@Ledoit2004] | `linearShrinkEst` | Shrinkage of the sample covariance matrix towards the identity, but the shrinkage is controlled by a hyperparameter. |
-| Dense Linear Shrinkage [@shafer2005] | `denseLinearShrinkEst` | Asymptotically optimal shrinkage of the sample covariance matrix towards a dense matrix whose diagonal elements are the mean of the sample covariance matrix's diagonal, and whose off-diagonal elements are the mean of the sample covariance matrix's off-diagonal elements. |
-| Nonlinear Shrinkage [@Ledoit2020] | `nlShrinkLWEst` | Analytical estimator for the nonlinear shrinkage of the sample covariance matrix. |
-| POET [@fan2013] | `poetEst` | An estimator based on latent variable estimation and thresholding. |
-| Robust POET [@fan2018] | `robustPoetEst` | A robust (and more computationally taxing) take on the POET estimator. |
+| Sample covariance matrix | `sampleCovEst()` | The sample covariance matrix. |
+| Hard thresholding [@Bickel2008_thresh] | `thresholdingEst()` | Applies a hard thresholding operator to the entries of the sample covariance matrix. |
+| SCAD thresholding [@rothman2009;@fan2001] | `scadEst()` | Applies the SCAD thresholding operator to the entries of the sample covariance matrix.|
+| Adaptive LASSO [@rothman2009] | `adaptiveLassoEst()` | Applies the adaptive LASSO thresholding operator to the entries of the sample covariance matrix. |
+| Banding [@bickel2008_banding] | `bandingEst()` | Replaces the sample covariance matrix's off-diagonal bands by zeros. |
+| Tapering [@cai2010] | `taperingEst()` | Tapers the sample covariance matrix's off-diagonal bands, eventually replacing them by zeros. |
+| Optimal Linear Shrinkage [@Ledoit2004] | `linearShrinkLWEst()` | Asymptotically optimal shrinkage of the sample covariance matrix towards the identity. |
+| Linear Shrinkage [@Ledoit2004] | `linearShrinkEst()` | Shrinkage of the sample covariance matrix towards the identity, but the shrinkage is controlled by a hyperparameter. |
+| Dense Linear Shrinkage [@shafer2005] | `denseLinearShrinkEst()` | Asymptotically optimal shrinkage of the sample covariance matrix towards a dense matrix whose diagonal elements are the mean of the sample covariance matrix's diagonal, and whose off-diagonal elements are the mean of the sample covariance matrix's off-diagonal elements. |
+| Nonlinear Shrinkage [@Ledoit2020] | `nlShrinkLWEst()` | Analytical estimator for the nonlinear shrinkage of the sample covariance matrix. |
+| POET [@fan2013] | `poetEst()` | An estimator based on latent variable estimation and thresholding. |
+| Robust POET [@fan2018] | `robustPoetEst()` | A robust (and more computationally taxing) take on the POET estimator. |
+| Spiked Operator Loss Shrinkage [@donoho2018] | `spikedOperatorShrinkEst()` | The asymptotically optimal shrinkage estimator based on the operator loss in a Gaussian spiked covariance model. |
+| Spiked Frobenius Loss Shrinkage [@donoho2018] | `spikedFrobeniusShrinkEst()` | The asymptotically optimal shrinkage estimator based on the Frobenius loss in a Gaussian spiked covariance model. |
+| Spiked Stein Loss Shrinkage [@donoho2018] | `spikedSteinShrinkEst()` | The asymptotically optimal shrinkage estimator based on the Stein loss in a Gaussian spiked covariance model. |
 
-Note that `cvCovEst` only functions with estimators native to this package. If
+Note that `cvCovEst()` only functions with estimators native to this package. If
 you'd like to request a new estimator implementation, please submit an
 [issue](https://github.com/PhilBoileau/cvCovEst/issues) to the queue.
 
 ### Loss Functions
 
-Given a collection of candidate estimators, `cvCovEst` compares their
+Given a collection of candidate estimators, `cvCovEst()` compares their
 conditional cross-validated risks to identify the optimal selection. The loss
 function used to compute these risks should reflect both aspects of the
 data-generating distribution and the goal of the estimation procedure. This
@@ -130,24 +133,24 @@ package currently implements three loss functions:
 
 | Loss | Implementation | Description |
 |------|----------------|-------------|
-| Matrix-based Frobenius | `cvMatrixFrobeniusLoss` | The default, based on the Frobenius norm. Appropriate when the dataset's features are of similar magnitudes. |
-| Variance-scaled matrix-based Frobenius | `cvScaledMatrixFrobeniusLoss` | A scaled version of the matrix-based Frobenius loss, where weights are the inverse of products from the sample covariance matrix's diagonal. Appropriate when the features of the dataset are of different magnitudes. |
-| Observation-based Frobenius | `cvFrobeniusLoss` | Based on the Frobenius norm and the rank-1, observation-level estimates of the sample covariance matrix. Its selections are equivalent to that of the matrix-based Frobenius, though less computationally efficient. However, the optimality results of @boileau2021 rely on it. |
+| Matrix-based Frobenius | `cvMatrixFrobeniusLoss()` | The default, based on the Frobenius norm. Appropriate when the dataset's features are of similar magnitudes. |
+| Variance-scaled matrix-based Frobenius | `cvScaledMatrixFrobeniusLoss()` | A scaled version of the matrix-based Frobenius loss, where weights are the inverse of products from the sample covariance matrix's diagonal. Appropriate when the features of the dataset are of different magnitudes. |
+| Observation-based Frobenius | `cvFrobeniusLoss()` | Based on the Frobenius norm and the rank-1, observation-level estimates of the sample covariance matrix. Its selections are equivalent to that of the matrix-based Frobenius, though less computationally efficient. However, the optimality results of @boileau2021 rely on it. |
 
 The choice of loss function is set trough the `cv_loss` argument. Like the
-candidate estimators, `cvCovEst` only supports loss functions implemented in
+candidate estimators, `cvCovEst(0` only supports loss functions implemented in
 this package. Please submit suggestions to the
 [issue](https://github.com/PhilBoileau/cvCovEst/issues) queue.
 
 ### Supported Cross-Validation Schemes
 
-Two cross-validation schemes are currently supported by `cvCovEst`. Please
+Two cross-validation schemes are currently supported by `cvCovEst()`. Please
 consider filing an [issue](https://github.com/PhilBoileau/cvCovEst/issues) in
 the queue to request the implementation of another cross-validation scheme.
 
 | Scheme | Details |
 |--------|---------|
-| V-fold | To use V-fold cross-validation, set the `cv_scheme` argument in `cvCovEst` to `"v_fold"`, and set the number of folds through the `v_folds` argument. `cvCovEst` defaults to 5-fold cross-validation. |
+| V-fold | To use V-fold cross-validation, set the `cv_scheme` argument in `cvCovEst()` to `"v_fold"`, and set the number of folds through the `v_folds` argument. `cvCovEst()` defaults to 5-fold cross-validation. |
 | Monte-Carlo | To perform Monte-Carlo cross-validation, set the `cv_scheme` argument to `"mc"`. Set the proportion of data to be used in each validation set using the `mc_split` argument, and the number of iterations to perform with the `v_folds` argument. |
 
 
@@ -161,18 +164,18 @@ allows for the evaluation of their performance over varying inputs.
 
 ### Summary Method 
 
-The `summary` method for `cvCovEst` accepts an `object` argument, a named
+The `summary()` method for `cvCovEst` accepts an `object` argument, a named
 `list` of class `cvCovEst`, a `dat_orig` argument, the original data used to
 calculate the covariance matrix estimates, and a `summ_fun` argument, a
 character vector specifying the type of summary function to use.
 
 These summary functions allow the user to quickly compare the performance of
-several classes of estimators and compute other metrics of interest.  The
+several classes of estimators and compute other metrics of interest. The
 choices of `summ_fun` and their outputs are described below:
 
 | Summary | Implementation | Description |
 |---------|----------------|-------------|
-| Empirical Risk by Estimator Class | `empRiskByClass` | Returns the minimum, 1^st^ quartile, median, 3^rd^ quartile, and maximum of the empirical risk associated with each class of estimator passed to `cvCovEst`. |
+| Empirical Risk by Estimator Class | `empRiskByClass` | Returns the minimum, 1^st^ quartile, median, 3^rd^ quartile, and maximum of the empirical risk associated with each class of estimator passed to `cvCovEst()`. |
 | Best Performing Estimator by Class | `bestInClass` | Returns the specific hyperparameters, if applicable, of the best performing estimator within each class along with additional metrics. |
 | Worst Performing Estimator by Class | `worstInClass` | Returns the specific hyperparameters, if applicable, of the worst performing estimator within each class along with additional metrics. | 
 | Empirical Risk by Hyperparameter | `hyperRisk` | For estimators that take hyperparameters as arguments, this returns the hyperparameters associated with the minimum, 1^st^ quartile, median, 3^rd^ quartile, and maximum of the empirical risk within each class of estimator.  Each class has its own `tibble` which are returned as a `list`. |
@@ -187,12 +190,12 @@ total entries in the estimate which are equal to zero.
 
 ### Plot Method
 
-The `plot` method for `cvCovEst` allows users to visualize three main
+The `plot()` method for `cvCovEst` allows users to visualize three main
 `plot_type`s of the candidate estimators: covariance heat maps (`heatmap`),
 eigenvalue plots (`eigen`), and the empirical risk (`risk`) as a function of
 the hyperparameters (for applicable estimator classes).  If users do not
 specify a plot type, then all three plots are combined into one figure for the
-optimal estimator selected by `cvCovEst`.  Users can also achieve this by
+optimal estimator selected by `cvCovEst()`.  Users can also achieve this by
 setting `plot_type = "summary"`.
 
 The heat maps and eigenvalue plots facilitate comparisons both within and
@@ -228,7 +231,7 @@ These two additional arguments only apply to estimators with multiple hyperparam
 
 To show how the plot and summary methods can be used, data is simulated from a
 predetermined covariance matrix following a Toeplitz structure.  The data is
-then passed to `cvCovEst` along with a handful of estimators. 
+then passed to `cvCovEst()` along with a handful of estimators. 
 
 ```{r toep-sim}
 set.seed(1584)
@@ -257,7 +260,7 @@ toep_sim <- function(p, rho, alpha) {
 sim_covmat <- toep_sim(p = 100, rho = 0.6, alpha = 0.3)
 
 # sample 75 observations from multivariate normal mean = 0, var = sim_covmat
-sim_dat <-  MASS::mvrnorm(n = 75, mu = rep(0, 100), Sigma = sim_covmat)
+sim_dat <-  MASS::mvrnorm(n = 100, mu = rep(0, 100), Sigma = sim_covmat)
 
 # run CV-selector
 cv_cov_est_sim <- cvCovEst(
@@ -281,7 +284,7 @@ cv_cov_est_sim <- cvCovEst(
 
 ### Summary Method 
 
-The `summary` method is then used to compare the best performing estimators in
+The `summary()` method is then used to compare the best performing estimators in
 each class:
 
 ```{r summary-sim}
@@ -289,15 +292,17 @@ cv_sum <- summary(cv_cov_est_sim, dat_orig = sim_dat)
 cv_sum$bestInClass
 ```
 
-In this case, the tapering estimator with `k = 4` achieves the lowest empirical
-risk.  It is also one of the only estimators to produce a positive-definite
-estimate, along with the linear shrinkage estimator, although the linear
-shrinkage estiator yields a better conditioned estimate in this case.  We can
-take a closer look at the estimator's performance based on other possible
+In this case, the tapering estimator with `k = 6` achieves the lowest empirical
+risk. It is also one of the few positive definite matrices, though its condition
+number is worse than that of the linear shrinkage estimator's estimate. The
+resulting estimate is also less sparse than that of the other sparsity-enforcing
+estimators "best" estimates.
+
+We can take a closer look at the estimator's performance based on other possible
 hyperparameter values by hashing `taperingEst` from the `hyperRisk` list.
 
 ```{r hyperRisk-sim}
-cv_sum$hyperRisk$bandingEst
+cv_sum$hyperRisk$taperingEst
 ```
 
 
@@ -332,14 +337,14 @@ plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "heatmap",
      stat = c("min", "median", "max"), abs_v = FALSE)
 ```
 
-The difference between the optimal estimator selected by `cvCovEst` and the
+The difference between the optimal estimator selected by `cvCovEst()` and the
 sample covariance matrix is clear when displaying their respective heat maps
 side by side.
 
 
 ```{r samp-heat-sim, fig.height=3.5, fig.width=5}
 plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "heatmap",
-     estimator = c("bandingEst", "sampleCovEst"),
+     estimator = c("taperingEst", "sampleCovEst"),
      stat = c("min"), abs_v = FALSE)
 ```
 
@@ -347,7 +352,7 @@ We may also be interested in the eigenvalues of the various banding estimators.
 The distribution of eigenvalues relays information such as the condition number
 or the positive-definiteness of the resulting estimator.  As with the other
 plot types, if the `estimator` argument is not specified, the default is to
-display the optimal estimator selected by `cvCovEst`.
+display the optimal estimator selected by `cvCovEst()`.
 
 
 ```{r eigen-sim, fig.height = 3.5, fig.width=5}
@@ -361,16 +366,16 @@ eigenvalues of the other estimator classes as well.
 ```{r multi-eigen-sim, fig.height=4.5, fig.width=6}
 plot(cv_cov_est_sim, dat_orig = sim_dat, plot_type = "eigen",
      stat = c("min", "median", "max"),
-     estimator = c("bandingEst", "thresholdingEst", "linearShrinkEst",
+     estimator = c("taperingEst", "bandingEst", "linearShrinkEst",
                     "adaptiveLassoEst"))
 ```
 
 
-As previously mentioned, simply calling the `plot` method on the output of
-`cvCovEst` and providing the original data will result in a visual summary of
+As previously mentioned, simply calling the `plot()` on the output of
+`cvCovEst()` and providing the original data will result in a visual summary of
 the selected estimator.  
 
-```{r plot-summary, fig.height=7, fig.width=7.5}
+```{r plot-summary, fig.height=8, fig.width=8.5}
 plot(cv_cov_est_sim, dat_orig = sim_dat)
 ```
 

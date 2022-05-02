@@ -11,10 +11,13 @@ reference:
     - linearShrinkEst
     - linearShrinkLWEst
     - nlShrinkLWEst
-    - poesEst
+    - poetEst
     - robustPoetEst
     - sampleCovEst
     - scadEst
+    - spikedOperatorShrinkEst
+    - spikedFrobeniusShrinkEst
+    - spikedSteinShrinkEst
     - taperingEst
     - thresholdingEst
   - title: "Cross-Validation Functions"

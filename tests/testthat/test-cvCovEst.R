@@ -16,7 +16,9 @@ test_that("cross-validated covariance selector runs silently", {
       linearShrinkEst, linearShrinkLWEst,
       thresholdingEst, sampleCovEst, bandingEst,
       taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-      scadEst, poetEst, robustPoetEst, adaptiveLassoEst
+      scadEst, poetEst, robustPoetEst, adaptiveLassoEst,
+      spikedOperatorShrinkEst, spikedFrobeniusShrinkEst,
+      spikedSteinShrinkEst
     ),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -29,7 +31,16 @@ test_that("cross-validated covariance selector runs silently", {
         lambda = c(0.1, 0.2), k = c(1L, 2L),
         var_est = c("sample")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      )
     ),
     cv_scheme = "v_fold", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
@@ -40,7 +51,9 @@ test_that("cross-validated covariance selector runs silently", {
       linearShrinkEst, linearShrinkLWEst,
       thresholdingEst, sampleCovEst, bandingEst,
       taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-      scadEst, poetEst, robustPoetEst, adaptiveLassoEst
+      scadEst, poetEst, robustPoetEst, adaptiveLassoEst,
+      spikedOperatorShrinkEst, spikedFrobeniusShrinkEst,
+      spikedSteinShrinkEst
     ),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -53,7 +66,16 @@ test_that("cross-validated covariance selector runs silently", {
         lambda = c(0.1, 0.2), k = c(1L, 2L),
         var_est = c("sample")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      )
     ),
     cv_scheme = "mc", mc_split = 0.5, v_folds = 5,
     center = TRUE, scale = FALSE, parallel = FALSE
@@ -64,7 +86,9 @@ test_that("cross-validated covariance selector runs silently", {
       linearShrinkEst, linearShrinkLWEst,
       thresholdingEst, sampleCovEst, bandingEst,
       taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-      scadEst, poetEst, robustPoetEst, adaptiveLassoEst
+      scadEst, poetEst, robustPoetEst, adaptiveLassoEst,
+      spikedOperatorShrinkEst, spikedFrobeniusShrinkEst,
+      spikedSteinShrinkEst
     ),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -77,7 +101,16 @@ test_that("cross-validated covariance selector runs silently", {
         lambda = c(0.1, 0.2), k = c(1L, 2L),
         var_est = c("sample")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cvFrobeniusLoss, cv_scheme = "v_fold",
     mc_split = 0.5, v_folds = 5,
@@ -89,7 +122,9 @@ test_that("cross-validated covariance selector runs silently", {
       linearShrinkEst, linearShrinkLWEst,
       thresholdingEst, sampleCovEst, bandingEst,
       taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-      scadEst, poetEst, robustPoetEst, adaptiveLassoEst
+      scadEst, poetEst, robustPoetEst, adaptiveLassoEst,
+      spikedOperatorShrinkEst, spikedFrobeniusShrinkEst,
+      spikedSteinShrinkEst
     ),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -102,7 +137,16 @@ test_that("cross-validated covariance selector runs silently", {
         lambda = c(0.1, 0.2), k = c(1L, 2L),
         var_est = c("sample")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cvFrobeniusLoss, cv_scheme = "mc",
     mc_split = 0.5, v_folds = 5,
@@ -114,7 +158,9 @@ test_that("cross-validated covariance selector runs silently", {
       linearShrinkEst, linearShrinkLWEst,
       thresholdingEst, sampleCovEst, bandingEst,
       taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-      scadEst, poetEst, robustPoetEst, adaptiveLassoEst
+      scadEst, poetEst, robustPoetEst, adaptiveLassoEst,
+      spikedOperatorShrinkEst, spikedFrobeniusShrinkEst,
+      spikedSteinShrinkEst
     ),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -127,7 +173,16 @@ test_that("cross-validated covariance selector runs silently", {
         lambda = c(0.1, 0.2), k = c(1L, 2L),
         var_est = c("sample")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cvScaledMatrixFrobeniusLoss, cv_scheme = "v_fold",
     mc_split = 0.5, v_folds = 5,
@@ -139,7 +194,9 @@ test_that("cross-validated covariance selector runs silently", {
       linearShrinkEst, linearShrinkLWEst,
       thresholdingEst, sampleCovEst, bandingEst,
       taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-      scadEst, poetEst, robustPoetEst, adaptiveLassoEst
+      scadEst, poetEst, robustPoetEst, adaptiveLassoEst,
+      spikedOperatorShrinkEst, spikedFrobeniusShrinkEst,
+      spikedSteinShrinkEst
     ),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -152,7 +209,16 @@ test_that("cross-validated covariance selector runs silently", {
         lambda = c(0.1, 0.2), k = c(1L, 2L),
         var_est = c("sample")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedFrobeniusShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      ),
+      spikedSteinShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L), noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cvScaledMatrixFrobeniusLoss, cv_scheme = "mc",
     mc_split = 0.5, v_folds = 5,
