@@ -7,7 +7,7 @@
 computeC(ell, p_n_ratio)
 }
 \arguments{
-\item{ell}{A \code{numeric} vector output by \code{\linke{computeEll}()}.}
+\item{ell}{A \code{numeric} vector output by \code{\link{computeEll}()}.}
 
 \item{p_n_ratio}{A \code{numeric} indicating the asymptotic ratio of the
 number of features, p, and the number of observations, n. This ratio is

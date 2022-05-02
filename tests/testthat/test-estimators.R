@@ -330,7 +330,7 @@ test_that(paste("returns the sample covariance matrix when the number of",
   library(MASS)
   set.seed(123)
   dat <- mvrnorm(n = 100, mu = rep(0, 10), Sigma = diag(1, nrow = 10))
-  expect_equal(spikedFrobeniusShrinkEst(dat, p_n_ratio = 0.1),
+  expect_equal(spikedSteinShrinkEst(dat, p_n_ratio = 0.1),
                sampleCovEst(dat))
 })
 
@@ -340,7 +340,7 @@ test_that(paste("estimated eigenvalues are approximately equal to population",
   set.seed(62342)
   eig_vals <- c(10, rep(0.5, 9))
   dat <- mvrnorm(n = 100, mu = rep(0, 10), Sigma = diag(eig_vals, nrow = 10))
-  expect_equal(eigen(spikedFrobeniusShrinkEst(dat, p_n_ratio = 0.1))$values,
+  expect_equal(eigen(spikedSteinShrinkEst(dat, p_n_ratio = 0.1))$values,
                eig_vals, tolerance = 0.5)
 })
 
@@ -351,7 +351,7 @@ test_that(paste("noise terms are exactly equal to corresponding eigenvalues of",
   eig_vals <- c(10, rep(0.5, 9))
   dat <- mvrnorm(n = 100, mu = rep(0, 10), Sigma = diag(eig_vals, nrow = 10))
   estimated_eig_vals <- eigen(
-    spikedFrobeniusShrinkEst(dat, p_n_ratio = 0.1, noise = 0.5)
+    spikedSteinShrinkEst(dat, p_n_ratio = 0.1, noise = 0.5)
   )$values
   expect_equal(estimated_eig_vals[2:10], eig_vals[2:10])
 })
@@ -363,7 +363,7 @@ test_that(paste("number of spikes in estimates equals to num_spikes when, even",
   eig_vals <- c(50, 45, 40, rep(1, 7))
   dat <- mvrnorm(n = 100, mu = rep(0, 10), Sigma = diag(eig_vals, nrow = 10))
   estimated_eig_vals <- eigen(
-    spikedFrobeniusShrinkEst(dat, p_n_ratio = 0.1, num_spikes = 2)
+    spikedSteinShrinkEst(dat, p_n_ratio = 0.1, num_spikes = 2)
   )$values
   expect_equal(sum(estimated_eig_vals > 2), 2)
 })
