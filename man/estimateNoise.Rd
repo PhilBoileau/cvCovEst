@@ -24,12 +24,6 @@ assumed to be the identity matrix multiplied by the unknown noise, save for
 a few "spiked" entries. This procedures is described in
 \insertCite{donoho2018;textual}{cvCovEst}.
 }
-\examples{
-eig_vals <- rep(1, 50)
-p_n_ratio <- 0.8
-estimateNoise(eig_vals, p_n_ratio)
-
-}
 \references{
 \insertAllCited{}
 }

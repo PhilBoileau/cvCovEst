@@ -21,11 +21,6 @@
 #'
 #' @keywords internal
 #'
-#' @examples
-#' eig_vals <- rep(1, 50)
-#' p_n_ratio <- 0.8
-#' estimateNoise(eig_vals, p_n_ratio)
-#'
 estimateNoise <- function(eig_vals, p_n_ratio) {
 
   # extract the median of the Marceko-Pastur distribution
@@ -39,7 +34,7 @@ estimateNoise <- function(eig_vals, p_n_ratio) {
 
 ################################################################################
 
-#' Estimate Noise in Spiked Covariance Matrix Model
+#' Extract Estimated Scaled Eigenvalues in Spiked Covariance Matrix Model
 #'
 #' @description \code{scaleEigVals()} computes the scaled eigenvalues, and
 #'   filters out all eigenvalues that do not need to be shrunk.
@@ -57,12 +52,6 @@ estimateNoise <- function(eig_vals, p_n_ratio) {
 #' @return A \code{numeric} vector of the scaled eigenvalues to be shrunk.
 #'
 #' @keywords internal
-#'
-#' @examples
-#' eig_vals <- c(15, 12, 9, 3, 3, 3)
-#' noise <- 3
-#' p_n_ratio <- 0.8
-#' scaleEigVals(eig_vals, noise, p_n_ratio, num_spikes = NULL)
 #'
 scaleEigVals <- function(eig_vals, noise, p_n_ratio, num_spikes) {
 
@@ -88,7 +77,7 @@ scaleEigVals <- function(eig_vals, noise, p_n_ratio, num_spikes) {
 
 ################################################################################
 
-#' Estimate Noise in Spiked Covariance Matrix Model
+#' Estimate Ell of Spiked Covariance Matrix Estimator
 #'
 #' @description \code{computeEll()} computes the ell value described in
 #'   \insertCite{donoho2018;textual}{cvCovEst}.
@@ -107,12 +96,6 @@ scaleEigVals <- function(eig_vals, noise, p_n_ratio, num_spikes) {
 #'   \insertAllCited{}
 #'
 #' @keywords internal
-#'
-#' @examples
-#' scaled_eig_vals <- c(10)
-#' p <- 10
-#' p_n_ratio <- 0.5
-#' computeEll(scaled_eig_vals, p, p_n_ratio)
 #'
 computeEll <- function(scaled_eig_vals, p, p_n_ratio) {
 

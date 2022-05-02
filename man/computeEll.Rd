@@ -2,7 +2,7 @@
 % Please edit documentation in R/spikedCovarianceHelpers.R
 \name{computeEll}
 \alias{computeEll}
-\title{Estimate Noise in Spiked Covariance Matrix Model}
+\title{Estimate Ell of Spiked Covariance Matrix Estimator}
 \usage{
 computeEll(scaled_eig_vals, p, p_n_ratio)
 }
@@ -23,13 +23,6 @@ A \code{numeric} vector.
 \description{
 \code{computeEll()} computes the ell value described in
 \insertCite{donoho2018;textual}{cvCovEst}.
-}
-\examples{
-scaled_eig_vals <- c(10)
-p <- 10
-p_n_ratio <- 0.5
-computeEll(scaled_eig_vals, p, p_n_ratio)
-
 }
 \references{
 \insertAllCited{}

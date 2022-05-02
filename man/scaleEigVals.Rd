@@ -2,7 +2,7 @@
 % Please edit documentation in R/spikedCovarianceHelpers.R
 \name{scaleEigVals}
 \alias{scaleEigVals}
-\title{Estimate Noise in Spiked Covariance Matrix Model}
+\title{Extract Estimated Scaled Eigenvalues in Spiked Covariance Matrix Model}
 \usage{
 scaleEigVals(eig_vals, noise, p_n_ratio, num_spikes)
 }
@@ -26,12 +26,5 @@ A \code{numeric} vector of the scaled eigenvalues to be shrunk.
 \description{
 \code{scaleEigVals()} computes the scaled eigenvalues, and
 filters out all eigenvalues that do not need to be shrunk.
-}
-\examples{
-eig_vals <- c(15, 12, 9, 3, 3, 3)
-noise <- 3
-p_n_ratio <- 0.8
-scaleEigVals(eig_vals, noise, p_n_ratio, num_spikes = NULL)
-
 }
 \keyword{internal}

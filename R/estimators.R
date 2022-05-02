@@ -713,3 +713,81 @@ adaptiveLassoEst <- function(dat, lambda, n) {
   # output the post-thresholding estimate
   return(adaptive_cov_mat)
 }
+
+###############################################################################
+
+#' Operator Norm Shrinkage Estimator, Spiked Covariance Model
+#'
+#' @description \code{operatorShrinkEst()} implements the asymptotically optimal
+#'   shrinkage estimator with respect to the operator loss in a spiked
+#'   covariance matrix model. Informally, this model admits Gaussian
+#'   data-generating processes whose covariance matrix is a scalar multiple of
+#'   the identity, save for a few number of large "spikes". A thorough review of
+#'   this estimator, or more generally spiked covariance matrix estimation, is
+#'   provided in \insertCite{donoho2018;textual}{cvCovEst}.
+#'
+#' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
+#' @param p_n_ratio A \code{numeric} between 0 and 1 representing the asymptotic
+#'   ratio of the number of features, p, and the number of observations, n.
+#' @param num_spikes A \code{numeric} integer equal to or larger than one which
+#'   providing the known number of spikes in the population covariance matrix.
+#'   Defaults to \code{NULL}, indicating that this value is not known and must
+#'   be estimated.
+#' @param noise A \code{numeric} representing the known scalar multiple of the
+#'   identity matrix giving the approximate population covariance matrix.
+#'   Defaults to \code{NULL}, indicating that this values is not known and must
+#'   be estimated.
+#'
+#' @importFrom coop covar
+#'
+#' @return A \code{matrix} corresponding to the covariance matrix estimate.
+#'
+#' @references
+#'   \insertAllCited{}
+#'
+#' @examples
+#' spikedOperatorShrinkEst(dat = mtcars, p_n_ratio = 0.1)
+#'
+#' @export
+spikedOperatorShrinkEst <- function(
+  dat, p_n_ratio, num_spikes = NULL, noise = NULL
+) {
+
+  # compute the sample covariance matrix
+  sample_cov_mat <- coop::covar(dat)
+
+  # eigendecomposition of the sample covariance matrix
+  eig_decomp <- eigen(x = sample_cov_mat, symmetric = TRUE)
+
+  # estimate the noise, if not provided, using the Marcenko-Pastur distribution
+  if (is.null(noise)) noise <- estimateNoise(eig_decomp$values, p_n_ratio)
+
+  # determine the number of eigenvalues to shrink, and extract them
+  scaled_eig_vals <- scaleEigVals(eig_decomp$values, noise, p_n_ratio,
+                                  num_spikes)
+  if (is.null(num_spikes)) num_spikes <- length(scaled_eig_vals)
+
+  # shrink the sample covariance matrix
+  if (num_spikes > 0) {
+
+    # compute ell from Donoho et al.
+    ell <- computeEll(scaled_eig_vals, ncol(dat), p_n_ratio)
+
+    # scale ell correctly
+    scaled_ell <- noise * ell
+
+    # compute the estimate
+    eigvect_mat <- eig_decomp$vectors
+    estimate <- eigvect_mat %*% tcrossprod(diag(scaled_ell), eigvect_mat)
+
+  } else {
+
+    # no shrinkage is necessary, return the sample covariance matrix
+    estimate <- sample_cov_mat
+
+  }
+
+  return(estimate)
+}
+
+###############################################################################
