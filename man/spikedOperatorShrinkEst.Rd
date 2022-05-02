@@ -35,7 +35,7 @@ this estimator, or more generally spiked covariance matrix estimation, is
 provided in \insertCite{donoho2018;textual}{cvCovEst}.
 }
 \examples{
-spikedOperatorShrinkEst(dat = mtcars, p_n_ratio = 0.1)
+spikedOperatorShrinkEst(dat = mtcars, p_n_ratio = 0.1, num_spikes = 2l)
 
 }
 \references{

@@ -95,7 +95,7 @@ checkArgs <- function(
         "thresholdingEst", "sampleCovEst", "bandingEst",
         "taperingEst", "nlShrinkLWEst",
         "denseLinearShrinkEst", "scadEst", "poetEst", "robustPoetEst",
-        "adaptiveLassoEst"
+        "adaptiveLassoEst", "spikedOperatorShrinkEst"
       ) == TRUE
     ),
     msg = "Only estimators implemented in the cvCovEst package can be used."
@@ -176,6 +176,24 @@ checkArgs <- function(
       == TRUE,
       all(estimator_params$adaptiveLassoEst$n >= 0) == TRUE,
       all(rlang::is_bare_numeric(estimator_params$adaptiveLassoEst$n)) == TRUE
+    )
+  }
+  if ("spikedOperatorShrinkEst" %in% estimators) {
+    assertthat::assert_that(
+      all(estimator_params$spikedOperatorShrinkEst$p_n_ratio > 0) == TRUE,
+      all(estimator_params$spikedOperatorShrinkEst$p_n_ratio < 1) == TRUE,
+      all(is.null(estimator_params$spikedOperatorShrinkEst$num_spikes) |
+          rlang::is_integer(estimator_params$spikedOperatorShrinkEst$num_spikes)
+      ) == TRUE,
+      all(is.null(estimator_params$spikedOperatorShrinkEst$num_spikes) |
+            estimator_params$spikedOperatorShrinkEst$num_spikes >= 0
+      ) == TRUE,
+      all(is.null(estimator_params$spikedOperatorShrinkEst$noise) |
+          rlang::is_bare_numeric(estimator_params$spikedOperatorShrinkEst$noise)
+      ) == TRUE,
+      all(is.null(estimator_params$spikedOperatorShrinkEst$noise) |
+          estimator_params$spikedOperatorShrinkEst$noise > 0
+      ) == TRUE
     )
   }
 

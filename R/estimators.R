@@ -746,7 +746,7 @@ adaptiveLassoEst <- function(dat, lambda, n) {
 #'   \insertAllCited{}
 #'
 #' @examples
-#' spikedOperatorShrinkEst(dat = mtcars, p_n_ratio = 0.1)
+#' spikedOperatorShrinkEst(dat = mtcars, p_n_ratio = 0.1, num_spikes = 2l)
 #'
 #' @export
 spikedOperatorShrinkEst <- function(

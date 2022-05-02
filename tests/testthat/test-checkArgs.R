@@ -8,12 +8,13 @@ Sigma <- matrix(0.5, nrow = 50, ncol = 50) + diag(0.5, nrow = 50)
 # sample 200 observations from multivariate normal with mean = 0, var = Sigma
 dat <- mvrnorm(n = 200, mu = rep(0, 50), Sigma = Sigma)
 
-# define the arguments as they appear inside cvCoveEst
+# define the arguments as they appear inside cvCovEst
 estimators <- rlang::expr(c(
   linearShrinkEst, thresholdingEst, sampleCovEst,
   linearShrinkLWEst, bandingEst, taperingEst,
   nlShrinkLWEst, denseLinearShrinkEst, scadEst,
-  poetEst, robustPoetEst, adaptiveLassoEst
+  poetEst, robustPoetEst, adaptiveLassoEst,
+  spikedOperatorShrinkEst
 ))
 estimator_params <- list(
   linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -22,11 +23,14 @@ estimator_params <- list(
   taperingEst = list(k = c(2L, 6L)),
   scadEst = list(lambda = c(0.1, 0.2)),
   poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
+  adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
   robustPoetEst = list(
     lambda = c(0.1, 0.2), k = c(1L, 3L),
     var_est = "sample"
   ),
-  adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+  spikedOperatorShrinkEst = list(
+    p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L), noise = c(NULL, 0.5)
+  )
 )
 cv_loss <- rlang::expr(cvFrobeniusLoss)
 cv_scheme <- "mc"
@@ -173,7 +177,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -193,7 +205,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -213,7 +233,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -233,7 +261,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -253,7 +289,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -273,7 +317,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2.1, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -293,7 +345,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(-2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -313,7 +373,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(3L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -333,7 +401,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -353,7 +429,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -373,7 +457,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = c(0.1, 0.2)),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -393,7 +485,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = -0.1),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -413,7 +513,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = "a"),
       poetEst = list(lambda = c(0.1, 0.2), k = c(1L, 2L, 3L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -433,7 +541,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = 0.1),
       poetEst = list(lambda = -0.1, k = c(1L, 2L)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -453,7 +569,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = 0.1),
       poetEst = list(lambda = 0.1, k = c(1.1, 2)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -473,7 +597,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = 0.1),
       poetEst = list(lambda = 0.1, k = c(1, 2)),
-      adaptiveLassoEst = list(lambda = -0.1, n = 0)
+      adaptiveLassoEst = list(lambda = -0.1, n = 0),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -493,7 +625,15 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = 0.1),
       poetEst = list(lambda = 0.1, k = c(1, 2)),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -517,7 +657,11 @@ test_that("Only reasonable hyperparameters pass checks", {
         lambda = 0.1, k = c(1L, 2L),
         var_est = c("samp", "huber")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -541,7 +685,11 @@ test_that("Only reasonable hyperparameters pass checks", {
         lambda = "a", k = c(1L, 2L),
         var_est = c("mad", "huber")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -565,7 +713,11 @@ test_that("Only reasonable hyperparameters pass checks", {
         lambda = 0.1, k = c(1.1, 2L),
         var_est = c("mad", "huber")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -585,7 +737,99 @@ test_that("Only reasonable hyperparameters pass checks", {
       taperingEst = list(k = c(2L, 6L)),
       scadEst = list(lambda = 0.1),
       poetEst = list(lambda = 0.1, k = c(1, 2)),
-      adaptiveLassoEst = list(lambda = "a", n = 0)
+      adaptiveLassoEst = list(lambda = "a", n = 0),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.5, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
+    ),
+    cv_loss = cv_loss,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = 0.1),
+      poetEst = list(lambda = 0.1, k = c(1, 2)),
+      adaptiveLassoEst = list(lambda = 0.5, n = 0),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(-1, 0.8), num_spikes = c(NULL, 1L, 2L),
+        noise = c(NULL, 0.5)
+      )
+    ),
+    cv_loss = cv_loss,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = 0.1),
+      poetEst = list(lambda = 0.1, k = c(1, 2)),
+      adaptiveLassoEst = list(lambda = 0.5, n = 0),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.1, 0.8), num_spikes = c(NULL, 1L, 2.5),
+        noise = c(NULL, 0.5)
+      )
+    ),
+    cv_loss = cv_loss,
+    cv_scheme = cv_scheme,
+    mc_split = mc_split,
+    v_folds = v_folds,
+    center = center,
+    scale = scale,
+    parallel = parallel
+  ))
+  expect_error(checkArgs(
+    dat = dat,
+    estimators = estimators,
+    estimator_params = list(
+      linearShrinkEst = list(alpha = c(0.1, 0.9)),
+      thresholdingEst = list(gamma = c(0.2, 2)),
+      bandingEst = list(k = c(1L, 5L)),
+      taperingEst = list(k = c(2L, 6L)),
+      scadEst = list(lambda = 0.1),
+      poetEst = list(lambda = 0.1, k = c(1, 2)),
+      adaptiveLassoEst = list(lambda = 0.5, n = 0),
+      robustPoetEst = list(
+        lambda = c(0.1, 0.2), k = c(1L, 3L),
+        var_est = "sample"
+      ),
+      spikedOperatorShrinkEst = list(
+        p_n_ratio = c(0.1, 0.8), num_spikes = c(NULL, 1L),
+        noise = c(NULL, -0.5)
+      )
     ),
     cv_loss = cv_loss,
     cv_scheme = cv_scheme,
@@ -793,7 +1037,7 @@ test_that("checkArgs works well in cvCovEst Function", {
       linearShrinkEst, linearShrinkLWEst,
       thresholdingEst, sampleCovEst, bandingEst,
       taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-      scadEst, poetEst, adaptiveLassoEst
+      scadEst, poetEst, adaptiveLassoEst, spikedOperatorShrinkEst
     ),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -806,7 +1050,8 @@ test_that("checkArgs works well in cvCovEst Function", {
         lambda = c(0.1, 0.2), k = c(3L, 4L),
         var_est = c("sample", "mad")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(p_n_ratio = c(0.5, 0.8))
     ),
     cv_loss = cvFrobeniusLoss, cv_scheme = "v_fold",
     mc_split = 0.5, v_folds = 5,
@@ -818,7 +1063,7 @@ test_that("checkArgs works well in cvCovEst Function", {
       linearShrinkEst, linearShrinkLWEst,
       thresholdingEst, sampleCovEst, bandingEst,
       taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-      scadEst, poetEst, adaptiveLassoEst
+      scadEst, poetEst, adaptiveLassoEst, spikedOperatorShrinkEst
     ),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -831,7 +1076,8 @@ test_that("checkArgs works well in cvCovEst Function", {
         lambda = c(0.1, 0.2), k = c(3L, 4L),
         var_est = c("sample", "mad")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(p_n_ratio = c(0.5, 0.8))
     ),
     cv_loss = cvMatrixFrobeniusLoss, cv_scheme = "mc",
     mc_split = 0.5, v_folds = 5,
@@ -843,7 +1089,7 @@ test_that("checkArgs works well in cvCovEst Function", {
       linearShrinkEst, linearShrinkLWEst,
       thresholdingEst, sampleCovEst, bandingEst,
       taperingEst, nlShrinkLWEst, denseLinearShrinkEst,
-      scadEst, poetEst, adaptiveLassoEst
+      scadEst, poetEst, adaptiveLassoEst, spikedOperatorShrinkEst
     ),
     estimator_params = list(
       linearShrinkEst = list(alpha = c(0.1, 0.9)),
@@ -856,7 +1102,8 @@ test_that("checkArgs works well in cvCovEst Function", {
         lambda = c(0.1, 0.2), k = c(3L, 4L),
         var_est = c("sample", "mad")
       ),
-      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5))
+      adaptiveLassoEst = list(lambda = c(0, 0.5), n = c(0, 0.5)),
+      spikedOperatorShrinkEst = list(p_n_ratio = c(0.5, 0.8))
     ),
     cv_loss = cvScaledMatrixFrobeniusLoss, cv_scheme = "mc",
     mc_split = 0.5, v_folds = 5,
