@@ -57,3 +57,13 @@ test_that("c equals has one non-zero entry when ell has one spiked value", {
   expect_equal(c_donoho[1], leading_c)
 })
 
+test_that("s equals sqrt(1 - c^2)", {
+  scaled_eig_vals <- c(10)
+  p <- 10
+  p_n_ratio <- 0.5
+  ell <- computeEll(scaled_eig_vals, p, p_n_ratio)
+  c_donoho <- computeC(ell, p_n_ratio)
+  s_donoho <- computeS(c_donoho)
+  expect_equal(s_donoho, sqrt(1 - c_donoho^2))
+})
+

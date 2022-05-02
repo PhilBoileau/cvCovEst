@@ -125,10 +125,7 @@ computeEll <- function(scaled_eig_vals, p, p_n_ratio) {
 #' @description \code{computeC()} computes the c(ell) value described in
 #'   \insertCite{donoho2018;textual}{cvCovEst}.
 #'
-#' @param scaled_eig_vals A \code{numeric} vector of scaled estimated
-#'   eigenvalues.
-#' @param p A \code{numeric} integer indicating the number of features in the
-#'   data.
+#' @param ell A \code{numeric} vector output by \code{\linke{computeEll}()}.
 #' @param p_n_ratio A \code{numeric} indicating the asymptotic ratio of the
 #'   number of features, p, and the number of observations, n. This ratio is
 #'   assumed to be between 0 and 1.
@@ -155,4 +152,27 @@ computeC <- function(ell, p_n_ratio) {
   c_donoho <- c(c_donoho, rep(0, p - length(c_donoho)))
 
   return(c_donoho)
+}
+
+################################################################################
+
+#' Estimate S of Spiked Covariance Matrix Estimator
+#'
+#' @description \code{computeS()} computes the s(ell) value described in
+#'   \insertCite{donoho2018;textual}{cvCovEst}.
+#'
+#' @param c_donoho A \code{numeric} vector output by \code{\link{computeC}()}.
+#'
+#' @return A \code{numeric} vector.
+#'
+#' @references
+#'   \insertAllCited{}
+#'
+#' @keywords internal
+#'
+computeS <- function(c_donoho) {
+
+  s_donoho <- sqrt(1 - c_donoho^2)
+
+  return(s_donoho)
 }
