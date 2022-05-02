@@ -43,3 +43,17 @@ test_that(paste("ell is a vector of a scaled eigenvalue and ones when the",
   shrunken_spike <- ((10 + 1 - 0.5) + sqrt((10 + 1 - 0.5)^2 - 4*10)) / 2
   expect_equal(ell, c(shrunken_spike, rep(1, 9)))
 })
+
+test_that("c equals has one non-zero entry when ell has one spiked value", {
+  scaled_eig_vals <- c(10)
+  p <- 10
+  p_n_ratio <- 0.5
+  ell <- computeEll(scaled_eig_vals, p, p_n_ratio)
+  shrunken_spike <- ((10 + 1 - 0.5) + sqrt((10 + 1 - 0.5)^2 - 4*10)) / 2
+  c_donoho <- computeC(ell, p_n_ratio)
+  leading_c <- sqrt((1 - 0.5 / (shrunken_spike - 1)^2) /
+                    (1 + 0.5 / (shrunken_spike - 1)))
+  expect_equal(c_donoho[2:10], rep(0, 9))
+  expect_equal(c_donoho[1], leading_c)
+})
+
