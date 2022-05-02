@@ -25,7 +25,7 @@ are of different magnitudes."><!-- mathjax --><script src="https://cdnjs.cloudfl
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@ doi: <a href="https://doi.org/10.21105/joss.00512" class="external-link">10.2110
 <span class="r-in"><span class="fu">cvScaledMatrixFrobeniusLoss</span><span class="op">(</span></span>
 <span class="r-in">  fold <span class="op">=</span> <span class="va">resub</span>,</span>
 <span class="r-in">  dat <span class="op">=</span> <span class="va">dat</span>,</span>
-<span class="r-in">  estimator_funs <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html" class="external-link">quo</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span class="r-in">  estimator_funs <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">quo</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span class="r-in">    <span class="va">linearShrinkEst</span>, <span class="va">thresholdingEst</span>, <span class="va">sampleCovEst</span></span>
 <span class="r-in">  <span class="op">)</span><span class="op">)</span>,</span>
 <span class="r-in">  estimator_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -151,11 +151,11 @@ doi: <a href="https://doi.org/10.21105/joss.00512" class="external-link">10.2110
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   estimator       hyperparameters       loss  fold</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> linearShrinkEst alpha = 0             51.3     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> linearShrinkEst alpha = 1             14.3     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> thresholdingEst gamma = 0             14.3     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> thresholdingEst gamma = 1             66.7     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> sampleCovEst    hyperparameters = NA  14.3     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> linearShrinkEst alpha = 0             34.5     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> linearShrinkEst alpha = 1             12.0     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> thresholdingEst gamma = 0             12.0     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> thresholdingEst gamma = 1             50.3     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> sampleCovEst    hyperparameters = NA  12.0     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
@@ -171,7 +171,7 @@ doi: <a href="https://doi.org/10.21105/joss.00512" class="external-link">10.2110
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer></div>

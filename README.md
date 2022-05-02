@@ -138,7 +138,7 @@ package.
     }
 
 When describing or discussing the theory underlying the `cvCovEst`
-method, please cite the pre-print below.
+method, or simply using the method, please cite the pre-print below.
 
     @misc{boileau2021,
           title={Cross-Validated Loss-Based Covariance Matrix Estimator Selection in High Dimensions}, 

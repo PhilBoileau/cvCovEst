@@ -18,7 +18,7 @@ estimator from among a set of candidate estimators."><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -155,65 +155,65 @@ estimators' loss over the folds of the cross-validated procedure.</p></li>
 <span class="r-in">  scale <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $estimate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             mpg        cyl       disp         hp       drat         wt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mpg   1.0000000 -0.8521620 -0.8475514 -0.7761684  0.6811719 -0.8676594</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> cyl  -0.8521620  1.0000000  0.9020329  0.8324475 -0.6999381  0.7824958</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.8475514  0.9020329  1.0000000  0.7909486 -0.7102139  0.8879799</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hp   -0.7761684  0.8324475  0.7909486  1.0000000 -0.4487591  0.6587479</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.6811719 -0.6999381 -0.7102139 -0.4487591  1.0000000 -0.7124406</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> wt   -0.8676594  0.7824958  0.8879799  0.6587479 -0.7124406  1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> qsec  0.4186840 -0.5912421 -0.4336979 -0.7082234  0.0000000  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> vs    0.6640389 -0.8108118 -0.7104159 -0.7230967  0.4402785 -0.5549157</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> am    0.5998324 -0.5226070 -0.5912270  0.0000000  0.7127111 -0.6924953</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> gear  0.4802848 -0.4926866 -0.5555692  0.0000000  0.6996101 -0.5832870</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> carb -0.5509251  0.5269883  0.3949769  0.7498125  0.0000000  0.4276059</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            qsec         vs         am       gear       carb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mpg   0.4186840  0.6640389  0.5998324  0.4802848 -0.5509251</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> cyl  -0.5912421 -0.8108118 -0.5226070 -0.4926866  0.5269883</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.4336979 -0.7104159 -0.5912270 -0.5555692  0.3949769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hp   -0.7082234 -0.7230967  0.0000000  0.0000000  0.7498125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.0000000  0.4402785  0.7127111  0.6996101  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> wt    0.0000000 -0.5549157 -0.6924953 -0.5832870  0.4276059</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> qsec  1.0000000  0.7445354  0.0000000  0.0000000 -0.6562492</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> vs    0.7445354  1.0000000  0.0000000  0.0000000 -0.5696071</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> am    0.0000000  0.0000000  1.0000000  0.7940588  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> gear  0.0000000  0.0000000  0.7940588  1.0000000  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> carb -0.6562492 -0.5696071  0.0000000  0.0000000  1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             mpg        cyl       disp         hp        drat         wt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mpg   1.0000000 -0.7873741 -0.7831140 -0.7171581  0.62938398 -0.8016932</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl  -0.7873741  1.0000000  0.8334534  0.7691584 -0.64672344  0.7230045</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.7831140  0.8334534  1.0000000  0.7308146 -0.65621801  0.8204689</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp   -0.7171581  0.7691584  0.7308146  1.0000000 -0.41464100  0.6086648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.6293840 -0.6467234 -0.6562180 -0.4146410  1.00000000 -0.6582754</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wt   -0.8016932  0.7230045  0.8204689  0.6086648 -0.65827543  1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> qsec  0.3868525 -0.5462913 -0.4007248 -0.6543788  0.08427067 -0.1614326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> vs    0.6135536 -0.7491677 -0.6564046 -0.6681214  0.40680511 -0.5127267</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> am    0.5542286 -0.4828744 -0.5462774 -0.2247140  0.65852535 -0.6398464</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> gear  0.4437698 -0.4552288 -0.5133306 -0.1161473  0.64642039 -0.5389410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> carb -0.5090395  0.4869226  0.3649477  0.6928060 -0.08388726  0.3950960</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             qsec         vs          am       gear        carb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mpg   0.38685246  0.6135536  0.55422856  0.4437698 -0.50903952</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl  -0.54629131 -0.7491677 -0.48287444 -0.4552288  0.48692259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.40072483 -0.6564046 -0.54627742 -0.5133306  0.36494769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp   -0.65437880 -0.6681214 -0.22471400 -0.1161473  0.69280596</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.08427067  0.4068051  0.65852535  0.6464204 -0.08388726</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wt   -0.16143263 -0.5127267 -0.63984645 -0.5389410  0.39509605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> qsec  1.00000000  0.6879301 -0.21238507 -0.1965125 -0.60635612</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> vs    0.68793014  1.0000000  0.15554623  0.1903599 -0.52630123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> am   -0.21238507  0.1555462  1.00000000  0.7336883  0.05316015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> gear -0.19651249  0.1903599  0.73368831  1.0000000  0.25323571</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> carb -0.60635612 -0.5263012  0.05316015  0.2532357  1.00000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $estimator</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "thresholdingEst, gamma = 0.3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "linearShrinkLWEst, hyperparameters = NA"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $risk_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   estimator         hyperparameters      cv_risk</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> thresholdingEst   gamma = 0.3             52.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> sampleCovEst      hyperparameters = NA    52.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> linearShrinkLWEst hyperparameters = NA    52.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> thresholdingEst   gamma = 0.1             52.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> thresholdingEst   gamma = 0.2             53.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> linearShrinkLWEst hyperparameters = NA    52.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> thresholdingEst   gamma = 0.3             55.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> sampleCovEst      hyperparameters = NA    55.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> thresholdingEst   gamma = 0.1             56.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> thresholdingEst   gamma = 0.2             56.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cv_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 50 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    estimator         hyperparameters       loss  fold</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> linearShrinkLWEst hyperparameters = NA  44.5     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> thresholdingEst   gamma = 0.1           47.6     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> thresholdingEst   gamma = 0.2           47.8     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> thresholdingEst   gamma = 0.3           46.1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sampleCovEst      hyperparameters = NA  47.1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> linearShrinkLWEst hyperparameters = NA  37.1     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> thresholdingEst   gamma = 0.1           42.5     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> thresholdingEst   gamma = 0.2           42.9     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> thresholdingEst   gamma = 0.3           41.6     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sampleCovEst      hyperparameters = NA  42.5     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> linearShrinkLWEst hyperparameters = NA 168.      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> thresholdingEst   gamma = 0.1          162.      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> thresholdingEst   gamma = 0.2          164.      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> thresholdingEst   gamma = 0.3          164.      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sampleCovEst      hyperparameters = NA 162.      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> linearShrinkLWEst hyperparameters = NA  44.8     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> thresholdingEst   gamma = 0.1           51.2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> thresholdingEst   gamma = 0.2           51.6     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> thresholdingEst   gamma = 0.3           50.4     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sampleCovEst      hyperparameters = NA  51.2     2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 40 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $args</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $args$cv_loss</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^cvMatrixFrobeniusLoss</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x7ffcd8d80070</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x7fcbf287c418</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $args$cv_scheme</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "v_fold"</span>
@@ -250,7 +250,7 @@ estimators' loss over the folds of the cross-validated procedure.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer></div>

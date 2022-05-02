@@ -134,8 +134,8 @@ Please cite the following paper when using the `cvCovEst` R software package.
 
 ```
 
-When describing or discussing the theory underlying the `cvCovEst` method,
-please cite the pre-print below.
+When describing or discussing the theory underlying the `cvCovEst` method, or
+simply using the method, please cite the pre-print below.
 
 ```
 @misc{boileau2021,
