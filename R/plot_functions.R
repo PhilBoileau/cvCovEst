@@ -973,7 +973,7 @@ cvSummaryPlot <- function(
     rows = NULL,
     theme = ttheme(
       base_style = "lBlueWhite",
-      base_size = 8
+      base_size = 6
     )
   )
 

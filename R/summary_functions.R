@@ -65,10 +65,10 @@ bestInClass <- function(dat, worst = FALSE) {
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::last(.data$hyperparameters),
-        cv_risk = dplyr::last(.data$cv_risk),
-        cond_num = dplyr::last(.data$cond_num),
+        cv_risk = round(dplyr::last(.data$cv_risk), 2),
+        cond_num = round(dplyr::last(.data$cond_num), 3),
         sign = dplyr::last(.data$sign),
-        sparsity = dplyr::last(.data$sparsity),
+        sparsity = signif(dplyr::last(.data$sparsity), 2),
         .groups = "drop"
       ) %>%
       dplyr::arrange(.data$cv_risk)
@@ -79,10 +79,10 @@ bestInClass <- function(dat, worst = FALSE) {
       dplyr::group_by(.data$estimator) %>%
       dplyr::summarise(
         hyperparameter = dplyr::first(.data$hyperparameters),
-        cv_risk = dplyr::first(.data$cv_risk),
-        cond_num = dplyr::first(.data$cond_num),
+        cv_risk = round(dplyr::first(.data$cv_risk), 2),
+        cond_num = round(dplyr::first(.data$cond_num), 3),
         sign = dplyr::first(.data$sign),
-        sparsity = dplyr::first(.data$sparsity),
+        sparsity = signif(dplyr::first(.data$sparsity), 2),
         .groups = "drop"
       ) %>%
       dplyr::arrange(.data$cv_risk)
@@ -185,7 +185,7 @@ matrixMetrics <- function(estimate) {
 
   # Calculate Condition Number
   if (e_vals[n] != 0){
-    cn <- round(e_vals[1]/e_vals[n], digits = 3)
+    cn <- signif(e_vals[1]/e_vals[n], digits = 3)
   }
   else{
     cn <- 0
