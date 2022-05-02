@@ -26,6 +26,20 @@ test_that(paste("Two scaled eigenvalues are returned when num_spikes is not",
   expect_equal(scaled_eig_vals, c(5, 4))
 })
 
-test_that("ell is a vector of ones when the number of spikes equals to zero", {
+test_that("ell is a vector of ones when the number of spikes equals zero", {
+  scaled_eig_vals <- c()
+  p <- 10
+  p_n_ratio <- 0.5
+  ell <- computeEll(scaled_eig_vals, p, p_n_ratio)
+  expect_equal(ell, rep(1, 10))
+})
 
+test_that(paste("ell is a vector of a scaled eigenvalue and ones when the",
+                "number of spikes equals one"), {
+  scaled_eig_vals <- c(10)
+  p <- 10
+  p_n_ratio <- 0.5
+  ell <- computeEll(scaled_eig_vals, p, p_n_ratio)
+  shrunken_spike <- ((10 + 1 - 0.5) + sqrt((10 + 1 - 0.5)^2 - 4*10)) / 2
+  expect_equal(ell, c(shrunken_spike, rep(1, 9)))
 })

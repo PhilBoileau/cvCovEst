@@ -59,3 +59,24 @@ scaleEigVals <- function(eig_vals, noise, p_n_ratio, num_spikes) {
 
   return(scaled_eig_vals)
 }
+
+computeEll <- function(scaled_eig_vals, p, p_n_ratio) {
+
+  # get the number of spikes
+  num_spikes <- length(scaled_eig_vals)
+  if (num_spikes > 0) {
+
+    # compute the shrinkage factor for the spiked eigenvalues
+    shrink_factor <- (scaled_eig_vals + 1 - p_n_ratio +
+                        sqrt((scaled_eig_vals + 1 - p_n_ratio)^2 -
+                             4  * scaled_eig_vals)) / 2
+
+    # define ell
+    ell <- c(shrink_factor, rep(1, p - num_spikes))
+
+  } else {
+    ell <- rep(1, p)
+  }
+
+  return(ell)
+}
