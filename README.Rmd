@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 # R/`cvCovEst`
 
 <!-- badges: start -->
-[![CircleCI](https://circleci.com/gh/PhilBoileau/cvCovEst/tree/master.svg?style=svg)](https://circleci.com/gh/PhilBoileau/cvCovEst/tree/master)
+[![CircleCI](https://app.circleci.com/pipelines/github/PhilBoileau/cvCovEst?branch=master)
 [![codecov](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ)](https://app.codecov.io/gh/PhilBoileau/cvCovEst)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.03273/status.svg)](https://doi.org/10.21105/joss.03273)
