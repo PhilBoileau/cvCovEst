@@ -3,7 +3,7 @@
 
 <!-- badges: start -->
 
-\[![CircleCI](https://app.circleci.com/pipelines/github/PhilBoileau/cvCovEst?branch=master)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/PhilBoileau/cvCovEst/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/PhilBoileau/cvCovEst/tree/master)
 [![codecov](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ)](https://app.codecov.io/gh/PhilBoileau/cvCovEst)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
