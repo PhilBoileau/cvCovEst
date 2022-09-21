@@ -1,5 +1,10 @@
 # cvCovEst 1.1.0 (2022-05-01)
 
++ Using strings of variable names instead of prefixing them with `.data$` in
+  `dplyr::select()` statements.
+
+# cvCovEst 1.1.0 (2022-05-01)
+
 + This minor release sees the addition of three new estimators for Gaussian
   spiked covariance models. These estimators are `spikedOperatorShrinkEst()`,
   `spikedFrobeniusShrinkEst()` and `spikedSteinShrinkEst()`, and apply the
