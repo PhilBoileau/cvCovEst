@@ -22,7 +22,7 @@ faster than scale() through relying on
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -31,7 +31,7 @@ faster than scale() through relying on
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -73,13 +73,13 @@ faster than <code><a href="https://rdrr.io/r/base/scale.html" class="external-li
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">safeColScale</span><span class="op">(</span>
-  <span class="va">X</span>,
-  center <span class="op">=</span> <span class="cn">TRUE</span>,
-  scale <span class="op">=</span> <span class="cn">TRUE</span>,
-  tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span>,
-  eps <span class="op">=</span> <span class="fl">0.01</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">safeColScale</span><span class="op">(</span></span>
+<span>  <span class="va">X</span>,</span>
+<span>  center <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span>,</span>
+<span>  eps <span class="op">=</span> <span class="fl">0.01</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -87,24 +87,35 @@ faster than <code><a href="https://rdrr.io/r/base/scale.html" class="external-li
     <dl><dt>X</dt>
 <dd><p>An input <code>matrix</code> to be centered and/or scaled. If <code>X</code> is
 not of class <code>matrix</code>, then it must be coercible to such.</p></dd>
+
+
 <dt>center</dt>
 <dd><p>A <code>logical</code> indicating whether to re-center the columns
 of the input <code>X</code>.</p></dd>
+
+
 <dt>scale</dt>
 <dd><p>A <code>logical</code> indicating whether to re-scale the columns of
 the input <code>X</code>.</p></dd>
+
+
 <dt>tol</dt>
 <dd><p>A tolerance level for the lowest column variance (or standard
 deviation) value to be tolerated when scaling is desired. The default is
 set to <code>double.eps</code> of machine precision <code><a href="https://rdrr.io/r/base/zMachine.html" class="external-link">.Machine</a></code>.</p></dd>
+
+
 <dt>eps</dt>
 <dd><p>The desired lower bound of the estimated variance for a given
 column. When the lowest estimate falls below <code>tol</code>, it is truncated
 to the value specified in this argument. The default is 0.01.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A centered and/or scaled version of the input data.</p>
+    
+
+<p>A centered and/or scaled version of the input data.</p>
     </div>
     <div id="note">
     <h2>Note</h2>
@@ -123,7 +134,7 @@ to the value specified in this argument. The default is 0.01.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

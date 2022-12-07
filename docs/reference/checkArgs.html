@@ -18,7 +18,7 @@ passed to cvCovEst() function meet its specifications."><!-- mathjax --><script 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -27,7 +27,7 @@ passed to cvCovEst() function meet its specifications."><!-- mathjax --><script 
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -65,27 +65,29 @@ passed to <code><a href="cvCovEst.html">cvCovEst</a>()</code> function meet its 
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">checkArgs</span><span class="op">(</span>
-  <span class="va">dat</span>,
-  <span class="va">estimators</span>,
-  <span class="va">estimator_params</span>,
-  <span class="va">cv_loss</span>,
-  <span class="va">cv_scheme</span>,
-  <span class="va">mc_split</span>,
-  <span class="va">v_folds</span>,
-  <span class="va">center</span>,
-  <span class="va">scale</span>,
-  <span class="va">parallel</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">checkArgs</span><span class="op">(</span></span>
+<span>  <span class="va">dat</span>,</span>
+<span>  <span class="va">estimators</span>,</span>
+<span>  <span class="va">estimator_params</span>,</span>
+<span>  <span class="va">cv_loss</span>,</span>
+<span>  <span class="va">cv_scheme</span>,</span>
+<span>  <span class="va">mc_split</span>,</span>
+<span>  <span class="va">v_folds</span>,</span>
+<span>  <span class="va">parallel</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat</dt>
 <dd><p>A numeric <code>data.frame</code>, <code>matrix</code>, or similar object.</p></dd>
+
+
 <dt>estimators</dt>
 <dd><p>A <code>list</code> of estimator functions to be considered in
 the cross-validated estimator selection procedure.</p></dd>
+
+
 <dt>estimator_params</dt>
 <dd><p>A named <code>list</code> of arguments corresponding to
 the hyperparameters of covariance matrix estimators in <code>estimators</code>.
@@ -95,6 +97,8 @@ a named <code>list</code>, with the names corresponding to a given estimator's
 hyperparameter(s). These hyperparameters may be in the form of a single
 <code>numeric</code> or a <code>numeric</code> vector. If no hyperparameter is needed
 for a given estimator, then the estimator need not be listed.</p></dd>
+
+
 <dt>cv_loss</dt>
 <dd><p>A <code>function</code> indicating the loss function to be used.
 This defaults to the Frobenius loss, <code><a href="cvMatrixFrobeniusLoss.html">cvMatrixFrobeniusLoss</a>()</code>.
@@ -102,33 +106,38 @@ An observation-based version, <code><a href="cvFrobeniusLoss.html">cvFrobeniusLo
 available. Additionally, the <code><a href="cvScaledMatrixFrobeniusLoss.html">cvScaledMatrixFrobeniusLoss</a>(())</code>
 is included for situations in which <code>dat</code>'s variables are of different
 scales.</p></dd>
+
+
 <dt>cv_scheme</dt>
 <dd><p>A <code>character</code> indicating the cross-validation scheme
 to be employed. There are two options: (1) V-fold cross-validation, via
 <code>"v_folds"</code>; and (2) Monte Carlo cross-validation, via <code>"mc"</code>.
 Defaults to Monte Carlo cross-validation.</p></dd>
+
+
 <dt>mc_split</dt>
 <dd><p>A <code>numeric</code> between 0 and 1 indicating the proportion
 of observations to be included in the validation set of each Monte Carlo
 cross-validation fold.</p></dd>
+
+
 <dt>v_folds</dt>
 <dd><p>An <code>integer</code> larger than or equal to 1 indicating the
 number of folds to use for cross-validation. The default is 10, regardless
 of the choice of cross-validation scheme.</p></dd>
-<dt>center</dt>
-<dd><p>A <code>logical</code> indicating whether to center the columns of
-<code>dat</code> to have mean zero.</p></dd>
-<dt>scale</dt>
-<dd><p>A <code>logical</code> indicating whether to scale the columns of
-<code>dat</code> to have unit variance.</p></dd>
+
+
 <dt>parallel</dt>
 <dd><p>A <code>logical</code> option indicating whether to run the main
 cross-validation loop with <code><a href="https://future.apply.futureverse.org/reference/future_lapply.html" class="external-link">future_lapply</a>()</code>. This
 is passed directly to <code><a href="http://tlverse.org/origami/reference/cross_validate.html" class="external-link">cross_validate</a>()</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Whether all argument conditions are satisfied</p>
+    
+
+<p>Whether all argument conditions are satisfied</p>
     </div>
 
   </div>
@@ -143,7 +152,7 @@ is passed directly to <code><a href="http://tlverse.org/origami/reference/cross_
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

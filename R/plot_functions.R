@@ -36,8 +36,7 @@
 #' @importFrom RColorBrewer brewer.pal
 #'
 #' @keywords internal
-cvMultiMelt <- function(
-                        dat,
+cvMultiMelt <- function(dat,
                         estimator,
                         stat = "min",
                         dat_orig,
@@ -50,14 +49,6 @@ cvMultiMelt <- function(
   single_stat <- ifelse(length(stat) == 1, TRUE, FALSE)
 
   single_est <- ifelse(length(estimator) == 1, TRUE, FALSE)
-
-  # Center and Scale Original Data to Match Call to cvCovEst
-  dat_orig <- safeColScale(
-    dat_orig,
-    center = dat$args$center,
-    scale = dat$args$scale
-  ) %>%
-    unname()
 
   # Call cvSummary
   cv_sum <- summary.cvCovEst(dat, dat_orig)
@@ -350,13 +341,6 @@ cvEigenPlot <- function(
   single_stat <- ifelse(length(stat) == 1, TRUE, FALSE)
 
   single_est <- ifelse(length(estimator) == 1, TRUE, FALSE)
-
-  # Center and Scale Original Data to Match Call to cvCovEst
-  dat_orig <- safeColScale(
-    dat_orig,
-    center = dat$args$center,
-    scale = dat$args$scale
-  ) %>% unname()
 
   # Determine leading/trailing and set index accordingly
   eig_type <- ifelse(leading, "LA", "SA")
@@ -1100,9 +1084,7 @@ cvSummaryPlot <- function(
 #'   ),
 #'   estimator_params = list(
 #'     thresholdingEst = list(gamma = seq(0.1, 0.9, 0.1))
-#'   ),
-#'   center = TRUE,
-#'   scale = TRUE
+#'   )
 #' )
 #'
 #' plot(x = cv_dat, dat_orig = mtcars)

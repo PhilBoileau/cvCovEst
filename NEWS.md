@@ -1,4 +1,11 @@
-# cvCovEst 1.1.0 (2022-05-01)
+# cvCovEst 1.2.0 (2022-12-07)
+
++ `cvCovEst()` no longer accepts `center` and `scale` arguments. Data centering
+  is now handled within each estimator function. Users no longer have an option
+  to scale their data. If they'd like to produce a correlation matrix, they must
+  scale the `cvCovEst()` estimate using `cov2cor()`.
+
+# cvCovEst 1.1.1 (2022-09-23)
 
 + Using strings of variable names instead of prefixing them with `.data$` in
   `dplyr::select()` statements.

@@ -88,7 +88,7 @@ cv_cov_est_out <- cvCovEst(
     ),
     cv_loss = cvMatrixFrobeniusLoss,
     cv_scheme = "v_fold",
-    v_folds = 5,
+    v_folds = 5
   )
 
 # print the table of risk estimates

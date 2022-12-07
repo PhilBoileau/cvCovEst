@@ -30,7 +30,7 @@ resulting estimate are not guaranteed to be equal to one."><!-- mathjax --><scri
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ resulting estimate are not guaranteed to be equal to one."><!-- mathjax --><scri
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -89,17 +89,20 @@ resulting estimate are not guaranteed to be equal to one.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">nlShrinkLWEst</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">nlShrinkLWEst</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat</dt>
 <dd><p>A numeric <code>data.frame</code>, <code>matrix</code>, or similar object.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>matrix</code> corresponding to the estimate of the covariance
+    
+
+<p>A <code>matrix</code> corresponding to the estimate of the covariance
 matrix.</p>
     </div>
     <div id="references">
@@ -112,31 +115,31 @@ Technical Report 264, Department of Economics - University of Zurich.
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">nlShrinkLWEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">nlShrinkLWEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               [,1]        [,2]        [,3]        [,4]        [,5]        [,6]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]    63.516977 -17.3486547 -1237.05024  -614.56239   4.0328476  -9.4227199</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   -17.348655   5.9467131   390.31919   194.79231  -1.2802260   2.7045202</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,] -1237.050240 390.3191919 29668.95626 13544.70095 -89.5877903 207.0738208</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]  -614.562387 194.7923100 13544.70095  8188.80905 -36.1809286  91.2025444</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]     4.032848  -1.2802260   -89.58779   -36.18093   0.4561798  -0.6695734</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]    -9.422720   2.7045202   207.07382    91.20254  -0.6695734   1.7282605</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]     8.948521  -3.3445074  -199.82658  -142.20260   0.3586020  -0.9651599</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]     3.861425  -1.3349867   -87.49967   -46.29248   0.2475976  -0.5589942</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]     3.190202  -0.9134124   -68.17882   -22.37827   0.2997952  -0.5801072</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]     3.935907  -1.2735293   -93.05865   -24.40364   0.4397624  -0.7147445</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11,]    -9.424459   2.7938685   168.24442   131.99540  -0.3212901   1.3377217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]    63.602387 -17.3756215 -1239.06580  -615.53668   4.0388075  -9.4366996</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   -17.375622   5.9552274   390.95557   195.09993  -1.2821077   2.7089340</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,] -1239.065804 390.9555684 29716.52575 13567.68688 -89.7284694 207.4037721</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]  -615.536679 195.0999307 13567.68688  8199.93035 -36.2488721  91.3619556</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]     4.038807  -1.2821077   -89.72847   -36.24887   0.4565959  -0.6705492</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]    -9.436700   2.7089340   207.40377    91.36196  -0.6705492   1.7305492</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]     8.963471  -3.3492280  -200.17922  -142.37336   0.3596440  -0.9676052</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]     3.867541  -1.3369177   -87.64399   -46.36226   0.2480242  -0.5599951</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]     3.194599  -0.9148006   -68.28263   -22.42837   0.3001023  -0.5808273</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]     3.941742  -1.2753715   -93.19644   -24.47009   0.4401702  -0.7157005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11,]    -9.437382   2.7979487   168.54917   132.14305  -0.3221904   1.3398349</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                [,7]        [,8]         [,9]        [,10]       [,11]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]    8.94852071   3.8614254   3.19020209   3.93590703  -9.4244591</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   -3.34450744  -1.3349867  -0.91341240  -1.27352926   2.7938685</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,] -199.82658311 -87.4996705 -68.17881786 -93.05865237 168.2444194</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,] -142.20259992 -46.2924824 -22.37827031 -24.40364165 131.9953994</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]    0.35860201   0.2475976   0.29979520   0.43976237  -0.3212901</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]   -0.96515988  -0.5589942  -0.58010718  -0.71474455   1.3377217</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]    4.35473129   1.0381518  -0.04479597  -0.06897495  -2.6992440</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]    1.03815182   0.4408413   0.15707322   0.19714093  -0.7710656</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]   -0.04479597   0.1570732   0.39242704   0.41345565  -0.1187070</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]   -0.06897495   0.1971409   0.41345565   0.75665575   0.1541912</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11,]   -2.69924405  -0.7710656  -0.11870701   0.15419118   3.5883696</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]    8.96347131   3.8675414   3.19459905   3.94174218  -9.4373816</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   -3.34922796  -1.3369177  -0.91480063  -1.27537154   2.7979487</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,] -200.17921923 -87.6439882 -68.28262772 -93.19644414 168.5491733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,] -142.37336090 -46.3622632 -22.42836949 -24.47009443 132.1430534</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]    0.35964402   0.2480242   0.30010235   0.44017017  -0.3221904</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]   -0.96760523  -0.5599951  -0.58082733  -0.71570051   1.3398349</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]    4.35735469   1.0392228  -0.04402801  -0.06795678  -2.7015133</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]    1.03922282   0.4412793   0.15738797   0.19755856  -0.7719914</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]   -0.04402801   0.1573880   0.39265386   0.41375692  -0.1193703</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]   -0.06795678   0.1975586   0.41375692   0.75705605   0.1533120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11,]   -2.70151325  -0.7719914  -0.11937035   0.15331198   3.5903329</span>
 </code></pre></div>
     </div>
   </div>
@@ -151,7 +154,7 @@ Technical Report 264, Department of Economics - University of Zurich.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

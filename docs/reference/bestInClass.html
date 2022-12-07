@@ -19,7 +19,7 @@ finds the associated hyperparameters if applicable."><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -28,7 +28,7 @@ finds the associated hyperparameters if applicable."><!-- mathjax --><script src
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -67,7 +67,7 @@ finds the associated hyperparameters if applicable.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">bestInClass</span><span class="op">(</span><span class="va">dat</span>, worst <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">bestInClass</span><span class="op">(</span><span class="va">dat</span>, worst <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -75,13 +75,18 @@ finds the associated hyperparameters if applicable.</p>
     <dl><dt>dat</dt>
 <dd><p>The <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code> of cross-validated risks which is
 output by <code><a href="cvCovEst.html">cvCovEst</a>()</code>.</p></dd>
+
+
 <dt>worst</dt>
 <dd><p>This facilitates the option to choose the worst performing
 estimator in each class.  Default is <code>FALSE</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code> with rows corresponding to estimator
+    
+
+<p><code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code> with rows corresponding to estimator
 classes and columns for hyperparameter values, cross-validated risk, and
 other summary metrics for the best (or worst) estimator in that class.</p>
     </div>
@@ -98,7 +103,7 @@ other summary metrics for the best (or worst) estimator in that class.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -43,8 +43,6 @@ cv_loss <- rlang::expr(cvFrobeniusLoss)
 cv_scheme <- "mc"
 mc_split <- 0.5
 v_folds <- 10
-center <- TRUE
-scale <- FALSE
 parallel <- FALSE
 
 test_that("Only implmented estimators pass checks", {
@@ -56,8 +54,6 @@ test_that("Only implmented estimators pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_true(checkArgs(
@@ -68,8 +64,6 @@ test_that("Only implmented estimators pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -80,8 +74,6 @@ test_that("Only implmented estimators pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ), "Only estimators implemented in the cvCovEst package can be used.")
 })
@@ -96,8 +88,6 @@ test_that("Lone estimators without hyperparams aren't permitted", {
       cv_scheme = cv_scheme,
       mc_split = mc_split,
       v_folds = v_folds,
-      center = center,
-      scale = scale,
       parallel = parallel
     ),
     "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
@@ -111,8 +101,6 @@ test_that("Lone estimators without hyperparams aren't permitted", {
       cv_scheme = cv_scheme,
       mc_split = mc_split,
       v_folds = v_folds,
-      center = center,
-      scale = scale,
       parallel = parallel
     ),
     "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
@@ -126,8 +114,6 @@ test_that("Lone estimators without hyperparams aren't permitted", {
       cv_scheme = cv_scheme,
       mc_split = mc_split,
       v_folds = v_folds,
-      center = center,
-      scale = scale,
       parallel = parallel
     ),
     "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
@@ -141,8 +127,6 @@ test_that("Lone estimators without hyperparams aren't permitted", {
       cv_scheme = cv_scheme,
       mc_split = mc_split,
       v_folds = v_folds,
-      center = center,
-      scale = scale,
       parallel = parallel
     ),
     "This estimator doesn't possess any hyperparameters. Run it without using cvCovEst."
@@ -158,8 +142,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_true(checkArgs(
@@ -170,8 +152,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -206,8 +186,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -242,8 +220,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -278,8 +254,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -314,8 +288,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -350,8 +322,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -386,8 +356,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -422,8 +390,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -458,8 +424,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -494,8 +458,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -530,8 +492,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -566,8 +526,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -602,8 +560,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -638,8 +594,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -674,8 +628,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -710,8 +662,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -746,8 +696,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -782,8 +730,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -818,8 +764,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -854,8 +798,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -890,8 +832,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -926,8 +866,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -962,8 +900,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -998,8 +934,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -1034,8 +968,6 @@ test_that("Only reasonable hyperparameters pass checks", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
 })
@@ -1049,8 +981,8 @@ test_that("Only reasonable CV schemes pass checks", {
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
+
+
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -1061,8 +993,8 @@ test_that("Only reasonable CV schemes pass checks", {
     cv_scheme = "loo",
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
+
+
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -1073,8 +1005,8 @@ test_that("Only reasonable CV schemes pass checks", {
     cv_scheme = "mc",
     mc_split = 0,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
+
+
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -1085,8 +1017,8 @@ test_that("Only reasonable CV schemes pass checks", {
     cv_scheme = "mc",
     mc_split = 1,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
+
+
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -1097,8 +1029,8 @@ test_that("Only reasonable CV schemes pass checks", {
     cv_scheme = "mc",
     mc_split = -0.1,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
+
+
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -1109,8 +1041,8 @@ test_that("Only reasonable CV schemes pass checks", {
     cv_scheme = "mc",
     mc_split = 1.2,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
+
+
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -1121,8 +1053,8 @@ test_that("Only reasonable CV schemes pass checks", {
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = 1,
-    center = center,
-    scale = scale,
+
+
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -1133,8 +1065,6 @@ test_that("Only reasonable CV schemes pass checks", {
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = nrow(dat),
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_true(checkArgs(
@@ -1145,8 +1075,6 @@ test_that("Only reasonable CV schemes pass checks", {
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
 })
@@ -1160,8 +1088,6 @@ test_that("Flag elements work as expected", {
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = v_folds,
-    center = TRUE,
-    scale = TRUE,
     parallel = TRUE
   ))
   expect_true(checkArgs(
@@ -1172,8 +1098,6 @@ test_that("Flag elements work as expected", {
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = v_folds,
-    center = FALSE,
-    scale = FALSE,
     parallel = FALSE
   ))
   expect_error(checkArgs(
@@ -1184,8 +1108,6 @@ test_that("Flag elements work as expected", {
     cv_scheme = "v_fold",
     mc_split = mc_split,
     v_folds = v_folds,
-    center = "TRUE",
-    scale = "TRUE",
     parallel = "TRUE"
   ))
 })
@@ -1199,8 +1121,6 @@ test_that("checkArgs only allows pre-defined loss functions", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_true(checkArgs(
@@ -1211,8 +1131,6 @@ test_that("checkArgs only allows pre-defined loss functions", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
   expect_error(checkArgs(
@@ -1223,8 +1141,6 @@ test_that("checkArgs only allows pre-defined loss functions", {
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   ))
 })
@@ -1253,8 +1169,7 @@ test_that("checkArgs works well in cvCovEst Function", {
       spikedOperatorShrinkEst = list(p_n_ratio = c(0.5, 0.8))
     ),
     cv_loss = cvFrobeniusLoss, cv_scheme = "v_fold",
-    mc_split = 0.5, v_folds = 5,
-    center = TRUE, scale = FALSE, parallel = FALSE
+    mc_split = 0.5, v_folds = 5, parallel = FALSE
   ))
   expect_silent(cvCovEst(
     dat = dat,
@@ -1279,8 +1194,7 @@ test_that("checkArgs works well in cvCovEst Function", {
       spikedOperatorShrinkEst = list(p_n_ratio = c(0.5, 0.8))
     ),
     cv_loss = cvMatrixFrobeniusLoss, cv_scheme = "mc",
-    mc_split = 0.5, v_folds = 5,
-    center = TRUE, scale = FALSE, parallel = FALSE
+    mc_split = 0.5, v_folds = 5, parallel = FALSE
   ))
   expect_silent(cvCovEst(
     dat = dat,
@@ -1305,7 +1219,6 @@ test_that("checkArgs works well in cvCovEst Function", {
       spikedOperatorShrinkEst = list(p_n_ratio = c(0.5, 0.8))
     ),
     cv_loss = cvScaledMatrixFrobeniusLoss, cv_scheme = "mc",
-    mc_split = 0.5, v_folds = 5,
-    center = TRUE, scale = FALSE, parallel = FALSE
+    mc_split = 0.5, v_folds = 5, parallel = FALSE
   ))
 })

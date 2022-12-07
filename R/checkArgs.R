@@ -30,10 +30,6 @@
 #' @param v_folds An \code{integer} larger than or equal to 1 indicating the
 #'  number of folds to use for cross-validation. The default is 10, regardless
 #'  of the choice of cross-validation scheme.
-#' @param center A \code{logical} indicating whether to center the columns of
-#'  \code{dat} to have mean zero.
-#' @param scale A \code{logical} indicating whether to scale the columns of
-#'  \code{dat} to have unit variance.
 #' @param parallel A \code{logical} option indicating whether to run the main
 #'  cross-validation loop with \code{\link[future.apply]{future_lapply}()}. This
 #'  is passed directly to \code{\link[origami]{cross_validate}()}.
@@ -52,7 +48,7 @@ checkArgs <- function(
   dat,
   estimators, estimator_params,
   cv_loss, cv_scheme, mc_split, v_folds,
-  center, scale, parallel
+  parallel
 ) {
 
   # turn list of estimator functions to a vector of strings
@@ -246,9 +242,7 @@ checkArgs <- function(
     v_folds < nrow(dat)
   )
 
-  # assert that center, scaling, and parallel are flags
-  assertthat::assert_that(assertthat::is.flag(center))
-  assertthat::assert_that(assertthat::is.flag(scale))
+  # assert that parallel is a flag
   assertthat::assert_that(assertthat::is.flag(parallel))
 
 }

@@ -12,8 +12,6 @@ checkArgs(
   cv_scheme,
   mc_split,
   v_folds,
-  center,
-  scale,
   parallel
 )
 }
@@ -51,12 +49,6 @@ cross-validation fold.}
 \item{v_folds}{An \code{integer} larger than or equal to 1 indicating the
 number of folds to use for cross-validation. The default is 10, regardless
 of the choice of cross-validation scheme.}
-
-\item{center}{A \code{logical} indicating whether to center the columns of
-\code{dat} to have mean zero.}
-
-\item{scale}{A \code{logical} indicating whether to scale the columns of
-\code{dat} to have unit variance.}
 
 \item{parallel}{A \code{logical} option indicating whether to run the main
 cross-validation loop with \code{\link[future.apply]{future_lapply}()}. This

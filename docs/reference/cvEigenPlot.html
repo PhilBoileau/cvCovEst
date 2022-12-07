@@ -18,7 +18,7 @@ estimators produced by cvCovEst()."><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -27,7 +27,7 @@ estimators produced by cvCovEst()."><!-- mathjax --><script src="https://cdnjs.c
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -65,17 +65,17 @@ estimators produced by <code><a href="cvCovEst.html">cvCovEst</a>()</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cvEigenPlot</span><span class="op">(</span>
-  <span class="va">dat</span>,
-  <span class="va">estimator</span>,
-  stat <span class="op">=</span> <span class="st">"min"</span>,
-  <span class="va">dat_orig</span>,
-  <span class="va">k</span>,
-  leading <span class="op">=</span> <span class="cn">TRUE</span>,
-  plot_type <span class="op">=</span> <span class="st">"eigen"</span>,
-  <span class="va">cv_details</span>,
-  <span class="va">has_hypers</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cvEigenPlot</span><span class="op">(</span></span>
+<span>  <span class="va">dat</span>,</span>
+<span>  <span class="va">estimator</span>,</span>
+<span>  stat <span class="op">=</span> <span class="st">"min"</span>,</span>
+<span>  <span class="va">dat_orig</span>,</span>
+<span>  <span class="va">k</span>,</span>
+<span>  leading <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  plot_type <span class="op">=</span> <span class="st">"eigen"</span>,</span>
+<span>  <span class="va">cv_details</span>,</span>
+<span>  <span class="va">has_hypers</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -83,36 +83,55 @@ estimators produced by <code><a href="cvCovEst.html">cvCovEst</a>()</code>.</p>
     <dl><dt>dat</dt>
 <dd><p>A named <code>list</code>.  Specifically, this is the standard output of
 <code><a href="cvCovEst.html">cvCovEst</a>()</code>.</p></dd>
+
+
 <dt>estimator</dt>
 <dd><p>A <code>character</code> vector specifying one or more classes of
 estimators to compare.</p></dd>
+
+
 <dt>stat</dt>
 <dd><p>A <code>character</code> vector containing the names of various
 cross-validated risk summary statistics.  Within each class of estimator,
 eigenvalues will be plot for the estimators corresponding to each stat.</p></dd>
+
+
 <dt>dat_orig</dt>
 <dd><p>The <code>numeric data.frame</code>, <code>matrix</code>, or similar
 object originally passed to <code><a href="cvCovEst.html">cvCovEst</a>()</code>.</p></dd>
+
+
 <dt>k</dt>
 <dd><p>A <code>numeric</code> indicating the number of eigenvalues to plot. Must
 be less than or equal to the number of columns of the original data matrix.</p></dd>
+
+
 <dt>leading</dt>
 <dd><p>A <code>logical</code> indicating if the leading eigenvalues should
 be used.  Default is <code>TRUE</code>.  If <code>FALSE</code>, the trailing
 eigenvalues will be used instead.</p></dd>
+
+
 <dt>plot_type</dt>
 <dd><p>A <code>character</code> detailing the type of plot. Passed to
 <code>theme_cvCovEst</code>, defaults to <code>"risk"</code></p></dd>
+
+
 <dt>cv_details</dt>
 <dd><p>A <code>character</code> vector summarizing key arguments passed
 to <code><a href="cvCovEst.html">cvCovEst</a>()</code>.</p></dd>
+
+
 <dt>has_hypers</dt>
 <dd><p>A <code>character</code> vector containing the names of current
 estimators with hyperparameters.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A plot, or grid of plots, showing the <code>k</code> leading or trailing
+    
+
+<p>A plot, or grid of plots, showing the <code>k</code> leading or trailing
 eigenvalues of the specified estimators and associated summary statistics of
 the cross-validated risk.</p>
     </div>
@@ -129,7 +148,7 @@ the cross-validated risk.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

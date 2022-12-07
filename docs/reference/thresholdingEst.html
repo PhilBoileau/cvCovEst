@@ -22,7 +22,7 @@ estimator, review Bickel and Levina (2008)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -31,7 +31,7 @@ estimator, review Bickel and Levina (2008)
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -73,21 +73,26 @@ estimator, review Bickel and Levina (2008)
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">thresholdingEst</span><span class="op">(</span><span class="va">dat</span>, <span class="va">gamma</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">thresholdingEst</span><span class="op">(</span><span class="va">dat</span>, <span class="va">gamma</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat</dt>
 <dd><p>A numeric <code>data.frame</code>, <code>matrix</code>, or similar object.</p></dd>
+
+
 <dt>gamma</dt>
 <dd><p>A non-negative <code>numeric</code> defining the degree of hard
 thresholding applied to each element of <code>dat</code>'s sample covariance
 matrix.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>matrix</code> corresponding to the estimate of the covariance
+    
+
+<p>A <code>matrix</code> corresponding to the estimate of the covariance
 matrix.</p>
     </div>
     <div id="references">
@@ -101,7 +106,7 @@ doi: <a href="https://doi.org/10.1214/08-AOS600" class="external-link">10.1214/0
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">thresholdingEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span>, gamma <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">thresholdingEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span>, gamma <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              mpg         cyl        disp          hp        drat          wt</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mpg    36.324103  -9.1723790  -633.09721 -320.732056   2.1950635  -5.1166847</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cyl    -9.172379   3.1895161   199.66028  101.931452  -0.6683669   1.3673710</span>
@@ -140,7 +145,7 @@ doi: <a href="https://doi.org/10.1214/08-AOS600" class="external-link">10.1214/0
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

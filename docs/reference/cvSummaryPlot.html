@@ -21,7 +21,7 @@ class is also provided if applicable."><!-- mathjax --><script src="https://cdnj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -30,7 +30,7 @@ class is also provided if applicable."><!-- mathjax --><script src="https://cdnj
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -71,21 +71,21 @@ class is also provided if applicable.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cvSummaryPlot</span><span class="op">(</span>
-  <span class="va">dat</span>,
-  <span class="va">estimator</span>,
-  <span class="va">dat_orig</span>,
-  <span class="va">stat</span>,
-  <span class="va">k</span>,
-  <span class="va">leading</span>,
-  plot_type <span class="op">=</span> <span class="st">"summary"</span>,
-  <span class="va">cv_details</span>,
-  <span class="va">has_hypers</span>,
-  <span class="va">multi_hypers</span>,
-  <span class="va">abs_v</span>,
-  <span class="va">switch_vars</span>,
-  <span class="va">min_max</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cvSummaryPlot</span><span class="op">(</span></span>
+<span>  <span class="va">dat</span>,</span>
+<span>  <span class="va">estimator</span>,</span>
+<span>  <span class="va">dat_orig</span>,</span>
+<span>  <span class="va">stat</span>,</span>
+<span>  <span class="va">k</span>,</span>
+<span>  <span class="va">leading</span>,</span>
+<span>  plot_type <span class="op">=</span> <span class="st">"summary"</span>,</span>
+<span>  <span class="va">cv_details</span>,</span>
+<span>  <span class="va">has_hypers</span>,</span>
+<span>  <span class="va">multi_hypers</span>,</span>
+<span>  <span class="va">abs_v</span>,</span>
+<span>  <span class="va">switch_vars</span>,</span>
+<span>  <span class="va">min_max</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -93,41 +93,62 @@ class is also provided if applicable.</p>
     <dl><dt>dat</dt>
 <dd><p>A named <code>list</code>.  Specifically, this is the standard output of
 <code>cvCovEst</code>.</p></dd>
+
+
 <dt>estimator</dt>
 <dd><p>A <code>character</code> vector specifying which class of
 estimator to plot.</p></dd>
+
+
 <dt>dat_orig</dt>
 <dd><p>The <code>numeric data.frame</code>, <code>matrix</code>, or similar
 object originally passed to <code>cvCovEst</code>.</p></dd>
+
+
 <dt>plot_type</dt>
 <dd><p>A <code>character</code> detailing the type of plot. Passed to
 <code><a href="theme_cvCovEst.html">theme_cvCovEst</a>()</code>, defaults to <code>"risk"</code></p></dd>
+
+
 <dt>cv_details</dt>
 <dd><p>Character vector summarizing key arguments passed to
 <code><a href="cvCovEst.html">cvCovEst</a>()</code>.</p></dd>
+
+
 <dt>has_hypers</dt>
 <dd><p>A <code>character</code> vector containing the names of current
 estimators with hyperparameters.</p></dd>
+
+
 <dt>multi_hypers</dt>
 <dd><p>A <code>character</code> vector containing the names of current
 estimators with multiple hyperparameters.</p></dd>
+
+
 <dt>abs_v</dt>
 <dd><p>A <code>logical</code> determining if the absolute value of the matrix
 entries should be used for plotting the matrix heatmap.  Default is
 <code>TRUE</code>.</p></dd>
+
+
 <dt>switch_vars</dt>
 <dd><p>A <code>logical</code>. If <code>TRUE</code>,
 the hyperparameters used for the x-axis and factor variables are switched.
 Only applies to estimators with more than one hyperparameter. Defaults to
 <code>FALSE</code>.</p></dd>
+
+
 <dt>min_max</dt>
 <dd><p>A <code>logical</code>. If <code>TRUE</code>, only the minimum and
 maximum values of the factor hyperparameter will be used.  Only applies to
 estimators with more than one hyperparameter. Defaults to <code>FALSE</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A collection of plots and summary statistics for the optimal
+    
+
+<p>A collection of plots and summary statistics for the optimal
 estimator selected by <code>cvCovEst</code>.</p>
     </div>
 
@@ -143,7 +164,7 @@ estimator selected by <code>cvCovEst</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
