@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -47,7 +47,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -103,10 +103,10 @@
 </h2>
 <p>For standard use, install <code>cvCovEst</code> from <a href="https://cran.r-project.org/package=cvCovEst" class="external-link">CRAN</a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cvCovEst"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cvCovEst"</span><span class="op">)</span></span></code></pre></div>
 <p>The <em>development version</em> of the package may be installed from GitHub using <a href="https://CRAN.R-project.org/package=remotes" class="external-link"><code>remotes</code></a>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"PhilBoileau/cvCovEst"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"PhilBoileau/cvCovEst"</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
@@ -114,46 +114,46 @@
 </h2>
 <p>To illustrate how <code>cvCovEst</code> may be used to select an optimal covariance matrix estimator via cross-validation, consider the following toy example:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/PhilBoileau/cvCovEst" class="external-link">cvCovEst</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1584</span><span class="op">)</span>
-
-<span class="co"># generate a 50x50 covariance matrix with unit variances and off-diagonal</span>
-<span class="co"># elements equal to 0.5</span>
-<span class="va">Sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0.5</span>, nrow <span class="op">=</span> <span class="fl">50</span>, ncol <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">0.5</span>, nrow <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>
-
-<span class="co"># sample 50 observations from multivariate normal with mean = 0, var = Sigma</span>
-<span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html" class="external-link">mvrnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>, mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">50</span><span class="op">)</span>, Sigma <span class="op">=</span> <span class="va">Sigma</span><span class="op">)</span>
-
-<span class="co"># run CV-selector</span>
-<span class="va">cv_cov_est_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cvCovEst.html">cvCovEst</a></span><span class="op">(</span>
-    dat <span class="op">=</span> <span class="va">dat</span>,
-    estimators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">linearShrinkLWEst</span>, <span class="va">denseLinearShrinkEst</span>,
-                   <span class="va">thresholdingEst</span>, <span class="va">poetEst</span>, <span class="va">sampleCovEst</span><span class="op">)</span>,
-    estimator_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-      thresholdingEst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,
-      poetEst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>lambda <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span><span class="op">)</span>, k <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">2L</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">)</span>,
-    cv_loss <span class="op">=</span> <span class="va">cvMatrixFrobeniusLoss</span>,
-    cv_scheme <span class="op">=</span> <span class="st">"v_fold"</span>,
-    v_folds <span class="op">=</span> <span class="fl">5</span>,
-  <span class="op">)</span>
-
-<span class="co"># print the table of risk estimates</span>
-<span class="co"># NOTE: the estimated covariance matrix is accessible via the `$estimate` slot</span>
-<span class="va">cv_cov_est_out</span><span class="op">$</span><span class="va">risk_df</span>
-<span class="co">#&gt; # A tibble: 9 × 3</span>
-<span class="co">#&gt;   estimator            hyperparameters      cv_risk</span>
-<span class="co">#&gt;   &lt;chr&gt;                &lt;chr&gt;                  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 linearShrinkLWEst    hyperparameters = NA    357.</span>
-<span class="co">#&gt; 2 poetEst              lambda = 0.2, k = 1     369.</span>
-<span class="co">#&gt; 3 poetEst              lambda = 0.2, k = 2     372.</span>
-<span class="co">#&gt; 4 poetEst              lambda = 0.1, k = 2     375.</span>
-<span class="co">#&gt; 5 poetEst              lambda = 0.1, k = 1     376.</span>
-<span class="co">#&gt; 6 denseLinearShrinkEst hyperparameters = NA    379.</span>
-<span class="co">#&gt; 7 sampleCovEst         hyperparameters = NA    379.</span>
-<span class="co">#&gt; 8 thresholdingEst      gamma = 0.2             384.</span>
-<span class="co">#&gt; 9 thresholdingEst      gamma = 2               826.</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/PhilBoileau/cvCovEst" class="external-link">cvCovEst</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1584</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># generate a 50x50 covariance matrix with unit variances and off-diagonal</span></span>
+<span><span class="co"># elements equal to 0.5</span></span>
+<span><span class="va">Sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0.5</span>, nrow <span class="op">=</span> <span class="fl">50</span>, ncol <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">0.5</span>, nrow <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># sample 50 observations from multivariate normal with mean = 0, var = Sigma</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html" class="external-link">mvrnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">50</span>, mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">50</span><span class="op">)</span>, Sigma <span class="op">=</span> <span class="va">Sigma</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># run CV-selector</span></span>
+<span><span class="va">cv_cov_est_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cvCovEst.html">cvCovEst</a></span><span class="op">(</span></span>
+<span>    dat <span class="op">=</span> <span class="va">dat</span>,</span>
+<span>    estimators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">linearShrinkLWEst</span>, <span class="va">denseLinearShrinkEst</span>,</span>
+<span>                   <span class="va">thresholdingEst</span>, <span class="va">poetEst</span>, <span class="va">sampleCovEst</span><span class="op">)</span>,</span>
+<span>    estimator_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>      thresholdingEst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      poetEst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>lambda <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span><span class="op">)</span>, k <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">2L</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    cv_loss <span class="op">=</span> <span class="va">cvMatrixFrobeniusLoss</span>,</span>
+<span>    cv_scheme <span class="op">=</span> <span class="st">"v_fold"</span>,</span>
+<span>    v_folds <span class="op">=</span> <span class="fl">5</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print the table of risk estimates</span></span>
+<span><span class="co"># NOTE: the estimated covariance matrix is accessible via the `$estimate` slot</span></span>
+<span><span class="va">cv_cov_est_out</span><span class="op">$</span><span class="va">risk_df</span></span>
+<span><span class="co">#&gt; # A tibble: 9 × 3</span></span>
+<span><span class="co">#&gt;   estimator            hyperparameters      cv_risk</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                &lt;chr&gt;                  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 linearShrinkLWEst    hyperparameters = NA    357.</span></span>
+<span><span class="co">#&gt; 2 poetEst              lambda = 0.2, k = 1     369.</span></span>
+<span><span class="co">#&gt; 3 poetEst              lambda = 0.2, k = 2     372.</span></span>
+<span><span class="co">#&gt; 4 poetEst              lambda = 0.1, k = 2     375.</span></span>
+<span><span class="co">#&gt; 5 poetEst              lambda = 0.1, k = 1     376.</span></span>
+<span><span class="co">#&gt; 6 denseLinearShrinkEst hyperparameters = NA    379.</span></span>
+<span><span class="co">#&gt; 7 sampleCovEst         hyperparameters = NA    379.</span></span>
+<span><span class="co">#&gt; 8 thresholdingEst      gamma = 0.2             384.</span></span>
+<span><span class="co">#&gt; 9 thresholdingEst      gamma = 2               826.</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
@@ -185,14 +185,19 @@
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  journal <span class="ot">=</span> {Journal of Open Source Software}</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>When describing or discussing the theory underlying the <code>cvCovEst</code> method, or simply using the method, please cite the pre-print below.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>misc{boileau2021,</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>      title<span class="ot">=</span>{Cross<span class="sc">-</span>Validated Loss<span class="sc">-</span>Based Covariance Matrix Estimator Selection <span class="cf">in</span> High Dimensions}, </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>      author<span class="ot">=</span>{Philippe Boileau and Nima S. Hejazi and Mark J. van der Laan and Sandrine Dudoit},</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      year<span class="ot">=</span>{<span class="dv">2021</span>},</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      eprint<span class="ot">=</span>{<span class="fl">2102.09715</span>},</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      archivePrefix<span class="ot">=</span>{arXiv},</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      primaryClass<span class="ot">=</span>{stat.ME}</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>article{boileau2022,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> {Philippe Boileau and Nima S. Hejazi and Mark J. van der Laan and Sandrine Dudoit},</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    doi <span class="ot">=</span> {<span class="fl">10.1080</span><span class="sc">/</span><span class="dv">10618600</span>.<span class="fl">2022.2110883</span>},</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    eprint <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>doi.org<span class="sc">/</span><span class="fl">10.1080</span><span class="sc">/</span><span class="dv">10618600</span>.<span class="fl">2022.2110883</span>},</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    journal <span class="ot">=</span> {Journal of Computational and Graphical Statistics},</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    number <span class="ot">=</span> {ja},</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    pages <span class="ot">=</span> {<span class="dv">1-28</span>},</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    publisher <span class="ot">=</span> {Taylor <span class="sc">&amp;</span> Francis},</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {Cross<span class="sc">-</span>Validated Loss<span class="sc">-</span>Based Covariance Matrix Estimator Selection <span class="cf">in</span> High Dimensions},</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>doi.org<span class="sc">/</span><span class="fl">10.1080</span><span class="sc">/</span><span class="dv">10618600</span>.<span class="fl">2022.2110883</span>},</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    volume <span class="ot">=</span> {<span class="dv">0</span>},</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2022</span>},</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    bdsk<span class="sc">-</span>url<span class="dv">-1</span> <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>doi.org<span class="sc">/</span><span class="fl">10.1080</span><span class="sc">/</span><span class="dv">10618600</span>.<span class="fl">2022.2110883</span>}}</span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
@@ -259,7 +264,7 @@ Boileau, Philippe, Nima S. Hejazi, Mark J. van der Laan, and Sandrine Dudoit. 20
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://circleci.com/gh/PhilBoileau/cvCovEst/tree/master" class="external-link"><img src="https://circleci.com/gh/PhilBoileau/cvCovEst/tree/master.svg?style=svg" alt="CircleCI"></a></li>
+<li><a href="https://dl.circleci.com/status-badge/redirect/gh/PhilBoileau/cvCovEst/tree/master" class="external-link"><img src="https://dl.circleci.com/status-badge/img/gh/PhilBoileau/cvCovEst/tree/master.svg?style=svg" alt="CircleCI"></a></li>
 <li><a href="https://app.codecov.io/gh/PhilBoileau/cvCovEst" class="external-link"><img src="https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ" alt="codecov"></a></li>
 <li><a href="https://www.repostatus.org/#active" class="external-link"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed."></a></li>
 <li><a href="https://doi.org/10.21105/joss.03273" class="external-link"><img src="https://joss.theoj.org/papers/10.21105/joss.03273/status.svg" alt="DOI"></a></li>
@@ -278,7 +283,7 @@ Boileau, Philippe, Nima S. Hejazi, Mark J. van der Laan, and Sandrine Dudoit. 20
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

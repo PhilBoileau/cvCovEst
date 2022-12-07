@@ -18,7 +18,7 @@ filters out all eigenvalues that do not need to be shrunk."><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -27,7 +27,7 @@ filters out all eigenvalues that do not need to be shrunk."><!-- mathjax --><scr
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -65,28 +65,37 @@ filters out all eigenvalues that do not need to be shrunk.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">scaleEigVals</span><span class="op">(</span><span class="va">eig_vals</span>, <span class="va">noise</span>, <span class="va">p_n_ratio</span>, <span class="va">num_spikes</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">scaleEigVals</span><span class="op">(</span><span class="va">eig_vals</span>, <span class="va">noise</span>, <span class="va">p_n_ratio</span>, <span class="va">num_spikes</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>eig_vals</dt>
 <dd><p>A <code>numeric</code> vector of estimated eigenvalues.</p></dd>
+
+
 <dt>noise</dt>
 <dd><p><code>numeric</code> representing the known scalar multiple of the
 identity matrix giving the approximate population covariance matrix.</p></dd>
+
+
 <dt>p_n_ratio</dt>
 <dd><p>A <code>numeric</code> indicating the asymptotic ratio of the
 number of features, p, and the number of observations, n. This ratio is
 assumed to be between 0 and 1.</p></dd>
+
+
 <dt>num_spikes</dt>
 <dd><p><code>numeric</code> integer equal to or larger than one which
 providing the known number of spikes in the population covariance matrix.
 If set to <code>NULL</code>, the number of spikes is estimated.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>numeric</code> vector of the scaled eigenvalues to be shrunk.</p>
+    
+
+<p>A <code>numeric</code> vector of the scaled eigenvalues to be shrunk.</p>
     </div>
 
   </div>
@@ -101,7 +110,7 @@ If set to <code>NULL</code>, the number of spikes is estimated.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

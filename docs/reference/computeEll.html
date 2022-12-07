@@ -19,7 +19,7 @@ Donoho et al. (2018)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -28,7 +28,7 @@ Donoho et al. (2018)
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -67,7 +67,7 @@ Donoho et al. (2018)
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">computeEll</span><span class="op">(</span><span class="va">scaled_eig_vals</span>, <span class="va">p</span>, <span class="va">p_n_ratio</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">computeEll</span><span class="op">(</span><span class="va">scaled_eig_vals</span>, <span class="va">p</span>, <span class="va">p_n_ratio</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -75,17 +75,24 @@ Donoho et al. (2018)
     <dl><dt>scaled_eig_vals</dt>
 <dd><p>A <code>numeric</code> vector of scaled estimated
 eigenvalues.</p></dd>
+
+
 <dt>p</dt>
 <dd><p>A <code>numeric</code> integer indicating the number of features in the
 data.</p></dd>
+
+
 <dt>p_n_ratio</dt>
 <dd><p>A <code>numeric</code> indicating the asymptotic ratio of the
 number of features, p, and the number of observations, n. This ratio is
 assumed to be between 0 and 1.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>numeric</code> vector.</p>
+    
+
+<p>A <code>numeric</code> vector.</p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -106,7 +113,7 @@ assumed to be between 0 and 1.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

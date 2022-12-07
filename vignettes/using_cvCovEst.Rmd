@@ -138,7 +138,7 @@ package currently implements three loss functions:
 | Observation-based Frobenius | `cvFrobeniusLoss()` | Based on the Frobenius norm and the rank-1, observation-level estimates of the sample covariance matrix. Its selections are equivalent to that of the matrix-based Frobenius, though less computationally efficient. However, the optimality results of @boileau2021 rely on it. |
 
 The choice of loss function is set trough the `cv_loss` argument. Like the
-candidate estimators, `cvCovEst(0` only supports loss functions implemented in
+candidate estimators, `cvCovEst()` only supports loss functions implemented in
 this package. Please submit suggestions to the
 [issue](https://github.com/PhilBoileau/cvCovEst/issues) queue.
 

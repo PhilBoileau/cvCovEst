@@ -18,7 +18,7 @@ hyperparameters associated with an estimator passed to cvCovEst()."><!-- mathjax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -27,7 +27,7 @@ hyperparameters associated with an estimator passed to cvCovEst()."><!-- mathjax
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -65,7 +65,7 @@ hyperparameters associated with an estimator passed to <code><a href="cvCovEst.h
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getHypers</span><span class="op">(</span><span class="va">dat</span>, <span class="va">summ_stat</span>, new_df <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getHypers</span><span class="op">(</span><span class="va">dat</span>, <span class="va">summ_stat</span>, new_df <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -74,17 +74,24 @@ hyperparameters associated with an estimator passed to <code><a href="cvCovEst.h
 <dd><p>A <code>data.frame</code> of estimators and their hyperparameter values.
 Specifically, this is one of the outputs of <code><a href="summary.cvCovEst.html">summary.cvCovEst()</a></code> or
 <code><a href="cvCovEst.html">cvCovEst()</a></code>.</p></dd>
+
+
 <dt>summ_stat</dt>
 <dd><p>A character vector specifying the summary statistic of
 interest.</p></dd>
+
+
 <dt>new_df</dt>
 <dd><p>A <code>logical</code> indicating whether a new <code>data.frame</code>
 should be returned with columns for individual hyperparameters.  Default is
 <code>FALSE</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A named <code>list</code> containing the names of all hyperparameters and
+    
+
+<p>A named <code>list</code> containing the names of all hyperparameters and
 their associated values, or a new wider <code>data.frame</code>.</p>
     </div>
 
@@ -100,7 +107,7 @@ their associated values, or a new wider <code>data.frame</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

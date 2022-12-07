@@ -23,7 +23,7 @@ values near 0 are more likely to be be very biased but have low variance."><!-- 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@ values near 0 are more likely to be be very biased but have low variance."><!-- 
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -75,27 +75,32 @@ values near 0 are more likely to be be very biased but have low variance.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">linearShrinkEst</span><span class="op">(</span><span class="va">dat</span>, <span class="va">alpha</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">linearShrinkEst</span><span class="op">(</span><span class="va">dat</span>, <span class="va">alpha</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat</dt>
 <dd><p>A numeric <code>data.frame</code>, <code>matrix</code>, or similar object.</p></dd>
+
+
 <dt>alpha</dt>
 <dd><p>A <code>numeric</code> between 0 and 1 defining convex combinations
 of the sample covariance matrix and the identity. <code>alpha = 1</code> produces
 the sample covariance matrix, and <code>alpha = 0</code> returns the identity.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>matrix</code> corresponding to the estimate of the covariance
+    
+
+<p>A <code>matrix</code> corresponding to the estimate of the covariance
 matrix.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">linearShrinkEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span>, alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">linearShrinkEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span>, alpha <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              mpg         cyl        disp          hp         drat          wt</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mpg    4.5324103 -0.91723790  -63.309721 -32.0732056  0.219506351 -0.51166847</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cyl   -0.9172379  1.21895161   19.966028  10.1931452 -0.066836694  0.13673710</span>
@@ -134,7 +139,7 @@ matrix.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

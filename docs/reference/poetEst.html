@@ -24,7 +24,7 @@ could be used instead."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -33,7 +33,7 @@ could be used instead."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -77,27 +77,34 @@ could be used instead.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">poetEst</span><span class="op">(</span><span class="va">dat</span>, <span class="va">k</span>, <span class="va">lambda</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">poetEst</span><span class="op">(</span><span class="va">dat</span>, <span class="va">k</span>, <span class="va">lambda</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat</dt>
 <dd><p>A numeric <code>data.frame</code>, <code>matrix</code>, or similar object.</p></dd>
+
+
 <dt>k</dt>
 <dd><p>An <code>integer</code> indicating the number of unobserved latent
 factors. Empirical evidence suggests that the POET estimator is robust to
 overestimation of this hyperparameter (Fan et al. 2013)
 . In
 practice, it is therefore preferable to use larger values.</p></dd>
+
+
 <dt>lambda</dt>
 <dd><p>A non-negative <code>numeric</code> defining the amount of
 thresholding applied to each element of sample covariance matrix's
 orthogonal complement.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>matrix</code> corresponding to the estimate of the covariance
+    
+
+<p>A <code>matrix</code> corresponding to the estimate of the covariance
 matrix.</p>
     </div>
     <div id="references">
@@ -110,7 +117,7 @@ ISSN 13697412, 14679868, <a href="https://www.jstor.org/stable/24772450" class="
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">poetEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span>, k <span class="op">=</span> <span class="fl">2L</span>, lambda <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">poetEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span>, k <span class="op">=</span> <span class="fl">2L</span>, lambda <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              mpg         cyl        disp          hp         drat          wt</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mpg    36.324103  -9.1723790  -633.09721 -320.732056   2.19506351  -5.1166847</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cyl    -9.172379   3.1895161   199.68181  101.957810  -0.57764791   1.3759564</span>
@@ -149,7 +156,7 @@ ISSN 13697412, 14679868, <a href="https://www.jstor.org/stable/24772450" class="
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

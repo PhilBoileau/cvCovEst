@@ -24,7 +24,7 @@ by Ledoit and Wolf (2004)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -33,7 +33,7 @@ by Ledoit and Wolf (2004)
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -77,17 +77,20 @@ by Ledoit and Wolf (2004)
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">linearShrinkLWEst</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">linearShrinkLWEst</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat</dt>
 <dd><p>A numeric <code>data.frame</code>, <code>matrix</code>, or similar object.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>matrix</code> corresponding to the Ledoit-Wolf linear shrinkage
+    
+
+<p>A <code>matrix</code> corresponding to the Ledoit-Wolf linear shrinkage
 estimate of the covariance matrix.</p>
     </div>
     <div id="references">
@@ -101,31 +104,31 @@ ISSN 0047-259X, doi: <a href="https://doi.org/10.1016/S0047-259X(03)00096-4" cla
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">linearShrinkLWEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           mpg      cyl     disp       hp     drat       wt     qsec       vs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mpg  1828.116    0.000    0.000    0.000    0.000    0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> cyl     0.000 1828.116    0.000    0.000    0.000    0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> disp    0.000    0.000 1828.116    0.000    0.000    0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hp      0.000    0.000    0.000 1828.116    0.000    0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drat    0.000    0.000    0.000    0.000 1828.116    0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> wt      0.000    0.000    0.000    0.000    0.000 1828.116    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> qsec    0.000    0.000    0.000    0.000    0.000    0.000 1828.116    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> vs      0.000    0.000    0.000    0.000    0.000    0.000    0.000 1828.116</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> am      0.000    0.000    0.000    0.000    0.000    0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> gear    0.000    0.000    0.000    0.000    0.000    0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> carb    0.000    0.000    0.000    0.000    0.000    0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            am     gear     carb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mpg     0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> cyl     0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> disp    0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hp      0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drat    0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> wt      0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> qsec    0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> vs      0.000    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> am   1828.116    0.000    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> gear    0.000 1828.116    0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> carb    0.000    0.000 1828.116</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">linearShrinkLWEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              mpg         cyl        disp          hp         drat          wt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mpg    91.994537  -8.8873959  -613.42707 -310.767007   2.12686354  -4.9577108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl    -8.887396  59.8894321   193.45690   98.764472  -0.64760097   1.3248872</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> disp -613.427065 193.4568965 14940.34335 6512.334264 -45.60175405 104.3384878</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp   -310.767007  98.7644717  6512.33426 4611.611408 -15.93997780  42.8196084</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drat    2.126864  -0.6476010   -45.60175  -15.939978  57.07601236  -0.3611404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wt     -4.957711   1.3248872   104.33849   42.819608  -0.36114040  57.7266467</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> qsec    4.369051  -1.8282308   -93.06738  -84.074160   0.08443329  -0.2959904</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> vs      1.954465  -0.7071628   -42.99882  -24.211536   0.11496280  -0.2651587</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> am      1.747884  -0.4512558   -35.42798   -8.062047   0.18424327  -0.3276000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> gear    2.069330  -0.6290233   -49.22420   -6.161303   0.26741304  -0.4079978</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> carb   -5.196475   1.4729303    76.61211   80.456377  -0.07597117   0.6547937</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              qsec           vs           am         gear        carb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mpg    4.36905127   1.95446525   1.74788384   2.06933037 -5.19647476</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl   -1.82823082  -0.70716284  -0.45125584  -0.62902330  1.47293033</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> disp -93.06738422 -42.99882145 -35.42797909 -49.22419861 76.61210740</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp   -84.07415999 -24.21153649  -8.06204705  -6.16130273 80.45637743</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drat   0.08443329   0.11496280   0.18424327   0.26741304 -0.07597117</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wt    -0.29599039  -0.26515872  -0.32760002  -0.40799779  0.65479372</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> qsec  59.89296866   0.64973028  -0.19859164  -0.27169118 -1.83526338</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> vs     0.64973028  57.04515281   0.04102326   0.07423256 -0.44930236</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> am    -0.19859164   0.04102326  57.04026909   0.28325583  0.04493024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> gear  -0.27169118   0.07423256   0.28325583  57.32645515  0.31646514</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> carb  -1.83526338  -0.44930236   0.04493024   0.31646514 59.32682738</span>
 </code></pre></div>
     </div>
   </div>
@@ -140,7 +143,7 @@ ISSN 0047-259X, doi: <a href="https://doi.org/10.1016/S0047-259X(03)00096-4" cla
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

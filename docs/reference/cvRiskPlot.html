@@ -18,7 +18,7 @@ estimator, or set of estimators, as a function of the hyperparameters."><!-- mat
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -27,7 +27,7 @@ estimator, or set of estimators, as a function of the hyperparameters."><!-- mat
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -65,14 +65,14 @@ estimator, or set of estimators, as a function of the hyperparameters.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cvRiskPlot</span><span class="op">(</span>
-  <span class="va">dat</span>,
-  <span class="va">est</span>,
-  plot_type <span class="op">=</span> <span class="st">"risk"</span>,
-  <span class="va">cv_details</span>,
-  switch_vars <span class="op">=</span> <span class="cn">FALSE</span>,
-  min_max <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cvRiskPlot</span><span class="op">(</span></span>
+<span>  <span class="va">dat</span>,</span>
+<span>  <span class="va">est</span>,</span>
+<span>  plot_type <span class="op">=</span> <span class="st">"risk"</span>,</span>
+<span>  <span class="va">cv_details</span>,</span>
+<span>  switch_vars <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  min_max <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -80,28 +80,41 @@ estimator, or set of estimators, as a function of the hyperparameters.</p>
     <dl><dt>dat</dt>
 <dd><p>A named <code>list</code>.  Specifically, this is the standard output of
 <code><a href="cvCovEst.html">cvCovEst</a>()</code>.</p></dd>
+
+
 <dt>plot_type</dt>
 <dd><p>A <code>character</code> detailing the type of plot. Passed to
 <code><a href="theme_cvCovEst.html">theme_cvCovEst</a>()</code>, defaults to <code>"risk"</code></p></dd>
+
+
 <dt>cv_details</dt>
 <dd><p>A <code>character</code> vector summarizing key arguments passed
 to <code><a href="cvCovEst.html">cvCovEst</a>()</code>.</p></dd>
+
+
 <dt>switch_vars</dt>
 <dd><p>A <code>logical</code>. If <code>TRUE</code>,
 the hyperparameters used for the x-axis and factor variables are switched.
 Only applies to estimators with more than one hyperparameter. Defaults to
 <code>FALSE</code>.</p></dd>
+
+
 <dt>min_max</dt>
 <dd><p>A <code>logical</code>. If <code>TRUE</code>, only the minimum and
 maximum values of the factor hyperparameter will be used.  Only applies to
 estimators with more than one hyperparameter. Defaults to <code>FALSE</code>.</p></dd>
+
+
 <dt>estimator</dt>
 <dd><p>A <code>character</code> vector specifying one or more classes of
 estimators to compare.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A single plot or grid of plots for each estimator specified.</p>
+    
+
+<p>A single plot or grid of plots for each estimator specified.</p>
     </div>
 
   </div>
@@ -116,7 +129,7 @@ estimators to compare.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

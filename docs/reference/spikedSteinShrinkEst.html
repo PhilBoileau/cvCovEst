@@ -24,7 +24,7 @@ provided in Donoho et al. (2018)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -33,7 +33,7 @@ provided in Donoho et al. (2018)
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -77,30 +77,39 @@ provided in Donoho et al. (2018)
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">spikedSteinShrinkEst</span><span class="op">(</span><span class="va">dat</span>, <span class="va">p_n_ratio</span>, num_spikes <span class="op">=</span> <span class="cn">NULL</span>, noise <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">spikedSteinShrinkEst</span><span class="op">(</span><span class="va">dat</span>, <span class="va">p_n_ratio</span>, num_spikes <span class="op">=</span> <span class="cn">NULL</span>, noise <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat</dt>
 <dd><p>A numeric <code>data.frame</code>, <code>matrix</code>, or similar object.</p></dd>
+
+
 <dt>p_n_ratio</dt>
 <dd><p>A <code>numeric</code> between 0 and 1 representing the asymptotic
 ratio of the number of features, p, and the number of observations, n.</p></dd>
+
+
 <dt>num_spikes</dt>
 <dd><p>A <code>numeric</code> integer equal to or larger than one which
 providing the known number of spikes in the population covariance matrix.
 Defaults to <code>NULL</code>, indicating that this value is not known and must
 be estimated.</p></dd>
+
+
 <dt>noise</dt>
 <dd><p>A <code>numeric</code> representing the known scalar multiple of the
 identity matrix giving the approximate population covariance matrix.
 Defaults to <code>NULL</code>, indicating that this values is not known and must
 be estimated.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>matrix</code> corresponding to the covariance matrix estimate.</p>
+    
+
+<p>A <code>matrix</code> corresponding to the covariance matrix estimate.</p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -111,7 +120,7 @@ be estimated.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="spikedFrobeniusShrinkEst.html">spikedFrobeniusShrinkEst</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span>, p_n_ratio <span class="op">=</span> <span class="fl">0.1</span>, num_spikes <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="spikedFrobeniusShrinkEst.html">spikedFrobeniusShrinkEst</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span>, p_n_ratio <span class="op">=</span> <span class="fl">0.1</span>, num_spikes <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              [,1]        [,2]        [,3]        [,4]        [,5]        [,6]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]   27.663147  -8.5966480  -633.37176 -320.952507   1.8380080  -4.3684649</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   -8.596648   3.1720621   199.67670  101.953292  -0.5776376   1.3759243</span>
@@ -136,7 +145,7 @@ be estimated.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]   0.03326137   0.08132900   0.57613904   0.19030401  0.02318283</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10,]  -0.08623014   0.09647834   0.19030401   0.76682762  0.17556675</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [11,]  -1.72780065  -0.38221201   0.02318283   0.17556675  2.19784126</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -151,7 +160,7 @@ be estimated.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

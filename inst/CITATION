@@ -1,0 +1,34 @@
+citHeader("To cite cvCovEst in publications use:")
+
+bibentry(
+  bibtype = "Article",
+  title = "{cvCovEst}: Cross-validated covariance matrix estimator selection and evaluation in {R}",
+  author = c(
+    person("Philippe", "Boileau"),
+    person("Nima S", "Hejazi"),
+    person("Brian", "Collica"),
+    person("Mark J", "van der Laan"),
+    person("Sandrine", "Dudoit")),
+  year = "2021",
+  journal = "Journal of Open Source Software",
+  publisher = "The Open Journal",
+  doi = "10.21105/joss.03273",
+  url = "https://doi.org/10.21105/joss.03273"
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "Cross-Validated Loss-Based Covariance Matrix Estimator Selection in High Dimensions",
+  author = c(
+    person("Philippe", "Boileau"),
+    person("Nima S", "Hejazi"),
+    person("Mark J", "van der Laan"),
+    person("Sandrine", "Dudoit")),
+  year = "2022",
+  journal = "Journal of Computational and Graphical Statistics",
+  volume = "0",
+  pages = "1-12",
+  publisher = "Taylor and Francis",
+  doi = "10.1080/10618600.2022.2110883",
+  url = "https://doi.org/10.1080/10618600.2022.2110883"
+)

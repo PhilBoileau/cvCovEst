@@ -34,7 +34,7 @@ resulting estimate are not guaranteed to be equal to one."><!-- mathjax --><scri
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@ resulting estimate are not guaranteed to be equal to one."><!-- mathjax --><scri
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -97,33 +97,42 @@ resulting estimate are not guaranteed to be equal to one.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">robustPoetEst</span><span class="op">(</span><span class="va">dat</span>, <span class="va">k</span>, <span class="va">lambda</span>, var_est <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample"</span>, <span class="st">"mad"</span>, <span class="st">"huber"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">robustPoetEst</span><span class="op">(</span><span class="va">dat</span>, <span class="va">k</span>, <span class="va">lambda</span>, var_est <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample"</span>, <span class="st">"mad"</span>, <span class="st">"huber"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat</dt>
 <dd><p>A numeric <code>data.frame</code>, <code>matrix</code>, or similar object.</p></dd>
+
+
 <dt>k</dt>
 <dd><p>An <code>integer</code> indicating the number of unobserved latent
 factors. Empirical evidence suggests that the POET estimator is robust to
 overestimation of this hyperparameter (Fan et al. 2013)
 . In
 practice, it is therefore preferable to use larger values.</p></dd>
+
+
 <dt>lambda</dt>
 <dd><p>A non-negative <code>numeric</code> defining the amount of
 thresholding applied to each element of sample covariance matrix's
 orthogonal complement.</p></dd>
+
+
 <dt>var_est</dt>
 <dd><p>A <code>character</code> dictating which variance estimator to
 use. This must be one of the strings <code>"sample"</code>, <code>"mad"</code>, or
 <code>"huber"</code>. <code>"sample"</code> uses sample variances; <code>"mad"</code>
 estimates variances via median absolute deviation; <code>"huber"</code> uses an
 M-estimator for variance under the Huber loss.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>matrix</code> corresponding to the estimate of the covariance
+    
+
+<p>A <code>matrix</code> corresponding to the estimate of the covariance
 matrix.</p>
     </div>
     <div id="references">
@@ -140,7 +149,7 @@ doi: <a href="https://doi.org/10.1214/17-AOS1588" class="external-link">10.1214/
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">robustPoetEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span>, k <span class="op">=</span> <span class="fl">2L</span>, lambda <span class="op">=</span> <span class="fl">0.1</span>, var_est <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">robustPoetEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span>, k <span class="op">=</span> <span class="fl">2L</span>, lambda <span class="op">=</span> <span class="fl">0.1</span>, var_est <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              [,1]        [,2]        [,3]       [,4]         [,5]        [,6]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]   36.315178  -9.1164387  -693.67785 -376.03067   2.11448003  -5.3349120</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   -9.116439   2.7537461   190.39219  102.45344  -0.61276404   1.3986029</span>
@@ -179,7 +188,7 @@ doi: <a href="https://doi.org/10.1214/17-AOS1588" class="external-link">10.1214/
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

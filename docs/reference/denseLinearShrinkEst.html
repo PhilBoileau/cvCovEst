@@ -26,7 +26,7 @@ Schäfer and Strimmer (2005)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cvCovEst</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -35,7 +35,7 @@ Schäfer and Strimmer (2005)
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -81,17 +81,20 @@ Schäfer and Strimmer (2005)
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">denseLinearShrinkEst</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">denseLinearShrinkEst</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat</dt>
 <dd><p>A numeric <code>data.frame</code>, <code>matrix</code>, or similar object.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>matrix</code> corresponding to the estimate of the covariance
+    
+
+<p>A <code>matrix</code> corresponding to the estimate of the covariance
 matrix.</p>
     </div>
     <div id="references">
@@ -109,7 +112,7 @@ doi: <a href="https://doi.org/10.2202/1544-6115.1175" class="external-link">10.2
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">denseLinearShrinkEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">denseLinearShrinkEst</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               mpg         cyl        disp           hp       drat         wt</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mpg   168.3510501  -0.5187563  -578.47011 -289.1213709  10.011084   3.238097</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cyl    -0.5187563 137.6579629   192.92621  102.3984642   7.358643   9.244379</span>
@@ -148,7 +151,7 @@ doi: <a href="https://doi.org/10.2202/1544-6115.1175" class="external-link">10.2
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
