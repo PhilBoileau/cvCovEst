@@ -315,6 +315,10 @@ taperingEst <- function(dat, k) {
 #' nlShrinkLWEst(dat = mtcars)
 #' @export
 nlShrinkLWEst <- function(dat) {
+
+  # scale the data
+  dat <- scale(dat, center = TRUE, scale = FALSE)
+
   # get the dimensions of the data
   n <- nrow(dat)
   p <- ncol(dat)
