@@ -25,11 +25,24 @@ test_that("Linear shrinkage estimator produces shrunken estimates", {
   )
 })
 
+test_that("Linear shrinkage estimator centers data internally", {
+  expect_equal(
+    linearShrinkEst(mtcars, 1),
+    linearShrinkEst(mtcars - 1, 1)
+  )
+})
 
 # Ledoit Wolf Linear Shrinkage Estimator #######################################
 test_that("LW LS estimator runs without issue", {
   expect_silent(
     linearShrinkLWEst(mtcars)
+  )
+})
+
+test_that("LW LS estimator centers data internally", {
+  expect_equal(
+    linearShrinkLWEst(mtcars),
+    linearShrinkLWEst(mtcars - 1)
   )
 })
 
@@ -48,6 +61,13 @@ test_that("simple thresholing estimator with large threshold is 0 matrix", {
   )
 })
 
+test_that("simple thresholding estimator centers data internally", {
+  expect_equal(
+    thresholdingEst(mtcars, 0.2),
+    thresholdingEst(mtcars - 1, 0.2)
+  )
+})
+
 # Banding Estimator ###########################################################
 test_that("banding estimator with k = 0 is diagonal of S_n", {
   expect_identical(
@@ -60,6 +80,13 @@ test_that("banding estimator with k >> 0 is S_n", {
   expect_identical(
     bandingEst(mtcars, k = 1000000L),
     coop::covar(mtcars) %>% unname()
+  )
+})
+
+test_that("banding estimator centers data internally", {
+  expect_equal(
+    bandingEst(mtcars, 4),
+    bandingEst(mtcars - 1, 4)
   )
 })
 
@@ -92,6 +119,13 @@ test_that("tapering estimator with k >> 0 is S_n", {
   )
 })
 
+test_that("tapering estimator centers data internally", {
+  expect_equal(
+    taperingEst(mtcars, 4),
+    taperingEst(mtcars - 1, 4)
+  )
+})
+
 # Ledoit Wolf Nonlinear Shrinkage Estimator ####################################
 test_that("LW NLS estimator runs without issue", {
   expect_silent(
@@ -106,6 +140,13 @@ test_that("LW NLS estimator runs without issue", {
   dat <- mvrnorm(n = 50, mu = rep(0, 50), Sigma = Sigma)
   expect_false(
     any(is.na(nlShrinkLWEst(dat)))
+  )
+})
+
+test_that("LW NLS estimator centers data internally", {
+  expect_equal(
+    nlShrinkLWEst(mtcars),
+    nlShrinkLWEst(mtcars - 1)
   )
 })
 
@@ -132,6 +173,13 @@ test_that("Dense linear shrinkage estimator produces shrunken estimates", {
   expect_true(abs_est[2, 5] != abs_sample_cov[2, 5])
 })
 
+test_that("dense linear shrinkage estimator centers data internally", {
+  expect_equal(
+    denseLinearShrinkEst(mtcars),
+    denseLinearShrinkEst(mtcars - 1)
+  )
+})
+
 # SCAD Thresholding Estimator ##################################################
 
 test_that("SCAD estimator doesn't generate any errors for no reason", {
@@ -145,6 +193,13 @@ test_that("SCAD estimator generates zero matrix for large lambda", {
   expect_equal(
     sum(scadEst(dat, lambda = 10) == 0),
     121
+  )
+})
+
+test_that("SCAD estimator centers data internally", {
+  expect_equal(
+    scadEst(mtcars, 0.2),
+    scadEst(mtcars - 1, 0.2)
   )
 })
 
@@ -172,6 +227,13 @@ test_that("Verify POET estimator's results", {
 
   # compare
   expect_identical(round(rank_one_sample_cov, 10), round(poet_estimate, 10))
+})
+
+test_that("POET estimator centers data internally", {
+  expect_equal(
+    poetEst(mtcars, 2, 3),
+    poetEst(mtcars - 1, 2, 3)
+  )
 })
 
 # Robust POET Estimator ########################################################
@@ -211,6 +273,13 @@ test_that("Verify Robust POET estimator's results", {
   expect_equal(est_mad, robust_poet_estimate_mad)
 })
 
+test_that("robust POET estimator centers data internally", {
+  expect_equal(
+    robustPoetEst(mtcars, 2, 3, "sample"),
+    robustPoetEst(mtcars - 1, 2, 3, "sample")
+  )
+})
+
 # Adaptive Lasso Estimator #####################################################
 
 test_that("adaptive Lasso estimator with no penalty is Sn", {
@@ -231,6 +300,13 @@ test_that("adaptive Lasso estimator with large threshold is 0 matrix", {
   expect_identical(
     adaptiveLassoEst(mtcars, lambda = 1000000, n = 0) %>% unname(),
     matrix(data = 0, nrow = ncol(mtcars), ncol = ncol(mtcars))
+  )
+})
+
+test_that("adaptive LASSO estimator centers data internally", {
+  expect_equal(
+    adaptiveLassoEst(mtcars, 0.2, 0.8),
+    adaptiveLassoEst(mtcars - 1, 0.2, 0.8)
   )
 })
 
@@ -278,6 +354,13 @@ test_that(paste("number of spikes in estimates equals to num_spikes when, even",
   expect_equal(sum(estimated_eig_vals > 2), 2)
 })
 
+test_that("operator norm shrinkage estimator centers data internally", {
+  expect_equal(
+    spikedOperatorShrinkEst(mtcars, p_n_ratio = 0.1, 2),
+    spikedOperatorShrinkEst(mtcars - 1, p_n_ratio = 0.1, 2)
+  )
+})
+
 # Frobenius Norm Shrinkage Estimator, Spiked Covariance Model ##################
 
 test_that(paste("returns the sample covariance matrix when the number of",
@@ -323,6 +406,13 @@ test_that(paste("number of spikes in estimates equals to num_spikes when, even",
   expect_equal(sum(estimated_eig_vals > 2), 2)
 })
 
+test_that("Frobenius norm shrinkage estimator centers data internally", {
+  expect_equal(
+    spikedFrobeniusShrinkEst(mtcars, p_n_ratio = 0.1, 2),
+    spikedFrobeniusShrinkEst(mtcars - 1, p_n_ratio = 0.1, 2)
+  )
+})
+
 # Stein Loss Shrinkage Estimator, Spiked Covariance Model ##################
 
 test_that(paste("returns the sample covariance matrix when the number of",
@@ -366,4 +456,11 @@ test_that(paste("number of spikes in estimates equals to num_spikes when, even",
     spikedSteinShrinkEst(dat, p_n_ratio = 0.1, num_spikes = 2)
   )$values
   expect_equal(sum(estimated_eig_vals > 2), 2)
+})
+
+test_that("Stein loss norm shrinkage estimator centers data internally", {
+  expect_equal(
+    spikedSteinShrinkEst(mtcars, p_n_ratio = 0.1, 2),
+    spikedSteinShrinkEst(mtcars - 1, p_n_ratio = 0.1, 2)
+  )
 })
