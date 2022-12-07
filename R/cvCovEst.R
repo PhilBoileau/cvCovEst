@@ -30,13 +30,10 @@
 #' @param v_folds An \code{integer} larger than or equal to 1 indicating the
 #'  number of folds to use for cross-validation. The default is 10, regardless
 #'  of the choice of cross-validation scheme.
-#' @param center A \code{logical} indicating whether to center the columns of
-#'  \code{dat} to have mean zero.
-#' @param scale A \code{logical} indicating whether to scale the columns of
-#'  \code{dat} to have unit variance.
 #' @param parallel A \code{logical} option indicating whether to run the main
 #'  cross-validation loop with \code{\link[future.apply]{future_lapply}()}. This
 #'  is passed directly to \code{\link[origami]{cross_validate}()}.
+#' @param ... Not currently used. Permits backward compatibility.
 #'
 #' @importFrom origami cross_validate folds_vfold folds_montecarlo
 #' @importFrom dplyr arrange summarise group_by "%>%" ungroup
@@ -68,9 +65,7 @@
 #'   ),
 #'   estimator_params = list(
 #'     thresholdingEst = list(gamma = seq(0.1, 0.3, 0.1))
-#'   ),
-#'   center = TRUE,
-#'   scale = TRUE
+#'   )
 #' )
 #' @export
 cvCovEst <- function(
@@ -84,9 +79,8 @@ cvCovEst <- function(
   ),
   cv_loss = cvMatrixFrobeniusLoss,
   cv_scheme = "v_fold", mc_split = 0.5, v_folds = 10L,
-  center = TRUE,
-  scale = FALSE,
-  parallel = FALSE
+  parallel = FALSE,
+  ...
 ) {
 
   # grab estimator expression
@@ -101,7 +95,7 @@ cvCovEst <- function(
     rlang::quo_get_expr(estimators), estimator_params,
     rlang::quo_get_expr(cv_loss), cv_scheme,
     mc_split, v_folds,
-    center, scale, parallel
+    parallel
   )
 
   # create arguments list
@@ -110,22 +104,8 @@ cvCovEst <- function(
     cv_scheme = cv_scheme,
     mc_split = mc_split,
     v_folds = v_folds,
-    center = center,
-    scale = scale,
     parallel = parallel
   )
-
-  # center and scale the data, if desired
-  if (center == FALSE) {
-    col_means <- colMeans(dat)
-    abs_diff_zero <- abs(col_means - rep(0, length(col_means)))
-    if (any(abs_diff_zero > 1e-10)) {
-      message("The columns of argument `dat` have been centered automatically")
-      dat <- safeColScale(X = dat, center = center, scale = scale)
-    }
-  } else {
-    dat <- safeColScale(X = dat, center = center, scale = scale)
-  }
 
   # define the folds based on cross-validation scheme
   if (cv_scheme == "mc") {

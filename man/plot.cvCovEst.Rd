@@ -116,9 +116,7 @@ cv_dat <- cvCovEst(
   ),
   estimator_params = list(
     thresholdingEst = list(gamma = seq(0.1, 0.9, 0.1))
-  ),
-  center = TRUE,
-  scale = TRUE
+  )
 )
 
 plot(x = cv_dat, dat_orig = mtcars)

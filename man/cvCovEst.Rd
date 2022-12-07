@@ -7,15 +7,14 @@
 cvCovEst(
   dat,
   estimators = c(linearShrinkEst, thresholdingEst, sampleCovEst),
-  estimator_params = list(linearShrinkEst = list(alpha = 0), thresholdingEst =
-    list(gamma = 0)),
+  estimator_params = list(linearShrinkEst = list(alpha = 0), thresholdingEst = list(gamma
+    = 0)),
   cv_loss = cvMatrixFrobeniusLoss,
   cv_scheme = "v_fold",
   mc_split = 0.5,
   v_folds = 10L,
-  center = TRUE,
-  scale = FALSE,
-  parallel = FALSE
+  parallel = FALSE,
+  ...
 )
 }
 \arguments{
@@ -53,15 +52,11 @@ cross-validation fold.}
 number of folds to use for cross-validation. The default is 10, regardless
 of the choice of cross-validation scheme.}
 
-\item{center}{A \code{logical} indicating whether to center the columns of
-\code{dat} to have mean zero.}
-
-\item{scale}{A \code{logical} indicating whether to scale the columns of
-\code{dat} to have unit variance.}
-
 \item{parallel}{A \code{logical} option indicating whether to run the main
 cross-validation loop with \code{\link[future.apply]{future_lapply}()}. This
 is passed directly to \code{\link[origami]{cross_validate}()}.}
+
+\item{...}{Not currently used. Permits backward compatibility.}
 }
 \value{
 A \code{list} of results containing the following elements:
@@ -90,8 +85,6 @@ cvCovEst(
   ),
   estimator_params = list(
     thresholdingEst = list(gamma = seq(0.1, 0.3, 0.1))
-  ),
-  center = TRUE,
-  scale = TRUE
+  )
 )
 }
