@@ -3,7 +3,7 @@
 
 <!-- badges: start -->
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/PhilBoileau/cvCovEst/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/PhilBoileau/cvCovEst/tree/master)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/PhilBoileau/cvCovEst/tree/master.svg?style=svg)](https://app.circleci.com/pipelines/github/PhilBoileau/cvCovEst?branch=master)
 [![codecov](https://codecov.io/gh/PhilBoileau/cvCovEst/branch/master/graph/badge.svg?token=miHiqpGXxJ)](https://app.codecov.io/gh/PhilBoileau/cvCovEst)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
@@ -158,7 +158,7 @@ method, or simply using the method, please cite the pre-print below.
 
 ## License
 
-© 2020-2022 [Philippe Boileau](https://pboileau.ca)
+© 2020-2023 [Philippe Boileau](https://pboileau.ca)
 
 The contents of this repository are distributed under the MIT license.
 See file
