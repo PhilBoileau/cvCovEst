@@ -1,3 +1,9 @@
+# cvCovEst 1.2.1 (2023-06-19)
+
++ Removing superfluous test that messes with CRAN's MKL checks (tests with
+  alternative BLAS/LAPACK implementations)
+
+
 # cvCovEst 1.2.0 (2022-12-07)
 
 + `cvCovEst()` no longer accepts `center` and `scale` arguments. Data centering

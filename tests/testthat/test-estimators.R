@@ -143,13 +143,6 @@ test_that("LW NLS estimator runs without issue", {
   )
 })
 
-test_that("LW NLS estimator centers data internally", {
-  expect_equal(
-    nlShrinkLWEst(mtcars),
-    nlShrinkLWEst(mtcars - 1)
-  )
-})
-
 # Dense linear Shrinkage Estimator ####################################
 test_that("Dense linear shrinkage estimator runs without issue", {
   expect_silent(
