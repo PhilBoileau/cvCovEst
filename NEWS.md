@@ -2,6 +2,8 @@
 
 + Removing superfluous test that messes with CRAN's MKL checks (tests with
   alternative BLAS/LAPACK implementations)
++ Add doi of Journal of Computational and Graphical Statistics article to
+  description.
 
 
 # cvCovEst 1.2.0 (2022-12-07)

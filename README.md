@@ -10,7 +10,7 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.03273/status.svg)](https://doi.org/10.21105/joss.03273)
 [![MIT
-license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/mit)
 <!-- badges: end -->
 
 > Cross-Validated Covariance Matrix Estimation
