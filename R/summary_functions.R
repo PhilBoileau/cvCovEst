@@ -172,8 +172,8 @@ hyperRisk <- function(dat) {
 #' @description \code{matrixMetrics} computes the condition number, sparsity,
 #'  and sign of a covariance matrix estimate.
 #'
-#' @param estimator A \code{matrix} corresponding to a single covariance matrix
-#'  estimator.
+#' @param estimate A \code{matrix} corresponding to a covariance matrix
+#'   estimate.
 #'
 #' @return A named \code{list} containing the three values.
 #'

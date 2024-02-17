@@ -7,8 +7,8 @@
 matrixMetrics(estimate)
 }
 \arguments{
-\item{estimator}{A \code{matrix} corresponding to a single covariance matrix
-estimator.}
+\item{estimate}{A \code{matrix} corresponding to a covariance matrix
+estimate.}
 }
 \value{
 A named \code{list} containing the three values.

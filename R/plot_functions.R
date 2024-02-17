@@ -626,7 +626,7 @@ multiHyperRisk <- function(
 #'
 #' @param dat A named \code{list}.  Specifically, this is the standard output of
 #'  \code{\link{cvCovEst}()}.
-#' @param estimator A \code{character} vector specifying one or more classes of
+#' @param est A \code{character} vector specifying one or more classes of
 #'  estimators to compare.
 #' @param plot_type A \code{character} detailing the type of plot. Passed to
 #'  \code{\link{theme_cvCovEst}()}, defaults to \code{"risk"}
