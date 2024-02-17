@@ -127,8 +127,8 @@ thresholdingEst <- function(dat, gamma) {
 
 #' Sample Covariance Matrix
 #'
-#' @description \code{sampleCovEst()} computes the sample covariance matrix. This
-#'  function is a simple wrapper around \code{\link[coop]{covar}()}.
+#' @description \code{sampleCovEst()} computes the sample covariance matrix.
+#'   This function is a simple wrapper around \code{\link[coop]{covar}()}.
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.
 #'
@@ -152,8 +152,8 @@ sampleCovEst <- function(dat) {
 #'
 #' @description \code{bandingEst()} estimates the covariance matrix of data with
 #'  ordered variables by forcing off-diagonal entries to be zero for indices
-#'  that are far removed from one another. The {i, j} entry of the estimated
-#'  covariance matrix will be zero if the absolute value of {i - j} is greater
+#'  that are far removed from one another. The \{i, j\} entry of the estimated
+#'  covariance matrix will be zero if the absolute value of \{i - j\} is greater
 #'  than some non-negative constant \code{k}. This estimator was proposed by
 #'  \insertCite{bickel2008_banding;textual}{cvCovEst}.
 #'
@@ -217,9 +217,9 @@ bandingEst <- function(dat, k) {
 #'
 #'  The weight matrix is a Toeplitz matrix with entries defined as follows. Let
 #'  i and j index the rows and columns of the weight matrix, respectively. If
-#'  \code{abs(i - j) <= k / 2}, then entry {i, j} in the weight matrix is equal
-#'  to 1. If \code{k / 2 < abs(i - j) < k}, then entry {i, j} is equal to
-#'  \code{2 - 2 * abs(i - j) / k}. Otherwise, entry {i, j} is equal to 0.
+#'  \code{abs(i - j) <= k / 2}, then entry \{i, j\} in the weight matrix is
+#'  equal to 1. If \code{k / 2 < abs(i - j) < k}, then entry \{i, j\} is equal
+#'  to \code{2 - 2 * abs(i - j) / k}. Otherwise, entry \{i, j\} is equal to 0.
 #'
 #'
 #' @param dat A numeric \code{data.frame}, \code{matrix}, or similar object.

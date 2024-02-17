@@ -18,8 +18,8 @@ matrix.
 \description{
 \code{bandingEst()} estimates the covariance matrix of data with
 ordered variables by forcing off-diagonal entries to be zero for indices
-that are far removed from one another. The {i, j} entry of the estimated
-covariance matrix will be zero if the absolute value of {i - j} is greater
+that are far removed from one another. The \{i, j\} entry of the estimated
+covariance matrix will be zero if the absolute value of \{i - j\} is greater
 than some non-negative constant \code{k}. This estimator was proposed by
 \insertCite{bickel2008_banding;textual}{cvCovEst}.
 }
