@@ -17,6 +17,9 @@ cvRiskPlot(
 \item{dat}{A named \code{list}.  Specifically, this is the standard output of
 \code{\link{cvCovEst}()}.}
 
+\item{est}{A \code{character} vector specifying one or more classes of
+estimators to compare.}
+
 \item{plot_type}{A \code{character} detailing the type of plot. Passed to
 \code{\link{theme_cvCovEst}()}, defaults to \code{"risk"}}
 
@@ -31,9 +34,6 @@ Only applies to estimators with more than one hyperparameter. Defaults to
 \item{min_max}{A \code{logical}. If \code{TRUE}, only the minimum and
 maximum values of the factor hyperparameter will be used.  Only applies to
 estimators with more than one hyperparameter. Defaults to \code{FALSE}.}
-
-\item{estimator}{A \code{character} vector specifying one or more classes of
-estimators to compare.}
 }
 \value{
 A single plot or grid of plots for each estimator specified.
