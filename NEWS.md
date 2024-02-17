@@ -1,3 +1,9 @@
+# cvCovEst 1.2.2 (2024-02-17)
+
++ Fix un-escaped brackets in `bandingEst()` and `taperingEst()` documentation.
++ Argument documentation now matches argument names in `cvRiskPlot()` and
+  `matrixMetrics()`.
+
 # cvCovEst 1.2.1 (2023-06-19)
 
 + Removing superfluous test that messes with CRAN's MKL checks (tests with
